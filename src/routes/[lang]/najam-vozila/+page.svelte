@@ -28,8 +28,8 @@
 				<div class="bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition-shadow">
 					<!-- Vehicle image -->
 					<div class="h-52 bg-slate-100 flex items-center justify-center overflow-hidden">
-						{#if vehicle.imageUrl}
-							<img src={vehicle.imageUrl} alt={vehicle.name} class="w-full h-full object-cover" />
+						{#if vehicle.images[0]}
+							<img src={vehicle.images[0]} alt={vehicle.name} class="w-full h-full object-cover" />
 						{:else}
 							<div class="text-slate-300 flex flex-col items-center gap-2">
 								<svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">

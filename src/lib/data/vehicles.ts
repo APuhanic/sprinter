@@ -16,7 +16,7 @@ export interface Vehicle {
 	gearbox: string;
 	capacity?: string;
 	payload?: string;
-	imageUrl?: string;
+	images: string[];
 	description: string[];
 	pricing: PricingRow[];
 	maxDaysBeforeContact: number;
@@ -33,7 +33,7 @@ export const vehicles: Vehicle[] = [
 		hasCruise: true,
 		year: 2021,
 		gearbox: 'Ručni',
-		imageUrl: '/images/vehicles/ford-focus.jpg',
+		images: ['/images/vehicles/ford-focus/1.jpg', '/images/vehicles/ford-focus/2.jpg', '/images/vehicles/ford-focus/3.jpg'],
 		description: [
 			'Upoznajte Ford Focus Karavan, savršen izbor za one koji traže praktičnost i udobnost.',
 			'Ovo vozilo pokreće štedljivi 1,5-litreni TDCi motor poznat po niskoj potrošnji goriva, što ga čini idealnim za duža putovanja.',
@@ -58,7 +58,7 @@ export const vehicles: Vehicle[] = [
 		hasCruise: true,
 		year: 2021,
 		gearbox: 'Automatski',
-		imageUrl: '/images/vehicles/mercedes-e300.jpg',
+		images: ['/images/vehicles/mercedes-e300/1.jpg', '/images/vehicles/mercedes-e300/2.jpg', '/images/vehicles/mercedes-e300/3.jpg'],
 		description: [
 			'Predstavljamo Mercedes-Benz E 300 s Avantgarde Luxury paketom opreme.',
 			'Vozilo pokreće benzinski motor s plug-in hibridnim sustavom, što omogućuje vožnju do 50 km isključivo na struju, a ukupna snaga sustava iznosi 320 KS.',
@@ -84,7 +84,7 @@ export const vehicles: Vehicle[] = [
 		hasCruise: true,
 		year: 2021,
 		gearbox: 'Automatski',
-		imageUrl: '/images/vehicles/mercedes-v-class.jpg',
+		images: ['/images/vehicles/mercedes-v-class/1.jpg', '/images/vehicles/mercedes-v-class/2.jpg', '/images/vehicles/mercedes-v-class/3.jpg'],
 		description: [
 			'Tražite vrhunski prijevoz za grupu do osam osoba? Mercedes-Benz V-klasa je idealno rješenje.',
 			'Ova luksuzna putnička krstarica osigurava iznimnu udobnost, čineći svako putovanje pravim užitkom.',
@@ -113,7 +113,7 @@ export const vehicles: Vehicle[] = [
 		gearbox: 'Ručni',
 		capacity: '13 m²',
 		payload: '1300 kg',
-		imageUrl: '/images/vehicles/renault-master.jpg',
+		images: ['/images/vehicles/renault-master/1.jpg', '/images/vehicles/renault-master/2.jpg'],
 		description: [
 			'Renault Master s pogonom na prednje kotače dokazuje da posao i udobnost idu ruku pod ruku. Bez obzira vozite li gradom ili idete na dulji put, ovaj kombi će vas oduševiti.',
 			'Za lakšu vožnju na otvorenoj cesti, tu je tempomat, dok parking senzori sa stražnjom kamerom čine parkiranje jednostavnim, čak i u najužim gradskim ulicama.',
@@ -140,7 +140,7 @@ export const vehicles: Vehicle[] = [
 		gearbox: 'Ručni',
 		capacity: '15 m²',
 		payload: '1200 kg',
-		imageUrl: '/images/vehicles/mercedes-sprinter.jpg',
+		images: ['/images/vehicles/mercedes-sprinter/1.jpg', '/images/vehicles/mercedes-sprinter/2.jpg', '/images/vehicles/mercedes-sprinter/3.jpg'],
 		description: [
 			'Mercedes-Benz Sprinter se s pravom naziva krstaricom među kombijima, kombinirajući impresivnu kvalitetu izrade s izvanrednom funkcionalnošću.',
 			'Odlikuje ga prostrani tovarni prostor, koji nudi obilje mjesta za prijevoz robe, što ga čini idealnim partnerom za posao. Njegova robusna konstrukcija i pouzdanost osiguravaju da će sve vaše dostave biti sigurne.',
@@ -168,7 +168,7 @@ export const vehicles: Vehicle[] = [
 		gearbox: 'Ručni',
 		capacity: '6 m²',
 		payload: '1000 kg',
-		imageUrl: '/images/vehicles/renault-trafic.jpg',
+		images: ['/images/vehicles/renault-trafic/1.jpg', '/images/vehicles/renault-trafic/2.jpg'],
 		description: [
 			'Tražite kombi koji je okretan, ekonomičan i prostran? Renault Trafic je idealan izbor. S nosivošću od 1000 kg, savršeno je rješenje za prijevoz tereta u gradskoj vožnji.',
 			'Ovaj model, s potrošnjom goriva od oko 7 litara, osigurava značajnu uštedu. Opremljen je modernim multimedijskim sustavom koji omogućuje povezivanje i ugodnije putovanje. Zbog svoje spretnosti i okretnosti, idealan je za sve vrste dostave i jednostavan je za upravljanje.',
