@@ -139,6 +139,28 @@ export default {
 		}
 	],
 
+	// Rental page
+	rental: {
+		title: 'Vehicle Rental',
+		breadcrumb: 'Vehicle Rental',
+		seats: 'Passengers',
+		year: 'Year',
+		gearboxLabel: 'Transmission',
+		climate: 'Climate',
+		cruise: 'Cruise control',
+		capacity: 'Capacity',
+		payload: 'Payload',
+		yes: 'Yes',
+		no: 'No',
+		manual: 'Manual',
+		automatic: 'Automatic',
+		deliveryNote: 'We can deliver any vehicle to your requested address.',
+		driverNote: 'A driver can be hired for any of our vehicles.',
+		termsNotice: 'Please make sure to read the rental terms and conditions!',
+		viewTerms: 'RENTAL TERMS & CONDITIONS',
+		rentMe: 'Rent me...'
+	},
+
 	// Footer
 	footer: {
 		howToReachUs: 'HOW TO REACH US',

@@ -139,6 +139,28 @@ export default {
 		}
 	],
 
+	// Rental page
+	rental: {
+		title: 'Rentanje Vozila',
+		breadcrumb: 'Rentanje Vozila',
+		seats: 'Putnika',
+		year: 'Godište',
+		gearboxLabel: 'Mjenjač',
+		climate: 'Klima',
+		cruise: 'Tempomat',
+		capacity: 'Kapacitet',
+		payload: 'Nosivost',
+		yes: 'Da',
+		no: 'Ne',
+		manual: 'Ručni',
+		automatic: 'Automatski',
+		deliveryNote: 'Svako naše vozilo možemo dostaviti na traženu adresu.',
+		driverNote: 'Za svako naše vozilo možete iznajmiti vozača.',
+		termsNotice: 'Molimo da obavezno pročitate uvjete i pravila najma vozila!',
+		viewTerms: 'UVJETI I PRAVILA NAJMA',
+		rentMe: 'Iznajmi me...'
+	},
+
 	// Footer
 	footer: {
 		howToReachUs: 'KAKO DO NAS',
