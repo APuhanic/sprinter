@@ -21,6 +21,8 @@ export interface Vehicle {
 	pricing: PricingRow[];
 	maxDaysBeforeContact: number;
 	speedLimit?: number;
+	insuranceIncluded?: boolean;
+	hasPaymentTerms?: boolean;
 }
 
 export const vehicles: Vehicle[] = [
@@ -73,7 +75,8 @@ export const vehicles: Vehicle[] = [
 			{ days: 6, price: 720, includedKm: 1800, extraKmRate: 0.20 },
 			{ days: 7, price: 840, includedKm: 2100, extraKmRate: 0.20 }
 		],
-		maxDaysBeforeContact: 7
+		maxDaysBeforeContact: 7,
+		insuranceIncluded: true
 	},
 	{
 		name: 'Mercedes V Klassa',
@@ -182,6 +185,7 @@ export const vehicles: Vehicle[] = [
 			{ days: 5, price: 475, includedKm: 2500, extraKmRate: 0.12 }
 		],
 		maxDaysBeforeContact: 5,
-		speedLimit: 130
+		speedLimit: 130,
+		hasPaymentTerms: true
 	}
 ];

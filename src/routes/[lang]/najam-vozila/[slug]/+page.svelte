@@ -139,6 +139,55 @@
 			</div>
 		</div>
 
+		<!-- Insurance & Deposit -->
+		<div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+			<div class="border border-slate-200 rounded-lg p-6">
+				<h3 class="text-lg font-bold text-slate-900 mb-1">{t.rental.insuranceTitle}</h3>
+				<p class="text-sm text-slate-500 mb-4">{t.rental.insuranceSubtitle}</p>
+
+				{#if vehicle.insuranceIncluded}
+					<p class="text-brand-green font-medium">{t.rental.insuranceIncluded}</p>
+				{:else}
+					<p class="font-semibold text-slate-800 mb-3">{t.rental.insurancePremium}</p>
+					<p class="text-sm text-slate-600 mb-2">{t.rental.insuranceRequirement}</p>
+					<p class="text-sm text-slate-600 mb-2">{t.rental.insuranceCoverage}</p>
+					<p class="text-sm text-slate-700 font-medium">{t.rental.insuranceDeposit}</p>
+				{/if}
+			</div>
+
+			<div class="border border-slate-200 rounded-lg p-6">
+				<h3 class="text-lg font-bold text-slate-900 mb-4">{t.rental.pickupTitle}</h3>
+				<ul class="space-y-2 text-sm text-slate-600">
+					<li class="flex items-start gap-2">
+						<svg class="w-4 h-4 text-brand-green shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+						<span>{t.rental.pickupHours}</span>
+					</li>
+					<li class="flex items-start gap-2">
+						<svg class="w-4 h-4 text-brand-green shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+						<span>{t.rental.pickupLocations}</span>
+					</li>
+					<li class="flex items-start gap-2">
+						<svg class="w-4 h-4 text-brand-green shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+						<span>{t.rental.pickupFuel}</span>
+					</li>
+					<li class="flex items-start gap-2">
+						<svg class="w-4 h-4 text-brand-red shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01" /></svg>
+						<span class="font-medium">{t.rental.pickupTerms}</span>
+					</li>
+				</ul>
+
+				{#if vehicle.hasPaymentTerms}
+					<div class="mt-4 pt-4 border-t border-slate-100">
+						<p class="text-sm font-medium text-slate-800 mb-1">{t.rental.paymentTitle}</p>
+						<p class="text-sm text-slate-600">{t.rental.paymentMethod}</p>
+						<p class="text-sm text-slate-600">{t.rental.paymentAccepted}</p>
+					</div>
+				{/if}
+			</div>
+		</div>
+
+		<p class="mt-6 text-sm text-slate-500 italic text-center">{t.rental.farewell}</p>
+
 		<!-- Delivery / driver notes -->
 		<div class="mt-8 flex flex-col sm:flex-row items-start gap-4 text-sm text-slate-600">
 			<div class="flex items-center gap-2">
