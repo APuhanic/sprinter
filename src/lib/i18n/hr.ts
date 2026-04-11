@@ -180,6 +180,7 @@ export default {
 	// Contact page
 	contact: {
 		title: 'Kontakt',
+		formHeading: 'Pošaljite nam upit',
 		formName: 'Vaše ime',
 		formEmail: 'Vaša e-mail adresa',
 		formPhone: 'Vaš telefon',

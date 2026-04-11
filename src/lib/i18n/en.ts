@@ -180,6 +180,7 @@ export default {
 	// Contact page
 	contact: {
 		title: 'Contact',
+		formHeading: 'Send us an inquiry',
 		formName: 'Your name',
 		formEmail: 'Your email address',
 		formPhone: 'Your phone',
