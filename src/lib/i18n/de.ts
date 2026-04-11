@@ -193,7 +193,14 @@ export default {
 		driverNote: 'Für jedes unserer Fahrzeuge kann ein Fahrer gebucht werden.',
 		termsNotice: 'Bitte lesen Sie die Mietbedingungen sorgfältig durch!',
 		viewTerms: 'MIETBEDINGUNGEN',
-		rentMe: 'Jetzt mieten...'
+		rentMe: 'Jetzt mieten...',
+		backToList: 'Zurück zu Fahrzeugen',
+		specifications: 'Spezifikationen',
+		type: 'Typ',
+		contactUs: 'Kontaktieren Sie uns zur Miete',
+		whatsappInquiry: 'Anfrage per WhatsApp',
+		callUs: 'Rufen Sie uns an',
+		vehicleNotFound: 'Fahrzeug nicht gefunden'
 	},
 
 	// Footer

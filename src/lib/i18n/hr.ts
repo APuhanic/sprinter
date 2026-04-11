@@ -193,7 +193,14 @@ export default {
 		driverNote: 'Za svako naše vozilo možete iznajmiti vozača.',
 		termsNotice: 'Molimo da obavezno pročitate uvjete i pravila najma vozila!',
 		viewTerms: 'UVJETI I PRAVILA NAJMA',
-		rentMe: 'Iznajmi me...'
+		rentMe: 'Iznajmi me...',
+		backToList: 'Povratak na vozila',
+		specifications: 'Specifikacije',
+		type: 'Tip',
+		contactUs: 'Kontaktirajte nas za najam',
+		whatsappInquiry: 'Upit putem WhatsAppa',
+		callUs: 'Nazovite nas',
+		vehicleNotFound: 'Vozilo nije pronađeno'
 	},
 
 	// Footer

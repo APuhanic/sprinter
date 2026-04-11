@@ -193,7 +193,14 @@ export default {
 		driverNote: 'A driver can be hired for any of our vehicles.',
 		termsNotice: 'Please make sure to read the rental terms and conditions!',
 		viewTerms: 'RENTAL TERMS & CONDITIONS',
-		rentMe: 'Rent me...'
+		rentMe: 'Rent me...',
+		backToList: 'Back to vehicles',
+		specifications: 'Specifications',
+		type: 'Type',
+		contactUs: 'Contact us to rent',
+		whatsappInquiry: 'Inquire via WhatsApp',
+		callUs: 'Call us',
+		vehicleNotFound: 'Vehicle not found'
 	},
 
 	// Footer

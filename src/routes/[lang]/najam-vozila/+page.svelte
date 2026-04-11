@@ -105,10 +105,8 @@
 
 						<!-- CTA -->
 						<a
-							href="https://wa.me/385957226918"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="mt-5 block text-center bg-red-600 text-white py-2.5 rounded font-medium hover:bg-red-700 transition-colors"
+							href="/{lang}/{slugs[lang].rental}/{vehicle.slug}"
+							class="mt-5 block text-center bg-brand-red text-white py-2.5 rounded font-medium hover:brightness-110 transition"
 						>
 							{t.rental.rentMe}
 						</a>
