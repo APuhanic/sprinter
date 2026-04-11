@@ -32,10 +32,8 @@
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 			<!-- E-Class -->
 			<div class="bg-white rounded-lg overflow-hidden shadow-sm">
-				<div class="h-56 bg-slate-200 flex items-center justify-center text-slate-300">
-					<svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H18.375m-17.25 0h14.25m-14.25 0V6.375c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v4.5h6.75a1.125 1.125 0 011.125 1.125v2.25" />
-					</svg>
+				<div class="h-56 overflow-hidden">
+					<img src="/images/transfers/e-class.jpg" alt={t.transfers.eClassName} class="w-full h-full object-cover" />
 				</div>
 				<div class="p-6">
 					<h2 class="text-xl font-bold text-slate-900 mb-2">{t.transfers.eClassName}</h2>
@@ -45,10 +43,8 @@
 
 			<!-- V-Class -->
 			<div class="bg-white rounded-lg overflow-hidden shadow-sm">
-				<div class="h-56 bg-slate-200 flex items-center justify-center text-slate-300">
-					<svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H18.375m-17.25 0h14.25m-14.25 0V6.375c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v4.5h6.75a1.125 1.125 0 011.125 1.125v2.25" />
-					</svg>
+				<div class="h-56 overflow-hidden">
+					<img src="/images/transfers/v-class.jpg" alt={t.transfers.vClassName} class="w-full h-full object-cover" />
 				</div>
 				<div class="p-6">
 					<h2 class="text-xl font-bold text-slate-900 mb-2">{t.transfers.vClassName}</h2>

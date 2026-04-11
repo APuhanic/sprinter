@@ -5,18 +5,15 @@
 
 	let { data, children } = $props();
 
-	// $derived makes these reactive — they update when `data` changes (e.g. on navigation)
 	let lang = $derived(data.lang);
 	let t = $derived(data.t);
 
-	// Build the equivalent URL in the other language
 	function switchLangUrl(targetLang: Lang): string {
 		const currentPath = $page.url.pathname;
 		const rest = currentPath.replace(`/${lang}`, '');
 		return `/${targetLang}${rest}`;
 	}
 
-	// Check if a nav link is the current page
 	function isActive(href: string): boolean {
 		const current = $page.url.pathname;
 		if (href === `/${lang}`) return current === `/${lang}` || current === `/${lang}/`;
@@ -24,15 +21,23 @@
 	}
 
 	let mobileMenuOpen = $state(false);
+
+	let navItems = $derived([
+		{ href: `/${lang}`, label: t.nav.home },
+		{ href: `/${lang}/${slugs[lang].cleaning}`, label: t.nav.cleaning },
+		{ href: `/${lang}/${slugs[lang].rental}`, label: t.nav.rental },
+		{ href: `/${lang}/${slugs[lang].transfers}`, label: t.nav.transfers },
+		{ href: `/${lang}/${slugs[lang].contact}`, label: t.nav.contact }
+	]);
 </script>
 
-<!-- Top banner -->
-<div class="bg-slate-800 text-white text-sm">
+<!-- Top banner — dark bar matching WP -->
+<div class="bg-brand-dark text-white text-sm">
 	<div class="mx-auto max-w-7xl px-4 py-2 flex flex-wrap items-center justify-between gap-2">
-		<span class="text-amber-300 font-medium">{t.banner.notice}</span>
-		<div class="flex flex-wrap items-center gap-4 text-slate-300">
+		<span class="text-green-400 font-medium">{t.banner.notice}</span>
+		<div class="hidden sm:flex flex-wrap items-center gap-4 text-slate-300">
 			<span>{t.banner.address}</span>
-			<a href="tel:+385957226918" class="hover:text-white">{t.banner.phone}</a>
+			<a href="tel:+385957226918" class="hover:text-white transition-colors">{t.banner.phone}</a>
 			<span>{t.banner.hours}</span>
 		</div>
 	</div>
@@ -40,64 +45,34 @@
 
 <!-- Navigation -->
 <header class="sticky top-0 z-50 bg-white shadow-sm">
-	<nav class="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
+	<nav class="mx-auto max-w-7xl px-4 py-2 flex items-center justify-between">
 		<!-- Logo -->
-		<a href="/{lang}" class="flex items-center gap-2">
-			<span class="text-2xl font-bold text-red-600">Sprinter</span>
+		<a href="/{lang}" class="shrink-0">
+			<img src="/images/logo/logo-red.png" alt="Sprinter" class="h-12" />
 		</a>
 
 		<!-- Desktop nav -->
-		<div class="hidden md:flex items-center gap-6">
-			<a
-				href="/{lang}"
-				class="text-sm font-medium transition-colors {isActive(`/${lang}`)
-					? 'text-red-600'
-					: 'text-slate-700 hover:text-red-600'}"
-			>
-				{t.nav.home}
-			</a>
-			<a
-				href="/{lang}/{slugs[lang].cleaning}"
-				class="text-sm font-medium transition-colors {isActive(`/${lang}/${slugs[lang].cleaning}`)
-					? 'text-red-600'
-					: 'text-slate-700 hover:text-red-600'}"
-			>
-				{t.nav.cleaning}
-			</a>
-			<a
-				href="/{lang}/{slugs[lang].rental}"
-				class="text-sm font-medium transition-colors {isActive(`/${lang}/${slugs[lang].rental}`)
-					? 'text-red-600'
-					: 'text-slate-700 hover:text-red-600'}"
-			>
-				{t.nav.rental}
-			</a>
-			<a
-				href="/{lang}/{slugs[lang].transfers}"
-				class="text-sm font-medium transition-colors {isActive(`/${lang}/${slugs[lang].transfers}`)
-					? 'text-red-600'
-					: 'text-slate-700 hover:text-red-600'}"
-			>
-				{t.nav.transfers}
-			</a>
-			<a
-				href="/{lang}/{slugs[lang].contact}"
-				class="text-sm font-medium transition-colors {isActive(`/${lang}/${slugs[lang].contact}`)
-					? 'text-red-600'
-					: 'text-slate-700 hover:text-red-600'}"
-			>
-				{t.nav.contact}
-			</a>
+		<div class="hidden lg:flex items-center gap-5">
+			{#each navItems as item}
+				<a
+					href={item.href}
+					class="text-sm font-medium uppercase tracking-wide transition-colors {isActive(item.href)
+						? 'text-brand-red'
+						: 'text-slate-700 hover:text-brand-red'}"
+				>
+					{item.label}
+				</a>
+			{/each}
 
 			<!-- Language switcher -->
-			<div class="flex items-center gap-1 ml-4 border-l pl-4 border-slate-200">
+			<div class="flex items-center gap-0.5 ml-3 border-l pl-3 border-slate-200">
 				{#each Object.keys(languages) as l}
 					{@const targetLang = l as Lang}
 					<a
 						href={switchLangUrl(targetLang)}
 						class="px-2 py-1 text-xs font-bold rounded transition-colors {targetLang === lang
-							? 'bg-red-600 text-white'
-							: 'text-slate-500 hover:text-red-600'}"
+							? 'bg-brand-red text-white'
+							: 'text-slate-400 hover:text-brand-red'}"
 					>
 						{targetLang.toUpperCase()}
 					</a>
@@ -107,7 +82,7 @@
 
 		<!-- Mobile hamburger -->
 		<button
-			class="md:hidden p-2 text-slate-700"
+			class="lg:hidden p-2 text-slate-700"
 			onclick={() => (mobileMenuOpen = !mobileMenuOpen)}
 			aria-label="Menu"
 		>
@@ -123,21 +98,21 @@
 
 	<!-- Mobile menu -->
 	{#if mobileMenuOpen}
-		<div class="md:hidden border-t border-slate-100 bg-white px-4 py-3 space-y-2">
-			<a href="/{lang}" class="block py-2 text-sm font-medium text-slate-700 hover:text-red-600" onclick={() => (mobileMenuOpen = false)}>{t.nav.home}</a>
-			<a href="/{lang}/{slugs[lang].cleaning}" class="block py-2 text-sm font-medium text-slate-700 hover:text-red-600" onclick={() => (mobileMenuOpen = false)}>{t.nav.cleaning}</a>
-			<a href="/{lang}/{slugs[lang].rental}" class="block py-2 text-sm font-medium text-slate-700 hover:text-red-600" onclick={() => (mobileMenuOpen = false)}>{t.nav.rental}</a>
-			<a href="/{lang}/{slugs[lang].transfers}" class="block py-2 text-sm font-medium text-slate-700 hover:text-red-600" onclick={() => (mobileMenuOpen = false)}>{t.nav.transfers}</a>
-			<a href="/{lang}/{slugs[lang].contact}" class="block py-2 text-sm font-medium text-slate-700 hover:text-red-600" onclick={() => (mobileMenuOpen = false)}>{t.nav.contact}</a>
+		<div class="lg:hidden border-t border-slate-100 bg-white px-4 py-3 space-y-1">
+			<a href="/{lang}" class="block py-2.5 text-sm font-medium uppercase text-slate-700 hover:text-brand-red" onclick={() => (mobileMenuOpen = false)}>{t.nav.home}</a>
+			<a href="/{lang}/{slugs[lang].cleaning}" class="block py-2.5 text-sm font-medium uppercase text-slate-700 hover:text-brand-red" onclick={() => (mobileMenuOpen = false)}>{t.nav.cleaning}</a>
+			<a href="/{lang}/{slugs[lang].rental}" class="block py-2.5 text-sm font-medium uppercase text-slate-700 hover:text-brand-red" onclick={() => (mobileMenuOpen = false)}>{t.nav.rental}</a>
+			<a href="/{lang}/{slugs[lang].transfers}" class="block py-2.5 text-sm font-medium uppercase text-slate-700 hover:text-brand-red" onclick={() => (mobileMenuOpen = false)}>{t.nav.transfers}</a>
+			<a href="/{lang}/{slugs[lang].contact}" class="block py-2.5 text-sm font-medium uppercase text-slate-700 hover:text-brand-red" onclick={() => (mobileMenuOpen = false)}>{t.nav.contact}</a>
 
 			<div class="flex items-center gap-1 pt-2 border-t border-slate-100">
 				{#each Object.keys(languages) as l}
 					{@const targetLang = l as Lang}
 					<a
 						href={switchLangUrl(targetLang)}
-						class="px-3 py-1 text-xs font-bold rounded {targetLang === lang
-							? 'bg-red-600 text-white'
-							: 'text-slate-500 hover:text-red-600'}"
+						class="px-3 py-1.5 text-xs font-bold rounded {targetLang === lang
+							? 'bg-brand-red text-white'
+							: 'text-slate-400 hover:text-brand-red'}"
 						onclick={() => (mobileMenuOpen = false)}
 					>
 						{targetLang.toUpperCase()}
@@ -158,7 +133,7 @@
 	href="https://wa.me/385957226918"
 	target="_blank"
 	rel="noopener noreferrer"
-	class="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-lg transition-transform hover:scale-110"
+	class="fixed bottom-6 right-6 z-50 bg-brand-green hover:brightness-110 text-white rounded-full p-4 shadow-lg transition-transform hover:scale-110"
 	aria-label="WhatsApp"
 >
 	<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -167,62 +142,75 @@
 </a>
 
 <!-- Footer -->
-<footer class="bg-slate-800 text-slate-300">
+<footer class="bg-brand-footer text-slate-300">
 	<div class="mx-auto max-w-7xl px-4 py-12">
-		<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-			<!-- Contact info -->
+		<!-- Footer logo -->
+		<div class="mb-8">
+			<img src="/images/logo/logo-white.png" alt="Sprinter" class="h-10" />
+		</div>
+
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+			<!-- Legal links -->
 			<div>
-				<h3 class="text-white font-bold text-lg mb-4">{t.footer.howToReachUs}</h3>
-				<p class="text-sm mb-4">{t.footer.advisory}</p>
 				<div class="space-y-2 text-sm">
-					<p>{t.common.address}</p>
-					<p><a href="tel:+385957226918" class="hover:text-white">{t.common.phone}</a></p>
-					<p><a href="mailto:sprinter@sprinter.hr" class="hover:text-white">{t.common.email}</a></p>
-					<p>{t.banner.hours}</p>
+					<a href="/{lang}/cookies" class="block hover:text-white transition-colors">{t.footer.cookies}</a>
+					<a href="/{lang}/pravila-privatnosti" class="block hover:text-white transition-colors">{t.footer.privacy}</a>
+					<a href="/{lang}/uvjeti-najma" class="block hover:text-white transition-colors">{t.footer.rentalTerms}</a>
 				</div>
 			</div>
 
-			<!-- Newsletter -->
+			<!-- How to reach us -->
 			<div>
-				<h3 class="text-white font-bold text-lg mb-4">{t.footer.newsletter}</h3>
-				<form class="flex gap-2">
-					<input
-						type="email"
-						placeholder={t.footer.emailPlaceholder}
-						class="flex-1 px-3 py-2 rounded bg-slate-700 text-white placeholder-slate-400 text-sm border border-slate-600 focus:outline-none focus:border-red-500"
-					/>
-					<button
-						type="submit"
-						class="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded hover:bg-red-700 transition-colors"
-					>
-						{t.footer.subscribe}
-					</button>
-				</form>
-
+				<h3 class="text-white font-bold text-sm uppercase tracking-wide mb-4">{t.footer.howToReachUs}</h3>
+				<p class="text-sm mb-4">{t.footer.advisory}</p>
+				<div class="space-y-1.5 text-sm mt-4">
+					<p class="font-medium text-white">ADRESA:</p>
+					<p>{t.common.address}</p>
+					<p><a href="tel:+385957226918" class="hover:text-white transition-colors">{t.common.phone}</a></p>
+					<p><a href="mailto:sprinter@sprinter.hr" class="hover:text-white transition-colors">{t.common.email}</a></p>
+				</div>
 				<!-- Social links -->
-				<div class="flex gap-4 mt-6">
-					<a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="hover:text-white" aria-label="Facebook">
+				<div class="flex gap-4 mt-4">
+					<a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors" aria-label="Facebook">
 						<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" /></svg>
 					</a>
-					<a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="hover:text-white" aria-label="Instagram">
+					<a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors" aria-label="Instagram">
 						<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" /></svg>
 					</a>
 				</div>
 			</div>
 
-			<!-- Legal -->
+			<!-- Working hours -->
 			<div>
-				<h3 class="text-white font-bold text-lg mb-4">Sprinter d.o.o.</h3>
-				<div class="space-y-2 text-sm">
-					<a href="/{lang}/cookies" class="block hover:text-white">{t.footer.cookies}</a>
-					<a href="/{lang}/pravila-privatnosti" class="block hover:text-white">{t.footer.privacy}</a>
-					<a href="/{lang}/uvjeti-najma" class="block hover:text-white">{t.footer.rentalTerms}</a>
-				</div>
-				<p class="text-xs mt-4 text-slate-400">{t.footer.complaint}</p>
+				<h3 class="text-white font-bold text-sm uppercase tracking-wide mb-4">{t.contact.workingHours}</h3>
+				<p class="text-sm">{t.banner.hours}</p>
+				<h3 class="text-white font-bold text-sm uppercase tracking-wide mt-6 mb-4">{t.footer.newsletter}</h3>
+				<p class="text-sm mb-3">{t.footer.newsletter}</p>
+				<form class="flex gap-2">
+					<input
+						type="email"
+						placeholder={t.footer.emailPlaceholder}
+						class="flex-1 px-3 py-2 rounded bg-slate-700/50 text-white placeholder-slate-400 text-sm border border-slate-600 focus:outline-none focus:border-brand-green"
+					/>
+					<button
+						type="submit"
+						class="px-4 py-2 bg-brand-green text-white text-sm font-medium rounded hover:brightness-110 transition"
+					>
+						{t.footer.subscribe}
+					</button>
+				</form>
+			</div>
+
+			<!-- Complaint info -->
+			<div>
+				<h3 class="text-white font-bold text-sm uppercase tracking-wide mb-4">
+					{lang === 'hr' ? 'Obavijest o načinu podnošenja pisanog prigovora' : 'Complaint Submission Notice'}
+				</h3>
+				<p class="text-xs text-slate-400">{t.footer.complaint}</p>
 			</div>
 		</div>
 
-		<div class="border-t border-slate-700 mt-8 pt-6 text-center text-sm">
+		<div class="border-t border-slate-600/50 mt-10 pt-6 text-center text-sm text-slate-400">
 			<p>{new Date().getFullYear()} {t.footer.copyright}</p>
 		</div>
 	</div>

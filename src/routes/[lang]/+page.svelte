@@ -20,15 +20,15 @@
 		class="relative group h-80 md:h-[500px] overflow-hidden"
 	>
 		<img
-			src="/images/cleaning/ciscenje.jpg"
+			src="/images/hero/cleaning-hero.jpg"
 			alt={t.home.heroCleaningTitle}
-			class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+			class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
 		/>
-		<div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors"></div>
+		<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent group-hover:from-black/70 transition-all duration-300"></div>
 		<div class="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-6">
-			<h2 class="text-3xl md:text-4xl font-bold mb-2">{t.home.heroCleaningTitle}</h2>
+			<h2 class="text-3xl md:text-4xl font-extrabold mb-2 drop-shadow-lg">{t.home.heroCleaningTitle}</h2>
 			<p class="text-lg opacity-90 mb-6">{t.home.heroCleaningSubtitle}</p>
-			<span class="inline-block border-2 border-white px-6 py-2 text-sm font-medium rounded hover:bg-white hover:text-slate-900 transition-colors">
+			<span class="inline-block border-2 border-white px-6 py-2 text-sm font-semibold rounded hover:bg-white hover:text-slate-900 transition-colors">
 				{t.home.learnMore}
 			</span>
 		</div>
@@ -40,15 +40,15 @@
 		class="relative group h-80 md:h-[500px] overflow-hidden"
 	>
 		<img
-			src="/images/cleaning/1.jpg"
+			src="/images/hero/rental-hero.jpg"
 			alt={t.home.heroRentalTitle}
-			class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+			class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
 		/>
-		<div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors"></div>
+		<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent group-hover:from-black/70 transition-all duration-300"></div>
 		<div class="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-6">
-			<h2 class="text-3xl md:text-4xl font-bold mb-2 whitespace-pre-line">{t.home.heroRentalTitle}</h2>
+			<h2 class="text-3xl md:text-4xl font-extrabold mb-2 drop-shadow-lg whitespace-pre-line">{t.home.heroRentalTitle}</h2>
 			<p class="text-lg opacity-90 mb-6">{t.home.heroRentalSubtitle}</p>
-			<span class="inline-block border-2 border-white px-6 py-2 text-sm font-medium rounded hover:bg-white hover:text-slate-900 transition-colors">
+			<span class="inline-block border-2 border-white px-6 py-2 text-sm font-semibold rounded hover:bg-white hover:text-slate-900 transition-colors">
 				{t.home.requestQuote}
 			</span>
 		</div>
@@ -62,13 +62,13 @@
 		<img
 			src="/images/cleaning/naslovna-hq.jpg"
 			alt={t.home.heroTransfersTitle}
-			class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+			class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
 		/>
-		<div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors"></div>
+		<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent group-hover:from-black/70 transition-all duration-300"></div>
 		<div class="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-6">
-			<h2 class="text-3xl md:text-4xl font-bold mb-2">{t.home.heroTransfersTitle}</h2>
+			<h2 class="text-3xl md:text-4xl font-extrabold mb-2 drop-shadow-lg">{t.home.heroTransfersTitle}</h2>
 			<p class="text-lg opacity-90 mb-6">{t.home.heroTransfersSubtitle}</p>
-			<span class="inline-block border-2 border-white px-6 py-2 text-sm font-medium rounded hover:bg-white hover:text-slate-900 transition-colors">
+			<span class="inline-block border-2 border-white px-6 py-2 text-sm font-semibold rounded hover:bg-white hover:text-slate-900 transition-colors">
 				{t.home.learnMore}
 			</span>
 		</div>
@@ -78,36 +78,77 @@
 <!-- Vehicle showcase -->
 <section class="bg-slate-50 py-16">
 	<div class="mx-auto max-w-7xl px-4">
-		<div class="text-center mb-4">
-			<p class="text-sm text-slate-600">{t.home.deliveryAvailable}</p>
-			<p class="text-sm text-slate-600">{t.home.driverAvailable}</p>
+		<div class="flex items-center justify-center gap-6 text-sm text-slate-600 mb-8">
+			<div class="flex items-center gap-2">
+				<svg class="w-4 h-4 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+				</svg>
+				<span>{t.home.deliveryAvailable}</span>
+			</div>
+			<div class="flex items-center gap-2">
+				<svg class="w-4 h-4 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+				</svg>
+				<span>{t.home.driverAvailable}</span>
+			</div>
 		</div>
 
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 			{#each vehicles as vehicle}
-				<div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-					<div class="h-48 bg-slate-200 flex items-center justify-center text-slate-400">
-						<!-- Placeholder for vehicle images — we'll add real ones later -->
-						<svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H18.375m-17.25 0h14.25m-14.25 0V6.375c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v4.5h6.75a1.125 1.125 0 011.125 1.125v2.25" />
-						</svg>
+				<div class="bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition-shadow">
+					<div class="h-52 bg-slate-100 overflow-hidden">
+						{#if vehicle.imageUrl}
+							<img src={vehicle.imageUrl} alt={vehicle.name} class="w-full h-full object-cover" />
+						{:else}
+							<div class="w-full h-full flex items-center justify-center text-slate-300">
+								<svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H18.375m-17.25 0h14.25m-14.25 0V6.375c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v4.5h6.75a1.125 1.125 0 011.125 1.125v2.25" />
+								</svg>
+							</div>
+						{/if}
 					</div>
-					<div class="p-4">
-						<h3 class="font-bold text-slate-900">{vehicle.name}</h3>
+					<div class="p-5">
+						<h3 class="font-bold text-brand-red text-lg">{vehicle.name}</h3>
 						<p class="text-sm text-slate-500 mb-3">{vehicle.year} · {vehicle.type}</p>
-						<div class="grid grid-cols-2 gap-2 text-xs text-slate-600">
-							<span>👥 {vehicle.seats}</span>
-							<span>⚙️ {vehicle.gearbox}</span>
-							{#if vehicle.hasAC}<span>❄️ Klima</span>{/if}
-							{#if vehicle.hasCruise}<span>🚗 Tempomat</span>{/if}
-							{#if vehicle.capacity}<span>📦 {vehicle.capacity}</span>{/if}
-							{#if vehicle.payload}<span>⚖️ {vehicle.payload}</span>{/if}
+						<div class="grid grid-cols-2 gap-2 text-sm text-slate-600">
+							<div class="flex items-center gap-1.5">
+								<svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+								<span>{vehicle.seats}</span>
+							</div>
+							<div class="flex items-center gap-1.5">
+								<svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+								<span>{vehicle.gearbox}</span>
+							</div>
+							{#if vehicle.hasAC}
+								<div class="flex items-center gap-1.5">
+									<svg class="w-4 h-4 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+									<span>Klima</span>
+								</div>
+							{/if}
+							{#if vehicle.hasCruise}
+								<div class="flex items-center gap-1.5">
+									<svg class="w-4 h-4 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+									<span>Tempomat</span>
+								</div>
+							{/if}
+							{#if vehicle.capacity}
+								<div class="flex items-center gap-1.5">
+									<svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+									<span>{vehicle.capacity}</span>
+								</div>
+							{/if}
+							{#if vehicle.payload}
+								<div class="flex items-center gap-1.5">
+									<svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" /></svg>
+									<span>{vehicle.payload}</span>
+								</div>
+							{/if}
 						</div>
 						<a
 							href="https://wa.me/385957226918"
 							target="_blank"
 							rel="noopener noreferrer"
-							class="mt-4 block text-center bg-red-600 text-white py-2 rounded text-sm font-medium hover:bg-red-700 transition-colors"
+							class="mt-5 block text-center bg-brand-red text-white py-2.5 rounded font-medium hover:brightness-110 transition"
 						>
 							{t.home.rentMe}
 						</a>
@@ -116,7 +157,7 @@
 			{/each}
 		</div>
 
-		<p class="text-center text-sm text-red-600 font-medium mt-8">
+		<p class="text-center text-sm text-brand-red font-medium mt-8">
 			{t.home.rentalTermsNotice}
 		</p>
 	</div>

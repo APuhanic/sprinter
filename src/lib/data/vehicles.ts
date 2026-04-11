@@ -21,7 +21,8 @@ export const vehicles: Vehicle[] = [
 		hasAC: true,
 		hasCruise: true,
 		year: 2021,
-		gearbox: 'Ručni'
+		gearbox: 'Ručni',
+		imageUrl: '/images/vehicles/ford-focus.jpg'
 	},
 	{
 		name: 'Mercedes Benz E 300 Avantgarde',
@@ -31,7 +32,8 @@ export const vehicles: Vehicle[] = [
 		hasAC: true,
 		hasCruise: true,
 		year: 2021,
-		gearbox: 'Automatski'
+		gearbox: 'Automatski',
+		imageUrl: '/images/vehicles/mercedes-e300.jpg'
 	},
 	{
 		name: 'Mercedes V Klassa',
@@ -41,7 +43,8 @@ export const vehicles: Vehicle[] = [
 		hasAC: true,
 		hasCruise: true,
 		year: 2021,
-		gearbox: 'Automatski'
+		gearbox: 'Automatski',
+		imageUrl: '/images/vehicles/mercedes-v-class.jpg'
 	},
 	{
 		name: 'Renault Master L3H2',
@@ -53,7 +56,8 @@ export const vehicles: Vehicle[] = [
 		year: 2020,
 		gearbox: 'Ručni',
 		capacity: '13 m²',
-		payload: '1300 kg'
+		payload: '1300 kg',
+		imageUrl: '/images/vehicles/renault-master.jpg'
 	},
 	{
 		name: 'Mercedes Benz Sprinter L4H2',
@@ -65,7 +69,8 @@ export const vehicles: Vehicle[] = [
 		year: 2020,
 		gearbox: 'Ručni',
 		capacity: '15 m²',
-		payload: '1200 kg'
+		payload: '1200 kg',
+		imageUrl: '/images/vehicles/mercedes-sprinter.jpg'
 	},
 	{
 		name: 'Renault Trafic L2H1',
@@ -77,6 +82,7 @@ export const vehicles: Vehicle[] = [
 		year: 2020,
 		gearbox: 'Ručni',
 		capacity: '6 m²',
-		payload: '1000 kg'
+		payload: '1000 kg',
+		imageUrl: '/images/vehicles/renault-trafic.jpg'
 	}
 ];
