@@ -1,8 +1,9 @@
 import hr from './hr';
 import en from './en';
+import de from './de';
 
 // All supported languages
-export const languages = { hr, en } as const;
+export const languages = { hr, en, de } as const;
 export type Lang = keyof typeof languages;
 export type Translations = typeof hr;
 
@@ -20,7 +21,7 @@ export function t(lang: Lang): Translations {
 }
 
 // URL slug mappings per language (for translated URLs)
-// Both languages use the same slugs for now — we can translate them later if needed
+// All languages use the same Croatian slugs for now — keeps URLs consistent
 export const slugs = {
 	hr: {
 		cleaning: 'usluge-ciscenja',
@@ -29,6 +30,12 @@ export const slugs = {
 		contact: 'kontakt'
 	},
 	en: {
+		cleaning: 'usluge-ciscenja',
+		rental: 'najam-vozila',
+		transfers: 'luksuzni-transferi',
+		contact: 'kontakt'
+	},
+	de: {
 		cleaning: 'usluge-ciscenja',
 		rental: 'najam-vozila',
 		transfers: 'luksuzni-transferi',
