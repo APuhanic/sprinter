@@ -5,7 +5,23 @@
       "Bash(python -c ':*)",
       "WebFetch(domain:sprinter.hr)",
       "Bash(npx -y sv add tailwindcss --no-install)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(mkdir -p \"D:/Projects/sprinter/src/routes/[lang]/usluge-ciscenja\")",
+      "Bash(mkdir -p \"D:/Projects/sprinter/src/routes/[lang]/najam-vozila\")",
+      "Bash(mkdir -p \"D:/Projects/sprinter/src/routes/[lang]/luksuzni-transferi\")",
+      "Bash(mkdir -p \"D:/Projects/sprinter/src/routes/[lang]/kontakt\")",
+      "Bash(npm run:*)",
+      "mcp__chrome-devtools__navigate_page",
+      "mcp__chrome-devtools__take_screenshot",
+      "mcp__chrome-devtools__resize_page",
+      "mcp__chrome-devtools__click",
+      "mcp__chrome-devtools__take_snapshot",
+      "mcp__chrome-devtools__evaluate_script",
+      "Bash(curl -sL \"https://sprinter.hr/wp-content/uploads/2025/09/ford-fokus-karavan-1.jpg\" -o vehicles/ford-focus.jpg)",
+      "Bash(curl -sL \"https://sprinter.hr/wp-content/uploads/2025/09/mercedes-e-klasa-563.jpg\" -o vehicles/mercedes-e300.jpg)",
+      "Bash(curl -sL \"https://sprinter.hr/wp-content/uploads/2025/03/mercedes-v-klasa-11.jpg\" -o vehicles/mercedes-v-class.jpg)",
+      "Bash(curl -sL \"https://sprinter.hr/wp-content/uploads/2025/03/renault-master.jpg\" -o vehicles/renault-master.jpg)",
+      "Bash(curl -sL \"https://sprinter.hr/wp-content/uploads/2025/03/mercedes-sprinter-11.jpg\" -o vehicles/mercedes-sprinter.jpg)"
     ]
   }
 }

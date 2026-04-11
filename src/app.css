@@ -1,1 +1,19 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+@theme {
+	/* Brand colors matching WordPress site */
+	--color-brand-dark: #1d1919;
+	--color-brand-footer: #1c2931;
+	--color-brand-green: #19aa44;
+	--color-brand-red: #c0392b;
+
+	/* Fonts */
+	--font-sans: 'Exo 2', sans-serif;
+	--font-heading: 'Nunito', sans-serif;
+}
+
+/* Headings use Nunito */
+h1, h2, h3, h4, h5, h6 {
+	font-family: var(--font-heading);
+}
