@@ -139,6 +139,41 @@ export default {
 		}
 	],
 
+	// Transfers page
+	transfers: {
+		title: 'Luksuzni transferi s osobnim vozačem',
+		visionIntro:
+			'Naša vizija je aristokracija prijevoza koja ide daleko od samog vožnje. Nudimo iskustvo temeljeno na poštovanju, diskreciji i kvaliteti; stvarajući partnerstva s ljudima s kojima dijelimo zajedničke vrijednosti.',
+		visionService:
+			'Raditi uslugu te ne ograničavamo samo koji cijene vlak od očekujte vožnje. Radeemo sa sportašima, javnim i poslovnim ličnostima, te svima koji u prvoklasno i vrhunsko uslugu prijevoza profesionalnog stajlinga.',
+		visionVehicles:
+			'Ovo osiguravamo s našim pouzdanim vozilima, koja su sinonimi stila i sigurnosti!',
+		eClassName: 'Mercedes-Benz E-klasa',
+		eClassDesc:
+			'Simbol elegancije i udobnosti. Idealan za transfere do 3 putnika, gdje su diskrecija i stil najvažniji.',
+		vClassName: 'Mercedes-Benz V-klasa',
+		vClassDesc:
+			'Prostranstva bez kompromisa. Naša V-klasa nudi relaksirajući i siguran prijevoz za grupe ili obitelji.',
+		pricingTitle: 'Kako do cijene za Vaš transfer?',
+		pricingIntro:
+			'Svaki je transfer specifičan i uključuje varijabilne troškove poput noćenja vozača, parking usluga, trajekta ili cestarina te vrijeme prijevoza.',
+		pricingNote:
+			'Svaki Vaš upit i svaku cijenu prilagoditi individualno, brzo i jednostavno nećon što nam pošaljete detalje putovanja.',
+		pricingContact:
+			'Slobodno za planiranje putovanja šaljite nam na e-mail ili WhatsApp. Za trentnu upite, slobodno nas nazovite!',
+		vipNote: 'VIP usluga dostupna je 0 - 24.',
+		inquiryTitle: 'Saznajte više o luksuznim transferima!',
+		inquiryFirstName: 'Ime',
+		inquiryLastName: 'Prezime',
+		inquiryEmail: 'Email',
+		inquiryVehicle: 'Koja klasa vas zanima?',
+		inquiryPhone: 'Phone',
+		inquiryMessage: 'Poruka',
+		inquiryConsent:
+			'I consent to Sprinter s Rent a car - Rent a kombi - International/domestic private vehicle storing my submitted information so they can respond to my inquiry.',
+		inquirySubmit: 'Spremi'
+	},
+
 	// Rental page
 	rental: {
 		title: 'Rentanje Vozila',

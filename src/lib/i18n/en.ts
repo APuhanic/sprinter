@@ -139,6 +139,41 @@ export default {
 		}
 	],
 
+	// Transfers page
+	transfers: {
+		title: 'Luxury Transfers with Private Driver',
+		visionIntro:
+			'Our vision is an aristocracy of transport that goes far beyond mere driving. We offer an experience built on respect, discretion, and quality — creating partnerships with people who share our values.',
+		visionService:
+			'We work with athletes, public figures, and business people who value premium service and professional relationships, delivered through reliable vehicles representing style and safety.',
+		visionVehicles:
+			'We ensure this with our trusted vehicles — synonymous with style and safety!',
+		eClassName: 'Mercedes-Benz E-Class',
+		eClassDesc:
+			'A symbol of elegance and comfort. Ideal for transfers of up to 3 passengers, where discretion and style matter most.',
+		vClassName: 'Mercedes-Benz V-Class',
+		vClassDesc:
+			'Spaciousness without compromise. Our V-Class offers relaxing and safe transport for groups or families.',
+		pricingTitle: 'How to get a quote for your transfer?',
+		pricingIntro:
+			'Each transfer is unique and includes variable costs such as driver overnight stays, parking, ferry/toll charges, and travel time.',
+		pricingNote:
+			'We tailor every quote individually, quickly, and simply once you send us your journey details.',
+		pricingContact:
+			'Feel free to send us your travel plans via email or WhatsApp. For immediate inquiries, give us a call!',
+		vipNote: 'VIP service available 24/7.',
+		inquiryTitle: 'Learn more about luxury transfers!',
+		inquiryFirstName: 'First name',
+		inquiryLastName: 'Last name',
+		inquiryEmail: 'Email',
+		inquiryVehicle: 'Which class interests you?',
+		inquiryPhone: 'Phone',
+		inquiryMessage: 'Message',
+		inquiryConsent:
+			'I consent to Sprinter storing my submitted information so they can respond to my inquiry.',
+		inquirySubmit: 'Submit'
+	},
+
 	// Rental page
 	rental: {
 		title: 'Vehicle Rental',
