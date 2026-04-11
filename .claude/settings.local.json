@@ -5,7 +5,17 @@
       "Bash(python -c ':*)",
       "WebFetch(domain:sprinter.hr)",
       "Bash(npx -y sv add tailwindcss --no-install)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(mkdir -p \"D:/Projects/sprinter/src/routes/[lang]/usluge-ciscenja\")",
+      "Bash(mkdir -p \"D:/Projects/sprinter/src/routes/[lang]/najam-vozila\")",
+      "Bash(mkdir -p \"D:/Projects/sprinter/src/routes/[lang]/luksuzni-transferi\")",
+      "Bash(mkdir -p \"D:/Projects/sprinter/src/routes/[lang]/kontakt\")",
+      "Bash(npm run:*)",
+      "mcp__chrome-devtools__navigate_page",
+      "mcp__chrome-devtools__take_screenshot",
+      "mcp__chrome-devtools__resize_page",
+      "mcp__chrome-devtools__click",
+      "mcp__chrome-devtools__take_snapshot"
     ]
   }
 }
