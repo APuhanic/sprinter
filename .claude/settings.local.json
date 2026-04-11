@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c ':*)",
+      "Bash(python -c ':*)",
+      "WebFetch(domain:sprinter.hr)",
+      "Bash(npx -y sv add tailwindcss --no-install)",
+      "Bash(npm install:*)"
+    ]
+  }
+}
