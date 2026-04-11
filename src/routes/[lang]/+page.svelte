@@ -60,7 +60,7 @@
 		class="relative group h-80 md:h-[500px] overflow-hidden"
 	>
 		<img
-			src="/images/cleaning/naslovna-hq.jpg"
+			src="/images/transfers/driver-hero.jpg"
 			alt={t.home.heroTransfersTitle}
 			class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
 		/>
@@ -95,20 +95,17 @@
 
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 			{#each vehicles as vehicle}
-				<div class="bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition-shadow">
+				<a
+					href="/{lang}/{slugs[lang].rental}/{vehicle.slug}"
+					class="block bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition-shadow group"
+				>
 					<div class="h-52 bg-slate-100 overflow-hidden">
 						{#if vehicle.images[0]}
-							<img src={vehicle.images[0]} alt={vehicle.name} class="w-full h-full object-cover" />
-						{:else}
-							<div class="w-full h-full flex items-center justify-center text-slate-300">
-								<svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H18.375m-17.25 0h14.25m-14.25 0V6.375c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v4.5h6.75a1.125 1.125 0 011.125 1.125v2.25" />
-								</svg>
-							</div>
+							<img src={vehicle.images[0]} alt={vehicle.name} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
 						{/if}
 					</div>
 					<div class="p-5">
-						<h3 class="font-bold text-brand-red text-lg">{vehicle.name}</h3>
+						<h3 class="font-bold text-brand-red text-lg group-hover:underline">{vehicle.name}</h3>
 						<p class="text-sm text-slate-500 mb-3">{vehicle.year} · {vehicle.type}</p>
 						<div class="grid grid-cols-2 gap-2 text-sm text-slate-600">
 							<div class="flex items-center gap-1.5">
@@ -144,14 +141,11 @@
 								</div>
 							{/if}
 						</div>
-						<a
-							href="/{lang}/{slugs[lang].rental}/{vehicle.slug}"
-							class="mt-5 block text-center bg-brand-red text-white py-2.5 rounded font-medium hover:brightness-110 transition"
-						>
+						<div class="mt-5 block text-center bg-brand-red text-white py-2.5 rounded font-medium group-hover:brightness-110 transition">
 							{t.home.rentMe}
-						</a>
+						</div>
 					</div>
-				</div>
+				</a>
 			{/each}
 		</div>
 
