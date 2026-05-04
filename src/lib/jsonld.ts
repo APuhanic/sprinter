@@ -89,6 +89,19 @@ export function cleaningService() {
 	};
 }
 
+export function transportService() {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'Service',
+		serviceType: 'Goods Transport',
+		provider: { '@id': `${SITE_URL}/#business` },
+		areaServed: { '@type': 'Country', name: 'Croatia' },
+		name: 'Sprinter Transport',
+		description:
+			'Brz, točan i siguran prijevoz robe diljem Istre, Hrvatske i šire. Renault Trafic do Mercedes Sprinter, GPS praćenje, asistencija pri utovaru i istovaru.'
+	};
+}
+
 export function transferService() {
 	return {
 		'@context': 'https://schema.org',

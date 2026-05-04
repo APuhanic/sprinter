@@ -25,18 +25,21 @@ export function t(lang: Lang): Translations {
 export const slugs = {
 	hr: {
 		cleaning: 'usluge-ciscenja',
+		transport: 'usluge-prijevoza',
 		rental: 'najam-vozila',
 		transfers: 'luksuzni-transferi',
 		contact: 'kontakt'
 	},
 	en: {
 		cleaning: 'usluge-ciscenja',
+		transport: 'usluge-prijevoza',
 		rental: 'najam-vozila',
 		transfers: 'luksuzni-transferi',
 		contact: 'kontakt'
 	},
 	de: {
 		cleaning: 'usluge-ciscenja',
+		transport: 'usluge-prijevoza',
 		rental: 'najam-vozila',
 		transfers: 'luksuzni-transferi',
 		contact: 'kontakt'

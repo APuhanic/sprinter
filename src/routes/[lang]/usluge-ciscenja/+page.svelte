@@ -18,42 +18,39 @@
 <!-- Hero -->
 <section class="relative h-72 md:h-96 overflow-hidden">
 	<img
-		src="/images/cleaning/ciscenje.jpg"
+		src="/images/cleaning/ciscenje-terasa.jpg"
 		alt={t.cleaning.title}
 		class="absolute inset-0 w-full h-full object-cover"
 	/>
 	<div class="absolute inset-0 bg-black/50"></div>
-	<div class="relative z-10 flex items-center justify-center h-full">
+	<div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
 		<h1 class="text-4xl md:text-5xl font-bold text-white">{t.cleaning.title}</h1>
+		<p class="mt-3 text-lg md:text-xl text-white/90 max-w-2xl">{t.cleaning.heroSubtitle}</p>
 	</div>
 </section>
 
 <!-- Founder vision -->
 <section class="py-16 bg-white">
-	<div class="mx-auto max-w-4xl px-4">
-		<h2 class="text-3xl font-bold text-slate-900 mb-6">{t.cleaning.visionTitle}</h2>
-		<p class="text-lg text-slate-600 leading-relaxed mb-8">{t.cleaning.visionIntro}</p>
-
-		<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-			<div class="flex items-start gap-3 p-4 bg-slate-50 rounded-lg">
-				<span class="text-brand-red text-xl mt-0.5">&#10003;</span>
-				<p class="text-slate-700">{t.cleaning.visionHospitality}</p>
+	<div class="mx-auto max-w-6xl px-4">
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+			<div>
+				<h2 class="text-3xl font-bold text-slate-900 mb-6">{t.cleaning.visionTitle}</h2>
+				<div class="space-y-4 text-slate-700 leading-relaxed">
+					<p>{t.cleaning.visionPara1}</p>
+					<p>{t.cleaning.visionPara2}</p>
+					<p>{t.cleaning.visionPara3}</p>
+					<p>{t.cleaning.visionPara4}</p>
+				</div>
+				<p class="text-sm text-slate-500 mt-6 italic">{t.cleaning.byFounder}</p>
 			</div>
-			<div class="flex items-start gap-3 p-4 bg-slate-50 rounded-lg">
-				<span class="text-brand-red text-xl mt-0.5">&#10003;</span>
-				<p class="text-slate-700">{t.cleaning.visionExperience}</p>
-			</div>
-			<div class="flex items-start gap-3 p-4 bg-slate-50 rounded-lg">
-				<span class="text-brand-red text-xl mt-0.5">&#10003;</span>
-				<p class="text-slate-700">{t.cleaning.visionPersonal}</p>
-			</div>
-			<div class="flex items-start gap-3 p-4 bg-slate-50 rounded-lg">
-				<span class="text-brand-red text-xl mt-0.5">&#10003;</span>
-				<p class="text-slate-700">{t.cleaning.visionDiscipline}</p>
+			<div>
+				<img
+					src="/images/cleaning/sprinter-van.jpg"
+					alt={t.cleaning.title}
+					class="w-full rounded-xl shadow-md"
+				/>
 			</div>
 		</div>
-
-		<p class="text-sm text-slate-500 mt-6 italic">{t.cleaning.byFounder}</p>
 	</div>
 </section>
 
@@ -67,7 +64,7 @@
 			<!-- Residences -->
 			<div class="bg-white rounded-lg overflow-hidden shadow-sm">
 				<img
-					src="/images/cleaning/3.jpg"
+					src="/images/cleaning/ciscenje-kuhinja.jpg"
 					alt={t.cleaning.residencesTitle}
 					class="w-full h-56 object-cover"
 				/>
@@ -80,13 +77,14 @@
 			<!-- Accommodations -->
 			<div class="bg-white rounded-lg overflow-hidden shadow-sm">
 				<img
-					src="/images/cleaning/gemini.jpg"
+					src="/images/cleaning/ciscenje-kauc.jpg"
 					alt={t.cleaning.accommodationsTitle}
 					class="w-full h-56 object-cover"
 				/>
-				<div class="p-6">
-					<h3 class="text-lg font-bold text-slate-900 mb-2">{t.cleaning.accommodationsTitle}</h3>
+				<div class="p-6 space-y-3">
+					<h3 class="text-lg font-bold text-slate-900">{t.cleaning.accommodationsTitle}</h3>
 					<p class="text-slate-600 text-sm leading-relaxed">{t.cleaning.accommodationsDesc}</p>
+					<p class="text-slate-600 text-sm leading-relaxed">{t.cleaning.accommodationsStaging}</p>
 				</div>
 			</div>
 		</div>
@@ -125,6 +123,17 @@
 	</div>
 </section>
 
+<!-- Positioning -->
+<section class="py-16 bg-white">
+	<div class="mx-auto max-w-5xl px-4">
+		<div class="rounded-xl p-10 md:p-14 text-center text-white bg-gradient-to-br from-slate-900 to-slate-800 shadow-lg">
+			<h2 class="text-3xl font-bold mb-4">{t.cleaning.positioningTitle}</h2>
+			<p class="text-lg opacity-90 max-w-3xl mx-auto leading-relaxed">{t.cleaning.positioningBody}</p>
+			<p class="text-lg italic opacity-80 mt-6 max-w-3xl mx-auto">{t.cleaning.positioningQuote}</p>
+		</div>
+	</div>
+</section>
+
 <!-- Pricing cards -->
 <section class="py-16 bg-slate-50">
 	<div class="mx-auto max-w-6xl px-4">
@@ -153,11 +162,12 @@
 
 		<!-- Disclaimer -->
 		<div class="mt-10 p-6 bg-amber-50 border border-amber-200 rounded-lg">
-			<p class="text-sm text-amber-800">
+			<p class="text-sm text-amber-800 leading-relaxed">
 				<span class="font-bold">{t.cleaning.pricingDisclaimerLabel}</span>
 				{t.cleaning.pricingDisclaimer}
 			</p>
 		</div>
+		<p class="text-center text-sm text-slate-500 italic mt-6">{t.cleaning.pricingFooterNote}</p>
 	</div>
 </section>
 

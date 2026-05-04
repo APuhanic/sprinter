@@ -1,10 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { slugs } from '$lib/i18n';
-	import { vehicles } from '$lib/data/vehicles';
 	import { onMount } from 'svelte';
-	import VehicleCard from '$lib/components/VehicleCard.svelte';
-	import Testimonials from '$lib/components/Testimonials.svelte';
 
 	let { data }: { data: PageData } = $props();
 	let lang = $derived(data.lang);
@@ -26,6 +23,14 @@
 			title: t.home.heroRentalTitle,
 			subtitle: t.home.heroRentalSubtitle,
 			cta: t.home.requestQuote
+		},
+		{
+			href: `/${lang}/${slugs[lang].transport}`,
+			imageWebp: '/images/transport/prijevoz-1.jpg',
+			imageJpg: '/images/transport/prijevoz-1.jpg',
+			title: t.home.heroTransportTitle,
+			subtitle: t.home.heroTransportSubtitle,
+			cta: t.home.learnMore
 		},
 		{
 			href: `/${lang}/${slugs[lang].transfers}`,
@@ -166,34 +171,3 @@
 	</div>
 </section>
 
-<!-- Vehicle showcase -->
-<section class="bg-slate-50 py-16">
-	<div class="mx-auto max-w-7xl px-4">
-		<div class="flex items-center justify-center gap-6 text-sm text-slate-600 mb-8">
-			<div class="flex items-center gap-2">
-				<svg class="w-4 h-4 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-				</svg>
-				<span>{t.home.deliveryAvailable}</span>
-			</div>
-			<div class="flex items-center gap-2">
-				<svg class="w-4 h-4 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-				</svg>
-				<span>{t.home.driverAvailable}</span>
-			</div>
-		</div>
-
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-			{#each vehicles as vehicle}
-				<VehicleCard {vehicle} {t} {lang} />
-			{/each}
-		</div>
-
-		<p class="text-center text-sm text-brand-red font-medium mt-8">
-			{t.home.rentalTermsNotice}
-		</p>
-	</div>
-</section>
-
-<Testimonials {t} />

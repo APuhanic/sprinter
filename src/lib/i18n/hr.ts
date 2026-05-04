@@ -8,6 +8,7 @@ export default {
 	nav: {
 		home: 'Početna',
 		cleaning: 'Usluge čišćenja',
+		transport: 'Usluge prijevoza',
 		rental: 'Rent a Kombi/Car',
 		transfers: 'Luksuzni transferi',
 		contact: 'Kontakt'
@@ -29,6 +30,8 @@ export default {
 		heroRentalSubtitle: 'Moguća dostava vozila',
 		heroTransfersTitle: 'Osobni vozači i luksuzni transferi',
 		heroTransfersSubtitle: 'Usluga dostupna 0-24',
+		heroTransportTitle: 'Sprinter Transport',
+		heroTransportSubtitle: 'Pametna logistika na istarskim cestama',
 		learnMore: 'Saznaj više',
 		rentMe: 'Iznajmi me...',
 		requestQuote: 'Zatraži ponudu',
@@ -45,32 +48,46 @@ export default {
 	// Cleaning page
 	cleaning: {
 		title: 'Usluge čišćenja',
+		heroSubtitle: 'Kultura čistoće i estetika prostora s potpisom',
 		visionTitle: 'Moja vizija: Više od čistoće',
-		visionIntro:
-			'Kao direktorica tvrtke, svoj poziv ne vidim kao puki servis za čišćenje, već kao misiju vraćanja sjaja i sklada u Vaš životni prostor.',
-		visionHospitality: 'Profesionalna pozadina u ugostiteljstvu',
-		visionExperience: 'Iskustvo održavanja ekskluzivnih njemačkih vila i rezidencija',
-		visionPersonal: 'Osobna uključenost u svaki projekt',
-		visionDiscipline: 'Njemačka disciplina i apsolutna diskrecija',
+		visionPara1:
+			'Moje ime je Zvjezdana Puhanić. Kao direktorica tvrtke, svoj poziv ne vidim kao puki servis za čišćenje, već kao misiju vraćanja sjaja i sklada u Vaš životni prostor.',
+		visionPara2:
+			'Vjerujem da luksuzan prostor zaslužuje više od „običnog spremanja“ – on zaslužuje njemačku disciplinu, apsolutnu diskreciju i oko koje vidi ono što drugima promiče.',
+		visionPara3:
+			'Svoje profesionalno iskustvo brusila sam u hotelijerstvu, gdje sam usvojila beskompromisne standarde organizacije i pedantnosti. Posljednji niz godina posvetila sam isključivo održavanju ekskluzivnih vila i rezidencija u Njemačkoj, shvaćajući da klijenti moga profila ne traže običnu radnu snagu, već partnera od povjerenja sa svom potrebnom vještinom.',
+		visionPara4:
+			'Za mene je ovaj posao strast. Iako vodim tvrtku, svakom projektu pristupam osobno. Ja sam ta koja organizira proces, ja sam ta koja nadzire svaki detalj i ja sam ona koja drži opremu u rukama. Samo tako mogu garantirati rezultat koji stoji iza moga imena.',
 		exclusivityTitle: 'Ekskluzivnost bez kompromisa',
 		exclusivityDesc:
-			'Naša usluga cilja na zahtjevne klijente, isključujući stubišta, kafiće ili javne prostore.',
+			'Naša usluga nije namijenjena masovnom tržištu. Ne bavimo se čišćenjem stubišta, kafića ili frekventnih javnih prostora. Moj fokus i stručnost usmjereni su na:',
 		residencesTitle: 'Privatne rezidencije i arhitektonska zdanja širom Istre',
 		residencesDesc:
-			'Vaša vila nije samo nekretnina, ona je Vaše utočište. Usluge uključuju pripremu prije dolaska, diskretno održavanje tijekom boravka i sveobuhvatnu konzervaciju.',
+			'Vaša vila nije samo nekretnina, ona je Vaše utočište. Specijalizirana sam za cjelokupni ciklus brige o Vašem domu: od detaljne pripreme objekta prije Vašeg dolaska, preko diskretnog održavanja tijekom Vašeg boravka, pa sve do temeljite konzervacije prostora nakon odlaska. Moj cilj je da svaki put kada otvorite vrata, imate osjećaj da ulazite u potpuno nov, tek namješten dom.',
 		accommodationsTitle: 'Smještaj najviše kategorije',
 		accommodationsDesc:
-			'Luksuzni apartmani, boutique hoteli, jahte. Specijalizirana njega materijala: plemenito drvo, prirodni kamen, polirane površine, delikatne tkanine.',
+			'Luksuzni apartmani, boutique hoteli i jahte zahtijevaju više od čišćenja – zahtijevaju poznavanje materijala. Bilo da je riječ o njezi plemenitog drva (tikovine), prirodnog kamena, visoko poliranih površina ili osjetljivih tkanina, moji postupci su prilagođeni očuvanju njihove dugovječnosti.',
+		accommodationsStaging:
+			'Moj rad u ovom segmentu uključuje i finalni „staging“ – dekoriranje i pripremu prostora po principima vrhunskog hotelijerstva, gdje je svaki ručnik, miris i detalj postavljen s namjerom da oduševi gosta ili vlasnika čim zakorači u prostor.',
 		standardsTitle: 'Standardi koje donosim u Vaš dom',
 		standardTech: 'Vrhunska tehnologija',
-		standardTechDesc: 'Profesionalna Kärcher oprema',
+		standardTechDesc:
+			'Koristim isključivo profesionalnu Kärcher opremu i certificirana, neagresivna sredstva koja čuvaju Vaše zdravlje i dugovječnost Vašeg namještaja.',
 		standardDiscipline: 'Disciplina i zdravlje',
-		standardDisciplineDesc: 'Licencirani fitness instruktor',
+		standardDisciplineDesc:
+			'Kao licencirani fitnes instruktor, u posao unosim visoku energiju, disciplinu i svijest o važnosti zdravog, čistog okruženja.',
+		positioningTitle: 'Za one koji cijene izvrsnost',
+		positioningBody:
+			'Cijenim klijente koji respektiraju moju struku i razinu posvećenosti koju pružam. Ako tražite osobu koja će Vašoj nekretnini pristupiti s jednakim poštovanjem i brigom kao da je njezina vlastita, onda ste na pravoj adresi.',
+		positioningQuote:
+			'„Red, estetika i apsolutna diskrecija. Vodim brigu o Vašem prostoru preciznošću i osobnom odgovornošću.“',
 		pricesTitle: 'Naše cijene',
-		pricesVatNote: '(Sve navedene cijene uključuju PDV)',
+		pricesVatNote: '(Sve cijene su bez PDV-a)',
 		pricingDisclaimer:
-			'Ako na terenu ustanovimo da je stanje objekta zahtjevnije od dogovorenog, cijenu korigiramo prema stvarnom trudu.',
+			'Ako na terenu ustanovimo da je stanje objekta zahtjevnije od dogovorenog, cijenu korigiramo prema stvarnom trudu. Molim imati u vidu razliku da nije isto 4 sata lagano brisati prašinu ili 4 sata provesti u teškom uklanjanju kamenca i dubinskom čišćenju zapuštenih kutova. Rad na običnim površinama ide brzo. Rad na skupom mramoru, tikovini ili dizajnerskoj keramici zahtijeva poseban oprez, skupa sredstva i spora, precizna kretanja.',
 		pricingDisclaimerLabel: 'Pravilo struke i napomena:',
+		pricingFooterNote:
+			'Sve cijene su okvirne i ovise o stvarnom stanju nekretnine te su podložne promjeni.',
 		contactTitle: 'Kontaktirajte nas',
 		contactDesc:
 			'Slobodno nas kontaktirajte za ponudu putem WhatsAppa, nazovite ili nam pišite putem obrasca.',
@@ -84,7 +101,7 @@ export default {
 			name: 'Kontinuirana besprijekornost',
 			subtitle: 'Redovno održavanje',
 			duration: '2 – 4 – 6 – 8 sati',
-			price: '80 € – 320 €',
+			price: '60 € – 250 €',
 			description:
 				'Održavanje visokog standarda čistoće prema dogovorenom protokolu i terminima.'
 		},
@@ -92,7 +109,7 @@ export default {
 			name: 'Dubinska regeneracija interijera',
 			subtitle: 'Kauči, madraci…',
 			duration: '4 – 8 sati',
-			price: '150 € – 400 €',
+			price: '110 € – 300 €',
 			description:
 				'Potpuni tretman interijera i eksterijera uz primjenu vrhunske Kärcher tehnologije.'
 		},
@@ -100,7 +117,7 @@ export default {
 			name: 'Prije – poslije najma',
 			subtitle: 'Priprema objekta',
 			duration: '2 – 3 sata',
-			price: '100 € – 250 €',
+			price: '80 € – 180 €',
 			description:
 				'Priprema objekta prije dolaska ili nakon odlaska vlasnika i gostiju.'
 		},
@@ -108,7 +125,7 @@ export default {
 			name: 'Useljenje ili Iseljenje',
 			subtitle: 'Sveobuhvatna priprema',
 			duration: '6 – 10 sati',
-			price: '200 € – 500 €',
+			price: '150 € – 460 €',
 			description:
 				'Sveobuhvatna priprema nekretnine: dubinsko čišćenje, unutrašnjost ormarića i kućanski aparati.'
 		},
@@ -116,7 +133,7 @@ export default {
 			name: 'Kristalna prozirnost staklenih površina',
 			subtitle: 'Specijalizirana briga',
 			duration: '2 – 4 sata',
-			price: '60 € – 150 €',
+			price: '45 € – 110 €',
 			description:
 				'Specijalizirana briga o velikim staklenim stijenama i zahtjevnim staklenim površinama.'
 		},
@@ -124,7 +141,7 @@ export default {
 			name: 'Eksterijer, bazeni i okućnica',
 			subtitle: 'Terasa i zona oko bazena',
 			duration: '3 – 5 sati',
-			price: '100 € – 250 €',
+			price: '80 € – 180 €',
 			description:
 				'Priprema terasa i zona oko bazena za maksimalan vizualni užitak i higijenu.'
 		},
@@ -132,7 +149,7 @@ export default {
 			name: 'Profesionalna njega tekstila',
 			subtitle: 'Pranje i glačanje',
 			duration: '2 – 4 sata',
-			price: '50 € – 120 €',
+			price: '45 € – 100 €',
 			description:
 				'Pranje i precizno glačanje rublja uz maksimalnu pažnju prema osjetljivim tkaninama.'
 		},
@@ -140,11 +157,55 @@ export default {
 			name: 'Sjaj nakon završnih radova',
 			subtitle: 'Post-građevinsko čišćenje',
 			duration: '8 – 12 sati',
-			price: '300 € – 800 €',
+			price: '220 € – 600 €',
 			description:
 				'Detaljno i sustavno uklanjanje post-građevinske prašine i ostataka radova.'
 		}
 	],
+
+	// Transport page
+	transport: {
+		title: 'Usluge prijevoza',
+		heroTitle: 'Sprinter Transport',
+		heroSubtitle: 'Pametna logistika na istarskim cestama',
+		introPara1:
+			'Zaboravite na komplicirane i spore servise za selidbe. Ako trebate brz, točan i siguran prijevoz robe iz točke A u točku B – Sprinter je Vaš profesionalni partner.',
+		introPara2:
+			'Specijalizirani smo za transport robe za klijente koji su organizirani i cijene efikasnost. Bilo da se radi o novoj kuhinji iz Ikee ili Rijeke, materijalu iz Pevexa i Elgrada, ili transportu vrijednog namještaja u Vašu vilu, mi osiguravamo rješenje koje štedi Vaše vrijeme i novac.',
+		whyTitle: 'Zašto odabrati Sprinter uslugu prijevoza?',
+		whyFleetTitle: 'Puna flota za svaku potrebu',
+		whyFleetDesc:
+			'Od okretnog Renault Trafica do prostranog Mercedes Sprintera. Imamo pravi volumen za svaki Vaš teret.',
+		whyAreaTitle: 'Istra, Hrvatska i šire',
+		whyAreaDesc:
+			'Naša baza je Pula, ali Vašu robu dostavljamo točno tamo gdje je potrebna.',
+		whyAssistTitle: 'Asistencija vozača',
+		whyAssistDesc:
+			'Ne ostavljamo Vas same s teretom. Naša usluga uključuje aktivnu pomoć pri utovaru i istovaru robe kod samog vozila.',
+		whyTechTitle: 'Sigurnost i tehnologija',
+		whyTechDesc:
+			'Sva naša vozila opremljena su GPS sustavom, što nam omogućuje preciznu organizaciju i uvid u status Vašeg transporta u svakom trenutku.',
+		logisticsTitle: 'Logistika „Do praga“ – Kako radimo?',
+		logisticsPara1:
+			'Naš poslovni model fokusiran je na maksimalnu efikasnost transporta. Kako bismo osigurali najpovoljniju cijenu i brzinu usluge, specijalizirani smo za dostavu do Vašeg kućnog broja ili ulaza u objekt.',
+		logisticsPara2Label: 'Profesionalni standard:',
+		logisticsPara2:
+			'Naša primarna zadaća je siguran prijevoz i manipulacija teretom kod vozila. Uslugu nošenja stvari po katovima ne nudimo, što nam omogućuje da ostanemo brzi, točni i dostupni za Vaš sljedeći transport.',
+		logisticsPara3Label: 'Čisto. Točno. Pouzdano.',
+		logisticsPara3:
+			'Kao tvrtka koja se bavi i održavanjem luksuznih vila, znamo koliko je važna briga o detaljima. Naša vozila su uredna, a usluga diskretna i profesionalna.',
+		quoteTitle: 'Trebate brzu ponudu?',
+		quoteIntro:
+			'Slobodno nas nazovite ili nam pišite na WhatsApp. Kako bismo Vam odmah mogli dati točnu informaciju, molimo pripremite sljedeće podatke:',
+		quoteItem1: 'Točna adresa prikupljanja robe',
+		quoteItem2: 'Krajnja destinacija',
+		quoteItem3: 'Vrsta robe i okvirna kilaža',
+		quoteItem4: 'Željeni datum prijevoza',
+		contactTitle: 'Kontaktirajte nas',
+		contactDesc: 'Nazovite ili pišite – odgovaramo brzo.',
+		baseNote: 'Naša baza nalazi se u Puli',
+		closing: 'Vaš Sprinter Team – profesionalna transportna logistika'
+	},
 
 	// Transfers page
 	transfers: {
