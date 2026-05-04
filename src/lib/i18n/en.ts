@@ -1,3 +1,5 @@
+import { contact } from '../contact';
+
 export default {
 	lang: 'en',
 	langName: 'English',
@@ -14,8 +16,8 @@ export default {
 	// Header banner
 	banner: {
 		notice: 'Please announce your visit in advance',
-		address: 'Kralja Dmitra Zvonimira 1, 31326 Darda',
-		phone: '+385 95 722 6918',
+		address: contact.address,
+		phone: contact.phone,
 		hours: 'Mon - Sun: 08h - 19h'
 	},
 
@@ -32,7 +34,12 @@ export default {
 		requestQuote: 'Request a quote',
 		deliveryAvailable: 'We can deliver any vehicle to your requested address',
 		driverAvailable: 'A driver can be hired for any of our vehicles',
-		rentalTermsNotice: 'Please make sure to read the rental terms and conditions!'
+		rentalTermsNotice: 'Please make sure to read the rental terms and conditions!',
+		carouselPrev: 'Previous slide',
+		carouselNext: 'Next slide',
+		carouselPause: 'Pause slideshow',
+		carouselPlay: 'Play slideshow',
+		carouselGoTo: 'Go to slide'
 	},
 
 	// Cleaning page
@@ -194,6 +201,29 @@ export default {
 		termsNotice: 'Please make sure to read the rental terms and conditions!',
 		viewTerms: 'RENTAL TERMS & CONDITIONS',
 		rentMe: 'Rent me...',
+		waTemplate: 'Hello, I am interested in renting the {vehicle}. Could you send me more information?',
+		inquiryTitle: 'Check availability and price',
+		inquiryFrom: 'From date',
+		inquiryTo: 'To date',
+		inquiryDays: 'Days',
+		inquiryEstimate: 'Estimated price',
+		inquiryContactForLonger: 'For rentals longer than {days} days, please contact us directly.',
+		inquiryDateError: 'Return date must be after pickup date.',
+		inquiryName: 'Your name',
+		inquiryEmail: 'Email',
+		inquiryPhoneLabel: 'Phone',
+		inquiryNotes: 'Additional notes',
+		inquirySubmit: 'Send inquiry',
+		inquiryOnRequest: 'Price on request',
+		filterLabel: 'Category',
+		filterAll: 'All vehicles',
+		filterPassenger: 'Passenger',
+		filterCargo: 'Cargo van',
+		sortLabel: 'Sort',
+		sortDefault: 'Default',
+		sortYear: 'Newest',
+		sortPriceAsc: 'Price (low → high)',
+		noResults: 'No vehicles in this category.',
 		pricingTitle: 'Rental prices:',
 		pricingVatNote: '(* All prices include VAT)',
 		pricingDisclaimer: 'After exceeding the included kilometers, each additional km is charged as shown in the table above.',
@@ -243,8 +273,10 @@ export default {
 		cookies: 'Cookies Policy',
 		privacy: 'Privacy Policy',
 		rentalTerms: 'Rental Terms & Conditions',
+		addressLabel: 'ADDRESS:',
+		complaintTitle: 'Complaint Submission Notice',
 		complaint:
-			'Per Article 6, Section 3 of the Tourism Services Law (NN 130/17), written complaints may be submitted to sprinter@sprinter.hr'
+			`Per Article 6, Section 3 of the Tourism Services Law (NN 130/17), written complaints may be submitted to ${contact.email}`
 	},
 
 	// Contact page
@@ -260,14 +292,54 @@ export default {
 		office: 'Office',
 		workingHours: 'Working Hours',
 		weekdays: 'Monday - Saturday: 08:00 – 20:00',
-		sunday: 'Sunday: 09:00 – 13:00'
+		sunday: 'Sunday: 09:00 – 13:00',
+		findUs: 'Find us',
+		getDirections: 'Get directions'
 	},
 
 	// Common
 	common: {
-		phone: '+385 95 722 6918',
-		email: 'sprinter@sprinter.hr',
-		address: 'Kralja Dmitra Zvonimira 1, 31326 Darda',
+		phone: contact.phone,
+		email: contact.email,
+		address: contact.address,
 		whatsapp: 'WhatsApp'
+	},
+
+	// Testimonials
+	testimonials: {
+		title: 'What our clients say'
+	},
+
+	// Thank you page
+	thankYou: {
+		title: 'Thank you for your inquiry',
+		subtitle: 'Your message has been received. We will respond as soon as possible.',
+		responseTime: 'We usually respond within 24 hours on business days.',
+		goHome: 'Home',
+		goRental: 'Browse vehicles',
+		meanwhileWhatsapp: 'If it is urgent, reach us immediately on WhatsApp.'
+	},
+
+	// Generic form statuses
+	form: {
+		submitting: 'Sending...',
+		errorServer: 'Something went wrong. Please try again or call us.',
+		errorRequired: 'This field is required',
+		errorEmail: 'Invalid email address'
+	},
+
+	// Error page
+	error: {
+		notFoundTitle: 'Page not found',
+		notFoundDesc: 'The page you are looking for does not exist or has been removed.',
+		goHome: 'Home',
+		goRental: 'Vehicle rental'
+	},
+
+	// Cookie banner
+	cookieBanner: {
+		message: 'We use cookies only for essential site functionality. By continuing to use the site you accept our policy.',
+		accept: 'Accept',
+		learnMore: 'Learn more'
 	}
-} as const;
+};

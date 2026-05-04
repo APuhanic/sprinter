@@ -1,3 +1,5 @@
+import { contact } from '../contact';
+
 export default {
 	lang: 'hr',
 	langName: 'Hrvatski',
@@ -14,8 +16,8 @@ export default {
 	// Header banner
 	banner: {
 		notice: 'Molimo vašu najavu prije dolaska',
-		address: 'Kralja Dmitra Zvonimira 1, 31326 Darda',
-		phone: '+385 95 722 6918',
+		address: contact.address,
+		phone: contact.phone,
 		hours: 'Pon - Ned: 08h - 19h'
 	},
 
@@ -32,7 +34,12 @@ export default {
 		requestQuote: 'Zatraži ponudu',
 		deliveryAvailable: 'Svako naše vozilo možemo dostaviti na traženu adresu',
 		driverAvailable: 'Za svako naše vozilo možete iznajmiti vozača',
-		rentalTermsNotice: 'Molimo da obavezno pročitate uvjete i pravila najma vozila!'
+		rentalTermsNotice: 'Molimo da obavezno pročitate uvjete i pravila najma vozila!',
+		carouselPrev: 'Prethodni slajd',
+		carouselNext: 'Sljedeći slajd',
+		carouselPause: 'Pauziraj prezentaciju',
+		carouselPlay: 'Pokreni prezentaciju',
+		carouselGoTo: 'Idi na slajd'
 	},
 
 	// Cleaning page
@@ -194,6 +201,29 @@ export default {
 		termsNotice: 'Molimo da obavezno pročitate uvjete i pravila najma vozila!',
 		viewTerms: 'UVJETI I PRAVILA NAJMA',
 		rentMe: 'Iznajmi me...',
+		waTemplate: 'Pozdrav, zanima me najam vozila {vehicle}. Molim Vas za više informacija.',
+		inquiryTitle: 'Provjerite dostupnost i cijenu',
+		inquiryFrom: 'Od datuma',
+		inquiryTo: 'Do datuma',
+		inquiryDays: 'Broj dana',
+		inquiryEstimate: 'Procjena cijene',
+		inquiryContactForLonger: 'Za najam dulji od {days} dana, kontaktirajte nas direktno.',
+		inquiryDateError: 'Datum povratka mora biti nakon datuma preuzimanja.',
+		inquiryName: 'Vaše ime',
+		inquiryEmail: 'E-mail',
+		inquiryPhoneLabel: 'Telefon',
+		inquiryNotes: 'Dodatne napomene',
+		inquirySubmit: 'Pošalji upit',
+		inquiryOnRequest: 'Cijena na upit',
+		filterLabel: 'Kategorija',
+		filterAll: 'Sva vozila',
+		filterPassenger: 'Putnička',
+		filterCargo: 'Teretna',
+		sortLabel: 'Sortiraj',
+		sortDefault: 'Zadano',
+		sortYear: 'Najnovije',
+		sortPriceAsc: 'Cijena (niska → visoka)',
+		noResults: 'Nema vozila u ovoj kategoriji.',
 		pricingTitle: 'Cijene najma:',
 		pricingVatNote: '(* Izražene cijene su sa PDV-om)',
 		pricingDisclaimer: 'Nakon isteka rezerviranih kilometara svaki dodatni km se naplaćuje prema tablici iznad.',
@@ -243,8 +273,9 @@ export default {
 		cookies: 'Cookies Policy',
 		privacy: 'Pravila privatnosti',
 		rentalTerms: 'Pravila - Uvjeti najma vozila',
-		complaint:
-			'Sukladno čl. 6. st. 3. Zakona o pružanju usluga u turizmu (NN 130/17), pisani prigovor možete podnijeti na sprinter@sprinter.hr'
+		addressLabel: 'ADRESA:',
+		complaintTitle: 'Obavijest o načinu podnošenja pisanog prigovora',
+		complaint: `Sukladno čl. 6. st. 3. Zakona o pružanju usluga u turizmu (NN 130/17), pisani prigovor možete podnijeti na ${contact.email}`
 	},
 
 	// Contact page
@@ -260,14 +291,54 @@ export default {
 		office: 'Ured',
 		workingHours: 'Radno vrijeme',
 		weekdays: 'Ponedjeljak - Subota: 08:00 – 20:00 h',
-		sunday: 'Nedjelja: 09:00 – 13:00 h'
+		sunday: 'Nedjelja: 09:00 – 13:00 h',
+		findUs: 'Pronađite nas',
+		getDirections: 'Upute za dolazak'
 	},
 
 	// Common
 	common: {
-		phone: '+385 95 722 6918',
-		email: 'sprinter@sprinter.hr',
-		address: 'Kralja Dmitra Zvonimira 1, 31326 Darda',
+		phone: contact.phone,
+		email: contact.email,
+		address: contact.address,
 		whatsapp: 'WhatsApp'
+	},
+
+	// Testimonials
+	testimonials: {
+		title: 'Što kažu naši klijenti'
+	},
+
+	// Thank you page
+	thankYou: {
+		title: 'Hvala na upitu',
+		subtitle: 'Vaša poruka je zaprimljena. Javljamo se u najkraćem mogućem roku.',
+		responseTime: 'Obično odgovaramo unutar 24 sata u radne dane.',
+		goHome: 'Početna',
+		goRental: 'Pregledajte vozila',
+		meanwhileWhatsapp: 'Ako vam je hitno, javite nam se odmah putem WhatsAppa.'
+	},
+
+	// Generic form statuses
+	form: {
+		submitting: 'Šaljem...',
+		errorServer: 'Došlo je do pogreške. Molimo pokušajte ponovno ili nas nazovite.',
+		errorRequired: 'Ovo polje je obvezno',
+		errorEmail: 'Neispravna e-mail adresa'
+	},
+
+	// Error page
+	error: {
+		notFoundTitle: 'Stranica nije pronađena',
+		notFoundDesc: 'Stranica koju tražite ne postoji ili je uklonjena.',
+		goHome: 'Početna',
+		goRental: 'Najam vozila'
+	},
+
+	// Cookie banner
+	cookieBanner: {
+		message: 'Koristimo kolačiće isključivo za osnovnu funkcionalnost stranice. Nastavkom korištenja prihvaćate našu politiku.',
+		accept: 'Prihvaćam',
+		learnMore: 'Saznaj više'
 	}
-} as const;
+};

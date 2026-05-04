@@ -29,11 +29,11 @@
 	}
 </script>
 
-<div
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+<section
 	class="relative"
-	role="region"
 	aria-label="Image gallery"
-	tabindex="0"
+	aria-roledescription="carousel"
 	onkeydown={handleKeydown}
 >
 	<!-- Main image -->
@@ -88,4 +88,4 @@
 			{/each}
 		</div>
 	{/if}
-</div>
+</section>
