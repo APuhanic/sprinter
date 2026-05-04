@@ -30,6 +30,7 @@
 	let navItems = $derived([
 		{ href: `/${lang}`, label: t.nav.home },
 		{ href: `/${lang}/${slugs[lang].cleaning}`, label: t.nav.cleaning },
+		{ href: `/${lang}/${slugs[lang].transport}`, label: t.nav.transport },
 		{ href: `/${lang}/${slugs[lang].rental}`, label: t.nav.rental },
 		{ href: `/${lang}/${slugs[lang].transfers}`, label: t.nav.transfers },
 		{ href: `/${lang}/${slugs[lang].contact}`, label: t.nav.contact }

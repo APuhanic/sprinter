@@ -8,6 +8,7 @@ export default {
 	nav: {
 		home: 'Home',
 		cleaning: 'Cleaning Services',
+		transport: 'Transport Services',
 		rental: 'Rent a Kombi/Car',
 		transfers: 'Luxury Transfers',
 		contact: 'Contact'
@@ -29,6 +30,8 @@ export default {
 		heroRentalSubtitle: 'Vehicle delivery available',
 		heroTransfersTitle: 'Private drivers & luxury transfers',
 		heroTransfersSubtitle: 'Service available 24/7',
+		heroTransportTitle: 'Sprinter Transport',
+		heroTransportSubtitle: 'Smart logistics on Istrian roads',
 		learnMore: 'Learn more',
 		rentMe: 'Rent me...',
 		requestQuote: 'Request a quote',
@@ -45,32 +48,46 @@ export default {
 	// Cleaning page
 	cleaning: {
 		title: 'Cleaning Services',
+		heroSubtitle: 'A culture of cleanliness and aesthetics with a signature',
 		visionTitle: 'My Vision: More Than Cleanliness',
-		visionIntro:
-			'As the company director, I see my calling not as a mere cleaning service, but as a mission to restore shine and harmony to your living space.',
-		visionHospitality: 'Professional background in hospitality',
-		visionExperience: 'Experience maintaining exclusive German villas and residences',
-		visionPersonal: 'Personal involvement in every project',
-		visionDiscipline: 'German discipline and absolute discretion',
+		visionPara1:
+			'My name is Zvjezdana Puhanić. As the company director, I see my calling not as a mere cleaning service, but as a mission to restore shine and harmony to your living space.',
+		visionPara2:
+			'I believe a luxury space deserves more than “ordinary tidying” — it deserves German discipline, absolute discretion, and an eye that catches what others miss.',
+		visionPara3:
+			'I honed my professional experience in hospitality, where I absorbed uncompromising standards of organization and meticulousness. For the past several years I have been dedicated exclusively to maintaining exclusive villas and residences in Germany, understanding that clients of my profile are not looking for ordinary labor, but a trustworthy partner with every necessary skill.',
+		visionPara4:
+			'For me, this work is a passion. Even though I run the company, I approach every project personally. I am the one who organizes the process, supervises every detail, and holds the equipment in my hands. Only that way can I guarantee a result that stands behind my name.',
 		exclusivityTitle: 'Exclusivity Without Compromise',
 		exclusivityDesc:
-			'Our service targets discerning clients, excluding stairwells, cafés, or public spaces.',
+			'Our service is not aimed at the mass market. We do not clean stairwells, cafés, or busy public spaces. My focus and expertise are directed at:',
 		residencesTitle: 'Private residences and architectural estates across Istria',
 		residencesDesc:
-			'Your villa is not just a property — it is your sanctuary. Services include pre-arrival preparation, discreet maintenance during your stay, and comprehensive conservation.',
+			'Your villa is not just a property — it is your sanctuary. I specialize in the full cycle of care for your home: from detailed preparation of the property before your arrival, through discreet maintenance during your stay, to thorough conservation of the space after departure. My goal is that every time you open the door, you feel as though you are entering a brand-new, freshly furnished home.',
 		accommodationsTitle: 'Highest-category accommodations',
 		accommodationsDesc:
-			'Luxury apartments, boutique hotels, yachts. Specialized care for noble wood, natural stone, polished surfaces, and delicate fabrics.',
+			'Luxury apartments, boutique hotels and yachts demand more than cleaning — they demand material expertise. Whether it is the care of noble wood (teak), natural stone, highly polished surfaces or delicate fabrics, my methods are tailored to preserve their longevity.',
+		accommodationsStaging:
+			'My work in this segment also includes final “staging” — decorating and preparing the space according to the principles of top-tier hospitality, where every towel, scent and detail is placed with the intention of delighting the guest or owner the moment they step inside.',
 		standardsTitle: 'Standards I Bring to Your Home',
 		standardTech: 'Premium Technology',
-		standardTechDesc: 'Professional Kärcher equipment',
+		standardTechDesc:
+			'I use exclusively professional Kärcher equipment and certified, non-aggressive products that protect your health and the longevity of your furniture.',
 		standardDiscipline: 'Discipline & Health',
-		standardDisciplineDesc: 'Licensed fitness instructor',
+		standardDisciplineDesc:
+			'As a licensed fitness instructor, I bring high energy, discipline, and an awareness of the importance of a healthy, clean environment to the work.',
+		positioningTitle: 'For Those Who Value Excellence',
+		positioningBody:
+			'I value clients who respect my profession and the level of dedication I bring. If you are looking for someone who will treat your property with the same respect and care as if it were her own, you are in the right place.',
+		positioningQuote:
+			'“Order, aesthetics, and absolute discretion. I take care of your space with precision and personal responsibility.”',
 		pricesTitle: 'Our Prices',
-		pricesVatNote: '(All listed prices include VAT)',
+		pricesVatNote: '(All listed prices exclude VAT)',
 		pricingDisclaimer:
-			'If on-site conditions exceed expectations, pricing is adjusted according to actual effort required.',
+			'If on-site conditions are more demanding than agreed, pricing is adjusted according to actual effort. Please bear in mind there is a difference between 4 hours of light dusting and 4 hours of heavy limescale removal or deep cleaning of neglected corners. Work on ordinary surfaces moves quickly. Work on expensive marble, teak or designer ceramics requires special care, costly products, and slow, precise movements.',
 		pricingDisclaimerLabel: 'Professional practice note:',
+		pricingFooterNote:
+			'All prices are indicative, depend on the actual condition of the property, and are subject to change.',
 		contactTitle: 'Contact Us',
 		contactDesc:
 			'Feel free to contact us for a quote via WhatsApp, phone, or the contact form.',
@@ -84,7 +101,7 @@ export default {
 			name: 'Continuous Impeccability',
 			subtitle: 'Regular maintenance',
 			duration: '2 – 4 – 6 – 8 hours',
-			price: '€80 – €320',
+			price: '€60 – €250',
 			description:
 				'Maintaining high cleanliness standards per agreed protocol and schedule.'
 		},
@@ -92,7 +109,7 @@ export default {
 			name: 'Interior Deep Regeneration',
 			subtitle: 'Couches, mattresses…',
 			duration: '4 – 8 hours',
-			price: '€150 – €400',
+			price: '€110 – €300',
 			description:
 				'Complete interior and exterior treatment utilizing premium Kärcher technology.'
 		},
@@ -100,7 +117,7 @@ export default {
 			name: 'Before & After Rental',
 			subtitle: 'Property preparation',
 			duration: '2 – 3 hours',
-			price: '€100 – €250',
+			price: '€80 – €180',
 			description:
 				'Property preparation before owner/guest arrival or after departure.'
 		},
@@ -108,7 +125,7 @@ export default {
 			name: 'Move-in or Move-out',
 			subtitle: 'Comprehensive preparation',
 			duration: '6 – 10 hours',
-			price: '€200 – €500',
+			price: '€150 – €460',
 			description:
 				'Comprehensive property preparation: deep cleaning, cabinet interiors, and kitchen appliances.'
 		},
@@ -116,7 +133,7 @@ export default {
 			name: 'Crystal-Clear Glass Surfaces',
 			subtitle: 'Specialized care',
 			duration: '2 – 4 hours',
-			price: '€60 – €150',
+			price: '€45 – €110',
 			description:
 				'Specialized care for large glass walls and demanding glass surfaces.'
 		},
@@ -124,7 +141,7 @@ export default {
 			name: 'Exterior, Pools & Grounds',
 			subtitle: 'Terrace and pool area',
 			duration: '3 – 5 hours',
-			price: '€100 – €250',
+			price: '€80 – €180',
 			description:
 				'Terrace and pool area preparation for maximum visual enjoyment and hygiene.'
 		},
@@ -132,7 +149,7 @@ export default {
 			name: 'Professional Textile Care',
 			subtitle: 'Washing and ironing',
 			duration: '2 – 4 hours',
-			price: '€50 – €120',
+			price: '€45 – €100',
 			description:
 				'Precise washing and ironing with maximum attention to delicate fabrics.'
 		},
@@ -140,11 +157,54 @@ export default {
 			name: 'Post-Construction Shine',
 			subtitle: 'Post-construction cleaning',
 			duration: '8 – 12 hours',
-			price: '€300 – €800',
+			price: '€220 – €600',
 			description:
 				'Detailed, systematic removal of post-construction dust and debris.'
 		}
 	],
+
+	// Transport page
+	transport: {
+		title: 'Transport Services',
+		heroTitle: 'Sprinter Transport',
+		heroSubtitle: 'Smart logistics on Istrian roads',
+		introPara1:
+			'Forget complicated, slow moving services. If you need fast, accurate, and safe transport of goods from point A to point B — Sprinter is your professional partner.',
+		introPara2:
+			'We specialize in transporting goods for clients who are organized and value efficiency. Whether it is a new kitchen from Ikea or Rijeka, materials from Pevex and Elgrad, or moving valuable furniture into your villa, we deliver a solution that saves you time and money.',
+		whyTitle: 'Why choose Sprinter transport?',
+		whyFleetTitle: 'Full fleet for every need',
+		whyFleetDesc:
+			'From the agile Renault Trafic to the spacious Mercedes Sprinter — we have the right volume for every load.',
+		whyAreaTitle: 'Istria, Croatia and beyond',
+		whyAreaDesc: 'Our base is in Pula, but we deliver your goods exactly where they are needed.',
+		whyAssistTitle: 'Driver assistance',
+		whyAssistDesc:
+			'We do not leave you alone with the load. Our service includes active help with loading and unloading at the vehicle.',
+		whyTechTitle: 'Safety and technology',
+		whyTechDesc:
+			'All our vehicles are equipped with GPS, allowing us precise organization and real-time visibility into your transport status.',
+		logisticsTitle: '“Doorstep” logistics — How we work',
+		logisticsPara1:
+			'Our business model is focused on maximum transport efficiency. To ensure the most favourable price and fastest service, we specialize in delivery to your front door or building entrance.',
+		logisticsPara2Label: 'Professional standard:',
+		logisticsPara2:
+			'Our primary task is the safe transport and handling of cargo at the vehicle. We do not offer carrying items up floors, which lets us stay fast, accurate, and available for your next transport.',
+		logisticsPara3Label: 'Clean. Punctual. Reliable.',
+		logisticsPara3:
+			'As a company that also maintains luxury villas, we know how important attention to detail is. Our vehicles are tidy and our service is discreet and professional.',
+		quoteTitle: 'Need a quick quote?',
+		quoteIntro:
+			'Feel free to call or message us on WhatsApp. So we can give you accurate information immediately, please have the following ready:',
+		quoteItem1: 'Exact pickup address',
+		quoteItem2: 'Final destination',
+		quoteItem3: 'Type of goods and approximate weight',
+		quoteItem4: 'Preferred transport date',
+		contactTitle: 'Contact us',
+		contactDesc: 'Call or message — we respond quickly.',
+		baseNote: 'Our base is located in Pula',
+		closing: 'Your Sprinter Team — professional transport logistics'
+	},
 
 	// Transfers page
 	transfers: {
