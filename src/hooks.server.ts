@@ -3,8 +3,15 @@ import { isValidLang, defaultLang } from '$lib/i18n';
 import { resolveRedirect } from '$lib/redirects';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	// 301 redirects for legacy WordPress URLs — MUST run before lang resolution
-	const redirectTo = resolveRedirect(event.url.pathname, event.url.searchParams);
+	// 301 redirects for legacy WordPress URLs — MUST run before lang resolution.
+	// During prerender SvelteKit blocks reading url.search/searchParams; treat as empty.
+	let searchParams = new URLSearchParams();
+	try {
+		searchParams = new URLSearchParams(event.url.search);
+	} catch {
+		/* prerendering — no query string available */
+	}
+	const redirectTo = resolveRedirect(event.url.pathname, searchParams);
 	if (redirectTo) {
 		throw redirect(301, redirectTo);
 	}
