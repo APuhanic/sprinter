@@ -5,6 +5,30 @@ export interface PricingRow {
 	extraKmRate: number;
 }
 
+/**
+ * Compute the total rental price for a given number of days from a pricing table.
+ * Picks the tier whose `days` count matches, or the closest lower one extrapolated
+ * by the per-day rate of the best-match tier.
+ * Returns null if days < 1 or if days exceeds the tier range (caller falls back to contact).
+ */
+export function computeQuote(pricing: PricingRow[], days: number): number | null {
+	if (!pricing.length || days < 1) return null;
+
+	const exact = pricing.find((p) => p.days === days);
+	if (exact) return exact.price;
+
+	const sorted = [...pricing].sort((a, b) => a.days - b.days);
+	const maxTier = sorted[sorted.length - 1];
+	if (days > maxTier.days) return null;
+
+	const below = [...sorted].reverse().find((p) => p.days < days);
+	if (!below) {
+		return Math.round((maxTier.price / maxTier.days) * days);
+	}
+	const dailyRate = below.price / below.days;
+	return Math.round(dailyRate * days);
+}
+
 export interface Vehicle {
 	name: string;
 	slug: string;

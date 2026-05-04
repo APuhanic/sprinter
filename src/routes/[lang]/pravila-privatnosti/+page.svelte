@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import { contact, mailHref } from '$lib/contact';
 
 	let { data }: { data: PageData } = $props();
 	let t = $derived(data.t);
@@ -16,9 +17,9 @@
 		<h2>Voditelj obrade / Data Controller</h2>
 		<p>
 			Sprinter d.o.o.<br />
-			Kralja Dmitra Zvonimira 1, 31326 Darda<br />
-			E-mail: sprinter@sprinter.hr<br />
-			Telefon: +385 95 722 6918
+			{contact.address}<br />
+			E-mail: {contact.email}<br />
+			Telefon: {contact.phone}
 		</p>
 
 		<h2>Koji podaci se prikupljaju / Data We Collect</h2>
@@ -56,7 +57,7 @@
 		<h2>Kontakt / Contact</h2>
 		<p>
 			Za sva pitanja vezana uz privatnost obratite se na:
-			<a href="mailto:sprinter@sprinter.hr">sprinter@sprinter.hr</a>
+			<a href={mailHref}>{contact.email}</a>
 		</p>
 	</div>
 </section>

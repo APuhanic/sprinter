@@ -1,11 +1,38 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { vehicles } from '$lib/data/vehicles';
-	import { slugs } from '$lib/i18n';
+	import { vehicles, type Vehicle } from '$lib/data/vehicles';
+	import VehicleCard from '$lib/components/VehicleCard.svelte';
 
 	let { data }: { data: PageData } = $props();
 	let lang = $derived(data.lang);
 	let t = $derived(data.t);
+
+	type Filter = 'all' | 'passenger' | 'cargo';
+	type Sort = 'default' | 'year' | 'price';
+
+	let filter = $state<Filter>('all');
+	let sort = $state<Sort>('default');
+
+	const CARGO_TYPES = new Set(['L2H1', 'L3H2', 'L4H2']);
+
+	function isCargo(v: Vehicle) {
+		return CARGO_TYPES.has(v.type);
+	}
+
+	function pricePerDay(v: Vehicle) {
+		if (!v.pricing.length) return Infinity;
+		const first = v.pricing[0];
+		return first.price / first.days;
+	}
+
+	let filteredVehicles = $derived.by(() => {
+		let list = vehicles.slice();
+		if (filter === 'passenger') list = list.filter((v) => !isCargo(v));
+		if (filter === 'cargo') list = list.filter(isCargo);
+		if (sort === 'year') list.sort((a, b) => b.year - a.year);
+		if (sort === 'price') list.sort((a, b) => pricePerDay(a) - pricePerDay(b));
+		return list;
+	});
 </script>
 
 <svelte:head>
@@ -16,115 +43,68 @@
 <section class="bg-white border-b border-slate-200">
 	<div class="mx-auto max-w-7xl px-4 py-8">
 		<h1 class="text-3xl font-bold text-slate-900">{t.rental.title}</h1>
-		<p class="text-sm text-slate-500 mt-1">Home / {t.rental.breadcrumb}</p>
+		<p class="text-sm text-slate-500 mt-1">{t.nav.home} / {t.rental.breadcrumb}</p>
 	</div>
 </section>
 
 <!-- Vehicle grid -->
 <section class="bg-slate-50 py-12">
 	<div class="mx-auto max-w-7xl px-4">
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-			{#each vehicles as vehicle}
-				<div class="bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition-shadow">
-					<!-- Vehicle image -->
-					<div class="h-52 bg-slate-100 flex items-center justify-center overflow-hidden">
-						{#if vehicle.images[0]}
-							<img src={vehicle.images[0]} alt={vehicle.name} class="w-full h-full object-cover" />
-						{:else}
-							<div class="text-slate-300 flex flex-col items-center gap-2">
-								<svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H18.375m-17.25 0h14.25m-14.25 0V6.375c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v4.5h6.75a1.125 1.125 0 011.125 1.125v2.25" />
-								</svg>
-							</div>
-						{/if}
-					</div>
-
-					<!-- Vehicle info -->
-					<div class="p-5">
-						<div class="flex items-start justify-between gap-2 mb-4">
-							<h2 class="text-lg font-bold text-red-600">{vehicle.name}</h2>
-						</div>
-
-						<!-- Specs grid -->
-						<div class="grid grid-cols-2 gap-y-2 gap-x-4 text-sm">
-							<div class="flex items-center gap-2">
-								<svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-								</svg>
-								<span class="text-slate-500">{t.rental.seats}:</span>
-								<span class="text-slate-800 font-medium">{vehicle.seats}</span>
-							</div>
-							<div class="flex items-center gap-2">
-								<svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-								</svg>
-								<span class="text-slate-500">{t.rental.year}:</span>
-								<span class="text-slate-800 font-medium">{vehicle.year}</span>
-							</div>
-							<div class="flex items-center gap-2">
-								<svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-								</svg>
-								<span class="text-slate-500">{t.rental.gearboxLabel}:</span>
-								<span class="text-slate-800 font-medium">{vehicle.gearbox}</span>
-							</div>
-							<div class="flex items-center gap-2">
-								<svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707" />
-								</svg>
-								<span class="text-slate-500">{t.rental.climate}:</span>
-								<span class="text-slate-800 font-medium">{vehicle.hasAC ? t.rental.yes : t.rental.no}</span>
-							</div>
-							<div class="flex items-center gap-2">
-								<svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-								</svg>
-								<span class="text-slate-500">{t.rental.cruise}:</span>
-								<span class="text-slate-800 font-medium">{vehicle.hasCruise ? t.rental.yes : t.rental.no}</span>
-							</div>
-							{#if vehicle.capacity}
-								<div class="flex items-center gap-2">
-									<svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-									</svg>
-									<span class="text-slate-500">{t.rental.capacity}:</span>
-									<span class="text-slate-800 font-medium">{vehicle.capacity}</span>
-								</div>
-							{/if}
-							{#if vehicle.payload}
-								<div class="flex items-center gap-2">
-									<svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
-									</svg>
-									<span class="text-slate-500">{t.rental.payload}:</span>
-									<span class="text-slate-800 font-medium">{vehicle.payload}</span>
-								</div>
-							{/if}
-						</div>
-
-						<!-- CTA -->
-						<a
-							href="/{lang}/{slugs[lang].rental}/{vehicle.slug}"
-							class="mt-5 block text-center bg-brand-red text-white py-2.5 rounded font-medium hover:brightness-110 transition"
-						>
-							{t.rental.rentMe}
-						</a>
-					</div>
-				</div>
-			{/each}
+		<!-- Filter + sort -->
+		<div class="flex flex-col sm:flex-row sm:items-end gap-4 mb-6">
+			<div>
+				<label for="filter" class="block text-xs uppercase tracking-wide text-slate-500 mb-1">
+					{t.rental.filterLabel}
+				</label>
+				<select
+					id="filter"
+					bind:value={filter}
+					class="px-3 py-2 border border-slate-300 rounded bg-white text-slate-800 text-sm focus:outline-none focus:ring-1 focus:ring-brand-red focus:border-brand-red"
+				>
+					<option value="all">{t.rental.filterAll}</option>
+					<option value="passenger">{t.rental.filterPassenger}</option>
+					<option value="cargo">{t.rental.filterCargo}</option>
+				</select>
+			</div>
+			<div>
+				<label for="sort" class="block text-xs uppercase tracking-wide text-slate-500 mb-1">
+					{t.rental.sortLabel}
+				</label>
+				<select
+					id="sort"
+					bind:value={sort}
+					class="px-3 py-2 border border-slate-300 rounded bg-white text-slate-800 text-sm focus:outline-none focus:ring-1 focus:ring-brand-red focus:border-brand-red"
+				>
+					<option value="default">{t.rental.sortDefault}</option>
+					<option value="year">{t.rental.sortYear}</option>
+					<option value="price">{t.rental.sortPriceAsc}</option>
+				</select>
+			</div>
+			<div class="sm:ml-auto text-sm text-slate-500 self-end">
+				{filteredVehicles.length} / {vehicles.length}
+			</div>
 		</div>
+
+		{#if filteredVehicles.length === 0}
+			<p class="text-center text-slate-500 py-12">{t.rental.noResults}</p>
+		{:else}
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+				{#each filteredVehicles as vehicle (vehicle.slug)}
+					<VehicleCard {vehicle} {t} {lang} />
+				{/each}
+			</div>
+		{/if}
 
 		<!-- Notices -->
 		<div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-slate-600">
 			<div class="flex items-center gap-2">
-				<svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<svg class="w-5 h-5 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
 				</svg>
 				<span>{t.rental.deliveryNote}</span>
 			</div>
 			<div class="flex items-center gap-2">
-				<svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<svg class="w-5 h-5 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
 				</svg>
 				<span>{t.rental.driverNote}</span>
@@ -133,10 +113,10 @@
 
 		<!-- Terms notice -->
 		<div class="mt-8 text-center">
-			<p class="text-sm text-red-600 font-medium mb-3">{t.rental.termsNotice}</p>
+			<p class="text-sm text-brand-red font-medium mb-3">{t.rental.termsNotice}</p>
 			<a
 				href="/{lang}/uvjeti-najma"
-				class="inline-block border-2 border-red-600 text-red-600 px-6 py-2 rounded font-medium text-sm hover:bg-red-600 hover:text-white transition-colors"
+				class="inline-block border-2 border-brand-red text-brand-red px-6 py-2 rounded font-medium text-sm hover:bg-brand-red hover:text-white transition-colors"
 			>
 				{t.rental.viewTerms}
 			</a>

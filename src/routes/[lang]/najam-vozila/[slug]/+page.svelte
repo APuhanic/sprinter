@@ -1,16 +1,23 @@
 <script lang="ts">
-	import type { PageData } from './$types';
+	import type { ActionData, PageData } from './$types';
 	import { slugs } from '$lib/i18n';
+	import { telHref, waHref } from '$lib/contact';
+	import { vehicleOffer } from '$lib/jsonld';
 	import ImageCarousel from '$lib/components/ImageCarousel.svelte';
+	import VehicleInquiryForm from '$lib/components/VehicleInquiryForm.svelte';
 
-	let { data }: { data: PageData } = $props();
+	let { data, form }: { data: PageData; form: ActionData } = $props();
 	let lang = $derived(data.lang);
 	let t = $derived(data.t);
 	let vehicle = $derived(data.vehicle);
+
+	let vehicleJsonLd = $derived(JSON.stringify(vehicleOffer(vehicle)));
+	let waMessage = $derived(t.rental.waTemplate.replace('{vehicle}', vehicle.name));
 </script>
 
 <svelte:head>
 	<title>{vehicle.name} — Sprinter d.o.o.</title>
+	{@html `<script type="application/ld+json">${vehicleJsonLd}</` + `script>`}
 </svelte:head>
 
 <!-- Header + Breadcrumb -->
@@ -204,6 +211,11 @@
 			</div>
 		</div>
 
+		<!-- Inquiry form with live quote -->
+		<div class="mt-10 max-w-2xl mx-auto">
+			<VehicleInquiryForm {vehicle} {t} {form} />
+		</div>
+
 		<!-- Terms notice + CTA (centered like WordPress) -->
 		<div class="mt-10 text-center">
 			<p class="text-sm text-brand-red font-medium mb-4">{t.rental.termsNotice}</p>
@@ -218,7 +230,7 @@
 		<!-- Contact CTAs -->
 		<div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
 			<a
-				href="https://wa.me/385957226918?text={encodeURIComponent(vehicle.name)}"
+				href={waHref(waMessage)}
 				target="_blank"
 				rel="noopener noreferrer"
 				class="inline-flex items-center justify-center gap-2 bg-brand-green text-white px-6 py-3 rounded-lg font-medium hover:brightness-110 transition"
@@ -229,7 +241,7 @@
 				{t.rental.whatsappInquiry}
 			</a>
 			<a
-				href="tel:+385957226918"
+				href={telHref}
 				class="inline-flex items-center justify-center gap-2 bg-brand-red text-white px-6 py-3 rounded-lg font-medium hover:brightness-110 transition"
 			>
 				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
