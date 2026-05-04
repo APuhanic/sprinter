@@ -1,3 +1,5 @@
+import { contact } from '../contact';
+
 export default {
 	lang: 'de',
 	langName: 'Deutsch',
@@ -14,8 +16,8 @@ export default {
 	// Header banner
 	banner: {
 		notice: 'Bitte kündigen Sie Ihren Besuch im Voraus an',
-		address: 'Kralja Dmitra Zvonimira 1, 31326 Darda',
-		phone: '+385 95 722 6918',
+		address: contact.address,
+		phone: contact.phone,
 		hours: 'Mo - So: 08h - 19h'
 	},
 
@@ -32,7 +34,12 @@ export default {
 		requestQuote: 'Angebot anfordern',
 		deliveryAvailable: 'Wir können jedes Fahrzeug an Ihre gewünschte Adresse liefern',
 		driverAvailable: 'Für jedes unserer Fahrzeuge kann ein Fahrer gebucht werden',
-		rentalTermsNotice: 'Bitte lesen Sie die Mietbedingungen sorgfältig durch!'
+		rentalTermsNotice: 'Bitte lesen Sie die Mietbedingungen sorgfältig durch!',
+		carouselPrev: 'Vorheriger Slide',
+		carouselNext: 'Nächster Slide',
+		carouselPause: 'Slideshow pausieren',
+		carouselPlay: 'Slideshow starten',
+		carouselGoTo: 'Gehe zu Slide'
 	},
 
 	// Cleaning page
@@ -194,6 +201,29 @@ export default {
 		termsNotice: 'Bitte lesen Sie die Mietbedingungen sorgfältig durch!',
 		viewTerms: 'MIETBEDINGUNGEN',
 		rentMe: 'Jetzt mieten...',
+		waTemplate: 'Hallo, ich interessiere mich für die Miete des {vehicle}. Könnten Sie mir weitere Informationen senden?',
+		inquiryTitle: 'Verfügbarkeit und Preis prüfen',
+		inquiryFrom: 'Von',
+		inquiryTo: 'Bis',
+		inquiryDays: 'Tage',
+		inquiryEstimate: 'Preisschätzung',
+		inquiryContactForLonger: 'Für Mietzeiträume über {days} Tage kontaktieren Sie uns bitte direkt.',
+		inquiryDateError: 'Rückgabedatum muss nach dem Abholdatum liegen.',
+		inquiryName: 'Ihr Name',
+		inquiryEmail: 'E-Mail',
+		inquiryPhoneLabel: 'Telefon',
+		inquiryNotes: 'Zusätzliche Anmerkungen',
+		inquirySubmit: 'Anfrage senden',
+		inquiryOnRequest: 'Preis auf Anfrage',
+		filterLabel: 'Kategorie',
+		filterAll: 'Alle Fahrzeuge',
+		filterPassenger: 'PKW',
+		filterCargo: 'Transporter',
+		sortLabel: 'Sortieren',
+		sortDefault: 'Standard',
+		sortYear: 'Neueste',
+		sortPriceAsc: 'Preis (niedrig → hoch)',
+		noResults: 'Keine Fahrzeuge in dieser Kategorie.',
 		pricingTitle: 'Mietpreise:',
 		pricingVatNote: '(* Alle Preise inkl. MwSt.)',
 		pricingDisclaimer: 'Nach Überschreitung der inkludierten Kilometer wird jeder zusätzliche km gemäß der obigen Tabelle berechnet.',
@@ -243,8 +273,10 @@ export default {
 		cookies: 'Cookie-Richtlinie',
 		privacy: 'Datenschutzrichtlinie',
 		rentalTerms: 'Mietbedingungen',
+		addressLabel: 'ADRESSE:',
+		complaintTitle: 'Hinweis zur Einreichung schriftlicher Beschwerden',
 		complaint:
-			'Gemäß Artikel 6, Absatz 3 des Gesetzes über Tourismusdienstleistungen (NN 130/17) können schriftliche Beschwerden an sprinter@sprinter.hr gerichtet werden'
+			`Gemäß Artikel 6, Absatz 3 des Gesetzes über Tourismusdienstleistungen (NN 130/17) können schriftliche Beschwerden an ${contact.email} gerichtet werden`
 	},
 
 	// Contact page
@@ -260,14 +292,54 @@ export default {
 		office: 'Büro',
 		workingHours: 'Öffnungszeiten',
 		weekdays: 'Montag - Samstag: 08:00 – 20:00',
-		sunday: 'Sonntag: 09:00 – 13:00'
+		sunday: 'Sonntag: 09:00 – 13:00',
+		findUs: 'So finden Sie uns',
+		getDirections: 'Wegbeschreibung'
 	},
 
 	// Common
 	common: {
-		phone: '+385 95 722 6918',
-		email: 'sprinter@sprinter.hr',
-		address: 'Kralja Dmitra Zvonimira 1, 31326 Darda',
+		phone: contact.phone,
+		email: contact.email,
+		address: contact.address,
 		whatsapp: 'WhatsApp'
+	},
+
+	// Testimonials
+	testimonials: {
+		title: 'Stimmen unserer Kunden'
+	},
+
+	// Thank you page
+	thankYou: {
+		title: 'Danke für Ihre Anfrage',
+		subtitle: 'Ihre Nachricht ist eingegangen. Wir melden uns schnellstmöglich bei Ihnen.',
+		responseTime: 'In der Regel antworten wir innerhalb von 24 Stunden an Werktagen.',
+		goHome: 'Startseite',
+		goRental: 'Fahrzeuge ansehen',
+		meanwhileWhatsapp: 'Bei dringenden Anfragen kontaktieren Sie uns direkt über WhatsApp.'
+	},
+
+	// Generic form statuses
+	form: {
+		submitting: 'Wird gesendet...',
+		errorServer: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut oder rufen Sie uns an.',
+		errorRequired: 'Dieses Feld ist erforderlich',
+		errorEmail: 'Ungültige E-Mail-Adresse'
+	},
+
+	// Error page
+	error: {
+		notFoundTitle: 'Seite nicht gefunden',
+		notFoundDesc: 'Die gesuchte Seite existiert nicht oder wurde entfernt.',
+		goHome: 'Startseite',
+		goRental: 'Fahrzeugmiete'
+	},
+
+	// Cookie banner
+	cookieBanner: {
+		message: 'Wir verwenden Cookies ausschließlich für die grundlegende Funktionalität der Website. Durch die weitere Nutzung akzeptieren Sie unsere Richtlinie.',
+		accept: 'Akzeptieren',
+		learnMore: 'Mehr erfahren'
 	}
-} as const;
+};

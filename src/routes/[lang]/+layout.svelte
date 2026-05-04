@@ -2,15 +2,20 @@
 	import type { LayoutData } from './$types';
 	import { page } from '$app/stores';
 	import { languages, slugs, type Lang } from '$lib/i18n';
+	import { telHref, mailHref, waHref } from '$lib/contact';
+	import SiteNotice from '$lib/components/SiteNotice.svelte';
+	import { localBusiness } from '$lib/jsonld';
 
 	let { data, children } = $props();
 
 	let lang = $derived(data.lang);
 	let t = $derived(data.t);
 
+	const businessJsonLd = JSON.stringify(localBusiness());
+
 	function switchLangUrl(targetLang: Lang): string {
 		const currentPath = $page.url.pathname;
-		const rest = currentPath.replace(`/${lang}`, '');
+		const rest = currentPath.replace(new RegExp(`^/${lang}(?=/|$)`), '');
 		return `/${targetLang}${rest}`;
 	}
 
@@ -29,7 +34,33 @@
 		{ href: `/${lang}/${slugs[lang].transfers}`, label: t.nav.transfers },
 		{ href: `/${lang}/${slugs[lang].contact}`, label: t.nav.contact }
 	]);
+
+	const SITE_URL = 'https://sprinter.hr';
+	let canonicalPath = $derived($page.url.pathname);
+	let canonical = $derived(`${SITE_URL}${canonicalPath}`);
+	let hreflangs = $derived(
+		(Object.keys(languages) as Lang[]).map((l) => ({
+			hreflang: l,
+			href: `${SITE_URL}${canonicalPath.replace(new RegExp(`^/${lang}(?=/|$)`), `/${l}`)}`
+		}))
+	);
 </script>
+
+<svelte:head>
+	<link rel="canonical" href={canonical} />
+	{#each hreflangs as alt}
+		<link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
+	{/each}
+	<link rel="alternate" hreflang="x-default" href={`${SITE_URL}${canonicalPath.replace(new RegExp(`^/${lang}(?=/|$)`), '/hr')}`} />
+	<meta property="og:site_name" content="Sprinter d.o.o." />
+	<meta property="og:locale" content={lang === 'hr' ? 'hr_HR' : lang === 'de' ? 'de_DE' : 'en_US'} />
+	<meta property="og:url" content={canonical} />
+	<meta property="og:image" content={`${SITE_URL}/images/hero/rental-hero.jpg`} />
+	<meta property="og:image:width" content="1920" />
+	<meta property="og:image:height" content="908" />
+	<meta name="twitter:card" content="summary_large_image" />
+	{@html `<script type="application/ld+json">${businessJsonLd}</` + `script>`}
+</svelte:head>
 
 <!-- Top banner — dark bar matching WP -->
 <div class="bg-brand-dark text-white text-sm">
@@ -37,7 +68,7 @@
 		<span class="text-green-400 font-medium">{t.banner.notice}</span>
 		<div class="hidden sm:flex flex-wrap items-center gap-4 text-slate-300">
 			<span>{t.banner.address}</span>
-			<a href="tel:+385957226918" class="hover:text-white transition-colors">{t.banner.phone}</a>
+			<a href={telHref} class="hover:text-white transition-colors">{t.banner.phone}</a>
 			<span>{t.banner.hours}</span>
 		</div>
 	</div>
@@ -99,11 +130,17 @@
 	<!-- Mobile menu -->
 	{#if mobileMenuOpen}
 		<div class="lg:hidden border-t border-slate-100 bg-white px-4 py-3 space-y-1">
-			<a href="/{lang}" class="block py-2.5 text-sm font-medium uppercase text-slate-700 hover:text-brand-red" onclick={() => (mobileMenuOpen = false)}>{t.nav.home}</a>
-			<a href="/{lang}/{slugs[lang].cleaning}" class="block py-2.5 text-sm font-medium uppercase text-slate-700 hover:text-brand-red" onclick={() => (mobileMenuOpen = false)}>{t.nav.cleaning}</a>
-			<a href="/{lang}/{slugs[lang].rental}" class="block py-2.5 text-sm font-medium uppercase text-slate-700 hover:text-brand-red" onclick={() => (mobileMenuOpen = false)}>{t.nav.rental}</a>
-			<a href="/{lang}/{slugs[lang].transfers}" class="block py-2.5 text-sm font-medium uppercase text-slate-700 hover:text-brand-red" onclick={() => (mobileMenuOpen = false)}>{t.nav.transfers}</a>
-			<a href="/{lang}/{slugs[lang].contact}" class="block py-2.5 text-sm font-medium uppercase text-slate-700 hover:text-brand-red" onclick={() => (mobileMenuOpen = false)}>{t.nav.contact}</a>
+			{#each navItems as item}
+				<a
+					href={item.href}
+					class="block py-2.5 text-sm font-medium uppercase transition-colors {isActive(item.href)
+						? 'text-brand-red'
+						: 'text-slate-700 hover:text-brand-red'}"
+					onclick={() => (mobileMenuOpen = false)}
+				>
+					{item.label}
+				</a>
+			{/each}
 
 			<div class="flex items-center gap-1 pt-2 border-t border-slate-100">
 				{#each Object.keys(languages) as l}
@@ -128,9 +165,12 @@
 	{@render children()}
 </main>
 
+<!-- Site notice -->
+<SiteNotice {t} {lang} />
+
 <!-- WhatsApp floating button -->
 <a
-	href="https://wa.me/385957226918"
+	href={waHref()}
 	target="_blank"
 	rel="noopener noreferrer"
 	class="fixed bottom-6 right-6 z-50 bg-brand-green hover:brightness-110 text-white rounded-full p-4 shadow-lg transition-transform hover:scale-110"
@@ -164,10 +204,10 @@
 				<h3 class="text-white font-bold text-sm uppercase tracking-wide mb-4">{t.footer.howToReachUs}</h3>
 				<p class="text-sm mb-4">{t.footer.advisory}</p>
 				<div class="space-y-1.5 text-sm mt-4">
-					<p class="font-medium text-white">ADRESA:</p>
+					<p class="font-medium text-white">{t.footer.addressLabel}</p>
 					<p>{t.common.address}</p>
-					<p><a href="tel:+385957226918" class="hover:text-white transition-colors">{t.common.phone}</a></p>
-					<p><a href="mailto:sprinter@sprinter.hr" class="hover:text-white transition-colors">{t.common.email}</a></p>
+					<p><a href={telHref} class="hover:text-white transition-colors">{t.common.phone}</a></p>
+					<p><a href={mailHref} class="hover:text-white transition-colors">{t.common.email}</a></p>
 				</div>
 				<!-- Social links -->
 				<div class="flex gap-4 mt-4">
@@ -184,27 +224,12 @@
 			<div>
 				<h3 class="text-white font-bold text-sm uppercase tracking-wide mb-4">{t.contact.workingHours}</h3>
 				<p class="text-sm">{t.banner.hours}</p>
-				<h3 class="text-white font-bold text-sm uppercase tracking-wide mt-6 mb-4">{t.footer.newsletter}</h3>
-				<p class="text-sm mb-3">{t.footer.newsletter}</p>
-				<form class="flex gap-2">
-					<input
-						type="email"
-						placeholder={t.footer.emailPlaceholder}
-						class="flex-1 px-3 py-2 rounded bg-slate-700/50 text-white placeholder-slate-400 text-sm border border-slate-600 focus:outline-none focus:border-brand-green"
-					/>
-					<button
-						type="submit"
-						class="px-4 py-2 bg-brand-green text-white text-sm font-medium rounded hover:brightness-110 transition"
-					>
-						{t.footer.subscribe}
-					</button>
-				</form>
 			</div>
 
 			<!-- Complaint info -->
 			<div>
 				<h3 class="text-white font-bold text-sm uppercase tracking-wide mb-4">
-					{lang === 'hr' ? 'Obavijest o načinu podnošenja pisanog prigovora' : 'Complaint Submission Notice'}
+					{t.footer.complaintTitle}
 				</h3>
 				<p class="text-xs text-slate-400">{t.footer.complaint}</p>
 			</div>

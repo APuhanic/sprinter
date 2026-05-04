@@ -2,10 +2,10 @@ import hr from './hr';
 import en from './en';
 import de from './de';
 
-// All supported languages
-export const languages = { hr, en, de } as const;
-export type Lang = keyof typeof languages;
+export type Lang = 'hr' | 'en' | 'de';
 export type Translations = typeof hr;
+
+export const languages: Record<Lang, Translations> = { hr, en, de };
 
 // The default language — visitors hitting "/" get redirected here
 export const defaultLang: Lang = 'hr';
