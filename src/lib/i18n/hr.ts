@@ -4,26 +4,72 @@ export default {
 	lang: 'hr',
 	langName: 'Hrvatski',
 
-	// Nav
+	// Nav (compact labels for the top bar)
 	nav: {
 		home: 'Početna',
-		cleaning: 'Usluge čišćenja',
-		transport: 'Usluge prijevoza',
-		rental: 'Rent a Kombi/Car',
-		transfers: 'Luksuzni transferi',
+		cleaning: 'Čišćenje',
+		transport: 'Prijevoz',
+		rental: 'Najam vozila',
+		transfers: 'Transferi',
 		contact: 'Kontakt'
 	},
 
-	// Header banner
+	// Header banner / utility strip
 	banner: {
-		notice: 'Molimo vašu najavu prije dolaska',
-		address: contact.address,
+		notice: 'Trenutno primamo nove klijente',
+		address: 'Capelleri 5, Pula',
 		phone: contact.phone,
-		hours: 'Pon - Ned: 08h - 19h'
+		hours: 'Pon – Ned · 08—19h'
 	},
 
 	// Homepage
 	home: {
+		// Hero
+		eyebrow: 'Pula · Istra · od 2024.',
+		titleA: 'Dom dostojan',
+		titleB: 'razglednice',
+		sub: 'Profesionalno čišćenje u Puli i Istri — od apartmana i obiteljskih kuća, do ureda i jahti. Pažljivo, bez improvizacije.',
+		meta: [
+			{ label: 'Sjedište', text: 'Capelleri 5, Pula' },
+			{ label: 'Pokrivenost', text: 'Pula i okolica, do 30 km' },
+			{ label: 'Odgovor', text: 'Najavite dolazak — javljamo se isti dan' },
+			{ label: 'Plaćanje', text: 'Gotovina · Transakcijski račun' }
+		],
+		// Section heads
+		servicesEyebrow: '01 · Što radimo',
+		servicesTitle: 'Pet vrsta čišćenja, jedan tim',
+		servicesSub:
+			'Specijalizirani smo za turistički najam, gdje se vrijeme između gostiju mjeri u satima. Iste navike donosimo u sve ostalo što čistimo.',
+		otherEyebrow: '02 · I još',
+		otherTitle: 'Sprinter ne staje na čišćenju',
+		otherSub: 'Pomoćne usluge koje često idu uz turistički najam — istom rukom, istim brojem.',
+		processEyebrow: '03 · Kako radimo',
+		processTitle: 'Bez ekipa s ulice',
+		processSub:
+			'Stalna ekipa, vlastita oprema, pisani protokol za svaku vrstu objekta. Vlasnik dolazi na prvi termin.',
+		contactEyebrow: '04 · Kontakt',
+		contactTitle: 'Recite nam',
+		contactTitleAccent: 'što vam treba',
+		contactSub: 'WhatsApp je najbrži. Odgovor isti dan, najčešće unutar sata.',
+		// CTAs
+		ctaWhatsapp: 'WhatsApp',
+		ctaCall: 'Nazovite',
+		ctaServices: 'Sve usluge',
+		ctaLearn: 'Saznaj više',
+		ctaSeeAll: 'Otvori sve detalje',
+		// Hours strip labels
+		hoursLabel: 'Pon — Ned',
+		hoursValue: '08 — 19h',
+		// Marquee
+		marquee: [
+			'Apartmanski turnover',
+			'Dubinsko čišćenje',
+			'Redovno čišćenje',
+			'Uredi i poslovni prostori',
+			'Jahte i brodovi',
+			'Pula · Istra'
+		],
+		// Legacy carousel keys — kept for any code still referencing them
 		heroCleaningTitle: 'Profesionalno Čišćenje',
 		heroCleaningSubtitle: 'Usluge čišćenja za luksuzne nekretnine',
 		heroRentalTitle: 'Rent a Car\nRent a Kombi',
@@ -43,6 +89,320 @@ export default {
 		carouselPause: 'Pauziraj prezentaciju',
 		carouselPlay: 'Pokreni prezentaciju',
 		carouselGoTo: 'Idi na slajd'
+	},
+
+	// Cleaning services as shown on homepage row list (5 specialized lines)
+	homeServices: [
+		{
+			id: 'turnover',
+			num: '01',
+			name: 'Apartmanski turnover',
+			nameAccent: 'turnover',
+			short: 'Brzo i pouzdano čišćenje između gostiju, sa standardnim hotelskim protokolom.'
+		},
+		{
+			id: 'deep',
+			num: '02',
+			name: 'Dubinsko čišćenje',
+			nameAccent: 'Dubinsko',
+			short:
+				'Sezonska ili jednokratna obrada do detalja — kuhinja, kupaona, fuga, pećnica, prozori.'
+		},
+		{
+			id: 'regular',
+			num: '03',
+			name: 'Redovno čišćenje',
+			nameAccent: 'Redovno',
+			short: 'Tjedni ili dvotjedni termini za stanove i kuće — fiksna ekipa, fiksno vrijeme.'
+		},
+		{
+			id: 'office',
+			num: '04',
+			name: 'Uredsko čišćenje',
+			nameAccent: 'Uredsko',
+			short: 'Čišćenje ureda i poslovnih prostora — diskretno, izvan radnog vremena.'
+		},
+		{
+			id: 'yacht',
+			num: '05',
+			name: 'Čišćenje jahti i brodova',
+			nameAccent: 'jahti',
+			short: 'Interijer i eksterijer plovila — između charter tjedana ili sezonski.'
+		}
+	],
+
+	// Sister services strip (Transport / Rental / Transfers)
+	otherServices: [
+		{
+			tag: 'Prijevoz',
+			title: 'Sprinter Transport',
+			desc: 'Selidbe, dostave, manji prijevozi po Istri.',
+			slug: 'transport' as const
+		},
+		{
+			tag: 'Najam',
+			title: 'Rent a Car / Kombi',
+			desc: 'Putnička i teretna vozila — moguća dostava.',
+			slug: 'rental' as const
+		},
+		{
+			tag: 'Transferi',
+			title: 'Luksuzni transferi',
+			desc: 'Osobni vozač, premium vozilo, 0-24.',
+			slug: 'transfers' as const
+		}
+	],
+
+	// Process steps
+	process: [
+		{
+			num: 'I',
+			title: 'Pišite ili nazovite',
+			desc: 'WhatsApp je najbrži kanal. Recite nam što čistimo, gdje, i kad.'
+		},
+		{
+			num: 'II',
+			title: 'Dogovor i ponuda',
+			desc: 'Pisana ponuda u istom danu. Za veće objekte dolazimo na uvid.'
+		},
+		{
+			num: 'III',
+			title: 'Čišćenje',
+			desc: 'Stalna ekipa, vlastita oprema. Bez podizvođača.'
+		},
+		{
+			num: 'IV',
+			title: 'Provjera',
+			desc: 'Foto-izvještaj po završetku. Račun mailom, plaćanje na kraju mjeseca.'
+		}
+	],
+
+	// Owner panel — pulls in the founder from the existing cleaning copy
+	owner: {
+		eyebrow: 'Tko stoji iza Sprintera',
+		quote: 'Mali tim, vlastita oprema, jedan broj — ',
+		quoteAccent: 'nazoveš i znaš tko dolazi.',
+		name: 'Zvjezdana Puhanić',
+		role: 'Direktorica · Sprinter Pula',
+		bio: 'Sprintera vodim iz Pule. Na svaki prvi termin dolazim osobno — da vidim prostor, dogovorim ritam i znam što vam treba. Sve nakon toga ide kroz stalnu ekipu koju ste već upoznali.',
+		portrait: 'Portret vlasnice'
+	},
+
+	// Cleaning page (new design)
+	cleaningPage: {
+		eyebrow: 'Usluga · 01',
+		titleA: 'Profesionalno',
+		titleB: 'čišćenje',
+		sub: 'Pet vrsta usluga čišćenja u Puli i diljem Istre. Specijalisti za turistički najam, jednako pažljivi prema svemu ostalom.',
+		index: 'Indeks',
+		areasEyebrow: 'Pokrivamo',
+		areasTitle: 'Pula i šira Istra',
+		areasSub:
+			'Dolazimo s opremom. Za područja izvan Pule moguća dostava — javite se za potvrdu.',
+		processEyebrow: 'Postupak',
+		processTitle: 'Bez ekipa s ulice',
+		processSub: 'Stalna ekipa, vlastita oprema, isti vlasnik na svakoj prvoj smjeni.',
+		testiEyebrow: 'Što kažu',
+		testiTitle: 'Recenzije stižu',
+		testiSub:
+			'Tek smo krenuli s čišćenjem — recenzije ćemo dodavati od ljeta. Strpljenje, stiže.',
+		testiPlaceholder: 'Ovdje će ići recenzija stvarnog klijenta. Po jedna iz svake kategorije.',
+		testiClient: 'Ime klijenta',
+		testiRoles: ['Vlasnik apartmana', 'Obiteljska kuća', 'Ured'],
+		testiTagPlaceholder: '[ placeholder ]',
+		faqEyebrow: 'Često pitano',
+		faqTitle: 'Što obično pitaju',
+		faqAccent: 'pitaju',
+		faqSub: 'Ako nešto nije ovdje, pišite nam — odgovaramo u istom danu.',
+		priceLabel: 'Cijena',
+		sendInquiry: 'Pošalji upit'
+	},
+
+	// Per-service detail (used on cleaning page)
+	cleaningServices: [
+		{
+			id: 'turnover',
+			num: '01',
+			name: 'Apartmanski turnover',
+			nameAccent: 'turnover',
+			long:
+				'Najam apartmana ne dopušta improvizaciju. Mi ulazimo nakon odjave, odlazimo prije prijave, a vi ne morate brinuti.',
+			bullets: [
+				'Standardni protokol u 24 koraka',
+				'Promjena posteljine i ručnika (donosimo)',
+				'Prijava nedostataka uz fotografije',
+				'Potvrda spremnosti prije prijave gosta',
+				'Hitne intervencije unutar 2 sata'
+			],
+			price: 'od 80 €',
+			priceNote: 'po objektu',
+			photoTag: 'Apartmanska kuhinja, posprema'
+		},
+		{
+			id: 'deep',
+			num: '02',
+			name: 'Dubinsko čišćenje',
+			nameAccent: 'Dubinsko',
+			long:
+				'Sve ono što redovno čišćenje preskoči. Tipično prije sezone, nakon zime, ili prije ulaska u novi prostor.',
+			bullets: [
+				'Pećnica, hladnjak iznutra, ploča',
+				'Fuge, silikoni, kupaonska keramika',
+				'Prozori i prozorske letvice',
+				'Iza i ispod namještaja',
+				'Sredstva uključena'
+			],
+			price: 'od 18 €/h',
+			priceNote: 'minimalno 4h',
+			photoTag: 'Detalj, kuhinja prije/poslije'
+		},
+		{
+			id: 'regular',
+			num: '03',
+			name: 'Redovno čišćenje',
+			nameAccent: 'Redovno',
+			long:
+				'Dolazimo redovno, na isti dan i u isto vrijeme. Vodimo evidenciju, znamo gdje je što.',
+			bullets: [
+				'Fiksna ekipa, fiksni termin',
+				'Tjedno, dvotjedno ili mjesečno',
+				'Sredstva uključena',
+				'Mogućnost ključa na povjerenje',
+				'Otkaz bez naknade do 24h prije'
+			],
+			price: 'od 16 €/h',
+			priceNote: 'minimalno 3h',
+			photoTag: 'Dnevni boravak, mokri pod'
+		},
+		{
+			id: 'office',
+			num: '04',
+			name: 'Uredsko čišćenje',
+			nameAccent: 'Uredsko',
+			long:
+				'Radimo u ranim jutarnjim ili kasnim večernjim terminima, bez ometanja vašeg tima.',
+			bullets: [
+				'Termini izvan radnog vremena',
+				'Praznjenje koševa, dezinfekcija površina',
+				'Sanitarije, zajednički prostori',
+				'Mjesečno fakturiranje, R1 račun',
+				'NDA na zahtjev'
+			],
+			price: 'po dogovoru',
+			priceNote: 'ovisno o m²',
+			photoTag: 'Ured, recepcijski pult'
+		},
+		{
+			id: 'yacht',
+			num: '05',
+			name: 'Čišćenje jahti i brodova',
+			nameAccent: 'jahti',
+			long:
+				'Specijalizirana sredstva, posebno se bavimo plovilima, znamo razliku između teaka i gelcoata.',
+			bullets: [
+				'Charter turnover (subota)',
+				'Interijer: kabine, salon, kuhinja',
+				'Eksterijer: paluba, fly, oprema',
+				'Sredstva sigurna za morsko okruženje',
+				'Ne radimo poliranje trupa'
+			],
+			price: 'od 100 €',
+			priceNote: 'po danu charteru',
+			photoTag: 'Jahta, paluba & teak'
+		}
+	],
+
+	// Areas covered
+	areas: [
+		{ name: 'Pula', primary: true },
+		{ name: 'Medulin', primary: true },
+		{ name: 'Banjole', primary: true },
+		{ name: 'Premantura', primary: true },
+		{ name: 'Vodnjan', primary: false },
+		{ name: 'Fažana', primary: false },
+		{ name: 'Štinjan', primary: false },
+		{ name: 'Peroj', primary: false },
+		{ name: 'Rovinj', primary: false },
+		{ name: 'Bale', primary: false },
+		{ name: 'Barban', primary: false },
+		{ name: 'Marčana', primary: false }
+	],
+
+	// FAQ
+	faq: [
+		{
+			q: 'Donosite li sredstva i opremu?',
+			a: 'Da. Donosimo sva profesionalna sredstva, krpe, mopove i usisivače. Vi samo trebate dogovoriti pristup.'
+		},
+		{
+			q: 'Trebam li ostaviti depozit?',
+			a: 'Za jednokratne usluge — ne. Za redovne mjesečne aranžmane plaćanje je krajem mjeseca po izvršenom poslu, najčešće transakcijski uz R1 račun.'
+		},
+		{
+			q: 'Što ako nešto oštetimo?',
+			a: 'Imamo policu osiguranja od profesionalne odgovornosti. Oštećenja prijavljujemo pisano s fotografijama i nadoknađujemo kroz osiguranje.'
+		},
+		{
+			q: 'Radite li hitne intervencije isti dan?',
+			a: 'Za apartmanski turnover — da, ako nas javite do 10h ujutro. Ostale usluge — najčešće idući radni dan.'
+		},
+		{
+			q: 'Izdajete li R1 račun?',
+			a: 'Da, R1 račun na ime tvrtke ili obrta. Mjesečno fakturiranje za ugovorne klijente, redovita uplata na žiro.'
+		},
+		{
+			q: 'Što s ljubimcima i alergijama?',
+			a: 'Recite nam unaprijed. Imamo sredstva primjerena za životinje i hipoalergene varijante. Bez mirisa na zahtjev.'
+		},
+		{
+			q: 'Koja je razlika između redovnog i dubinskog čišćenja?',
+			a: 'Redovno održava prostor čistim — usisava, briše, sanitarije, kuhinja, površine. Dubinsko ide u detalje koje redovno preskoči — pećnica iznutra, fuge, prozori, iza i ispod namještaja, kupaonska keramika.'
+		},
+		{
+			q: 'Kako pristupate apartmanu kad nisam tamo?',
+			a: 'Najčešće sef za ključeve ili šifra na vratima. Za stalne klijente — ključ na povjerenje, evidentirani izlasci. Sve foto-dokumentirano.'
+		}
+	],
+
+	// Quote calculator
+	calc: {
+		eyebrow: 'Procjena cijene',
+		title: 'Provjeri cijenu',
+		titleAccent: 'cijenu',
+		sub: 'Indikativna procjena u minuti. Konačna cijena nakon kratkog WhatsApp dogovora.',
+		typeLabel: 'Vrsta usluge',
+		sizeLabel: 'Veličina prostora',
+		freqLabel: 'Učestalost',
+		types: [
+			{ id: 'turnover' as const, label: 'Apartman turnover' },
+			{ id: 'deep' as const, label: 'Dubinsko' },
+			{ id: 'regular' as const, label: 'Redovno' },
+			{ id: 'office' as const, label: 'Uredsko' },
+			{ id: 'yacht' as const, label: 'Jahta / brod' }
+		],
+		freqs: [
+			{ id: 'oneoff' as const, label: 'Jednokratno' },
+			{ id: 'weekly' as const, label: 'Tjedno' },
+			{ id: 'fortnight' as const, label: 'Dvotjedno' },
+			{ id: 'monthly' as const, label: 'Mjesečno' }
+		],
+		estimateLabel: 'Procjena',
+		cta: 'Pošalji upit na WhatsApp',
+		yachtNote:
+			'Za plovila javite duljinu i vrstu — cijena ovisi o tipu palube i opremi.',
+		msgPrefix: 'Pozdrav, zanima me',
+		msgFor: 'čišćenje za prostor ~',
+		msgEstimate: '. Vidio sam procjenu',
+		msgCanYou: 'Možete li mi javiti detalje?'
+	},
+
+	// Footer (extended for the new design)
+	footerNew: {
+		tag: 'Profesionalno čišćenje u Puli i Istri',
+		colsServices: 'Usluge',
+		colsCompany: 'Tvrtka',
+		colsContact: 'Kontakt',
+		legal: ['© 2026 Sprinter d.o.o.', 'Pravila privatnosti', 'Uvjeti najma', 'Cookies']
 	},
 
 	// Cleaning page
