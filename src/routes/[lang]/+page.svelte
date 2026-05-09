@@ -1,173 +1,277 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { slugs } from '$lib/i18n';
-	import { onMount } from 'svelte';
+	import { telHref, mailHref, waHref } from '$lib/contact';
 
 	let { data }: { data: PageData } = $props();
 	let lang = $derived(data.lang);
 	let t = $derived(data.t);
 
-	let slides = $derived([
-		{
-			href: `/${lang}/${slugs[lang].cleaning}`,
-			imageWebp: '/images/hero/cleaning-hero.webp',
-			imageJpg: '/images/hero/cleaning-hero.jpg',
-			title: t.home.heroCleaningTitle,
-			subtitle: t.home.heroCleaningSubtitle,
-			cta: t.home.learnMore
-		},
-		{
-			href: `/${lang}/${slugs[lang].rental}`,
-			imageWebp: '/images/hero/rental-hero.webp',
-			imageJpg: '/images/hero/rental-hero.jpg',
-			title: t.home.heroRentalTitle,
-			subtitle: t.home.heroRentalSubtitle,
-			cta: t.home.requestQuote
-		},
-		{
-			href: `/${lang}/${slugs[lang].transport}`,
-			imageWebp: '/images/transport/prijevoz-1.jpg',
-			imageJpg: '/images/transport/prijevoz-1.jpg',
-			title: t.home.heroTransportTitle,
-			subtitle: t.home.heroTransportSubtitle,
-			cta: t.home.learnMore
-		},
-		{
-			href: `/${lang}/${slugs[lang].transfers}`,
-			imageWebp: '/images/transfers/e-class.webp',
-			imageJpg: '/images/transfers/e-class.jpg',
-			title: t.home.heroTransfersTitle,
-			subtitle: t.home.heroTransfersSubtitle,
-			cta: t.home.learnMore
-		}
-	]);
+	let cleaningHref = $derived(`/${lang}/${slugs[lang].cleaning}`);
+	let otherHref = $derived((slug: 'transport' | 'rental' | 'transfers') =>
+		`/${lang}/${slugs[lang][slug]}`
+	);
 
-	let currentSlide = $state(0);
-	let isHovered = $state(false);
-	let isPlaying = $state(true);
-	let prefersReducedMotion = $state(false);
-
-	function nextSlide() {
-		currentSlide = (currentSlide + 1) % slides.length;
-	}
-
-	function prevSlide() {
-		currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-	}
-
-	onMount(() => {
-		const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-		prefersReducedMotion = mq.matches;
-		if (mq.matches) isPlaying = false;
-
-		const onChange = (e: MediaQueryListEvent) => {
-			prefersReducedMotion = e.matches;
-			if (e.matches) isPlaying = false;
-		};
-		mq.addEventListener('change', onChange);
-
-		const interval = setInterval(() => {
-			if (isPlaying && !isHovered) nextSlide();
-		}, 6000);
-
-		return () => {
-			clearInterval(interval);
-			mq.removeEventListener('change', onChange);
-		};
-	});
+	// Marquee items doubled so the loop seams don't show
+	let marqueeItems = $derived([...t.home.marquee, ...t.home.marquee]);
 </script>
 
 <svelte:head>
-	<title>Sprinter d.o.o. — {t.nav.home}</title>
+	<title>Sprinter — {t.nav.cleaning}, Pula i Istra</title>
+	<meta
+		name="description"
+		content={t.home.sub}
+	/>
 </svelte:head>
 
-<!-- Hero carousel -->
-<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-<section
-	class="relative h-[420px] md:h-[600px] overflow-hidden bg-slate-900"
-	aria-label="Featured services"
-	aria-roledescription="carousel"
-	onmouseenter={() => (isHovered = true)}
-	onmouseleave={() => (isHovered = false)}
-	onfocusin={() => (isHovered = true)}
-	onfocusout={() => (isHovered = false)}
->
-	{#each slides as slide, i}
-		<a
-			href={slide.href}
-			class="absolute inset-0 group transition-opacity duration-700 ease-in-out {i === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}"
-			aria-hidden={i !== currentSlide}
-			tabindex={i === currentSlide ? 0 : -1}
-		>
-			<picture>
-				<source srcset={slide.imageWebp} type="image/webp" />
-				<img
-					src={slide.imageJpg}
-					alt={slide.title}
-					loading={i === 0 ? 'eager' : 'lazy'}
-					decoding="async"
-					fetchpriority={i === 0 ? 'high' : 'auto'}
-					class="absolute inset-0 w-full h-full object-cover transition-transform duration-[7000ms] ease-out {i === currentSlide ? 'scale-105' : 'scale-100'}"
-				/>
-			</picture>
-			<div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/20"></div>
-			<div class="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-6">
-				<h2 class="text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-lg whitespace-pre-line">{slide.title}</h2>
-				<p class="text-lg md:text-2xl opacity-95 mb-8 max-w-2xl drop-shadow">{slide.subtitle}</p>
-				<span class="inline-block border-2 border-white px-8 py-3 text-sm md:text-base font-semibold rounded hover:bg-white hover:text-slate-900 transition-colors">
-					{slide.cta}
-				</span>
+<main class="page-fade">
+	<!-- Hero — typographic -->
+	<section class="hero" data-variant="typographic">
+		<div class="wrap">
+			<div class="eyebrow" style="margin-bottom:32px;">{t.home.eyebrow}</div>
+			<h1 class="hero__title display">
+				{t.home.titleA} <em>{t.home.titleB}</em>.
+			</h1>
+			<p class="lede hero__sub">{t.home.sub}</p>
+			<div class="hero__cta">
+				<a
+					class="btn btn--primary"
+					data-variant="pill"
+					href={waHref()}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="flex-shrink:0;">
+						<circle cx="7" cy="7" r="6" fill="#25D366" />
+						<path
+							d="M4.6 5.2c.1-.4.4-.5.6-.5h.4c.1 0 .2.1.3.3l.4.9c.1.2 0 .3 0 .4l-.3.4c.4.7.9 1.2 1.6 1.6l.4-.3c.1-.1.2-.1.4 0l.9.4c.2.1.3.2.3.3v.4c0 .3-.2.5-.5.6-.4.1-.8.1-1.2 0a4.6 4.6 0 0 1-3-3c-.1-.4-.1-.8 0-1.1z"
+							fill="#fff"
+						/>
+					</svg>
+					<span>{t.home.ctaWhatsapp}</span>
+					<span class="arrow" aria-hidden="true" style="margin-left:4px;">→</span>
+				</a>
+				<a class="btn btn--ghost" data-variant="pill" href={telHref}>
+					{t.home.ctaCall} · {t.banner.phone}
+				</a>
 			</div>
-		</a>
-	{/each}
+			<div class="hero__meta">
+				{#each t.home.meta as m}
+					<div class="hero__meta-item">
+						<h5>{m.label}</h5>
+						<p>{m.text}</p>
+					</div>
+				{/each}
+			</div>
+		</div>
+	</section>
 
-	<!-- Prev / next buttons -->
-	<button
-		type="button"
-		onclick={prevSlide}
-		class="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/90 text-white hover:text-slate-900 rounded-full p-3 backdrop-blur-sm transition-colors focus:outline-none focus:ring-2 focus:ring-white"
-		aria-label={t.home.carouselPrev}
-	>
-		<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-		</svg>
-	</button>
-	<button
-		type="button"
-		onclick={nextSlide}
-		class="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/90 text-white hover:text-slate-900 rounded-full p-3 backdrop-blur-sm transition-colors focus:outline-none focus:ring-2 focus:ring-white"
-		aria-label={t.home.carouselNext}
-	>
-		<svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-		</svg>
-	</button>
-
-	<!-- Dots + pause control -->
-	<div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
-		<div class="flex gap-2">
-			{#each slides as _, i}
-				<button
-					type="button"
-					onclick={() => (currentSlide = i)}
-					class="h-2 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-slate-900 {i === currentSlide ? 'w-8 bg-white' : 'w-2 bg-white/50 hover:bg-white/75'}"
-					aria-label="{t.home.carouselGoTo} {i + 1}"
-					aria-current={i === currentSlide}
-				></button>
+	<!-- Marquee -->
+	<div class="marquee" aria-hidden="true">
+		<div class="marquee__track">
+			{#each marqueeItems as it}
+				<span>{it}</span>
 			{/each}
 		</div>
-		<button
-			type="button"
-			onclick={() => (isPlaying = !isPlaying)}
-			class="ml-1 bg-white/20 hover:bg-white/90 text-white hover:text-slate-900 rounded-full p-1.5 backdrop-blur-sm transition-colors focus:outline-none focus:ring-2 focus:ring-white"
-			aria-label={isPlaying ? t.home.carouselPause : t.home.carouselPlay}
-		>
-			{#if isPlaying}
-				<svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z" /></svg>
-			{:else}
-				<svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-			{/if}
-		</button>
 	</div>
-</section>
 
+	<!-- Services -->
+	<section class="section" id="services-anchor">
+		<div class="wrap">
+			<div class="section-head">
+				<div>
+					<div class="eyebrow">{t.home.servicesEyebrow}</div>
+				</div>
+				<div>
+					<h2 class="section-title">{t.home.servicesTitle}</h2>
+					<p class="section-sub" style="margin-top:24px;">{t.home.servicesSub}</p>
+				</div>
+			</div>
+
+			<div class="service-grid">
+				{#each t.homeServices as s}
+					{@const idx = s.name.toLowerCase().indexOf(s.nameAccent.toLowerCase())}
+					<a class="service" href="{cleaningHref}#{s.id}">
+						<div class="service__num">{s.num}</div>
+						<h3 class="service__name display">
+							{#if idx >= 0}
+								{s.name.slice(0, idx)}<em>{s.name.slice(idx, idx + s.nameAccent.length)}</em>{s.name.slice(idx + s.nameAccent.length)}
+							{:else}
+								{s.name}
+							{/if}
+						</h3>
+						<p class="service__desc">{s.short}</p>
+						<div class="service__cta">
+							{t.home.ctaLearn} <span style="margin-left:6px;">→</span>
+						</div>
+					</a>
+				{/each}
+			</div>
+
+			<div style="margin-top:48px; display:flex; justify-content:flex-end;">
+				<a class="btn btn--ghost" data-variant="pill" href={cleaningHref}>
+					{t.home.ctaSeeAll}
+					<span class="arrow" aria-hidden="true">→</span>
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- Hours strip -->
+	<div class="hours-strip">
+		<div>
+			<h5>WhatsApp</h5>
+			<p>{t.banner.phone}</p>
+		</div>
+		<div>
+			<h5>Email</h5>
+			<p>{t.common.email}</p>
+		</div>
+		<div>
+			<h5>{t.home.hoursLabel}</h5>
+			<p>{t.home.hoursValue}</p>
+		</div>
+	</div>
+
+	<!-- Process -->
+	<section class="section">
+		<div class="wrap">
+			<div class="section-head">
+				<div>
+					<div class="eyebrow">{t.home.processEyebrow}</div>
+				</div>
+				<div>
+					<h2 class="section-title">{t.home.processTitle}</h2>
+					<p class="section-sub" style="margin-top:24px;">{t.home.processSub}</p>
+				</div>
+			</div>
+			<div class="steps">
+				{#each t.process as s}
+					<div class="step">
+						<div class="step__num">STEP {s.num}</div>
+						<h4 class="step__title">{s.title}</h4>
+						<p class="step__desc">{s.desc}</p>
+					</div>
+				{/each}
+			</div>
+		</div>
+	</section>
+
+	<!-- Owner -->
+	<section class="section">
+		<div class="wrap">
+			<div class="eyebrow" style="margin-bottom:32px;">{t.owner.eyebrow}</div>
+			<div class="owner">
+				<div class="owner__portrait ph" aria-label="Placeholder: {t.owner.portrait}">
+					<span class="ph__label">[ {t.owner.portrait} ]</span>
+				</div>
+				<div>
+					<p class="owner__quote">
+						"{t.owner.quote}<em>{t.owner.quoteAccent}</em>"
+					</p>
+					<p class="fg-muted" style="margin-top:28px; font-size:16px; line-height:1.55; max-width:52ch;">
+						{t.owner.bio}
+					</p>
+					<div class="owner__sig">
+						<strong>{t.owner.name}</strong>
+						<span>{t.owner.role}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Other services -->
+	<section class="section section--tight">
+		<div class="wrap">
+			<div class="section-head">
+				<div>
+					<div class="eyebrow">{t.home.otherEyebrow}</div>
+				</div>
+				<div>
+					<h2 class="section-title">{t.home.otherTitle}</h2>
+					<p class="section-sub" style="margin-top:24px;">{t.home.otherSub}</p>
+				</div>
+			</div>
+			<div class="other-grid">
+				{#each t.otherServices as o}
+					<a class="other-card" href={otherHref(o.slug)}>
+						<div>
+							<div class="tag">{o.tag}</div>
+							<h3 style="margin-top:12px;">{o.title}</h3>
+							<p>{o.desc}</p>
+						</div>
+						<span
+							class="btn btn--primary"
+							data-variant="minimal"
+							style="align-self:flex-start;"
+						>
+							{t.home.ctaLearn}
+							<span class="arrow" aria-hidden="true">→</span>
+						</span>
+					</a>
+				{/each}
+			</div>
+		</div>
+	</section>
+
+	<!-- Contact island -->
+	<section class="section section--tight">
+		<div class="wrap">
+			<div class="contact-island">
+				<div>
+					<div
+						class="eyebrow"
+						style="color:rgba(255,255,255,0.5); margin-bottom:18px;"
+					>
+						{t.home.contactEyebrow}
+					</div>
+					<h2>
+						{t.home.contactTitle} <em>{t.home.contactTitleAccent}</em>.
+					</h2>
+					<p class="small" style="margin-top:18px; max-width:44ch;">{t.home.contactSub}</p>
+					<div class="ctas">
+						<a
+							class="btn btn--primary"
+							data-variant="pill"
+							href={waHref()}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="flex-shrink:0;">
+								<circle cx="7" cy="7" r="6" fill="#25D366" />
+								<path
+									d="M4.6 5.2c.1-.4.4-.5.6-.5h.4c.1 0 .2.1.3.3l.4.9c.1.2 0 .3 0 .4l-.3.4c.4.7.9 1.2 1.6 1.6l.4-.3c.1-.1.2-.1.4 0l.9.4c.2.1.3.2.3.3v.4c0 .3-.2.5-.5.6-.4.1-.8.1-1.2 0a4.6 4.6 0 0 1-3-3c-.1-.4-.1-.8 0-1.1z"
+									fill="#fff"
+								/>
+							</svg>
+							<span>{t.home.ctaWhatsapp}</span>
+							<span class="arrow" aria-hidden="true" style="margin-left:4px;">→</span>
+						</a>
+						<a class="btn btn--ghost" data-variant="pill" href={telHref}>
+							{t.home.ctaCall} · {t.banner.phone}
+						</a>
+					</div>
+				</div>
+				<dl class="info">
+					<div>
+						<dt>{t.home.hoursLabel}</dt>
+						<dd>{t.banner.hours}</dd>
+					</div>
+					<div>
+						<dt>{lang === 'hr' ? 'Adresa' : lang === 'de' ? 'Adresse' : 'Address'}</dt>
+						<dd>{t.banner.address}</dd>
+					</div>
+					<div>
+						<dt>WhatsApp</dt>
+						<dd>{t.banner.phone}</dd>
+					</div>
+					<div>
+						<dt>Email</dt>
+						<dd>{t.common.email}</dd>
+					</div>
+				</dl>
+			</div>
+		</div>
+	</section>
+</main>
