@@ -49,7 +49,17 @@
       "mcp__chrome-devtools__wait_for",
       "Bash(git status *)",
       "Bash(git diff *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "WebFetch(domain:api.anthropic.com)",
+      "Bash(mkdir -p design-extract)",
+      "Bash(tar -xzvf webfetch-1778339796344-sfgijt.bin -C design-extract)",
+      "Bash(mkdir -p \"D:/Projects/sprinter/static/_design-ref\")",
+      "Bash(cp -r \"C:/Users/puhan/.claude/projects/D--Projects-sprinter/cc01f431-c9ba-4708-bd5a-9a97a1655e40/tool-results/design-extract/sprinter/project/.\" \"D:/Projects/sprinter/static/_design-ref/\")",
+      "Bash(tasklist)",
+      "Bash(wmic process *)",
+      "PowerShell(Get-CimInstance *)",
+      "mcp__chrome-devtools__list_console_messages",
+      "Bash(git checkout *)"
     ]
   }
 }
