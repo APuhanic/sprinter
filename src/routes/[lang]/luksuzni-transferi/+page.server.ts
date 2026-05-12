@@ -2,13 +2,22 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import { sendInquiry, renderInquiryHtml, renderInquiryText } from '$lib/server/mail';
 import { FORM_MAX } from '$lib/server/formLimits';
+import { checkRateLimit } from '$lib/server/rateLimit';
 
 export const actions: Actions = {
-	default: async ({ request, params }) => {
+	default: async ({ request, params, getClientAddress }) => {
 		const form = await request.formData();
 
 		if (form.get('website')) {
 			return { success: true };
+		}
+
+		const rl = checkRateLimit(`form:${getClientAddress()}`, 5, 60 * 60 * 1000);
+		if (!rl.ok) {
+			return fail(429, {
+				serverError: 'Previše pokušaja. Pokušajte ponovno za malo.',
+				retryAfter: rl.retryAfter
+			});
 		}
 
 		const firstName = String(form.get('firstName') ?? '').trim();

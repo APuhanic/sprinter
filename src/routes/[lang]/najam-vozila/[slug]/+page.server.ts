@@ -3,6 +3,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { vehicles } from '$lib/data/vehicles';
 import { sendInquiry, renderInquiryHtml, renderInquiryText } from '$lib/server/mail';
 import { FORM_MAX } from '$lib/server/formLimits';
+import { checkRateLimit } from '$lib/server/rateLimit';
 
 export const load: PageServerLoad = ({ params }) => {
 	const vehicle = vehicles.find((v) => v.slug === params.slug);
@@ -11,7 +12,7 @@ export const load: PageServerLoad = ({ params }) => {
 };
 
 export const actions: Actions = {
-	default: async ({ request, params }) => {
+	default: async ({ request, params, getClientAddress }) => {
 		const form = await request.formData();
 
 		if (form.get('website')) {
@@ -20,6 +21,14 @@ export const actions: Actions = {
 
 		const vehicle = vehicles.find((v) => v.slug === params.slug);
 		if (!vehicle) throw error(404);
+
+		const rl = checkRateLimit(`form:${getClientAddress()}`, 5, 60 * 60 * 1000);
+		if (!rl.ok) {
+			return fail(429, {
+				serverError: 'Previše pokušaja. Pokušajte ponovno za malo.',
+				retryAfter: rl.retryAfter
+			});
+		}
 
 		const name = String(form.get('name') ?? '').trim();
 		const email = String(form.get('email') ?? '').trim();
