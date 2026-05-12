@@ -13,6 +13,9 @@
 		<p class="text-brand-red text-7xl md:text-8xl font-extrabold tracking-tight">{status}</p>
 		<h1 class="text-2xl md:text-3xl font-bold text-slate-900 mt-4">Stranica nije pronađena</h1>
 		<p class="text-slate-600 mt-3">Page not found · Seite nicht gefunden</p>
+		{#if $page.error?.errorId}
+			<p class="text-slate-400 text-xs mt-4 font-mono">Ref: {$page.error.errorId}</p>
+		{/if}
 		<div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
 			<a
 				href="/hr"
