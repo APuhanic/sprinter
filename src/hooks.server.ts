@@ -25,6 +25,33 @@ export const handleError: HandleServerError = ({ error, event, status, message }
 	};
 };
 
+const CSP = [
+	"default-src 'self'",
+	"script-src 'self' 'unsafe-inline'",
+	"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+	"font-src 'self' https://fonts.gstatic.com",
+	"img-src 'self' data:",
+	"frame-src 'self' https://www.google.com",
+	"connect-src 'self'",
+	"frame-ancestors 'self'",
+	"base-uri 'self'",
+	"form-action 'self'",
+	"object-src 'none'",
+	'upgrade-insecure-requests'
+].join('; ');
+
+function applySecurityHeaders(headers: Headers) {
+	headers.set('Strict-Transport-Security', 'max-age=15552000');
+	headers.set('X-Content-Type-Options', 'nosniff');
+	headers.set('X-Frame-Options', 'DENY');
+	headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+	headers.set(
+		'Permissions-Policy',
+		'camera=(), microphone=(), geolocation=(), interest-cohort=(), payment=(), usb=()'
+	);
+	headers.set('Content-Security-Policy', CSP);
+}
+
 export const handle: Handle = async ({ event, resolve }) => {
 	// 301 redirects for legacy WordPress URLs — MUST run before lang resolution.
 	// During prerender SvelteKit blocks reading url.search/searchParams; treat as empty.
@@ -42,7 +69,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const segment = event.url.pathname.split('/')[1] ?? '';
 	const lang = isValidLang(segment) ? segment : defaultLang;
 
-	return resolve(event, {
+	const response = await resolve(event, {
 		transformPageChunk: ({ html }) => html.replace('%paramLang%', lang)
 	});
+
+	applySecurityHeaders(response.headers);
+	return response;
 };
