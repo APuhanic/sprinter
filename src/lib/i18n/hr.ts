@@ -71,10 +71,10 @@ export default {
 		],
 		// Legacy carousel keys — kept for any code still referencing them
 		heroCleaningTitle: 'Profesionalno Čišćenje',
-		heroCleaningSubtitle: 'Usluge čišćenja za luksuzne nekretnine',
+		heroCleaningSubtitle: 'Usluge čišćenja za privatne nekretnine',
 		heroRentalTitle: 'Rent a Car\nRent a Kombi',
 		heroRentalSubtitle: 'Moguća dostava vozila',
-		heroTransfersTitle: 'Osobni vozači i luksuzni transferi',
+		heroTransfersTitle: 'Osobni vozači i privatni transferi',
 		heroTransfersSubtitle: 'Usluga dostupna 0-24',
 		heroTransportTitle: 'Sprinter Transport',
 		heroTransportSubtitle: 'Pametna logistika na istarskim cestama',
@@ -147,7 +147,7 @@ export default {
 		},
 		{
 			tag: 'Transferi',
-			title: 'Luksuzni transferi',
+			title: 'Privatni transferi',
 			desc: 'Osobni vozač, premium vozilo, 0-24.',
 			slug: 'transfers' as const
 		}
@@ -413,7 +413,7 @@ export default {
 		visionPara1:
 			'Moje ime je Zvjezdana Puhanić. Kao direktorica tvrtke, svoj poziv ne vidim kao puki servis za čišćenje, već kao misiju vraćanja sjaja i sklada u Vaš životni prostor.',
 		visionPara2:
-			'Vjerujem da luksuzan prostor zaslužuje više od „običnog spremanja“ – on zaslužuje njemačku disciplinu, apsolutnu diskreciju i oko koje vidi ono što drugima promiče.',
+			'Vjerujem da privatan prostor zaslužuje više od „običnog spremanja“ – on zaslužuje njemačku disciplinu, apsolutnu diskreciju i oko koje vidi ono što drugima promiče.',
 		visionPara3:
 			'Svoje profesionalno iskustvo brusila sam u hotelijerstvu, gdje sam usvojila beskompromisne standarde organizacije i pedantnosti. Posljednji niz godina posvetila sam isključivo održavanju ekskluzivnih vila i rezidencija u Njemačkoj, shvaćajući da klijenti moga profila ne traže običnu radnu snagu, već partnera od povjerenja sa svom potrebnom vještinom.',
 		visionPara4:
@@ -426,7 +426,7 @@ export default {
 			'Vaša vila nije samo nekretnina, ona je Vaše utočište. Specijalizirana sam za cjelokupni ciklus brige o Vašem domu: od detaljne pripreme objekta prije Vašeg dolaska, preko diskretnog održavanja tijekom Vašeg boravka, pa sve do temeljite konzervacije prostora nakon odlaska. Moj cilj je da svaki put kada otvorite vrata, imate osjećaj da ulazite u potpuno nov, tek namješten dom.',
 		accommodationsTitle: 'Smještaj najviše kategorije',
 		accommodationsDesc:
-			'Luksuzni apartmani, boutique hoteli i jahte zahtijevaju više od čišćenja – zahtijevaju poznavanje materijala. Bilo da je riječ o njezi plemenitog drva (tikovine), prirodnog kamena, visoko poliranih površina ili osjetljivih tkanina, moji postupci su prilagođeni očuvanju njihove dugovječnosti.',
+			'Privatni apartmani, boutique hoteli i jahte zahtijevaju više od čišćenja – zahtijevaju poznavanje materijala. Bilo da je riječ o njezi plemenitog drva (tikovine), prirodnog kamena, visoko poliranih površina ili osjetljivih tkanina, moji postupci su prilagođeni očuvanju njihove dugovječnosti.',
 		accommodationsStaging:
 			'Moj rad u ovom segmentu uključuje i finalni „staging“ – dekoriranje i pripremu prostora po principima vrhunskog hotelijerstva, gdje je svaki ručnik, miris i detalj postavljen s namjerom da oduševi gosta ili vlasnika čim zakorači u prostor.',
 		standardsTitle: 'Standardi koje donosim u Vaš dom',
@@ -553,7 +553,7 @@ export default {
 			'Naša primarna zadaća je siguran prijevoz i manipulacija teretom kod vozila. Uslugu nošenja stvari po katovima ne nudimo, što nam omogućuje da ostanemo brzi, točni i dostupni za Vaš sljedeći transport.',
 		logisticsPara3Label: 'Čisto. Točno. Pouzdano.',
 		logisticsPara3:
-			'Kao tvrtka koja se bavi i održavanjem luksuznih vila, znamo koliko je važna briga o detaljima. Naša vozila su uredna, a usluga diskretna i profesionalna.',
+			'Kao tvrtka koja se bavi i održavanjem privatnih vila, znamo koliko je važna briga o detaljima. Naša vozila su uredna, a usluga diskretna i profesionalna.',
 		quoteTitle: 'Trebate brzu ponudu?',
 		quoteIntro:
 			'Slobodno nas nazovite ili nam pišite na WhatsApp. Kako bismo Vam odmah mogli dati točnu informaciju, molimo pripremite sljedeće podatke:',
@@ -567,9 +567,101 @@ export default {
 		closing: 'Vaš Sprinter Team – profesionalna transportna logistika'
 	},
 
-	// Transfers page
+	// Transfers page (redesign)
+	transfersPage: {
+		eyebrow: 'Usluga · 03',
+		title: 'Privatni transferi',
+		titleAccent: 'transferi',
+		titleSuffix: ' · Pula · Istra · Europa',
+		leadOne:
+			'Sjednete. Vozač zatvori vrata. I više ne morate misliti ni na što drugo.',
+		leadTwo:
+			'Sprinter je obiteljska tvrtka iz Pule. Organiziramo privatne transfere s osobnim vozačem po Istri i Europi — pouzdano, točno na vrijeme, bez iznenađenja.',
+		fleetEyebrow: 'Vozila',
+		fleetTitle: 'Dva vozila, jedan standard',
+		fleetSub: 'Odaberite veličinu — cijena ostaje transparentna u oba slučaja.',
+		eClassName: 'Mercedes-Benz E-klasa',
+		eClassDesc:
+			'Elegancija i udobnost za do 3 putnika — pravi izbor kad su diskrecija i stil najvažniji.',
+		vClassName: 'Mercedes-Benz V-klasa',
+		vClassDesc:
+			'Prostran i tih za do 7 putnika — opušten i siguran prijevoz za grupe, obitelji ili dodatnu prtljagu.'
+	},
+
+	// Kalkulator transfera
+	transferCalc: {
+		title: 'Kalkulator cijene',
+		vatNote: 'PDV uključen',
+		pickup: 'Mjesto preuzimanja',
+		pickupPlaceholder: '— Odaberite preuzimanje —',
+		pickupAirport: 'Aerodrom Pula',
+		pickupPula: 'Pula (centar / hotel)',
+		pickupCustom: 'Moje preuzimanje nije na popisu',
+		yourPickup: 'Vaše preuzimanje',
+		yourPickupPh: 'npr. Banjole, Kanfanar, Svetvinčenat...',
+		yourDest: 'Vaša destinacija',
+		yourDestPh: 'npr. Zagreb, Rijeka, Trst...',
+		customNote: 'Unesite preuzimanje i destinaciju — cijenu potvrđujemo na WhatsAppu.',
+		destination: 'Destinacija',
+		destinationPlaceholder: '— Odaberite destinaciju —',
+		destinationCustom: 'Moja destinacija nije na popisu',
+		passengers: 'Putnici',
+		eClass: 'Mercedes E-klasa',
+		eClassRange: '1 – 3 putnika',
+		vClass: 'Mercedes V-klasa',
+		vClassRange: '1 – 7 putnika',
+		calculate: 'Izračunaj cijenu',
+		errorRoute: 'Molimo odaberite ili unesite mjesto preuzimanja i destinaciju.',
+		bookingTitle: 'Rezervacija',
+		bookingInquiry: 'Vaši podaci',
+		travelTimeLabel: 'Vrijeme putovanja',
+		onRequest: 'Na upit',
+		onRequestSub: 'Cijenu potvrđujemo na WhatsAppu unutar 30 minuta.',
+		fullName: 'Ime i prezime',
+		fullNamePh: 'Vaše ime i prezime',
+		phone: 'Telefon',
+		email: 'Email',
+		date: 'Datum',
+		time: 'Vrijeme',
+		timePlaceholder: '— Odaberite vrijeme —',
+		nightNotice: 'Noćni transfer (22:00 – 06:00) · automatski se primjenjuje +25% doplate.',
+		flight: 'Broj leta (ako je transfer s aerodroma)',
+		flightPh: 'npr. FR1234 (neobavezno)',
+		note: 'Napomena / točna adresa',
+		notePh: 'Za veće gradove navedite točnu adresu. Dječje sjedalo, posebni zahtjevi...',
+		addReturn: 'Dodaj povratak',
+		returnDiscount: '−10% popusta',
+		returnDate: 'Datum povratka',
+		returnTime: 'Vrijeme povratka',
+		returnNoteLabel: 'Povratak',
+		nightTag: '+25% noćni',
+		termsTitle: 'Uvjeti i informacije',
+		terms: [
+			'💶 Fiksne cijene za gradske centre. Za udaljenije lokacije navedite točnu adresu — cijenu potvrđujemo na WhatsAppu.',
+			'🌙 Noćni transferi (22:00 – 06:00) imaju +25% doplate, automatski izračunatu.',
+			'✈️ Čekanje na aerodromu je besplatno.',
+			'🚗 Vozač Vas dočekuje s natpisom imena na aerodromu.',
+			'👶 Dječje sjedalo besplatno — molimo navedite u polju za napomenu.',
+			'🔄 Povratna vožnja s 10% popusta.',
+			'❌ Besplatan otkaz do 24 sata prije. Unutar 24 sata — naplata 50%.',
+			'📍 Destinacija nije na popisu? Kontaktirajte nas — odgovaramo u 30 minuta.',
+			'📱 Potvrda rezervacije stiže na Vaš WhatsApp u 30 minuta.'
+		],
+		orderSummary: 'Sažetak narudžbe',
+		outbound: 'Polazak',
+		returnRow: 'Povratak',
+		total: 'Ukupno',
+		vatIncl: 'PDV uklj.',
+		errorBook: 'Molimo unesite ime, telefon, datum i vrijeme.',
+		sendBooking: 'Pošalji rezervaciju na WhatsApp',
+		sendInquiry: 'Pošalji upit za cijenu na WhatsApp',
+		formNote: 'Dostupni 0 – 24 · sprinter.hr · +385 95 722 6918',
+		whatsapp: 'WhatsApp'
+	},
+
+	// Transfers page (stara kopija — privremeno zadržano)
 	transfers: {
-		title: 'Luksuzni transferi s osobnim vozačem',
+		title: 'Privatni transferi s osobnim vozačem',
 		visionIntro:
 			'Naša vizija je aristokracija prijevoza koja ide daleko od samog vožnje. Nudimo iskustvo temeljeno na poštovanju, diskreciji i kvaliteti; stvarajući partnerstva s ljudima s kojima dijelimo zajedničke vrijednosti.',
 		visionService:
@@ -590,7 +682,7 @@ export default {
 		pricingContact:
 			'Slobodno za planiranje putovanja šaljite nam na e-mail ili WhatsApp. Za trentnu upite, slobodno nas nazovite!',
 		vipNote: 'VIP usluga dostupna je 0 - 24.',
-		inquiryTitle: 'Saznajte više o luksuznim transferima!',
+		inquiryTitle: 'Saznajte više o privatnim transferima!',
 		inquiryFirstName: 'Ime',
 		inquiryLastName: 'Prezime',
 		inquiryEmail: 'Email',

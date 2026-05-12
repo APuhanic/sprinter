@@ -70,6 +70,14 @@
 
 	let calcTitleParts = $derived(renderName(t.calc.title, t.calc.titleAccent));
 	let faqTitleParts = $derived(renderName(t.cleaningPage.faqTitle, t.cleaningPage.faqAccent));
+
+	// Real photos paired by service id. Anything not in the map keeps the placeholder.
+	const servicePhotos: Record<string, string> = {
+		turnover: '/images/cleaning/ciscenje-kuhinja.jpg',
+		deep: '/images/cleaning/ciscenje-kauc.jpg',
+		regular: '/images/cleaning/sprinter-van.jpg',
+		yacht: '/images/cleaning/ciscenje-terasa.jpg'
+	};
 </script>
 
 <svelte:head>
@@ -172,13 +180,15 @@
 						</div>
 					</div>
 					<div>
-						<div
-							class="ph"
-							style="height:460px;"
-							aria-label="Placeholder: {s.photoTag}"
-						>
-							<span class="ph__label">[ photo · {s.photoTag} ]</span>
-						</div>
+						{#if servicePhotos[s.id]}
+							<div class="svc-detail__photo">
+								<img src={servicePhotos[s.id]} alt={s.photoTag} loading="lazy" />
+							</div>
+						{:else}
+							<div class="ph" style="height:460px;" aria-label="Placeholder: {s.photoTag}">
+								<span class="ph__label">[ photo · {s.photoTag} ]</span>
+							</div>
+						{/if}
 					</div>
 				</div>
 			{/each}
