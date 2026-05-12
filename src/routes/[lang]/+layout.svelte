@@ -27,8 +27,6 @@
 	let navItems = $derived([
 		{ href: `/${lang}`, label: t.nav.home },
 		{ href: `/${lang}/${slugs[lang].cleaning}`, label: t.nav.cleaning },
-		{ href: `/${lang}/${slugs[lang].rental}`, label: t.nav.rental },
-		{ href: `/${lang}/${slugs[lang].transport}`, label: t.nav.transport },
 		{ href: `/${lang}/${slugs[lang].transfers}`, label: t.nav.transfers }
 	]);
 
@@ -148,8 +146,6 @@
 				<h4>{t.footerNew.colsCompany}</h4>
 				<ul>
 					<li><a href="/{lang}/{slugs[lang].cleaning}">{t.nav.cleaning}</a></li>
-					<li><a href="/{lang}/{slugs[lang].rental}">{t.nav.rental}</a></li>
-					<li><a href="/{lang}/{slugs[lang].transport}">{t.nav.transport}</a></li>
 					<li><a href="/{lang}/{slugs[lang].transfers}">{t.nav.transfers}</a></li>
 				</ul>
 			</div>
@@ -166,7 +162,6 @@
 		<div class="footer-bottom">
 			<span>{t.footerNew.legal[0]}</span>
 			<span><a href="/{lang}/pravila-privatnosti">{t.footerNew.legal[1]}</a></span>
-			<span><a href="/{lang}/uvjeti-najma">{t.footerNew.legal[2]}</a></span>
 			<span><a href="/{lang}/cookies">{t.footerNew.legal[3]}</a></span>
 		</div>
 	</div>
