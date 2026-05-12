@@ -23,8 +23,15 @@ function getRecipients(): string[] {
 		.filter(Boolean);
 }
 
-function getSender(): string {
-	return env.MAIL_FROM || `Sprinter <onboarding@resend.dev>`;
+function sanitizeReplyTo(raw: string | undefined): string | undefined {
+	if (!raw) return undefined;
+	const trimmed = raw.trim();
+	if (!trimmed) return undefined;
+	// RFC 5321 caps an address at 254 chars; reject anything that could carry
+	// header-injection payloads or expand into multiple recipients.
+	if (trimmed.length > 254) return undefined;
+	if (/[\r\n,<>]/.test(trimmed)) return undefined;
+	return trimmed;
 }
 
 export async function sendInquiry(payload: InquiryEmail): Promise<
@@ -41,10 +48,16 @@ export async function sendInquiry(payload: InquiryEmail): Promise<
 		return { ok: true, loggedOnly: true };
 	}
 
+	const sender = env.MAIL_FROM;
+	if (!sender) {
+		console.error('[mail] MAIL_FROM env var is required when RESEND_API_KEY is set');
+		return { ok: false, error: 'Mail dispatch is not configured' };
+	}
+
 	const { data, error } = await client.emails.send({
-		from: getSender(),
+		from: sender,
 		to,
-		replyTo: payload.replyTo,
+		replyTo: sanitizeReplyTo(payload.replyTo),
 		subject: payload.subject,
 		html: payload.html,
 		text: payload.text
