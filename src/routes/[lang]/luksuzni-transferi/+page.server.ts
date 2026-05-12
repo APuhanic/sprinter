@@ -1,6 +1,7 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import { sendInquiry, renderInquiryHtml, renderInquiryText } from '$lib/server/mail';
+import { FORM_MAX } from '$lib/server/formLimits';
 
 export const actions: Actions = {
 	default: async ({ request, params }) => {
@@ -20,8 +21,14 @@ export const actions: Actions = {
 
 		const errors: Record<string, string> = {};
 		if (!firstName) errors.firstName = 'required';
+		else if (firstName.length > FORM_MAX.firstName) errors.firstName = 'too_long';
 		if (!lastName) errors.lastName = 'required';
+		else if (lastName.length > FORM_MAX.lastName) errors.lastName = 'too_long';
 		if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = 'invalid';
+		else if (email.length > FORM_MAX.email) errors.email = 'too_long';
+		if (phone.length > FORM_MAX.phone) errors.phone = 'too_long';
+		if (vehicle.length > FORM_MAX.vehicle) errors.vehicle = 'too_long';
+		if (message.length > FORM_MAX.message) errors.message = 'too_long';
 		if (!consent) errors.consent = 'required';
 
 		if (Object.keys(errors).length > 0) {

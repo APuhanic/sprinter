@@ -2,6 +2,7 @@ import { error, fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { vehicles } from '$lib/data/vehicles';
 import { sendInquiry, renderInquiryHtml, renderInquiryText } from '$lib/server/mail';
+import { FORM_MAX } from '$lib/server/formLimits';
 
 export const load: PageServerLoad = ({ params }) => {
 	const vehicle = vehicles.find((v) => v.slug === params.slug);
@@ -30,7 +31,14 @@ export const actions: Actions = {
 
 		const errors: Record<string, string> = {};
 		if (!name) errors.name = 'required';
+		else if (name.length > FORM_MAX.name) errors.name = 'too_long';
 		if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = 'invalid';
+		else if (email.length > FORM_MAX.email) errors.email = 'too_long';
+		if (phone.length > FORM_MAX.phone) errors.phone = 'too_long';
+		if (dateFrom.length > FORM_MAX.date) errors.dateFrom = 'too_long';
+		if (dateTo.length > FORM_MAX.date) errors.dateTo = 'too_long';
+		if (notes.length > FORM_MAX.notes) errors.notes = 'too_long';
+		if (estimate.length > FORM_MAX.estimate) errors.estimate = 'too_long';
 
 		if (Object.keys(errors).length > 0) {
 			return fail(400, {
