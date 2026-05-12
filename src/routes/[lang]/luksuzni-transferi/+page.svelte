@@ -1,131 +1,242 @@
 <script lang="ts">
-	import type { ActionData, PageData } from './$types';
-	import { enhance } from '$app/forms';
+	import type { PageData } from './$types';
+	import { telHref, waHref, contact } from '$lib/contact';
 	import { transferService } from '$lib/jsonld';
+	import TransferCalculator from '$lib/components/TransferCalculator.svelte';
 
-	let { data, form }: { data: PageData; form: ActionData } = $props();
+	let { data }: { data: PageData } = $props();
 	let lang = $derived(data.lang);
 	let t = $derived(data.t);
 
-	let submitting = $state(false);
-
 	const serviceJsonLd = JSON.stringify(transferService());
+
+	const eClassImg = '/images/transfers/e-class-1.jpg';
+	const vClassImg = '/images/transfers/v-class-1.jpg';
 </script>
 
 <svelte:head>
-	<title>{t.transfers.title} — Sprinter d.o.o.</title>
+	<title>{t.transfersPage.title}{t.transfersPage.titleSuffix} — Sprinter</title>
+	<meta name="description" content={t.transfersPage.leadTwo} />
 	{@html `<script type="application/ld+json">${serviceJsonLd}</` + `script>`}
 </svelte:head>
 
-<!-- Header -->
-<section class="bg-white border-b border-slate-200">
-	<div class="mx-auto max-w-7xl px-4 py-8">
-		<h1 class="text-3xl font-bold text-slate-900">{t.transfers.title}</h1>
-	</div>
-</section>
-
-<!-- Vision -->
-<section class="bg-white py-12">
-	<div class="mx-auto max-w-4xl px-4">
-		<p class="text-lg text-slate-600 leading-relaxed mb-4">{t.transfers.visionIntro}</p>
-		<p class="text-slate-600 leading-relaxed mb-4">{t.transfers.visionService}</p>
-		<p class="text-slate-700 font-medium">{t.transfers.visionVehicles}</p>
-	</div>
-</section>
-
-<!-- Vehicles -->
-<section class="bg-slate-50 py-12">
-	<div class="mx-auto max-w-5xl px-4">
-		<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-			<!-- E-Class -->
-			<div class="bg-white rounded-lg overflow-hidden shadow-sm">
-				<div class="h-56 overflow-hidden">
-					<img src="/images/transfers/e-class.jpg" alt={t.transfers.eClassName} class="w-full h-full object-cover" />
-				</div>
-				<div class="p-6">
-					<h2 class="text-xl font-bold text-slate-900 mb-2">{t.transfers.eClassName}</h2>
-					<p class="text-slate-600">{t.transfers.eClassDesc}</p>
-				</div>
-			</div>
-
-			<!-- V-Class -->
-			<div class="bg-white rounded-lg overflow-hidden shadow-sm">
-				<div class="h-56 overflow-hidden">
-					<img src="/images/transfers/v-class.jpg" alt={t.transfers.vClassName} class="w-full h-full object-cover" />
-				</div>
-				<div class="p-6">
-					<h2 class="text-xl font-bold text-slate-900 mb-2">{t.transfers.vClassName}</h2>
-					<p class="text-slate-600">{t.transfers.vClassDesc}</p>
-				</div>
+<main class="page-fade">
+	<!-- Hero (typographic) -->
+	<section class="hero" data-variant="typographic" style="padding-bottom:clamp(24px, 4vw, 56px);">
+		<div class="wrap">
+			<div class="eyebrow" style="margin-bottom:32px;">{t.transfersPage.eyebrow}</div>
+			<h1 class="display tr-hero__title">
+				{t.transfersPage.title}
+				<em class="tr-hero__title-suffix">{t.transfersPage.titleSuffix.replace(/^ · /, '· ')}</em>
+			</h1>
+			<p class="lede" style="margin-top:32px; max-width:48ch;">
+				{t.transfersPage.leadOne}
+			</p>
+			<p class="lede" style="margin-top:14px; max-width:54ch; opacity:0.72;">
+				{t.transfersPage.leadTwo}
+			</p>
+			<div class="hero__cta">
+				<a
+					class="btn btn--primary"
+					data-variant="pill"
+					href={waHref()}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<svg
+						width="14"
+						height="14"
+						viewBox="0 0 14 14"
+						aria-hidden="true"
+						style="flex-shrink:0;"
+					>
+						<circle cx="7" cy="7" r="6" fill="#25D366" />
+						<path
+							d="M4.6 5.2c.1-.4.4-.5.6-.5h.4c.1 0 .2.1.3.3l.4.9c.1.2 0 .3 0 .4l-.3.4c.4.7.9 1.2 1.6 1.6l.4-.3c.1-.1.2-.1.4 0l.9.4c.2.1.3.2.3.3v.4c0 .3-.2.5-.5.6-.4.1-.8.1-1.2 0a4.6 4.6 0 0 1-3-3c-.1-.4-.1-.8 0-1.1z"
+							fill="#fff"
+						/>
+					</svg>
+					<span>{t.transferCalc.whatsapp}</span>
+					<span class="arrow" aria-hidden="true" style="margin-left:4px;">→</span>
+				</a>
+				<a class="btn btn--ghost" data-variant="pill" href={telHref}>
+					{t.home.ctaCall} · {t.banner.phone}
+				</a>
 			</div>
 		</div>
-	</div>
-</section>
+	</section>
 
-<!-- Pricing -->
-<section class="bg-white py-12">
-	<div class="mx-auto max-w-4xl px-4">
-		<h2 class="text-2xl font-bold text-slate-900 mb-4">{t.transfers.pricingTitle}</h2>
-		<p class="text-slate-600 mb-4">{t.transfers.pricingIntro}</p>
-		<p class="text-slate-600 mb-4">{t.transfers.pricingNote}</p>
-		<p class="text-slate-600 mb-4">{t.transfers.pricingContact}</p>
-		<p class="text-brand-red font-bold">{t.transfers.vipNote}</p>
-	</div>
-</section>
+	<!-- Calculator -->
+	<section class="section section--tight" id="kalkulator">
+		<div class="wrap">
+			<TransferCalculator
+				lang={lang as 'hr' | 'en' | 'de'}
+				strings={t.transferCalc}
+				whatsAppNumber={contact.whatsappNumber}
+			/>
+		</div>
+	</section>
 
-<!-- Inquiry form -->
-<section class="bg-slate-800 py-12">
-	<div class="mx-auto max-w-3xl px-4">
-		<h2 class="text-2xl font-bold text-white text-center mb-8">{t.transfers.inquiryTitle}</h2>
-
-		<form method="POST" class="space-y-4">
-			<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+	<!-- Fleet -->
+	<section class="section">
+		<div class="wrap">
+			<div class="section-head">
 				<div>
-					<label for="firstName" class="block text-sm text-slate-300 mb-1">{t.transfers.inquiryFirstName} <span class="text-red-400">*</span></label>
-					<input type="text" id="firstName" name="firstName" required class="w-full px-4 py-2.5 rounded bg-white text-slate-800 border-0 focus:outline-none focus:ring-2 focus:ring-brand-red" />
+					<div class="eyebrow">{t.transfersPage.fleetEyebrow}</div>
 				</div>
 				<div>
-					<label for="lastName" class="block text-sm text-slate-300 mb-1">{t.transfers.inquiryLastName} <span class="text-red-400">*</span></label>
-					<input type="text" id="lastName" name="lastName" required class="w-full px-4 py-2.5 rounded bg-white text-slate-800 border-0 focus:outline-none focus:ring-2 focus:ring-brand-red" />
+					<h2 class="section-title">{t.transfersPage.fleetTitle}</h2>
+					<p class="section-sub" style="margin-top:24px;">{t.transfersPage.fleetSub}</p>
 				</div>
 			</div>
 
-			<div>
-				<label for="transferEmail" class="block text-sm text-slate-300 mb-1">{t.transfers.inquiryEmail} <span class="text-red-400">*</span></label>
-				<input type="email" id="transferEmail" name="email" required class="w-full px-4 py-2.5 rounded bg-white text-slate-800 border-0 focus:outline-none focus:ring-2 focus:ring-brand-red" />
-			</div>
+			<div class="tr-fleet">
+				<article class="tr-fleet__card">
+					<div class="tr-fleet__image">
+						<img src={eClassImg} alt={t.transfersPage.eClassName} loading="lazy" />
+					</div>
+					<div class="tr-fleet__body">
+						<h3 class="tr-fleet__name display">{t.transfersPage.eClassName}</h3>
+						<p class="tr-fleet__desc">{t.transfersPage.eClassDesc}</p>
+						<div class="tr-fleet__meta">
+							<span>{t.transferCalc.eClassRange}</span>
+						</div>
+					</div>
+				</article>
 
-			<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+				<article class="tr-fleet__card">
+					<div class="tr-fleet__image">
+						<img src={vClassImg} alt={t.transfersPage.vClassName} loading="lazy" />
+					</div>
+					<div class="tr-fleet__body">
+						<h3 class="tr-fleet__name display">{t.transfersPage.vClassName}</h3>
+						<p class="tr-fleet__desc">{t.transfersPage.vClassDesc}</p>
+						<div class="tr-fleet__meta">
+							<span>{t.transferCalc.vClassRange}</span>
+						</div>
+					</div>
+				</article>
+			</div>
+		</div>
+	</section>
+
+	<!-- Contact island -->
+	<section class="section section--tight">
+		<div class="wrap">
+			<div class="contact-island">
 				<div>
-					<label for="vehicle" class="block text-sm text-slate-300 mb-1">{t.transfers.inquiryVehicle}</label>
-					<select id="vehicle" name="vehicle" class="w-full px-4 py-2.5 rounded bg-white text-slate-800 border-0 focus:outline-none focus:ring-2 focus:ring-brand-red">
-						<option value="e-klasa">{t.transfers.eClassName}</option>
-						<option value="v-klasa">{t.transfers.vClassName}</option>
-					</select>
+					<div class="eyebrow" style="color:rgba(255,255,255,0.5); margin-bottom:18px;">
+						{t.home.contactEyebrow}
+					</div>
+					<h2>
+						{t.home.contactTitle} <em>{t.home.contactTitleAccent}</em>.
+					</h2>
+					<p class="small" style="margin-top:18px; max-width:44ch;">{t.home.contactSub}</p>
+					<div class="ctas">
+						<a
+							class="btn btn--primary"
+							data-variant="pill"
+							href={waHref()}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="flex-shrink:0;">
+								<circle cx="7" cy="7" r="6" fill="#25D366" />
+								<path
+									d="M4.6 5.2c.1-.4.4-.5.6-.5h.4c.1 0 .2.1.3.3l.4.9c.1.2 0 .3 0 .4l-.3.4c.4.7.9 1.2 1.6 1.6l.4-.3c.1-.1.2-.1.4 0l.9.4c.2.1.3.2.3.3v.4c0 .3-.2.5-.5.6-.4.1-.8.1-1.2 0a4.6 4.6 0 0 1-3-3c-.1-.4-.1-.8 0-1.1z"
+									fill="#fff"
+								/>
+							</svg>
+							<span>{t.transferCalc.whatsapp}</span>
+							<span class="arrow" aria-hidden="true" style="margin-left:4px;">→</span>
+						</a>
+						<a class="btn btn--ghost" data-variant="pill" href={telHref}>
+							{t.home.ctaCall} · {t.banner.phone}
+						</a>
+					</div>
 				</div>
-				<div>
-					<label for="transferPhone" class="block text-sm text-slate-300 mb-1">{t.transfers.inquiryPhone}</label>
-					<input type="tel" id="transferPhone" name="phone" class="w-full px-4 py-2.5 rounded bg-white text-slate-800 border-0 focus:outline-none focus:ring-2 focus:ring-brand-red" />
-				</div>
+				<dl class="info">
+					<div>
+						<dt>{t.home.hoursLabel}</dt>
+						<dd>{t.banner.hours}</dd>
+					</div>
+					<div>
+						<dt>{lang === 'hr' ? 'Adresa' : lang === 'de' ? 'Adresse' : 'Address'}</dt>
+						<dd>{t.banner.address}</dd>
+					</div>
+					<div>
+						<dt>WhatsApp</dt>
+						<dd>{t.banner.phone}</dd>
+					</div>
+					<div>
+						<dt>Email</dt>
+						<dd>{t.common.email}</dd>
+					</div>
+				</dl>
 			</div>
+		</div>
+	</section>
 
-			<div>
-				<label for="transferMessage" class="block text-sm text-slate-300 mb-1">{t.transfers.inquiryMessage}</label>
-				<textarea id="transferMessage" name="message" rows="4" class="w-full px-4 py-2.5 rounded bg-white text-slate-800 border-0 focus:outline-none focus:ring-2 focus:ring-brand-red resize-vertical"></textarea>
-			</div>
+</main>
 
-			<div class="flex items-start gap-2">
-				<input type="checkbox" id="transferConsent" name="consent" required class="mt-1 w-4 h-4 rounded border-slate-300 text-brand-red focus:ring-brand-red" />
-				<label for="transferConsent" class="text-sm text-slate-300">
-					{t.transfers.inquiryConsent}
-				</label>
-			</div>
+<style>
+	.tr-hero__title {
+		font-size: clamp(40px, 6vw, 76px);
+		line-height: 1;
+		letter-spacing: -0.01em;
+		max-width: 14ch;
+	}
+	.tr-hero__title-suffix {
+		display: block;
+		color: var(--accent);
+		font-style: italic;
+		font-size: 0.6em;
+		margin-top: 8px;
+		letter-spacing: -0.005em;
+	}
 
-			<div class="text-center pt-2">
-				<button type="submit" class="bg-brand-green text-white px-10 py-2.5 rounded font-medium hover:brightness-110 transition">
-					{t.transfers.inquirySubmit}
-				</button>
-			</div>
-		</form>
-	</div>
-</section>
+	.tr-fleet {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 28px;
+	}
+	@media (max-width: 800px) {
+		.tr-fleet {
+			grid-template-columns: 1fr;
+		}
+	}
+	.tr-fleet__card {
+		background: var(--bg);
+		border: 1px solid var(--line);
+	}
+	.tr-fleet__image {
+		aspect-ratio: 16 / 10;
+		overflow: hidden;
+		background: var(--soft);
+	}
+	.tr-fleet__image img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	.tr-fleet__body {
+		padding: clamp(20px, 3vw, 32px);
+	}
+	.tr-fleet__name {
+		font-size: clamp(24px, 2.4vw, 30px);
+		margin: 0 0 10px;
+	}
+	.tr-fleet__desc {
+		color: var(--muted);
+		line-height: 1.6;
+		font-size: 15px;
+		margin: 0 0 14px;
+	}
+	.tr-fleet__meta span {
+		font-family: var(--font-mono);
+		font-size: 11px;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--accent);
+	}
+</style>

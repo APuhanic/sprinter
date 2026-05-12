@@ -71,10 +71,10 @@ export default {
 		],
 		// Legacy carousel keys
 		heroCleaningTitle: 'Professionelle Reinigung',
-		heroCleaningSubtitle: 'Reinigungsservice für Luxusimmobilien',
+		heroCleaningSubtitle: 'Reinigungsservice für Privatimmobilien',
 		heroRentalTitle: 'Auto mieten\nKombi mieten',
 		heroRentalSubtitle: 'Fahrzeuglieferung möglich',
-		heroTransfersTitle: 'Privatfahrer & Luxus-Transfers',
+		heroTransfersTitle: 'Privatfahrer & Private Transfers',
 		heroTransfersSubtitle: 'Service rund um die Uhr verfügbar',
 		heroTransportTitle: 'Sprinter Transport',
 		heroTransportSubtitle: 'Smarte Logistik auf istrischen Straßen',
@@ -147,7 +147,7 @@ export default {
 		},
 		{
 			tag: 'Transfers',
-			title: 'Luxus-Transfers',
+			title: 'Private Transfers',
 			desc: 'Privater Fahrer, Premium-Fahrzeug, rund um die Uhr.',
 			slug: 'transfers' as const
 		}
@@ -426,7 +426,7 @@ export default {
 			'Ihre Villa ist nicht nur eine Immobilie – sie ist Ihr Rückzugsort. Ich bin auf den vollständigen Pflegezyklus für Ihr Zuhause spezialisiert: von der detaillierten Vorbereitung vor Ihrer Ankunft über die diskrete Pflege während Ihres Aufenthalts bis zur gründlichen Konservierung nach der Abreise. Mein Ziel ist es, dass Sie jedes Mal, wenn Sie die Tür öffnen, das Gefühl haben, ein völlig neues, frisch eingerichtetes Zuhause zu betreten.',
 		accommodationsTitle: 'Unterkünfte der höchsten Kategorie',
 		accommodationsDesc:
-			'Luxuswohnungen, Boutique-Hotels und Yachten verlangen mehr als Reinigung – sie verlangen Materialkenntnis. Ob es um die Pflege von Edelholz (Teak), Naturstein, hochpolierten Oberflächen oder empfindlichen Stoffen geht – meine Verfahren sind auf die Erhaltung ihrer Langlebigkeit zugeschnitten.',
+			'Privatwohnungen, Boutique-Hotels und Yachten verlangen mehr als Reinigung – sie verlangen Materialkenntnis. Ob es um die Pflege von Edelholz (Teak), Naturstein, hochpolierten Oberflächen oder empfindlichen Stoffen geht – meine Verfahren sind auf die Erhaltung ihrer Langlebigkeit zugeschnitten.',
 		accommodationsStaging:
 			'Meine Arbeit in diesem Segment umfasst auch das finale „Staging“ – das Dekorieren und Vorbereiten des Raums nach den Prinzipien erstklassiger Hotellerie, bei dem jedes Handtuch, jeder Duft und jedes Detail mit der Absicht platziert wird, den Gast oder Eigentümer beim Betreten zu begeistern.',
 		standardsTitle: 'Standards, die ich in Ihr Zuhause bringe',
@@ -553,7 +553,7 @@ export default {
 			'Unsere primäre Aufgabe ist der sichere Transport und die Handhabung der Ladung am Fahrzeug. Das Tragen der Sachen über mehrere Stockwerke bieten wir nicht an, was uns erlaubt, schnell, präzise und für Ihren nächsten Transport verfügbar zu bleiben.',
 		logisticsPara3Label: 'Sauber. Pünktlich. Zuverlässig.',
 		logisticsPara3:
-			'Als Unternehmen, das auch Luxusvillen pflegt, wissen wir, wie wichtig Liebe zum Detail ist. Unsere Fahrzeuge sind gepflegt, unser Service ist diskret und professionell.',
+			'Als Unternehmen, das auch Privatvillen pflegt, wissen wir, wie wichtig Liebe zum Detail ist. Unsere Fahrzeuge sind gepflegt, unser Service ist diskret und professionell.',
 		quoteTitle: 'Brauchen Sie ein schnelles Angebot?',
 		quoteIntro:
 			'Rufen Sie uns gerne an oder schreiben Sie uns auf WhatsApp. Damit wir Ihnen sofort genaue Informationen geben können, halten Sie bitte folgende Angaben bereit:',
@@ -567,9 +567,101 @@ export default {
 		closing: 'Ihr Sprinter Team – professionelle Transportlogistik'
 	},
 
-	// Transfers page
+	// Transfers page (Redesign)
+	transfersPage: {
+		eyebrow: 'Service · 03',
+		title: 'Private Transfers',
+		titleAccent: 'Transfers',
+		titleSuffix: ' · Pula · Istrien · Europa',
+		leadOne:
+			'Sie setzen sich. Der Fahrer schließt die Tür. Und Sie müssen an nichts anderes mehr denken.',
+		leadTwo:
+			'Sprinter ist ein Familienunternehmen aus Pula. Wir organisieren private Transfers mit persönlichem Fahrer in Istrien und Europa — zuverlässig, pünktlich, ohne Überraschungen.',
+		fleetEyebrow: 'Fuhrpark',
+		fleetTitle: 'Zwei Fahrzeuge, ein Standard',
+		fleetSub: 'Wählen Sie die richtige Größe — die Preisgestaltung bleibt transparent.',
+		eClassName: 'Mercedes-Benz E-Klasse',
+		eClassDesc:
+			'Eleganz und Komfort für bis zu 3 Passagiere — die richtige Wahl, wenn Diskretion und Stil zählen.',
+		vClassName: 'Mercedes-Benz V-Klasse',
+		vClassDesc:
+			'Geräumig und ruhig für bis zu 7 Passagiere — entspannte und sichere Beförderung für Gruppen oder Familien.'
+	},
+
+	// Transfer-Kalkulator
+	transferCalc: {
+		title: 'Preiskalkulator',
+		vatNote: 'inkl. MwSt.',
+		pickup: 'Abholort',
+		pickupPlaceholder: '— Abholort wählen —',
+		pickupAirport: 'Flughafen Pula',
+		pickupPula: 'Pula (Zentrum / Hotel)',
+		pickupCustom: 'Mein Abholort ist nicht aufgeführt',
+		yourPickup: 'Ihr Abholort',
+		yourPickupPh: 'z. B. Banjole, Kanfanar, Svetvinčenat...',
+		yourDest: 'Ihr Ziel',
+		yourDestPh: 'z. B. Zagreb, Rijeka, Triest...',
+		customNote: 'Geben Sie Ihren Abholort und Ihr Ziel ein — wir bestätigen den Preis per WhatsApp.',
+		destination: 'Ziel',
+		destinationPlaceholder: '— Ziel wählen —',
+		destinationCustom: 'Mein Ziel ist nicht aufgeführt',
+		passengers: 'Passagiere',
+		eClass: 'Mercedes E-Klasse',
+		eClassRange: '1 – 3 Passagiere',
+		vClass: 'Mercedes V-Klasse',
+		vClassRange: '1 – 7 Passagiere',
+		calculate: 'Preis berechnen',
+		errorRoute: 'Bitte wählen oder geben Sie Abholort und Ziel ein.',
+		bookingTitle: 'Buchung',
+		bookingInquiry: 'Ihre Angaben',
+		travelTimeLabel: 'Fahrtzeit',
+		onRequest: 'Auf Anfrage',
+		onRequestSub: 'Der Preis wird per WhatsApp innerhalb von 30 Minuten bestätigt.',
+		fullName: 'Vollständiger Name',
+		fullNamePh: 'Ihr vollständiger Name',
+		phone: 'Telefon',
+		email: 'E-Mail',
+		date: 'Datum',
+		time: 'Uhrzeit',
+		timePlaceholder: '— Uhrzeit wählen —',
+		nightNotice: 'Nachttransfer (22:00 – 06:00) · +25 % Zuschlag automatisch berechnet.',
+		flight: 'Flugnummer (bei Flughafentransfer)',
+		flightPh: 'z. B. FR1234 (optional)',
+		note: 'Notiz / genaue Adresse',
+		notePh: 'Für größere Städte bitte genaue Adresse angeben. Kindersitz, Sonderwünsche...',
+		addReturn: 'Rückfahrt hinzufügen',
+		returnDiscount: '−10 % Rabatt',
+		returnDate: 'Rückfahrtsdatum',
+		returnTime: 'Rückfahrtszeit',
+		returnNoteLabel: 'Rückfahrt',
+		nightTag: '+25 % Nacht',
+		termsTitle: 'Bedingungen & Informationen',
+		terms: [
+			'💶 Festpreise für Stadtzentren. Für entlegene Orte bitte genaue Adresse angeben — Bestätigung per WhatsApp.',
+			'🌙 Nachttransfers (22:00 – 06:00) enthalten +25 % Zuschlag, automatisch berechnet.',
+			'✈️ Wartezeit am Flughafen ist kostenlos.',
+			'🚗 Der Fahrer empfängt Sie mit Ihrem Namensschild am Flughafen.',
+			'👶 Kindersitz kostenlos verfügbar — bitte im Kommentarfeld vermerken.',
+			'🔄 Rückfahrt mit 10 % Rabatt.',
+			'❌ Kostenlose Stornierung bis 24 Stunden vorher. Innerhalb von 24 Stunden — 50 % Gebühr.',
+			'📍 Ziel nicht auf der Liste? Kontaktieren Sie uns — Antwort innerhalb von 30 Minuten.',
+			'📱 Buchungsbestätigung per WhatsApp innerhalb von 30 Minuten.'
+		],
+		orderSummary: 'Bestellübersicht',
+		outbound: 'Hinfahrt',
+		returnRow: 'Rückfahrt',
+		total: 'Gesamt',
+		vatIncl: 'inkl. MwSt.',
+		errorBook: 'Bitte geben Sie Name, Telefon, Datum und Uhrzeit ein.',
+		sendBooking: 'Buchung per WhatsApp senden',
+		sendInquiry: 'Preisanfrage per WhatsApp senden',
+		formNote: 'Verfügbar 24/7 · sprinter.hr · +385 95 722 6918',
+		whatsapp: 'WhatsApp'
+	},
+
+	// Transfers page (alte Kopie — vorübergehend behalten)
 	transfers: {
-		title: 'Luxus-Transfers mit Privatfahrer',
+		title: 'Private Transfers mit Privatfahrer',
 		visionIntro:
 			'Unsere Vision ist eine Aristokratie des Transports, die weit über das bloße Fahren hinausgeht. Wir bieten ein Erlebnis, das auf Respekt, Diskretion und Qualität aufgebaut ist – und schaffen Partnerschaften mit Menschen, die unsere Werte teilen.',
 		visionService:
@@ -590,7 +682,7 @@ export default {
 		pricingContact:
 			'Senden Sie uns gerne Ihre Reisepläne per E-Mail oder WhatsApp. Für sofortige Anfragen rufen Sie uns einfach an!',
 		vipNote: 'VIP-Service rund um die Uhr verfügbar.',
-		inquiryTitle: 'Erfahren Sie mehr über Luxus-Transfers!',
+		inquiryTitle: 'Erfahren Sie mehr über private Transfers!',
 		inquiryFirstName: 'Vorname',
 		inquiryLastName: 'Nachname',
 		inquiryEmail: 'E-Mail',
