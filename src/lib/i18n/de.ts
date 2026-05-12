@@ -4,31 +4,77 @@ export default {
 	lang: 'de',
 	langName: 'Deutsch',
 
-	// Nav
+	// Nav (compact labels for the top bar)
 	nav: {
-		home: 'Startseite',
-		cleaning: 'Reinigungsservice',
-		transport: 'Transportdienste',
-		rental: 'Kombi/Auto mieten',
-		transfers: 'Luxus-Transfers',
+		home: 'Start',
+		cleaning: 'Reinigung',
+		transport: 'Transport',
+		rental: 'Mieten',
+		transfers: 'Transfers',
 		contact: 'Kontakt'
 	},
 
-	// Header banner
+	// Header banner / utility strip
 	banner: {
-		notice: 'Bitte kündigen Sie Ihren Besuch im Voraus an',
-		address: contact.address,
+		notice: 'Wir nehmen aktuell neue Kunden an',
+		address: 'Capelleri 5, Pula',
 		phone: contact.phone,
-		hours: 'Mo - So: 08h - 19h'
+		hours: 'Mo – So · 08—19 Uhr'
 	},
 
 	// Homepage
 	home: {
+		// Hero
+		eyebrow: 'Pula · Istrien · seit 2024',
+		titleA: 'Ein Zuhause, würdig einer',
+		titleB: 'Postkarte',
+		sub: 'Professionelle Reinigung in Pula und Istrien — von Apartments und Familienhäusern bis zu Büros und Yachten. Sorgfältig, ohne Improvisation.',
+		meta: [
+			{ label: 'Sitz', text: 'Capelleri 5, Pula' },
+			{ label: 'Einsatzgebiet', text: 'Pula und Umgebung, bis 30 km' },
+			{ label: 'Antwort', text: 'Antwort am selben Tag, oft binnen einer Stunde' },
+			{ label: 'Zahlung', text: 'Bar · Banküberweisung' }
+		],
+		// Section heads
+		servicesEyebrow: '01 · Was wir tun',
+		servicesTitle: 'Fünf Reinigungsarten, ein Team',
+		servicesSub:
+			'Spezialisiert auf Ferienvermietung, wo der Wechsel zwischen Gästen in Stunden gemessen wird. Dieselbe Sorgfalt fließt in alles andere, was wir reinigen.',
+		otherEyebrow: '02 · Und mehr',
+		otherTitle: 'Sprinter hört nicht beim Reinigen auf',
+		otherSub: 'Schwesterdienste, die oft mit Vermietung einhergehen — gleiche Hände, gleiche Nummer.',
+		processEyebrow: '03 · So arbeiten wir',
+		processTitle: 'Keine zufälligen Crews',
+		processSub:
+			'Festes Team, eigene Ausrüstung, schriftliches Protokoll je Objekttyp. Beim ersten Termin kommt der Inhaber persönlich.',
+		contactEyebrow: '04 · Kontakt',
+		contactTitle: 'Sagen Sie uns',
+		contactTitleAccent: 'was Sie brauchen',
+		contactSub: 'WhatsApp ist am schnellsten. Antwort am selben Tag, meist binnen einer Stunde.',
+		// CTAs
+		ctaWhatsapp: 'WhatsApp',
+		ctaCall: 'Anrufen',
+		ctaServices: 'Alle Leistungen',
+		ctaLearn: 'Mehr erfahren',
+		ctaSeeAll: 'Alle Details öffnen',
+		// Hours strip labels
+		hoursLabel: 'Mo — So',
+		hoursValue: '08 — 19 Uhr',
+		// Marquee
+		marquee: [
+			'Apartment-Wechsel',
+			'Grundreinigung',
+			'Regelmäßige Reinigung',
+			'Büros & Geschäftsräume',
+			'Yachten & Boote',
+			'Pula · Istrien'
+		],
+		// Legacy carousel keys
 		heroCleaningTitle: 'Professionelle Reinigung',
-		heroCleaningSubtitle: 'Reinigungsservice für Luxusimmobilien',
+		heroCleaningSubtitle: 'Reinigungsservice für Privatimmobilien',
 		heroRentalTitle: 'Auto mieten\nKombi mieten',
 		heroRentalSubtitle: 'Fahrzeuglieferung möglich',
-		heroTransfersTitle: 'Privatfahrer & Luxus-Transfers',
+		heroTransfersTitle: 'Privatfahrer & Private Transfers',
 		heroTransfersSubtitle: 'Service rund um die Uhr verfügbar',
 		heroTransportTitle: 'Sprinter Transport',
 		heroTransportSubtitle: 'Smarte Logistik auf istrischen Straßen',
@@ -43,6 +89,320 @@ export default {
 		carouselPause: 'Slideshow pausieren',
 		carouselPlay: 'Slideshow starten',
 		carouselGoTo: 'Gehe zu Slide'
+	},
+
+	// Cleaning services as shown on homepage row list
+	homeServices: [
+		{
+			id: 'turnover',
+			num: '01',
+			name: 'Apartment-Wechsel',
+			nameAccent: 'Wechsel',
+			short: 'Schnelle, zuverlässige Wechsel zwischen Gästen, mit hotelartigem Protokoll.'
+		},
+		{
+			id: 'deep',
+			num: '02',
+			name: 'Grundreinigung',
+			nameAccent: 'Grund',
+			short:
+				'Saisonal oder einmalig, bis ins Detail — Küche, Bad, Fugen, Backofen, Fenster.'
+		},
+		{
+			id: 'regular',
+			num: '03',
+			name: 'Regelmäßige Reinigung',
+			nameAccent: 'Regelmäßige',
+			short: 'Wöchentlich oder zweiwöchentlich für Wohnungen und Häuser — festes Team, fester Termin.'
+		},
+		{
+			id: 'office',
+			num: '04',
+			name: 'Büroreinigung',
+			nameAccent: 'Büro',
+			short: 'Büros und Geschäftsräume — diskret, außerhalb der Arbeitszeit.'
+		},
+		{
+			id: 'yacht',
+			num: '05',
+			name: 'Yacht- & Bootsreinigung',
+			nameAccent: 'Yacht',
+			short: 'Innen und außen — zwischen Charter-Wochen oder saisonal.'
+		}
+	],
+
+	// Sister services strip
+	otherServices: [
+		{
+			tag: 'Transport',
+			title: 'Sprinter Transport',
+			desc: 'Umzüge, Lieferungen, kleinere Touren in Istrien.',
+			slug: 'transport' as const
+		},
+		{
+			tag: 'Vermietung',
+			title: 'Auto / Kombi mieten',
+			desc: 'Personen- und Lastfahrzeuge — Lieferung möglich.',
+			slug: 'rental' as const
+		},
+		{
+			tag: 'Transfers',
+			title: 'Private Transfers',
+			desc: 'Privater Fahrer, Premium-Fahrzeug, rund um die Uhr.',
+			slug: 'transfers' as const
+		}
+	],
+
+	// Process steps
+	process: [
+		{
+			num: 'I',
+			title: 'Schreiben oder anrufen',
+			desc: 'WhatsApp ist am schnellsten. Sagen Sie uns, was, wo und wann zu reinigen ist.'
+		},
+		{
+			num: 'II',
+			title: 'Angebot',
+			desc: 'Schriftliches Angebot am selben Tag. Bei größeren Objekten kommen wir zur Besichtigung.'
+		},
+		{
+			num: 'III',
+			title: 'Die Reinigung',
+			desc: 'Festes Team, eigene Ausrüstung. Keine Subunternehmer.'
+		},
+		{
+			num: 'IV',
+			title: 'Qualitätsprüfung',
+			desc: 'Foto-Bericht nach Abschluss. Rechnung per E-Mail, Zahlung zum Monatsende.'
+		}
+	],
+
+	// Owner panel
+	owner: {
+		eyebrow: 'Wer hinter Sprinter steht',
+		quote: 'Ein kleines Team, eigene Ausrüstung, eine Nummer — ',
+		quoteAccent: 'Sie rufen an und wissen, wer kommt.',
+		name: 'Zvjezdana Puhanić',
+		role: 'Geschäftsführerin · Sprinter Pula',
+		bio: 'Ich leite Sprinter aus Pula. Zum ersten Termin komme ich persönlich — um den Ort zu sehen, den Rhythmus festzulegen und zu verstehen, was Sie brauchen. Danach übernimmt das Team, das Sie bereits kennen, alles weitere.',
+		portrait: 'Inhaberin-Porträt'
+	},
+
+	// Cleaning page (new design)
+	cleaningPage: {
+		eyebrow: 'Leistung · 01',
+		titleA: 'Professionelle',
+		titleB: 'Reinigung',
+		sub: 'Fünf Reinigungsdienste in Pula und ganz Istrien. Spezialisten für Ferienvermietung, ebenso sorgfältig bei allem anderen.',
+		index: 'Index',
+		areasEyebrow: 'Wir decken ab',
+		areasTitle: 'Pula und das weitere Istrien',
+		areasSub:
+			'Wir bringen unsere Ausrüstung mit. Außerhalb Pulas auf Anfrage — bitte kurz bestätigen.',
+		processEyebrow: 'Ablauf',
+		processTitle: 'Keine zufälligen Crews',
+		processSub: 'Festes Team, eigene Ausrüstung, der Inhaber kommt zu jedem ersten Termin.',
+		testiEyebrow: 'Was Kunden sagen',
+		testiTitle: 'Bewertungen folgen bald',
+		testiSub:
+			'Wir haben mit diesem Bereich gerade erst begonnen — Bewertungen werden im Sommer ergänzt.',
+		testiPlaceholder: 'Hier wird eine echte Kundenbewertung stehen. Eine pro Service-Kategorie.',
+		testiClient: 'Kundenname',
+		testiRoles: ['Apartment-Inhaber', 'Familienhaus', 'Büro'],
+		testiTagPlaceholder: '[ Platzhalter ]',
+		faqEyebrow: 'Häufig gefragt',
+		faqTitle: 'Was Leute fragen',
+		faqAccent: 'fragen',
+		faqSub: 'Wenn Ihre Frage nicht dabei ist, schreiben Sie uns — Antwort am selben Tag.',
+		priceLabel: 'Preis',
+		sendInquiry: 'Anfrage senden'
+	},
+
+	// Per-service detail
+	cleaningServices: [
+		{
+			id: 'turnover',
+			num: '01',
+			name: 'Apartment-Wechsel',
+			nameAccent: 'Wechsel',
+			long:
+				'Ferienvermietung lässt keine Improvisation zu. Wir kommen nach dem Auschecken, gehen vor dem Einchecken — Sie müssen sich keine Gedanken machen.',
+			bullets: [
+				'Standardprotokoll in 24 Schritten',
+				'Bett- und Handtuchwechsel (bringen wir mit)',
+				'Schadens- / Mängelbericht mit Fotos',
+				'Bestätigung der Bereitschaft vor Gastankunft',
+				'Notfalleinsatz innerhalb von 2 Stunden'
+			],
+			price: 'ab 80 €',
+			priceNote: 'pro Objekt',
+			photoTag: 'Apartment-Küche, frisch'
+		},
+		{
+			id: 'deep',
+			num: '02',
+			name: 'Grundreinigung',
+			nameAccent: 'Grund',
+			long:
+				'Alles, was die regelmäßige Reinigung auslässt. Typisch vor der Saison, nach dem Winter oder vor dem Einzug.',
+			bullets: [
+				'Backofen, Kühlschrank innen, Kochfeld',
+				'Fugen, Silikon, Badezimmerfliesen',
+				'Fenster und Fensterrahmen',
+				'Hinter und unter Möbeln',
+				'Mittel inklusive'
+			],
+			price: 'ab 18 €/h',
+			priceNote: 'mind. 4h',
+			photoTag: 'Detail, Küche vorher/nachher'
+		},
+		{
+			id: 'regular',
+			num: '03',
+			name: 'Regelmäßige Reinigung',
+			nameAccent: 'Regelmäßige',
+			long:
+				'Wir kommen nach festem Plan, am gleichen Tag, zur gleichen Zeit. Wir machen Notizen, wir wissen, wo alles hingehört.',
+			bullets: [
+				'Festes Team, fester Termin',
+				'Wöchentlich, zweiwöchentlich oder monatlich',
+				'Mittel inklusive',
+				'Schlüssel auf Vertrauensbasis möglich',
+				'Kostenlose Stornierung bis 24h vorher'
+			],
+			price: 'ab 16 €/h',
+			priceNote: 'mind. 3h',
+			photoTag: 'Wohnzimmer, frisch gewischt'
+		},
+		{
+			id: 'office',
+			num: '04',
+			name: 'Büroreinigung',
+			nameAccent: 'Büro',
+			long:
+				'Wir arbeiten früh morgens oder spät abends — Ihr Team sieht uns nicht bei der Arbeit.',
+			bullets: [
+				'Termine außerhalb der Arbeitszeit',
+				'Mülleimer, Oberflächen, desinfizierte Tische',
+				'Sanitäranlagen, gemeinsame Räume',
+				'Monatliche Rechnung, R1-Beleg',
+				'NDA auf Anfrage'
+			],
+			price: 'auf Anfrage',
+			priceNote: 'abhängig von m²',
+			photoTag: 'Büro, Empfang'
+		},
+		{
+			id: 'yacht',
+			num: '05',
+			name: 'Yacht- & Bootsreinigung',
+			nameAccent: 'Yacht',
+			long:
+				'Marinetaugliche Mittel, echte Bootserfahrung — wir kennen den Unterschied zwischen Teak und Gelcoat.',
+			bullets: [
+				'Charter-Wechsel am Samstag',
+				'Innen: Kabinen, Salon, Pantry',
+				'Außen: Deck, Fly, Beschläge',
+				'Marinetaugliche Mittel',
+				'Wir polieren keine Rümpfe'
+			],
+			price: 'ab 100 €',
+			priceNote: 'pro Charter-Tag',
+			photoTag: 'Yacht, Deck & Teak'
+		}
+	],
+
+	// Areas covered
+	areas: [
+		{ name: 'Pula', primary: true },
+		{ name: 'Medulin', primary: true },
+		{ name: 'Banjole', primary: true },
+		{ name: 'Premantura', primary: true },
+		{ name: 'Vodnjan', primary: false },
+		{ name: 'Fažana', primary: false },
+		{ name: 'Štinjan', primary: false },
+		{ name: 'Peroj', primary: false },
+		{ name: 'Rovinj', primary: false },
+		{ name: 'Bale', primary: false },
+		{ name: 'Barban', primary: false },
+		{ name: 'Marčana', primary: false }
+	],
+
+	// FAQ
+	faq: [
+		{
+			q: 'Bringen Sie Mittel und Ausrüstung mit?',
+			a: 'Ja. Wir bringen alle professionellen Mittel, Tücher, Mops und Staubsauger mit. Sie müssen nur den Zugang regeln.'
+		},
+		{
+			q: 'Brauchen Sie eine Anzahlung?',
+			a: 'Für Einzelaufträge — nein. Bei monatlichen Verträgen erfolgt die Zahlung am Monatsende nach erbrachter Leistung, meist per Überweisung mit R1-Rechnung.'
+		},
+		{
+			q: 'Was, wenn etwas beschädigt wird?',
+			a: 'Wir haben eine Berufshaftpflichtversicherung. Schäden werden schriftlich mit Fotos gemeldet und über die Versicherung erstattet.'
+		},
+		{
+			q: 'Übernehmen Sie Aufträge am selben Tag?',
+			a: 'Für Apartment-Wechsel — ja, wenn Sie bis 10 Uhr morgens schreiben. Andere Leistungen — meist am nächsten Werktag.'
+		},
+		{
+			q: 'Stellen Sie eine R1-Rechnung aus?',
+			a: 'Ja, R1-Rechnung an Unternehmen oder Selbstständige. Monatliche Abrechnung für Vertragskunden, Zahlung per Überweisung.'
+		},
+		{
+			q: 'Haustiere oder Allergien?',
+			a: 'Sagen Sie uns vorher Bescheid. Wir haben tierfreundliche Mittel und hypoallergene Varianten. Auf Wunsch geruchsneutral.'
+		},
+		{
+			q: 'Was ist der Unterschied zwischen regelmäßiger und Grundreinigung?',
+			a: 'Regelmäßig hält den Raum sauber — saugen, wischen, Oberflächen, Küche, Bad. Grundreinigung übernimmt, was die regelmäßige auslässt — Backofen innen, Fugen, Fenster, hinter und unter Möbeln, Badezimmerfliesen.'
+		},
+		{
+			q: 'Wie kommen Sie ins Apartment, wenn ich nicht da bin?',
+			a: 'Meist Schlüsseltresor oder Türcode. Bei Stammkunden Schlüssel auf Vertrauensbasis mit dokumentierten Besuchen. Alles foto-dokumentiert.'
+		}
+	],
+
+	// Quote calculator
+	calc: {
+		eyebrow: 'Preisschätzer',
+		title: 'Preis prüfen',
+		titleAccent: 'Preis',
+		sub: 'Grobe Schätzung in einer Minute. Endgültiger Preis per kurzer WhatsApp-Bestätigung.',
+		typeLabel: 'Art der Leistung',
+		sizeLabel: 'Größe',
+		freqLabel: 'Häufigkeit',
+		types: [
+			{ id: 'turnover' as const, label: 'Apartment-Wechsel' },
+			{ id: 'deep' as const, label: 'Grundreinigung' },
+			{ id: 'regular' as const, label: 'Regelmäßig' },
+			{ id: 'office' as const, label: 'Büro' },
+			{ id: 'yacht' as const, label: 'Yacht / Boot' }
+		],
+		freqs: [
+			{ id: 'oneoff' as const, label: 'Einmalig' },
+			{ id: 'weekly' as const, label: 'Wöchentlich' },
+			{ id: 'fortnight' as const, label: 'Zweiwöchentlich' },
+			{ id: 'monthly' as const, label: 'Monatlich' }
+		],
+		estimateLabel: 'Schätzung',
+		cta: 'An WhatsApp senden',
+		yachtNote:
+			'Für Boote bitte Länge und Typ angeben — der Preis hängt von Decktyp und Beschlägen ab.',
+		msgPrefix: 'Hallo, ich interessiere mich für',
+		msgFor: 'Reinigung für ca.',
+		msgEstimate: '. Ich habe eine Schätzung von',
+		msgCanYou: 'Können Sie die Details bestätigen?'
+	},
+
+	// Footer (extended)
+	footerNew: {
+		tag: 'Professionelle Reinigung in Pula und Istrien',
+		colsServices: 'Leistungen',
+		colsCompany: 'Unternehmen',
+		colsContact: 'Kontakt',
+		legal: ['© 2026 Sprinter d.o.o.', 'Datenschutz', 'Mietbedingungen', 'Cookies']
 	},
 
 	// Cleaning page
@@ -66,7 +426,7 @@ export default {
 			'Ihre Villa ist nicht nur eine Immobilie – sie ist Ihr Rückzugsort. Ich bin auf den vollständigen Pflegezyklus für Ihr Zuhause spezialisiert: von der detaillierten Vorbereitung vor Ihrer Ankunft über die diskrete Pflege während Ihres Aufenthalts bis zur gründlichen Konservierung nach der Abreise. Mein Ziel ist es, dass Sie jedes Mal, wenn Sie die Tür öffnen, das Gefühl haben, ein völlig neues, frisch eingerichtetes Zuhause zu betreten.',
 		accommodationsTitle: 'Unterkünfte der höchsten Kategorie',
 		accommodationsDesc:
-			'Luxuswohnungen, Boutique-Hotels und Yachten verlangen mehr als Reinigung – sie verlangen Materialkenntnis. Ob es um die Pflege von Edelholz (Teak), Naturstein, hochpolierten Oberflächen oder empfindlichen Stoffen geht – meine Verfahren sind auf die Erhaltung ihrer Langlebigkeit zugeschnitten.',
+			'Privatwohnungen, Boutique-Hotels und Yachten verlangen mehr als Reinigung – sie verlangen Materialkenntnis. Ob es um die Pflege von Edelholz (Teak), Naturstein, hochpolierten Oberflächen oder empfindlichen Stoffen geht – meine Verfahren sind auf die Erhaltung ihrer Langlebigkeit zugeschnitten.',
 		accommodationsStaging:
 			'Meine Arbeit in diesem Segment umfasst auch das finale „Staging“ – das Dekorieren und Vorbereiten des Raums nach den Prinzipien erstklassiger Hotellerie, bei dem jedes Handtuch, jeder Duft und jedes Detail mit der Absicht platziert wird, den Gast oder Eigentümer beim Betreten zu begeistern.',
 		standardsTitle: 'Standards, die ich in Ihr Zuhause bringe',
@@ -193,7 +553,7 @@ export default {
 			'Unsere primäre Aufgabe ist der sichere Transport und die Handhabung der Ladung am Fahrzeug. Das Tragen der Sachen über mehrere Stockwerke bieten wir nicht an, was uns erlaubt, schnell, präzise und für Ihren nächsten Transport verfügbar zu bleiben.',
 		logisticsPara3Label: 'Sauber. Pünktlich. Zuverlässig.',
 		logisticsPara3:
-			'Als Unternehmen, das auch Luxusvillen pflegt, wissen wir, wie wichtig Liebe zum Detail ist. Unsere Fahrzeuge sind gepflegt, unser Service ist diskret und professionell.',
+			'Als Unternehmen, das auch Privatvillen pflegt, wissen wir, wie wichtig Liebe zum Detail ist. Unsere Fahrzeuge sind gepflegt, unser Service ist diskret und professionell.',
 		quoteTitle: 'Brauchen Sie ein schnelles Angebot?',
 		quoteIntro:
 			'Rufen Sie uns gerne an oder schreiben Sie uns auf WhatsApp. Damit wir Ihnen sofort genaue Informationen geben können, halten Sie bitte folgende Angaben bereit:',
@@ -207,9 +567,101 @@ export default {
 		closing: 'Ihr Sprinter Team – professionelle Transportlogistik'
 	},
 
-	// Transfers page
+	// Transfers page (Redesign)
+	transfersPage: {
+		eyebrow: 'Service · 03',
+		title: 'Private Transfers',
+		titleAccent: 'Transfers',
+		titleSuffix: ' · Pula · Istrien · Europa',
+		leadOne:
+			'Sie setzen sich. Der Fahrer schließt die Tür. Und Sie müssen an nichts anderes mehr denken.',
+		leadTwo:
+			'Sprinter ist ein Familienunternehmen aus Pula. Wir organisieren private Transfers mit persönlichem Fahrer in Istrien und Europa — zuverlässig, pünktlich, ohne Überraschungen.',
+		fleetEyebrow: 'Fuhrpark',
+		fleetTitle: 'Zwei Fahrzeuge, ein Standard',
+		fleetSub: 'Wählen Sie die richtige Größe — die Preisgestaltung bleibt transparent.',
+		eClassName: 'Mercedes-Benz E-Klasse',
+		eClassDesc:
+			'Eleganz und Komfort für bis zu 3 Passagiere — die richtige Wahl, wenn Diskretion und Stil zählen.',
+		vClassName: 'Mercedes-Benz V-Klasse',
+		vClassDesc:
+			'Geräumig und ruhig für bis zu 7 Passagiere — entspannte und sichere Beförderung für Gruppen oder Familien.'
+	},
+
+	// Transfer-Kalkulator
+	transferCalc: {
+		title: 'Preiskalkulator',
+		vatNote: 'inkl. MwSt.',
+		pickup: 'Abholort',
+		pickupPlaceholder: '— Abholort wählen —',
+		pickupAirport: 'Flughafen Pula',
+		pickupPula: 'Pula (Zentrum / Hotel)',
+		pickupCustom: 'Mein Abholort ist nicht aufgeführt',
+		yourPickup: 'Ihr Abholort',
+		yourPickupPh: 'z. B. Banjole, Kanfanar, Svetvinčenat...',
+		yourDest: 'Ihr Ziel',
+		yourDestPh: 'z. B. Zagreb, Rijeka, Triest...',
+		customNote: 'Geben Sie Ihren Abholort und Ihr Ziel ein — wir bestätigen den Preis per WhatsApp.',
+		destination: 'Ziel',
+		destinationPlaceholder: '— Ziel wählen —',
+		destinationCustom: 'Mein Ziel ist nicht aufgeführt',
+		passengers: 'Passagiere',
+		eClass: 'Mercedes E-Klasse',
+		eClassRange: '1 – 3 Passagiere',
+		vClass: 'Mercedes V-Klasse',
+		vClassRange: '1 – 7 Passagiere',
+		calculate: 'Preis berechnen',
+		errorRoute: 'Bitte wählen oder geben Sie Abholort und Ziel ein.',
+		bookingTitle: 'Buchung',
+		bookingInquiry: 'Ihre Angaben',
+		travelTimeLabel: 'Fahrtzeit',
+		onRequest: 'Auf Anfrage',
+		onRequestSub: 'Der Preis wird per WhatsApp innerhalb von 30 Minuten bestätigt.',
+		fullName: 'Vollständiger Name',
+		fullNamePh: 'Ihr vollständiger Name',
+		phone: 'Telefon',
+		email: 'E-Mail',
+		date: 'Datum',
+		time: 'Uhrzeit',
+		timePlaceholder: '— Uhrzeit wählen —',
+		nightNotice: 'Nachttransfer (22:00 – 06:00) · +25 % Zuschlag automatisch berechnet.',
+		flight: 'Flugnummer (bei Flughafentransfer)',
+		flightPh: 'z. B. FR1234 (optional)',
+		note: 'Notiz / genaue Adresse',
+		notePh: 'Für größere Städte bitte genaue Adresse angeben. Kindersitz, Sonderwünsche...',
+		addReturn: 'Rückfahrt hinzufügen',
+		returnDiscount: '−10 % Rabatt',
+		returnDate: 'Rückfahrtsdatum',
+		returnTime: 'Rückfahrtszeit',
+		returnNoteLabel: 'Rückfahrt',
+		nightTag: '+25 % Nacht',
+		termsTitle: 'Bedingungen & Informationen',
+		terms: [
+			'💶 Festpreise für Stadtzentren. Für entlegene Orte bitte genaue Adresse angeben — Bestätigung per WhatsApp.',
+			'🌙 Nachttransfers (22:00 – 06:00) enthalten +25 % Zuschlag, automatisch berechnet.',
+			'✈️ Wartezeit am Flughafen ist kostenlos.',
+			'🚗 Der Fahrer empfängt Sie mit Ihrem Namensschild am Flughafen.',
+			'👶 Kindersitz kostenlos verfügbar — bitte im Kommentarfeld vermerken.',
+			'🔄 Rückfahrt mit 10 % Rabatt.',
+			'❌ Kostenlose Stornierung bis 24 Stunden vorher. Innerhalb von 24 Stunden — 50 % Gebühr.',
+			'📍 Ziel nicht auf der Liste? Kontaktieren Sie uns — Antwort innerhalb von 30 Minuten.',
+			'📱 Buchungsbestätigung per WhatsApp innerhalb von 30 Minuten.'
+		],
+		orderSummary: 'Bestellübersicht',
+		outbound: 'Hinfahrt',
+		returnRow: 'Rückfahrt',
+		total: 'Gesamt',
+		vatIncl: 'inkl. MwSt.',
+		errorBook: 'Bitte geben Sie Name, Telefon, Datum und Uhrzeit ein.',
+		sendBooking: 'Buchung per WhatsApp senden',
+		sendInquiry: 'Preisanfrage per WhatsApp senden',
+		formNote: 'Verfügbar 24/7 · sprinter.hr · +385 95 722 6918',
+		whatsapp: 'WhatsApp'
+	},
+
+	// Transfers page (alte Kopie — vorübergehend behalten)
 	transfers: {
-		title: 'Luxus-Transfers mit Privatfahrer',
+		title: 'Private Transfers mit Privatfahrer',
 		visionIntro:
 			'Unsere Vision ist eine Aristokratie des Transports, die weit über das bloße Fahren hinausgeht. Wir bieten ein Erlebnis, das auf Respekt, Diskretion und Qualität aufgebaut ist – und schaffen Partnerschaften mit Menschen, die unsere Werte teilen.',
 		visionService:
@@ -230,7 +682,7 @@ export default {
 		pricingContact:
 			'Senden Sie uns gerne Ihre Reisepläne per E-Mail oder WhatsApp. Für sofortige Anfragen rufen Sie uns einfach an!',
 		vipNote: 'VIP-Service rund um die Uhr verfügbar.',
-		inquiryTitle: 'Erfahren Sie mehr über Luxus-Transfers!',
+		inquiryTitle: 'Erfahren Sie mehr über private Transfers!',
 		inquiryFirstName: 'Vorname',
 		inquiryLastName: 'Nachname',
 		inquiryEmail: 'E-Mail',

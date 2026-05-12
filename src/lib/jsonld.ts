@@ -85,7 +85,7 @@ export function cleaningService() {
 		areaServed: { '@type': 'Country', name: 'Croatia' },
 		name: 'Usluge čišćenja — Sprinter',
 		description:
-			'Profesionalne usluge čišćenja za luksuzne nekretnine, apartmane, vile i smještaj najviše kategorije.'
+			'Profesionalne usluge čišćenja za privatne nekretnine, apartmane, vile i smještaj najviše kategorije.'
 	};
 }
 
@@ -108,7 +108,7 @@ export function transferService() {
 		'@type': 'TaxiService',
 		provider: { '@id': `${SITE_URL}/#business` },
 		areaServed: { '@type': 'Country', name: 'Croatia' },
-		name: 'Luksuzni transferi',
+		name: 'Privatni transferi',
 		description: 'Transferi Mercedes-Benz E-klasa i V-klasa s osobnim vozačem. Dostupno 0–24.'
 	};
 }

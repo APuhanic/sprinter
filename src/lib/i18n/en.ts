@@ -4,31 +4,77 @@ export default {
 	lang: 'en',
 	langName: 'English',
 
-	// Nav
+	// Nav (compact labels for the top bar)
 	nav: {
 		home: 'Home',
-		cleaning: 'Cleaning Services',
-		transport: 'Transport Services',
-		rental: 'Rent a Kombi/Car',
-		transfers: 'Luxury Transfers',
+		cleaning: 'Cleaning',
+		transport: 'Transport',
+		rental: 'Rentals',
+		transfers: 'Transfers',
 		contact: 'Contact'
 	},
 
-	// Header banner
+	// Header banner / utility strip
 	banner: {
-		notice: 'Please announce your visit in advance',
-		address: contact.address,
+		notice: 'Currently accepting new clients',
+		address: 'Capelleri 5, Pula',
 		phone: contact.phone,
-		hours: 'Mon - Sun: 08h - 19h'
+		hours: 'Mon – Sun · 08—19h'
 	},
 
 	// Homepage
 	home: {
+		// Hero
+		eyebrow: 'Pula · Istria · est. 2024',
+		titleA: 'A home worth a',
+		titleB: 'postcard',
+		sub: 'Professional cleaning across Pula and Istria — apartments and family homes, offices and yachts. Done carefully, without improvising.',
+		meta: [
+			{ label: 'Based in', text: 'Capelleri 5, Pula' },
+			{ label: 'Service area', text: 'Pula and around, up to 30 km' },
+			{ label: 'Response', text: 'Same-day reply, often within an hour' },
+			{ label: 'Payment', text: 'Cash · Bank transfer' }
+		],
+		// Section heads
+		servicesEyebrow: '01 · What we do',
+		servicesTitle: 'Five kinds of clean, one team',
+		servicesSub:
+			'We specialise in holiday-rental turnover, where the gap between guests is measured in hours. The same habits go into everything else we clean.',
+		otherEyebrow: '02 · And more',
+		otherTitle: "Sprinter doesn't stop at cleaning",
+		otherSub: 'Sister services that often pair with rental management — same hands, same number.',
+		processEyebrow: '03 · How it works',
+		processTitle: 'No drop-in crews',
+		processSub:
+			'A consistent team, our own kit, a written protocol per property type. The owner shows up to your first job.',
+		contactEyebrow: '04 · Contact',
+		contactTitle: 'Tell us',
+		contactTitleAccent: 'what you need',
+		contactSub: 'WhatsApp is fastest. Same-day reply, usually within the hour.',
+		// CTAs
+		ctaWhatsapp: 'WhatsApp',
+		ctaCall: 'Call',
+		ctaServices: 'All services',
+		ctaLearn: 'Learn more',
+		ctaSeeAll: 'See full service page',
+		// Hours strip labels
+		hoursLabel: 'Mon — Sun',
+		hoursValue: '08 — 19h',
+		// Marquee
+		marquee: [
+			'Apartment turnover',
+			'Deep cleaning',
+			'Regular cleaning',
+			'Offices & commercial',
+			'Yachts & boats',
+			'Pula · Istria'
+		],
+		// Legacy carousel keys
 		heroCleaningTitle: 'Professional Cleaning',
-		heroCleaningSubtitle: 'Cleaning services for luxury properties',
+		heroCleaningSubtitle: 'Cleaning services for private properties',
 		heroRentalTitle: 'Rent a Car\nRent a Kombi',
 		heroRentalSubtitle: 'Vehicle delivery available',
-		heroTransfersTitle: 'Private drivers & luxury transfers',
+		heroTransfersTitle: 'Private drivers & private transfers',
 		heroTransfersSubtitle: 'Service available 24/7',
 		heroTransportTitle: 'Sprinter Transport',
 		heroTransportSubtitle: 'Smart logistics on Istrian roads',
@@ -45,6 +91,320 @@ export default {
 		carouselGoTo: 'Go to slide'
 	},
 
+	// Cleaning services as shown on homepage row list
+	homeServices: [
+		{
+			id: 'turnover',
+			num: '01',
+			name: 'Apartment turnover',
+			nameAccent: 'turnover',
+			short: 'Quick, dependable change-overs between guests, with a hotel-grade protocol.'
+		},
+		{
+			id: 'deep',
+			num: '02',
+			name: 'Deep cleaning',
+			nameAccent: 'Deep',
+			short:
+				'Seasonal or one-off, down to the detail — kitchen, bathroom, grout, oven, windows.'
+		},
+		{
+			id: 'regular',
+			num: '03',
+			name: 'Regular cleaning',
+			nameAccent: 'Regular',
+			short: 'Weekly or fortnightly visits for homes and flats — same team, same time.'
+		},
+		{
+			id: 'office',
+			num: '04',
+			name: 'Office cleaning',
+			nameAccent: 'Office',
+			short: 'Offices and commercial spaces — discreet, outside working hours.'
+		},
+		{
+			id: 'yacht',
+			num: '05',
+			name: 'Yacht & boat cleaning',
+			nameAccent: 'Yacht',
+			short: 'Interior and exterior — between charter weeks or seasonally.'
+		}
+	],
+
+	// Sister services strip
+	otherServices: [
+		{
+			tag: 'Transport',
+			title: 'Sprinter Transport',
+			desc: 'Moves, deliveries, smaller hauls across Istria.',
+			slug: 'transport' as const
+		},
+		{
+			tag: 'Rental',
+			title: 'Rent a Car / Van',
+			desc: 'Passenger and cargo vehicles — delivery available.',
+			slug: 'rental' as const
+		},
+		{
+			tag: 'Transfers',
+			title: 'Private transfers',
+			desc: 'Personal driver, premium vehicle, 24/7.',
+			slug: 'transfers' as const
+		}
+	],
+
+	// Process steps
+	process: [
+		{
+			num: 'I',
+			title: 'Message or call',
+			desc: 'WhatsApp is the fastest channel. Tell us what to clean, where, and when.'
+		},
+		{
+			num: 'II',
+			title: 'Quote',
+			desc: 'A written quote within the day. For larger jobs, we come for a walkthrough first.'
+		},
+		{
+			num: 'III',
+			title: 'The clean',
+			desc: 'Permanent team, our own kit. No subcontractors.'
+		},
+		{
+			num: 'IV',
+			title: 'Quality check',
+			desc: 'Photo report on completion. Invoice by email, payment end of month.'
+		}
+	],
+
+	// Owner panel
+	owner: {
+		eyebrow: "Who's behind Sprinter",
+		quote: 'A small team, our own kit, one number — ',
+		quoteAccent: "you call and you know who's coming.",
+		name: 'Zvjezdana Puhanić',
+		role: 'Founder · Sprinter Pula',
+		bio: "I run Sprinter from Pula. I come to every first job in person — to see the place, agree on the rhythm, and understand what you need. From there the same team you've already met handles everything.",
+		portrait: 'Owner portrait'
+	},
+
+	// Cleaning page (new design)
+	cleaningPage: {
+		eyebrow: 'Service · 01',
+		titleA: 'Professional',
+		titleB: 'cleaning',
+		sub: 'Five cleaning services in Pula and across Istria. Holiday-rental specialists, equally careful with everything else.',
+		index: 'Index',
+		areasEyebrow: 'We cover',
+		areasTitle: 'Pula and wider Istria',
+		areasSub:
+			'We arrive with our own kit. Outside Pula, travel on request — message us to confirm.',
+		processEyebrow: 'Process',
+		processTitle: 'No drop-in crews',
+		processSub: 'A consistent team, our own kit, the owner shows up on every first job.',
+		testiEyebrow: 'What clients say',
+		testiTitle: 'Reviews coming soon',
+		testiSub:
+			"We just started this side of the business — testimonials will land here over the summer.",
+		testiPlaceholder: 'A real client review will sit here. One per service category.',
+		testiClient: 'Client name',
+		testiRoles: ['Apartment owner', 'Family home', 'Office'],
+		testiTagPlaceholder: '[ placeholder ]',
+		faqEyebrow: 'Frequently asked',
+		faqTitle: 'What people ask',
+		faqAccent: 'ask',
+		faqSub: "If your question isn't here, message us — we reply same-day.",
+		priceLabel: 'Price',
+		sendInquiry: 'Send a request'
+	},
+
+	// Per-service detail
+	cleaningServices: [
+		{
+			id: 'turnover',
+			num: '01',
+			name: 'Apartment turnover',
+			nameAccent: 'turnover',
+			long:
+				"Holiday rentals don't allow improvising. We come in after check-out, leave before check-in, and you don't have to think about it.",
+			bullets: [
+				'24-step standard protocol',
+				'Linen and towels swapped (we bring them)',
+				'Damage / shortage report with photos',
+				'Ready-confirmation before guest arrival',
+				'Emergency call-outs within 2 hours'
+			],
+			price: 'from €80',
+			priceNote: 'per property',
+			photoTag: 'Apartment kitchen, made up'
+		},
+		{
+			id: 'deep',
+			num: '02',
+			name: 'Deep cleaning',
+			nameAccent: 'Deep',
+			long:
+				'Everything regular cleaning skips. Typically before season, after winter, or before moving in.',
+			bullets: [
+				'Oven, fridge interior, hob',
+				'Grout, silicone, bathroom tile',
+				'Windows and window tracks',
+				'Behind and underneath furniture',
+				'All chemicals included'
+			],
+			price: 'from €18/h',
+			priceNote: '4h minimum',
+			photoTag: 'Detail, kitchen before/after'
+		},
+		{
+			id: 'regular',
+			num: '03',
+			name: 'Regular cleaning',
+			nameAccent: 'Regular',
+			long:
+				'We come on a fixed schedule, same day, same hours. We keep notes, we know where things go.',
+			bullets: [
+				'Fixed team, fixed slot',
+				'Weekly, fortnightly or monthly',
+				'Chemicals included',
+				'Key-holding on trust',
+				'Free cancellation up to 24h before'
+			],
+			price: 'from €16/h',
+			priceNote: '3h minimum',
+			photoTag: 'Living room, freshly mopped'
+		},
+		{
+			id: 'office',
+			num: '04',
+			name: 'Office cleaning',
+			nameAccent: 'Office',
+			long:
+				'We work early mornings or late evenings, so your team never sees us at it.',
+			bullets: [
+				'Out-of-hours scheduling',
+				'Bins, surfaces, sanitised desks',
+				'Bathrooms, shared spaces',
+				'Monthly invoicing, R1 receipt',
+				'NDA on request'
+			],
+			price: 'by quote',
+			priceNote: 'depends on m²',
+			photoTag: 'Office, reception desk'
+		},
+		{
+			id: 'yacht',
+			num: '05',
+			name: 'Yacht & boat cleaning',
+			nameAccent: 'Yacht',
+			long:
+				"Marine-safe products, real boat experience — we know the difference between teak and gelcoat.",
+			bullets: [
+				'Saturday charter turnover',
+				'Interior: cabins, saloon, galley',
+				'Exterior: deck, fly, fittings',
+				'Marine-safe chemicals',
+				"We don't polish hulls"
+			],
+			price: 'from €100',
+			priceNote: 'per charter day',
+			photoTag: 'Yacht, deck & teak'
+		}
+	],
+
+	// Areas covered
+	areas: [
+		{ name: 'Pula', primary: true },
+		{ name: 'Medulin', primary: true },
+		{ name: 'Banjole', primary: true },
+		{ name: 'Premantura', primary: true },
+		{ name: 'Vodnjan', primary: false },
+		{ name: 'Fažana', primary: false },
+		{ name: 'Štinjan', primary: false },
+		{ name: 'Peroj', primary: false },
+		{ name: 'Rovinj', primary: false },
+		{ name: 'Bale', primary: false },
+		{ name: 'Barban', primary: false },
+		{ name: 'Marčana', primary: false }
+	],
+
+	// FAQ
+	faq: [
+		{
+			q: 'Do you bring supplies and equipment?',
+			a: 'Yes. We bring all professional chemicals, cloths, mops and vacuums. You only need to arrange access.'
+		},
+		{
+			q: 'Do you take a deposit?',
+			a: 'For one-off jobs — no. For recurring monthly arrangements, payment is at month-end after the work is done, usually by bank transfer with an R1 invoice.'
+		},
+		{
+			q: 'What if something gets damaged?',
+			a: 'We carry professional liability insurance. Damages are reported in writing with photos and reimbursed through the policy.'
+		},
+		{
+			q: 'Do you handle same-day jobs?',
+			a: 'For apartment turnovers — yes, if you message by 10am. Other services — usually next working day.'
+		},
+		{
+			q: 'Can you issue an R1 invoice?',
+			a: 'Yes, R1 invoice to a registered company or sole trader. Monthly invoicing for contract clients, paid by bank transfer.'
+		},
+		{
+			q: 'Pets or allergies?',
+			a: 'Tell us in advance. We carry pet-safe products and hypoallergenic options. Fragrance-free on request.'
+		},
+		{
+			q: "What's the difference between regular and deep cleaning?",
+			a: 'Regular keeps the place clean — vacuum, mop, surfaces, kitchen, bathrooms. Deep handles what regular skips — oven interior, grout, windows, behind and under furniture, bathroom tile.'
+		},
+		{
+			q: "How do you access the apartment when I'm not there?",
+			a: 'Usually a key safe or door code. For long-term clients, key on trust with logged visits. Everything photo-documented.'
+		}
+	],
+
+	// Quote calculator
+	calc: {
+		eyebrow: 'Price estimator',
+		title: 'Check the price',
+		titleAccent: 'price',
+		sub: 'Rough estimate in a minute. Final figure confirmed in a quick WhatsApp message.',
+		typeLabel: 'Service type',
+		sizeLabel: 'Size',
+		freqLabel: 'Frequency',
+		types: [
+			{ id: 'turnover' as const, label: 'Apartment turnover' },
+			{ id: 'deep' as const, label: 'Deep' },
+			{ id: 'regular' as const, label: 'Regular' },
+			{ id: 'office' as const, label: 'Office' },
+			{ id: 'yacht' as const, label: 'Yacht / boat' }
+		],
+		freqs: [
+			{ id: 'oneoff' as const, label: 'One-off' },
+			{ id: 'weekly' as const, label: 'Weekly' },
+			{ id: 'fortnight' as const, label: 'Fortnightly' },
+			{ id: 'monthly' as const, label: 'Monthly' }
+		],
+		estimateLabel: 'Estimate',
+		cta: 'Send to WhatsApp',
+		yachtNote:
+			'For boats, send length and type — price depends on deck type and fittings.',
+		msgPrefix: "Hi, I'd like a",
+		msgFor: 'clean for a ~',
+		msgEstimate: '. I saw an estimate of',
+		msgCanYou: 'Can you confirm details?'
+	},
+
+	// Footer (extended)
+	footerNew: {
+		tag: 'Professional cleaning in Pula and Istria',
+		colsServices: 'Services',
+		colsCompany: 'Company',
+		colsContact: 'Contact',
+		legal: ['© 2026 Sprinter d.o.o.', 'Privacy', 'Rental terms', 'Cookies']
+	},
+
 	// Cleaning page
 	cleaning: {
 		title: 'Cleaning Services',
@@ -53,7 +413,7 @@ export default {
 		visionPara1:
 			'My name is Zvjezdana Puhanić. As the company director, I see my calling not as a mere cleaning service, but as a mission to restore shine and harmony to your living space.',
 		visionPara2:
-			'I believe a luxury space deserves more than “ordinary tidying” — it deserves German discipline, absolute discretion, and an eye that catches what others miss.',
+			'I believe a private space deserves more than “ordinary tidying” — it deserves German discipline, absolute discretion, and an eye that catches what others miss.',
 		visionPara3:
 			'I honed my professional experience in hospitality, where I absorbed uncompromising standards of organization and meticulousness. For the past several years I have been dedicated exclusively to maintaining exclusive villas and residences in Germany, understanding that clients of my profile are not looking for ordinary labor, but a trustworthy partner with every necessary skill.',
 		visionPara4:
@@ -66,7 +426,7 @@ export default {
 			'Your villa is not just a property — it is your sanctuary. I specialize in the full cycle of care for your home: from detailed preparation of the property before your arrival, through discreet maintenance during your stay, to thorough conservation of the space after departure. My goal is that every time you open the door, you feel as though you are entering a brand-new, freshly furnished home.',
 		accommodationsTitle: 'Highest-category accommodations',
 		accommodationsDesc:
-			'Luxury apartments, boutique hotels and yachts demand more than cleaning — they demand material expertise. Whether it is the care of noble wood (teak), natural stone, highly polished surfaces or delicate fabrics, my methods are tailored to preserve their longevity.',
+			'Private apartments, boutique hotels and yachts demand more than cleaning — they demand material expertise. Whether it is the care of noble wood (teak), natural stone, highly polished surfaces or delicate fabrics, my methods are tailored to preserve their longevity.',
 		accommodationsStaging:
 			'My work in this segment also includes final “staging” — decorating and preparing the space according to the principles of top-tier hospitality, where every towel, scent and detail is placed with the intention of delighting the guest or owner the moment they step inside.',
 		standardsTitle: 'Standards I Bring to Your Home',
@@ -192,7 +552,7 @@ export default {
 			'Our primary task is the safe transport and handling of cargo at the vehicle. We do not offer carrying items up floors, which lets us stay fast, accurate, and available for your next transport.',
 		logisticsPara3Label: 'Clean. Punctual. Reliable.',
 		logisticsPara3:
-			'As a company that also maintains luxury villas, we know how important attention to detail is. Our vehicles are tidy and our service is discreet and professional.',
+			'As a company that also maintains private villas, we know how important attention to detail is. Our vehicles are tidy and our service is discreet and professional.',
 		quoteTitle: 'Need a quick quote?',
 		quoteIntro:
 			'Feel free to call or message us on WhatsApp. So we can give you accurate information immediately, please have the following ready:',
@@ -206,9 +566,101 @@ export default {
 		closing: 'Your Sprinter Team — professional transport logistics'
 	},
 
-	// Transfers page
+	// Transfers page (new redesign)
+	transfersPage: {
+		eyebrow: 'Service · 03',
+		title: 'Private transfers',
+		titleAccent: 'transfers',
+		titleSuffix: ' · Pula · Istria · Europe',
+		leadOne:
+			'You sit down. The driver closes the door. And you no longer need to think about anything else.',
+		leadTwo:
+			'Sprinter is a family business from Pula. We organize private transfers with a personal driver across Istria and Europe — reliable, punctual, and without surprises.',
+		fleetEyebrow: 'Fleet',
+		fleetTitle: 'Two vehicles, one standard',
+		fleetSub: 'Pick the right size — pricing stays transparent either way.',
+		eClassName: 'Mercedes-Benz E-Class',
+		eClassDesc:
+			'Elegance and comfort for up to 3 passengers — the right choice when discretion and style matter most.',
+		vClassName: 'Mercedes-Benz V-Class',
+		vClassDesc:
+			'Roomy and quiet for up to 7 passengers — relaxed, safe transport for groups, families, or extra luggage.'
+	},
+
+	// Transfer calculator UI strings
+	transferCalc: {
+		title: 'Price calculator',
+		vatNote: 'VAT included',
+		pickup: 'Pick-up location',
+		pickupPlaceholder: '— Select pick-up —',
+		pickupAirport: 'Pula Airport',
+		pickupPula: 'Pula (centre / hotel)',
+		pickupCustom: 'My pick-up is not on the list',
+		yourPickup: 'Your pick-up',
+		yourPickupPh: 'e.g. Banjole, Kanfanar, Svetvinčenat...',
+		yourDest: 'Your destination',
+		yourDestPh: 'e.g. Zagreb, Rijeka, Trieste...',
+		customNote: "Enter your pick-up and destination — we'll confirm the price on WhatsApp.",
+		destination: 'Destination',
+		destinationPlaceholder: '— Select destination —',
+		destinationCustom: 'My destination is not on the list',
+		passengers: 'Passengers',
+		eClass: 'Mercedes E-Class',
+		eClassRange: '1 – 3 passengers',
+		vClass: 'Mercedes V-Class',
+		vClassRange: '1 – 7 passengers',
+		calculate: 'Calculate price',
+		errorRoute: 'Please select or enter a pick-up location and destination.',
+		bookingTitle: 'Booking',
+		bookingInquiry: 'Your details',
+		travelTimeLabel: 'Travel time',
+		onRequest: 'On request',
+		onRequestSub: 'Price will be confirmed on WhatsApp within 30 minutes.',
+		fullName: 'Full name',
+		fullNamePh: 'Your full name',
+		phone: 'Phone',
+		email: 'Email',
+		date: 'Date',
+		time: 'Time',
+		timePlaceholder: '— Select time —',
+		nightNotice: 'Night transfer (22:00 – 06:00) · +25% surcharge automatically applied.',
+		flight: 'Flight number (if airport transfer)',
+		flightPh: 'e.g. FR1234 (optional)',
+		note: 'Note / Exact address',
+		notePh: 'For larger cities please give the exact address. Child seat, special requests...',
+		addReturn: 'Add return journey',
+		returnDiscount: '−10% discount',
+		returnDate: 'Return date',
+		returnTime: 'Return time',
+		returnNoteLabel: 'Return',
+		nightTag: '+25% night',
+		termsTitle: 'Terms & information',
+		terms: [
+			'💶 Fixed prices for city centres. For remote locations please add the exact address — we confirm on WhatsApp.',
+			'🌙 Night transfers (22:00 – 06:00) include a +25% surcharge, applied automatically.',
+			'✈️ Airport waiting time is free of charge.',
+			'🚗 Driver meets you with your name sign at the airport.',
+			'👶 Child seat available free of charge — please note in the comment field.',
+			'🔄 Return journey at 10% discount.',
+			'❌ Free cancellation up to 24 hours before. Within 24 hours — 50% charge.',
+			'📍 Destination not on the list? Contact us — we respond within 30 minutes.',
+			'📱 Booking confirmation sent to your WhatsApp within 30 minutes.'
+		],
+		orderSummary: 'Order summary',
+		outbound: 'Outbound',
+		returnRow: 'Return',
+		total: 'Total',
+		vatIncl: 'VAT incl.',
+		errorBook: 'Please enter your name, phone, date and time.',
+		sendBooking: 'Send booking via WhatsApp',
+		sendInquiry: 'Send price request via WhatsApp',
+		formNote: 'Available 24/7 · sprinter.hr · +385 95 722 6918',
+		whatsapp: 'WhatsApp'
+	},
+
+	// Transfers page (legacy keys — kept until older copy is fully retired)
 	transfers: {
-		title: 'Luxury Transfers with Private Driver',
+		title: 'Private Transfers with Personal Driver',
 		visionIntro:
 			'Our vision is an aristocracy of transport that goes far beyond mere driving. We offer an experience built on respect, discretion, and quality — creating partnerships with people who share our values.',
 		visionService:
@@ -229,7 +681,7 @@ export default {
 		pricingContact:
 			'Feel free to send us your travel plans via email or WhatsApp. For immediate inquiries, give us a call!',
 		vipNote: 'VIP service available 24/7.',
-		inquiryTitle: 'Learn more about luxury transfers!',
+		inquiryTitle: 'Learn more about private transfers!',
 		inquiryFirstName: 'First name',
 		inquiryLastName: 'Last name',
 		inquiryEmail: 'Email',
