@@ -1,6 +1,29 @@
-import { redirect, type Handle } from '@sveltejs/kit';
+import { redirect, type Handle, type HandleServerError } from '@sveltejs/kit';
 import { isValidLang, defaultLang } from '$lib/i18n';
 import { resolveRedirect } from '$lib/redirects';
+
+export const handleError: HandleServerError = ({ error, event, status, message }) => {
+	const errorId = crypto.randomUUID();
+	const err = error instanceof Error ? error : null;
+
+	console.error(
+		JSON.stringify({
+			level: 'error',
+			errorId,
+			status,
+			method: event.request.method,
+			url: event.url.pathname + event.url.search,
+			message: err?.message ?? message,
+			stack: err?.stack,
+			timestamp: new Date().toISOString()
+		})
+	);
+
+	return {
+		message: 'An unexpected error occurred. Please try again.',
+		errorId
+	};
+};
 
 export const handle: Handle = async ({ event, resolve }) => {
 	// 301 redirects for legacy WordPress URLs — MUST run before lang resolution.
