@@ -2,6 +2,9 @@ import { error, fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { vehicles } from '$lib/data/vehicles';
 import { sendInquiry, renderInquiryHtml, renderInquiryText } from '$lib/server/mail';
+import { FORM_MAX } from '$lib/server/formLimits';
+import { checkRateLimit } from '$lib/server/rateLimit';
+import { verifyTurnstile } from '$lib/server/turnstile';
 
 export const load: PageServerLoad = ({ params }) => {
 	const vehicle = vehicles.find((v) => v.slug === params.slug);
@@ -10,7 +13,7 @@ export const load: PageServerLoad = ({ params }) => {
 };
 
 export const actions: Actions = {
-	default: async ({ request, params }) => {
+	default: async ({ request, params, getClientAddress }) => {
 		const form = await request.formData();
 
 		if (form.get('website')) {
@@ -19,6 +22,24 @@ export const actions: Actions = {
 
 		const vehicle = vehicles.find((v) => v.slug === params.slug);
 		if (!vehicle) throw error(404);
+
+		const rl = checkRateLimit(`form:${getClientAddress()}`, 5, 60 * 60 * 1000);
+		if (!rl.ok) {
+			return fail(429, {
+				serverError: 'Previše pokušaja. Pokušajte ponovno za malo.',
+				retryAfter: rl.retryAfter
+			});
+		}
+
+		const turnstileOk = await verifyTurnstile(
+			String(form.get('cf-turnstile-response') ?? ''),
+			getClientAddress()
+		);
+		if (!turnstileOk) {
+			return fail(400, {
+				serverError: 'Sigurnosna provjera nije prošla. Pokušajte ponovno.'
+			});
+		}
 
 		const name = String(form.get('name') ?? '').trim();
 		const email = String(form.get('email') ?? '').trim();
@@ -30,7 +51,14 @@ export const actions: Actions = {
 
 		const errors: Record<string, string> = {};
 		if (!name) errors.name = 'required';
+		else if (name.length > FORM_MAX.name) errors.name = 'too_long';
 		if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = 'invalid';
+		else if (email.length > FORM_MAX.email) errors.email = 'too_long';
+		if (phone.length > FORM_MAX.phone) errors.phone = 'too_long';
+		if (dateFrom.length > FORM_MAX.date) errors.dateFrom = 'too_long';
+		if (dateTo.length > FORM_MAX.date) errors.dateTo = 'too_long';
+		if (notes.length > FORM_MAX.notes) errors.notes = 'too_long';
+		if (estimate.length > FORM_MAX.estimate) errors.estimate = 'too_long';
 
 		if (Object.keys(errors).length > 0) {
 			return fail(400, {

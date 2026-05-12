@@ -2,6 +2,7 @@
 	import type { ActionData, PageData } from './$types';
 	import { enhance } from '$app/forms';
 	import { telHref, mailHref, waHref, contact } from '$lib/contact';
+	import Turnstile from '$lib/components/Turnstile.svelte';
 
 	let { data, form }: { data: PageData; form: ActionData } = $props();
 	let lang = $derived(data.lang);
@@ -130,6 +131,8 @@
 							{t.contact.formPrivacy}
 						</label>
 					</div>
+
+					<Turnstile />
 
 					<button
 						type="submit"
