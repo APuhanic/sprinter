@@ -1,3 +1,7 @@
+<!--
+	UNUSED: rental-terms page kept on disk but unlinked from nav/footer
+	while the rental product is paused. Re-link from layout when najam-vozila returns.
+-->
 <script lang="ts">
 	import type { PageData } from './$types';
 
