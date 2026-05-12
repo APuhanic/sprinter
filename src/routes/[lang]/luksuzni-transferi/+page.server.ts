@@ -3,6 +3,7 @@ import type { Actions } from './$types';
 import { sendInquiry, renderInquiryHtml, renderInquiryText } from '$lib/server/mail';
 import { FORM_MAX } from '$lib/server/formLimits';
 import { checkRateLimit } from '$lib/server/rateLimit';
+import { verifyTurnstile } from '$lib/server/turnstile';
 
 export const actions: Actions = {
 	default: async ({ request, params, getClientAddress }) => {
@@ -17,6 +18,16 @@ export const actions: Actions = {
 			return fail(429, {
 				serverError: 'Previše pokušaja. Pokušajte ponovno za malo.',
 				retryAfter: rl.retryAfter
+			});
+		}
+
+		const turnstileOk = await verifyTurnstile(
+			String(form.get('cf-turnstile-response') ?? ''),
+			getClientAddress()
+		);
+		if (!turnstileOk) {
+			return fail(400, {
+				serverError: 'Sigurnosna provjera nije prošla. Pokušajte ponovno.'
 			});
 		}
 

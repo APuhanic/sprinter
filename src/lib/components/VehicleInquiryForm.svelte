@@ -3,6 +3,7 @@
 	import type { Vehicle } from '$lib/data/vehicles';
 	import { computeQuote } from '$lib/data/vehicles';
 	import type { Translations } from '$lib/i18n';
+	import Turnstile from '$lib/components/Turnstile.svelte';
 
 	interface FormResult {
 		errors?: Record<string, string>;
@@ -193,6 +194,8 @@
 			class="w-full px-3 py-2 border border-slate-300 rounded bg-white text-slate-800 text-sm focus:outline-none focus:border-brand-red focus:ring-1 focus:ring-brand-red resize-vertical"
 		>{form?.values?.notes ?? ''}</textarea>
 	</div>
+
+	<Turnstile />
 
 	<button
 		type="submit"
