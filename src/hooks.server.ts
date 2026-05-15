@@ -53,7 +53,7 @@ function applySecurityHeaders(headers: Headers) {
 }
 
 export const handle: Handle = async ({ event, resolve }) => {
-	// 301 redirects for legacy WordPress URLs — MUST run before lang resolution.
+	// Legacy WordPress URL handling — MUST run before lang resolution.
 	// During prerender SvelteKit blocks reading url.search/searchParams; treat as empty.
 	let searchParams = new URLSearchParams();
 	try {
@@ -61,9 +61,21 @@ export const handle: Handle = async ({ event, resolve }) => {
 	} catch {
 		/* prerendering — no query string available */
 	}
-	const redirectTo = resolveRedirect(event.url.pathname, searchParams);
-	if (redirectTo) {
-		throw redirect(301, redirectTo);
+	const resolution = resolveRedirect(event.url.pathname, searchParams);
+	if (resolution?.kind === 'redirect') {
+		throw redirect(301, resolution.to);
+	}
+	if (resolution?.kind === 'gone') {
+		return new Response(
+			'<!doctype html><html><head><meta name="robots" content="noindex"><title>410 Gone</title></head><body><h1>410 Gone</h1><p>This page is no longer available.</p><p><a href="/hr">Sprinter homepage</a></p></body></html>',
+			{
+				status: 410,
+				headers: {
+					'Content-Type': 'text/html; charset=utf-8',
+					'X-Robots-Tag': 'noindex'
+				}
+			}
+		);
 	}
 
 	const segment = event.url.pathname.split('/')[1] ?? '';

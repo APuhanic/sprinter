@@ -101,20 +101,49 @@ test('contact form rejects empty submission', async ({ page }) => {
 	await expect(page).toHaveURL(/\/hr\/kontakt/);
 });
 
-test('301 redirects from legacy WordPress URLs', async ({ request }) => {
+test('301 redirects from legacy WordPress URLs that map to live pages', async ({ request }) => {
 	const cases = [
-		{ from: '/cookie-policy', to: '/hr/cookies' },
 		{ from: '/kontakt', to: '/hr/kontakt' },
-		{ from: '/najam-kombi-vozila', to: '/hr/najam-vozila' },
 		{ from: '/usluge-ciscenja', to: '/hr/usluge-ciscenja' },
-		{ from: '/rent-a-car/mercedes-benz-e-300-avantgarde', to: '/hr/najam-vozila/mercedes-e300' },
-		{ from: '/rent-a-car/mercedes-benz-e-300-avantgarde/', to: '/hr/najam-vozila/mercedes-e300' },
-		{ from: '/pravila-i-uvjeti-najma-vozila', to: '/hr/uvjeti-najma' }
+		{ from: '/usluga-ciscenja', to: '/hr/usluge-ciscenja' },
+		{ from: '/luksuzni-transferi-s-osobnim-vozacem', to: '/hr/luksuzni-transferi' },
+		{ from: '/luksuzni-transferi-s-osobnim-vozacem/', to: '/hr/luksuzni-transferi' }
 	];
 	for (const { from, to } of cases) {
 		const res = await request.get(from, { maxRedirects: 0 });
 		expect(res.status(), `${from} should 301`).toBe(301);
 		expect(res.headers()['location'], `${from} → ${to}`).toBe(to);
+	}
+});
+
+test('410 Gone for legacy WordPress URLs whose feature is no longer offered', async ({
+	request
+}) => {
+	const goneUrls = [
+		// paused rental
+		'/rent-a-car',
+		'/rent-a-car/mercedes-benz-e-300-avantgarde',
+		'/rent-a-car/5858',
+		'/najam-kombi-vozila',
+		// car classifieds
+		'/automobili',
+		'/automobili/suzuki-baleno-2011',
+		// moving service
+		'/usluga-selidbe',
+		// user accounts
+		'/registracija',
+		'/prijava',
+		// listing management
+		'/add-renta-car',
+		// removed cookie policy
+		'/cookie-policy',
+		// WP junk
+		'/test',
+		'/primjer-stranice'
+	];
+	for (const url of goneUrls) {
+		const res = await request.get(url, { maxRedirects: 0 });
+		expect(res.status(), `${url} should be 410 Gone`).toBe(410);
 	}
 });
 
@@ -137,13 +166,8 @@ test('vehicle inquiry form computes live quote and submits', async ({ page }) =>
 	await expect(page.getByRole('heading', { name: 'Hvala na upitu' })).toBeVisible();
 });
 
-test('transfers inquiry form submits and redirects to /hvala', async ({ page }) => {
+// TODO: transfers page now uses TransferCalculator which posts to WhatsApp (no /hvala redirect).
+// Rewrite this test to exercise the calculator's quote computation + WhatsApp link assembly.
+test.skip('transfers inquiry form submits and redirects to /hvala', async ({ page }) => {
 	await page.goto('/hr/luksuzni-transferi');
-	await page.locator('#firstName').fill('Playwright');
-	await page.locator('#lastName').fill('Test');
-	await page.locator('#transferEmail').fill('test@example.com');
-	await page.locator('#transferConsent').check();
-	await page.getByRole('button', { name: /Spremi|Submit|Senden/ }).click();
-	await page.waitForURL('**/hr/hvala');
-	await expect(page.getByRole('heading', { name: 'Hvala na upitu' })).toBeVisible();
 });

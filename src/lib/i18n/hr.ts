@@ -402,7 +402,7 @@ export default {
 		colsServices: 'Usluge',
 		colsCompany: 'Tvrtka',
 		colsContact: 'Kontakt',
-		legal: ['© 2026 Sprinter d.o.o.', 'Pravila privatnosti', 'Uvjeti najma', 'Cookies']
+		legal: ['© 2026 Sprinter d.o.o.', 'Pravila privatnosti']
 	},
 
 	// Cleaning page
@@ -846,12 +846,5 @@ export default {
 		notFoundDesc: 'Stranica koju tražite ne postoji ili je uklonjena.',
 		goHome: 'Početna',
 		goRental: 'Najam vozila'
-	},
-
-	// Cookie banner
-	cookieBanner: {
-		message: 'Koristimo kolačiće isključivo za osnovnu funkcionalnost stranice. Nastavkom korištenja prihvaćate našu politiku.',
-		accept: 'Prihvaćam',
-		learnMore: 'Saznaj više'
 	}
 };

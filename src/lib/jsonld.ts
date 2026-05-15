@@ -5,9 +5,12 @@ const SITE_URL = 'https://sprinter.hr';
 const LEGAL_NAME = 'Sprinter d.o.o.';
 
 export function localBusiness() {
+	// LocalBusiness (umbrella) rather than AutoRental — current live scope is
+	// cleaning + transfers; car rental is paused. Don't tell Google we're a
+	// car-rental company when we aren't actively renting cars.
 	return {
 		'@context': 'https://schema.org',
-		'@type': 'AutoRental',
+		'@type': 'LocalBusiness',
 		'@id': `${SITE_URL}/#business`,
 		name: LEGAL_NAME,
 		url: SITE_URL,
@@ -37,8 +40,7 @@ export function localBusiness() {
 				closes: '19:00'
 			}
 		],
-		areaServed: { '@type': 'Country', name: 'Croatia' },
-		sameAs: ['https://www.facebook.com/', 'https://www.instagram.com/']
+		areaServed: { '@type': 'Country', name: 'Croatia' }
 	};
 }
 
