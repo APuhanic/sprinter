@@ -54,7 +54,7 @@
 			<div class="hero__meta">
 				{#each t.home.meta as m}
 					<div class="hero__meta-item">
-						<h5>{m.label}</h5>
+						<div class="hero__meta-label">{m.label}</div>
 						<p>{m.text}</p>
 					</div>
 				{/each}
@@ -116,15 +116,15 @@
 	<!-- Hours strip -->
 	<div class="hours-strip">
 		<div>
-			<h5>WhatsApp</h5>
+			<div class="hours-strip__label">WhatsApp</div>
 			<p>{t.banner.phone}</p>
 		</div>
 		<div>
-			<h5>Email</h5>
+			<div class="hours-strip__label">Email</div>
 			<p>{t.common.email}</p>
 		</div>
 		<div>
-			<h5>{t.home.hoursLabel}</h5>
+			<div class="hours-strip__label">{t.home.hoursLabel}</div>
 			<p>{t.home.hoursValue}</p>
 		</div>
 	</div>
@@ -145,7 +145,7 @@
 				{#each t.process as s}
 					<div class="step">
 						<div class="step__num">STEP {s.num}</div>
-						<h4 class="step__title">{s.title}</h4>
+						<h3 class="step__title">{s.title}</h3>
 						<p class="step__desc">{s.desc}</p>
 					</div>
 				{/each}
