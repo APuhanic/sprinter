@@ -161,10 +161,7 @@
 	<section class="section">
 		<div class="wrap">
 			<div class="eyebrow" style="margin-bottom:32px;">{t.owner.eyebrow}</div>
-			<div class="owner">
-				<div class="owner__portrait ph" aria-label="Placeholder: {t.owner.portrait}">
-					<span class="ph__label">[ {t.owner.portrait} ]</span>
-				</div>
+			<div class="owner" style="grid-template-columns: 1fr;">
 				<div>
 					<p class="owner__quote">
 						"{t.owner.quote}<em>{t.owner.quoteAccent}</em>"

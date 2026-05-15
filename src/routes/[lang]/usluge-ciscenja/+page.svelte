@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { telHref, waHref } from '$lib/contact';
+	import { telHrefCleaning as telHref, waHrefCleaning as waHref } from '$lib/contact';
 	import { cleaningService } from '$lib/jsonld';
 
 	let { data }: { data: PageData } = $props();
