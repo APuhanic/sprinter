@@ -1,6 +1,6 @@
 <!--
-	UNUSED: rental-terms page kept on disk but unlinked from nav/footer
-	while the rental product is paused. Re-link from layout when najam-vozila returns.
+	BACKUP ROUTE — rental-terms document. Only relevant when /najam-vozila is live.
+	Not linked from nav/footer, not in sitemap, noindex. Re-enable alongside rental.
 -->
 <script lang="ts">
 	import type { PageData } from './$types';
@@ -11,6 +11,7 @@
 
 <svelte:head>
 	<title>{t.footer.rentalTerms} — Sprinter d.o.o.</title>
+	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
 <section class="bg-white py-12">

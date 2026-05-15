@@ -1,3 +1,10 @@
+<!--
+	BACKUP ROUTE — not part of the live site scope (live = home, cleaning, transfers, contact, legal).
+	The rental product is paused: this route still resolves so it can be re-enabled quickly,
+	but it is not linked from nav/footer, not in the sitemap, and crawlers are told to skip it.
+	To bring rental back to live: add to nav (+layout.svelte navItems), re-add to sitemap.xml/+server.ts,
+	and remove the robots noindex below.
+-->
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { vehicles, type Vehicle } from '$lib/data/vehicles';
@@ -37,6 +44,7 @@
 
 <svelte:head>
 	<title>{t.rental.title} — Sprinter d.o.o.</title>
+	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
 <!-- Header -->
