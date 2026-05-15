@@ -795,6 +795,8 @@ export default {
 	// Contact page
 	contact: {
 		title: 'Kontakt',
+		metaDescription:
+			'Kontaktieren Sie Sprinter d.o.o. — professionelle Reinigung in Pula und Istrien. WhatsApp, Telefon, E-Mail.',
 		formHeading: 'Senden Sie uns eine Anfrage',
 		formName: 'Ihr Name',
 		formEmail: 'Ihre E-Mail-Adresse',
@@ -841,11 +843,17 @@ export default {
 		errorEmail: 'Ungültige E-Mail-Adresse'
 	},
 
+	// Privacy policy page
+	privacy: {
+		metaDescription:
+			'Datenschutzerklärung für sprinter.hr — wie wir personenbezogene Daten gemäß DSGVO verarbeiten.'
+	},
+
 	// Error page
 	error: {
 		notFoundTitle: 'Seite nicht gefunden',
 		notFoundDesc: 'Die gesuchte Seite existiert nicht oder wurde entfernt.',
 		goHome: 'Startseite',
-		goRental: 'Fahrzeugmiete'
+		goCleaning: 'Reinigungsdienste'
 	}
 };
