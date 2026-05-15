@@ -162,7 +162,6 @@
 		<div class="footer-bottom">
 			<span>{t.footerNew.legal[0]}</span>
 			<span><a href="/{lang}/pravila-privatnosti">{t.footerNew.legal[1]}</a></span>
-			<span><a href="/{lang}/cookies">{t.footerNew.legal[3]}</a></span>
 		</div>
 	</div>
 </footer>

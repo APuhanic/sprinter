@@ -402,7 +402,7 @@ export default {
 		colsServices: 'Services',
 		colsCompany: 'Company',
 		colsContact: 'Contact',
-		legal: ['© 2026 Sprinter d.o.o.', 'Privacy', 'Rental terms', 'Cookies']
+		legal: ['© 2026 Sprinter d.o.o.', 'Privacy']
 	},
 
 	// Cleaning page
@@ -846,12 +846,5 @@ export default {
 		notFoundDesc: 'The page you are looking for does not exist or has been removed.',
 		goHome: 'Home',
 		goRental: 'Vehicle rental'
-	},
-
-	// Cookie banner
-	cookieBanner: {
-		message: 'We use cookies only for essential site functionality. By continuing to use the site you accept our policy.',
-		accept: 'Accept',
-		learnMore: 'Learn more'
 	}
 };

@@ -402,7 +402,7 @@ export default {
 		colsServices: 'Leistungen',
 		colsCompany: 'Unternehmen',
 		colsContact: 'Kontakt',
-		legal: ['© 2026 Sprinter d.o.o.', 'Datenschutz', 'Mietbedingungen', 'Cookies']
+		legal: ['© 2026 Sprinter d.o.o.', 'Datenschutz']
 	},
 
 	// Cleaning page
@@ -847,12 +847,5 @@ export default {
 		notFoundDesc: 'Die gesuchte Seite existiert nicht oder wurde entfernt.',
 		goHome: 'Startseite',
 		goRental: 'Fahrzeugmiete'
-	},
-
-	// Cookie banner
-	cookieBanner: {
-		message: 'Wir verwenden Cookies ausschließlich für die grundlegende Funktionalität der Website. Durch die weitere Nutzung akzeptieren Sie unsere Richtlinie.',
-		accept: 'Akzeptieren',
-		learnMore: 'Mehr erfahren'
 	}
 };

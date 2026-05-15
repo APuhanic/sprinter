@@ -1,3 +1,7 @@
+<!--
+	BACKUP ROUTE — rental product is paused. Not linked from nav/footer, not in sitemap, noindex.
+	See /najam-vozila/+page.svelte for the re-enable checklist.
+-->
 <script lang="ts">
 	import type { ActionData, PageData } from './$types';
 	import { slugs } from '$lib/i18n';
@@ -17,6 +21,7 @@
 
 <svelte:head>
 	<title>{vehicle.name} — Sprinter d.o.o.</title>
+	<meta name="robots" content="noindex, nofollow" />
 	{@html `<script type="application/ld+json">${vehicleJsonLd}</` + `script>`}
 </svelte:head>
 
