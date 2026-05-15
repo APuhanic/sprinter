@@ -794,6 +794,8 @@ export default {
 	// Contact page
 	contact: {
 		title: 'Kontakt',
+		metaDescription:
+			'Kontaktirajte Sprinter d.o.o. — profesionalno čišćenje u Puli i Istri. WhatsApp, telefon i email.',
 		formHeading: 'Pošaljite nam upit',
 		formName: 'Vaše ime',
 		formEmail: 'Vaša e-mail adresa',
@@ -840,11 +842,17 @@ export default {
 		errorEmail: 'Neispravna e-mail adresa'
 	},
 
+	// Privacy policy page
+	privacy: {
+		metaDescription:
+			'Pravila privatnosti za sprinter.hr — kako prikupljamo i obrađujemo osobne podatke prema GDPR-u.'
+	},
+
 	// Error page
 	error: {
 		notFoundTitle: 'Stranica nije pronađena',
 		notFoundDesc: 'Stranica koju tražite ne postoji ili je uklonjena.',
 		goHome: 'Početna',
-		goRental: 'Najam vozila'
+		goCleaning: 'Usluge čišćenja'
 	}
 };

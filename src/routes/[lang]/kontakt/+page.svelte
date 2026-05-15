@@ -17,6 +17,9 @@
 
 <svelte:head>
 	<title>{t.contact.title} — Sprinter d.o.o.</title>
+	<meta name="description" content={t.contact.metaDescription} />
+	<meta property="og:title" content="{t.contact.title} — Sprinter d.o.o." />
+	<meta property="og:description" content={t.contact.metaDescription} />
 </svelte:head>
 
 <!-- Header -->
