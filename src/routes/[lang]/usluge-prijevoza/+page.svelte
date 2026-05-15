@@ -1,3 +1,8 @@
+<!--
+	BACKUP ROUTE — goods-transport product is paused. Not linked from nav/footer, not in sitemap, noindex.
+	To re-enable: add to nav (+layout.svelte navItems), re-add to sitemap.xml/+server.ts,
+	remove the robots noindex below.
+-->
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { telHref, waHref } from '$lib/contact';
@@ -12,6 +17,7 @@
 
 <svelte:head>
 	<title>{t.transport.title} — Sprinter d.o.o.</title>
+	<meta name="robots" content="noindex, nofollow" />
 	{@html `<script type="application/ld+json">${serviceJsonLd}</` + `script>`}
 </svelte:head>
 

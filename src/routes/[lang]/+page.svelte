@@ -8,9 +8,6 @@
 	let t = $derived(data.t);
 
 	let cleaningHref = $derived(`/${lang}/${slugs[lang].cleaning}`);
-	let otherHref = $derived((slug: 'transport' | 'rental' | 'transfers') =>
-		`/${lang}/${slugs[lang][slug]}`
-	);
 
 	// Marquee items doubled so the loop seams don't show
 	let marqueeItems = $derived([...t.home.marquee, ...t.home.marquee]);
@@ -161,10 +158,7 @@
 	<section class="section">
 		<div class="wrap">
 			<div class="eyebrow" style="margin-bottom:32px;">{t.owner.eyebrow}</div>
-			<div class="owner">
-				<div class="owner__portrait ph" aria-label="Placeholder: {t.owner.portrait}">
-					<span class="ph__label">[ {t.owner.portrait} ]</span>
-				</div>
+			<div class="owner" style="grid-template-columns: 1fr;">
 				<div>
 					<p class="owner__quote">
 						"{t.owner.quote}<em>{t.owner.quoteAccent}</em>"
@@ -181,39 +175,13 @@
 		</div>
 	</section>
 
-	<!-- Other services -->
-	<section class="section section--tight">
-		<div class="wrap">
-			<div class="section-head">
-				<div>
-					<div class="eyebrow">{t.home.otherEyebrow}</div>
-				</div>
-				<div>
-					<h2 class="section-title">{t.home.otherTitle}</h2>
-					<p class="section-sub" style="margin-top:24px;">{t.home.otherSub}</p>
-				</div>
-			</div>
-			<div class="other-grid">
-				{#each t.otherServices as o}
-					<a class="other-card" href={otherHref(o.slug)}>
-						<div>
-							<div class="tag">{o.tag}</div>
-							<h3 style="margin-top:12px;">{o.title}</h3>
-							<p>{o.desc}</p>
-						</div>
-						<span
-							class="btn btn--primary"
-							data-variant="minimal"
-							style="align-self:flex-start;"
-						>
-							{t.home.ctaLearn}
-							<span class="arrow" aria-hidden="true">→</span>
-						</span>
-					</a>
-				{/each}
-			</div>
-		</div>
-	</section>
+	<!--
+		"Sprinter ne staje na čišćenju" upsell section — hidden 2026-05-15 while
+		rental + goods-transport products are paused. Cleaning + transfers are the
+		only live products, so the section had two of three cards pointing to
+		backup pages. Restore this block (and the otherHref helper / otherServices
+		i18n keys) when those products come back.
+	-->
 
 	<!-- Contact island -->
 	<section class="section section--tight">

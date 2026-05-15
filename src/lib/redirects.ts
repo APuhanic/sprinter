@@ -1,41 +1,82 @@
 /**
- * 301 redirect map for migrating from the old WordPress site.
+ * Legacy WordPress URL handling for the migration to the SvelteKit site.
  *
- * Keys: old WP path (with leading slash, optionally trailing slash).
- * Values: new canonical path.
+ * Two outcomes:
+ *   - `pathRedirects` (HTTP 301): the WP page maps cleanly onto a live page
+ *     here (cleaning, transfers, contact, privacy). Equity is preserved.
+ *   - `goneList`     (HTTP 410): the WP feature is not part of the new site
+ *     scope (car classifieds, user accounts, listing management, moving
+ *     service, paused rental product, junk like /test). 410 tells crawlers
+ *     to drop the URL — faster deindex, no equity leak to homepage.
  *
- * Matched exactly by pathname (trailing slash normalized by caller).
- * Query-string-based redirects go in `queryRedirects` below.
+ * Live site scope = home + cleaning + transfers + contact + privacy.
+ * Rental (`/najam-vozila`) and transport (`/usluge-prijevoza`) routes exist
+ * in code but are paused and noindexed; legacy URLs that point to them are
+ * therefore 410, not 301.
  *
- * Run `wget --spider -r https://sprinter.hr` or export Yoast sitemap to find
- * any URL that isn't listed here before DNS cutover.
+ * Source: live sprinter.hr Yoast sitemap (sitemap_index.xml + sub-sitemaps),
+ * crawled 2026-05-15. Add to this file any new legacy URL discovered in
+ * post-launch Google Search Console "Pages > Not indexed" reports.
  */
+
 export const pathRedirects: Record<string, string> = {
 	'/usluge-ciscenja': '/hr/usluge-ciscenja',
-	'/najam-kombi-vozila': '/hr/najam-vozila',
-	'/ponuda-vozila': '/hr/najam-vozila',
+	'/usluga-ciscenja': '/hr/usluge-ciscenja', // singular variant in Yoast sitemap
 	'/luksuzni-transferi-s-osobnim-vozacem': '/hr/luksuzni-transferi',
-	'/kontakt': '/hr/kontakt',
-	'/cookie-policy': '/hr/cookies',
-	'/pravila-i-uvjeti-najma-vozila': '/hr/uvjeti-najma',
-
-	// Individual vehicle pages
-	'/rent-a-car/mercedes-benz-e-300-avantgarde': '/hr/najam-vozila/mercedes-e300',
-	'/rent-a-car/mercedec-v-klassa-putnicki-71': '/hr/najam-vozila/mercedes-v-klassa',
-	'/rent-a-car/renault-master-l3h2': '/hr/najam-vozila/renault-master',
-	'/rent-a-car/mercedes-benz-sprinter-l4h2': '/hr/najam-vozila/mercedes-sprinter',
-	'/rent-a-car/renault-trafic-l2h1': '/hr/najam-vozila/renault-trafic',
-
-	// Dropped features — redirect to rental list so users don't land on 404
-	'/add-oglas-automobili-gospodarska': '/hr/najam-vozila'
-
-	// /rent-a-car/5858/ — numeric ID, need to know which vehicle it was
-	// before mapping. If encountered in analytics, add it here.
+	'/kontakt': '/hr/kontakt'
 };
 
 /**
+ * URLs that should return HTTP 410 Gone. The feature behind each URL is no
+ * longer part of the site; do not redirect to homepage (would dilute the
+ * homepage's relevance signal with car-rental / user-account keywords).
+ */
+export const goneList: ReadonlySet<string> = new Set<string>([
+	// Paused rental product — list + WP individual vehicle URLs
+	'/rent-a-car',
+	'/najam-kombi-vozila',
+	'/ponuda-vozila',
+	'/ponuda-gospodarskih-vozila',
+	'/rent-a-car/mercedes-benz-e-300-avantgarde',
+	'/rent-a-car/mercedec-v-klassa-putnicki-71',
+	'/rent-a-car/renault-master-l3h2',
+	'/rent-a-car/mercedes-benz-sprinter-l4h2',
+	'/rent-a-car/renault-trafic-l2h1',
+	'/rent-a-car/5858',
+
+	// Car-classifieds / used-car module (was a WP marketplace, never offered now)
+	'/automobili',
+	'/automobili/suzuki-baleno-2011',
+
+	// Residential moving service ("selidba") — not the same as goods transport
+	'/usluga-selidbe',
+
+	// Rental terms document — relevant only when rental product is live
+	'/pravila-i-uvjeti-najma-vozila',
+
+	// Defunct user-account features
+	'/registracija',
+	'/prijava',
+	'/verifikacija',
+	'/mora-se-verifikacija',
+	'/moj-profil',
+
+	// Defunct listing-management features
+	'/add-renta-car',
+	'/edit-renta-car',
+	'/add-oglas-automobili-gospodarska',
+	'/add-oglas-gospodarska-vozila',
+
+	// Cookie policy — site no longer uses cookies, policy page removed
+	'/cookie-policy',
+
+	// WP default + dev artifacts that ended up indexed
+	'/primjer-stranice',
+	'/test'
+]);
+
+/**
  * Redirects that key on a query-string match rather than just path.
- * Matched as (path, param, value) → destination.
  */
 export const queryRedirects: Array<{
 	path: string;
@@ -43,23 +84,37 @@ export const queryRedirects: Array<{
 	value: string;
 	to: string;
 }> = [
+	// The /?page_id=3 form is what old Yoast emitted for the privacy page —
+	// preserve it because external sites may still link by that form.
 	{ path: '/', param: 'page_id', value: '3', to: '/hr/pravila-privatnosti' }
 ];
 
-/** Resolve an incoming URL to its new location, or null if no redirect applies. */
-export function resolveRedirect(pathname: string, searchParams: URLSearchParams): string | null {
-	// Normalize trailing slash (except root)
-	const normalized = pathname.length > 1 && pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
+export type RedirectResolution =
+	| { kind: 'redirect'; to: string }
+	| { kind: 'gone' }
+	| null;
 
-	// Query-string redirects win over path-only (more specific)
+/** Resolve an incoming URL to a redirect, a 410, or null if neither applies. */
+export function resolveRedirect(
+	pathname: string,
+	searchParams: URLSearchParams
+): RedirectResolution {
+	const normalized =
+		pathname.length > 1 && pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
+
+	// Query-string redirects win (more specific than path-only)
 	for (const rule of queryRedirects) {
 		if (normalized === rule.path && searchParams.get(rule.param) === rule.value) {
-			return rule.to;
+			return { kind: 'redirect', to: rule.to };
 		}
 	}
 
 	if (normalized in pathRedirects) {
-		return pathRedirects[normalized];
+		return { kind: 'redirect', to: pathRedirects[normalized] };
+	}
+
+	if (goneList.has(normalized)) {
+		return { kind: 'gone' };
 	}
 
 	return null;
