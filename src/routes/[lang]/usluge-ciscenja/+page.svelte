@@ -83,6 +83,8 @@
 <svelte:head>
 	<title>{t.cleaningPage.titleA} {t.cleaningPage.titleB} — Sprinter</title>
 	<meta name="description" content={t.cleaningPage.sub} />
+	<meta property="og:title" content="{t.cleaningPage.titleA} {t.cleaningPage.titleB} — Sprinter" />
+	<meta property="og:description" content={t.cleaningPage.sub} />
 	{@html `<script type="application/ld+json">${serviceJsonLd}</` + `script>`}
 </svelte:head>
 

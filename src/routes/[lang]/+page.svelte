@@ -15,10 +15,9 @@
 
 <svelte:head>
 	<title>Sprinter — {t.nav.cleaning}, Pula i Istra</title>
-	<meta
-		name="description"
-		content={t.home.sub}
-	/>
+	<meta name="description" content={t.home.sub} />
+	<meta property="og:title" content="Sprinter — {t.nav.cleaning}, Pula i Istra" />
+	<meta property="og:description" content={t.home.sub} />
 </svelte:head>
 
 <main class="page-fade">
