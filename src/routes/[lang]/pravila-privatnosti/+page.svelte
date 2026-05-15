@@ -8,6 +8,9 @@
 
 <svelte:head>
 	<title>{t.footer.privacy} — Sprinter d.o.o.</title>
+	<meta name="description" content={t.privacy.metaDescription} />
+	<meta property="og:title" content="{t.footer.privacy} — Sprinter d.o.o." />
+	<meta property="og:description" content={t.privacy.metaDescription} />
 </svelte:head>
 
 <section class="bg-white py-12">

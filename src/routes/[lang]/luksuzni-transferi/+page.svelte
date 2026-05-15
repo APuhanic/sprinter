@@ -17,6 +17,8 @@
 <svelte:head>
 	<title>{t.transfersPage.title}{t.transfersPage.titleSuffix} — Sprinter</title>
 	<meta name="description" content={t.transfersPage.leadTwo} />
+	<meta property="og:title" content="{t.transfersPage.title}{t.transfersPage.titleSuffix} — Sprinter" />
+	<meta property="og:description" content={t.transfersPage.leadTwo} />
 	{@html `<script type="application/ld+json">${serviceJsonLd}</` + `script>`}
 </svelte:head>
 

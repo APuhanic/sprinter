@@ -6,6 +6,7 @@
 
 <svelte:head>
 	<title>{status} — Sprinter d.o.o.</title>
+	<meta name="robots" content="noindex" />
 </svelte:head>
 
 <section class="bg-slate-50 min-h-screen flex items-center justify-center py-20 font-sans">
