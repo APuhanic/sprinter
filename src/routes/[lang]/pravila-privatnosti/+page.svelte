@@ -38,6 +38,18 @@
 			za pružanje zatražene usluge (čl. 6. st. 1. (f) GDPR).
 		</p>
 
+		<h2>Treće strane / Third-Party Processors</h2>
+		<p>
+			Za dostavu poruka iz kontakt obrazaca koristimo uslugu <a href="https://resend.com" rel="noopener noreferrer">Resend</a> (Resend, Inc.).
+			Sadržaj obrasca (ime, e-mail, telefon, poruka) obrađuje se isključivo radi isporuke
+			elektroničke pošte na našu adresu. Resend obrađuje podatke unutar EU/EEA u skladu s GDPR-om.
+		</p>
+		<p>
+			We use <a href="https://resend.com" rel="noopener noreferrer">Resend</a> (Resend, Inc.) to deliver contact form messages.
+			Form content (name, email, phone, message) is processed solely to deliver the inquiry to
+			our address. Resend processes data within the EU/EEA in compliance with GDPR.
+		</p>
+
 		<h2>Pohrana podataka / Data Retention</h2>
 		<p>
 			Vaše osobne podatke čuvamo samo onoliko koliko je potrebno za obradu vašeg upita, a najduže
