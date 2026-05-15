@@ -18,10 +18,14 @@
    ───────────────────────────────────────────────────────────────────────── */
 
 :root {
+	/* WCAG AA: --muted needs ≥ 4.5:1 on --bg. #7a6f60 was 4.33:1 (fail).
+	   --accent needs ≥ 4.5:1 for text use on --bg and white-on-accent. #c2603a
+	   was 3.68:1 / 4.17:1 (both fail). Darkened both to clear contrast checks
+	   while staying within the warm terracotta palette. */
 	--bg: #f5f0e8;
 	--fg: #1a1612;
-	--muted: #7a6f60;
-	--accent: #c2603a;
+	--muted: #6a604f;
+	--accent: #b35530;
 	--soft: #e6dccc;
 	--line: rgba(26, 22, 18, 0.12);
 	--line-strong: rgba(26, 22, 18, 0.22);
@@ -522,7 +526,7 @@ button {
 		gap: 32px;
 	}
 }
-.footer-grid h4 {
+.footer-grid h3 {
 	font-family: var(--font-mono);
 	font-size: 11px;
 	font-weight: 500;
@@ -600,7 +604,7 @@ button {
 		gap: 24px;
 	}
 }
-.hero__meta-item h5 {
+.hero__meta-label {
 	font-family: var(--font-mono);
 	font-size: 11px;
 	letter-spacing: 0.12em;
@@ -818,7 +822,7 @@ button {
 		border-bottom: 0;
 	}
 }
-.hours-strip h5 {
+.hours-strip__label {
 	font-family: var(--font-mono);
 	font-size: 11px;
 	letter-spacing: 0.14em;
@@ -1240,7 +1244,8 @@ button {
 	flex-direction: column;
 	gap: 12px;
 }
-.calc__form label {
+.calc__form label,
+.calc__form .calc__label {
 	font-family: var(--font-mono);
 	font-size: 11px;
 	letter-spacing: 0.12em;
