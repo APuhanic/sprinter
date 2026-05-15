@@ -55,7 +55,7 @@
 		const sizePart = showSize ? `~${calcSize} m²` : '';
 		const freqPart = freqLabel ? ` (${freqLabel.toLowerCase()})` : '';
 		const msg = `${t.calc.msgPrefix} ${typeLabel.toLowerCase()} ${t.calc.msgFor}${sizePart}${freqPart}${t.calc.msgEstimate} €${low}–€${high}. ${t.calc.msgCanYou}`;
-		return `https://wa.me/385957226918?text=${encodeURIComponent(msg)}`;
+		return waHref(msg);
 	});
 
 	function renderName(name: string, accent: string) {
