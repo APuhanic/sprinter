@@ -213,7 +213,7 @@
 				{#each t.process as s}
 					<div class="step">
 						<div class="step__num">STEP {s.num}</div>
-						<h4 class="step__title">{s.title}</h4>
+						<h3 class="step__title">{s.title}</h3>
 						<p class="step__desc">{s.desc}</p>
 					</div>
 				{/each}
@@ -257,8 +257,8 @@
 			</div>
 			<div class="calc">
 				<div class="calc__form">
-					<div>
-						<label>{t.calc.typeLabel}</label>
+					<div role="group" aria-labelledby="calc-type-label">
+						<span id="calc-type-label" class="calc__label">{t.calc.typeLabel}</span>
 						<div class="calc__opts">
 							{#each t.calc.types as opt}
 								<button
@@ -274,9 +274,10 @@
 					</div>
 					{#if showSize}
 						<div>
-							<label>{t.calc.sizeLabel}</label>
+							<label for="calc-size">{t.calc.sizeLabel}</label>
 							<div class="calc__slider-row">
 								<input
+									id="calc-size"
 									type="range"
 									min="25"
 									max="220"
@@ -288,8 +289,8 @@
 						</div>
 					{/if}
 					{#if showFreq}
-						<div>
-							<label>{t.calc.freqLabel}</label>
+						<div role="group" aria-labelledby="calc-freq-label">
+							<span id="calc-freq-label" class="calc__label">{t.calc.freqLabel}</span>
 							<div class="calc__opts">
 								{#each t.calc.freqs as opt}
 									<button
