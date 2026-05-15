@@ -11,6 +11,7 @@
 
 <svelte:head>
 	<title>{status} — {t.error.notFoundTitle} — Sprinter d.o.o.</title>
+	<meta name="robots" content="noindex" />
 </svelte:head>
 
 <section class="bg-slate-50 min-h-[60vh] flex items-center justify-center py-20">
@@ -29,10 +30,10 @@
 				{t.error.goHome}
 			</a>
 			<a
-				href="/{lang}/{slugs[lang].rental}"
+				href="/{lang}/{slugs[lang].cleaning}"
 				class="inline-block border-2 border-brand-red text-brand-red px-6 py-2.5 rounded font-medium hover:bg-brand-red hover:text-white transition-colors"
 			>
-				{t.error.goRental}
+				{t.error.goCleaning}
 			</a>
 		</div>
 	</div>
