@@ -133,7 +133,7 @@
 				</p>
 			</div>
 			<div>
-				<h4>{t.footerNew.colsServices}</h4>
+				<h3>{t.footerNew.colsServices}</h3>
 				<ul>
 					{#each t.homeServices as s}
 						<li>
@@ -143,14 +143,14 @@
 				</ul>
 			</div>
 			<div>
-				<h4>{t.footerNew.colsCompany}</h4>
+				<h3>{t.footerNew.colsCompany}</h3>
 				<ul>
 					<li><a href="/{lang}/{slugs[lang].cleaning}">{t.nav.cleaning}</a></li>
 					<li><a href="/{lang}/{slugs[lang].transfers}">{t.nav.transfers}</a></li>
 				</ul>
 			</div>
 			<div>
-				<h4>{t.footerNew.colsContact}</h4>
+				<h3>{t.footerNew.colsContact}</h3>
 				<ul>
 					<li><a href={telHref}>{t.banner.phone}</a></li>
 					<li><a href={mailHref}>{t.common.email}</a></li>
