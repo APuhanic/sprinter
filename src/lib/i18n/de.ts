@@ -31,7 +31,7 @@ export default {
 		sub: 'Professionelle Reinigung in Pula und Istrien — von Apartments und Familienhäusern bis zu Büros und Yachten. Sorgfältig, ohne Improvisation.',
 		meta: [
 			{ label: 'Sitz', text: 'Capelleri 5, Pula' },
-			{ label: 'Einsatzgebiet', text: 'Pula und Umgebung, bis 30 km' },
+			{ label: 'Einsatzgebiet', text: 'Pula + Istrien' },
 			{ label: 'Antwort', text: 'Antwort am selben Tag, oft binnen einer Stunde' },
 			{ label: 'Zahlung', text: 'Bar · Banküberweisung' }
 		],
