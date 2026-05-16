@@ -71,7 +71,7 @@
 <div class="utility">
 	<div class="wrap">
 		<span><span class="pulse" aria-hidden="true"></span>{t.banner.notice}</span>
-		<span style="display:inline-flex; gap:28px; flex-wrap:wrap;">
+		<span class="utility__group">
 			<span>{t.banner.hours}</span>
 			<span>{t.banner.address}</span>
 			<a href={telHref}>{t.banner.phone}</a>

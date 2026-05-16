@@ -227,6 +227,11 @@ button {
 	justify-content: space-between;
 	flex-wrap: wrap;
 }
+.utility__group {
+	display: inline-flex;
+	gap: 28px;
+	flex-wrap: wrap;
+}
 .utility a {
 	opacity: 0.85;
 }
@@ -609,6 +614,9 @@ button {
 	.utility .wrap {
 		gap: 4px 16px;
 		padding-block: 6px;
+	}
+	.utility__group {
+		gap: 4px 14px;
 	}
 	.brand__word {
 		display: none;
