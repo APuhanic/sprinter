@@ -216,6 +216,9 @@ export default {
 		faqSub: 'Wenn Ihre Frage nicht dabei ist, schreiben Sie uns — Antwort am selben Tag.',
 		priceLabel: 'Preis',
 		sendInquiry: 'Anfrage senden',
+		airbnbTag: 'Airbnb · Booking · Vrbo',
+		airbnbNote:
+			'Spezialisiert auf Kurzzeitvermietung — schneller Wechsel, gleichbleibender Standard, flexible Termine zwischen den Gästen.',
 		owner: {
 			eyebrow: 'Wer hinter Sprinter steht',
 			title: 'Mehr als Sauberkeit',

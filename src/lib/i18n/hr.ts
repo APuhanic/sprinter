@@ -216,6 +216,9 @@ export default {
 		faqSub: 'Ako nešto nije ovdje, pišite nam — odgovaramo u istom danu.',
 		priceLabel: 'Cijena',
 		sendInquiry: 'Pošalji upit',
+		airbnbTag: 'Airbnb · Booking · Vrbo',
+		airbnbNote:
+			'Specijalizirani smo za turistički najam — brzi turnover, dosljedan standard, fleksibilni termini između gostiju.',
 		owner: {
 			eyebrow: 'Tko stoji iza Sprintera',
 			title: 'Više od čistoće',
