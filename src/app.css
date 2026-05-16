@@ -824,6 +824,39 @@ button {
 	color: var(--fg);
 	opacity: 0.84;
 }
+
+/* Short-term rental note strip (cleaning page) */
+.airbnb-note {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 32px;
+	align-items: center;
+	padding: 28px 36px;
+	background: var(--fg);
+	color: var(--bg);
+	border-radius: 2px;
+}
+.airbnb-note__tag {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--accent);
+	white-space: nowrap;
+}
+.airbnb-note__text {
+	margin: 0;
+	font-size: 16px;
+	line-height: 1.55;
+	max-width: 70ch;
+}
+@media (max-width: 700px) {
+	.airbnb-note {
+		grid-template-columns: 1fr;
+		gap: 12px;
+		padding: 20px 24px;
+	}
+}
 .owner__sig strong {
 	font-weight: 500;
 	font-size: 15px;

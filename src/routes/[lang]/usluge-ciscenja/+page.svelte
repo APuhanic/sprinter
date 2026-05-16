@@ -237,6 +237,16 @@
 		</div>
 	</section>
 
+	<!-- Short-term rental note -->
+	<section class="section section--tight">
+		<div class="wrap">
+			<aside class="airbnb-note">
+				<div class="airbnb-note__tag">{t.cleaningPage.airbnbTag}</div>
+				<p class="airbnb-note__text">{t.cleaningPage.airbnbNote}</p>
+			</aside>
+		</div>
+	</section>
+
 	<!-- Process -->
 	<section class="section">
 		<div class="wrap">

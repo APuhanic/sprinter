@@ -216,6 +216,9 @@ export default {
 		faqSub: "If your question isn't here, message us — we reply same-day.",
 		priceLabel: 'Price',
 		sendInquiry: 'Send a request',
+		airbnbTag: 'Airbnb · Booking · Vrbo',
+		airbnbNote:
+			'Specialised in short-term rentals — fast turnover, consistent standards, flexible scheduling between guests.',
 		owner: {
 			eyebrow: 'Who stands behind Sprinter',
 			title: 'More than cleanliness',
