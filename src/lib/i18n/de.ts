@@ -215,7 +215,21 @@ export default {
 		faqAccent: 'fragen',
 		faqSub: 'Wenn Ihre Frage nicht dabei ist, schreiben Sie uns — Antwort am selben Tag.',
 		priceLabel: 'Preis',
-		sendInquiry: 'Anfrage senden'
+		sendInquiry: 'Anfrage senden',
+		owner: {
+			eyebrow: 'Wer hinter Sprinter steht',
+			title: 'Mehr als Sauberkeit',
+			quote:
+				'Ordnung, Ästhetik und absolute Diskretion. Ich kümmere mich um Ihren Raum mit Präzision und persönlicher Verantwortung.',
+			bio: [
+				'Mein Name ist Zvjezdana Puhanić. Als Geschäftsführerin sehe ich meine Berufung nicht als bloßen Reinigungsdienst, sondern als Mission, Ihrem Wohnraum Glanz und Harmonie zurückzugeben.',
+				'Ich glaube, dass luxuriöse Räume mehr verdienen als »normales Aufräumen« – sie verdienen deutsche Disziplin, absolute Diskretion und ein Auge, das sieht, was anderen entgeht.',
+				'Meine berufliche Erfahrung habe ich in der Hotellerie geschliffen, wo ich kompromisslose Standards in Organisation und Sorgfalt verinnerlicht habe. In den letzten Jahren habe ich mich ausschließlich der Pflege exklusiver Villen und Residenzen in Deutschland gewidmet — und verstanden, dass Kunden dieses Profils keine gewöhnliche Arbeitskraft suchen, sondern einen vertrauenswürdigen Partner mit allen nötigen Fähigkeiten.',
+				'Für mich ist diese Arbeit Leidenschaft. Obwohl ich das Unternehmen leite, gehe ich jedes Projekt persönlich an. Ich bin diejenige, die den Prozess organisiert, ich bin diejenige, die jedes Detail überwacht, und ich bin diejenige, die die Geräte in den Händen hält. Nur so kann ich das Ergebnis garantieren, das hinter meinem Namen steht.'
+			],
+			portraitAlt: 'Zvjezdana Puhanić — Geschäftsführerin, Sprinter d.o.o.',
+			actionAlt: 'Zvjezdana Puhanić — professionelle Reinigung mit Kärcher-Ausrüstung'
+		}
 	},
 
 	// Per-service detail

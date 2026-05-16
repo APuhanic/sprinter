@@ -122,6 +122,46 @@
 		</div>
 	</section>
 
+	<!-- Owner / Vision -->
+	<section class="section section--tight">
+		<div class="wrap">
+			<div class="eyebrow" style="margin-bottom:24px;">{t.cleaningPage.owner.eyebrow}</div>
+			<h2 class="section-title" style="max-width:18ch; margin-bottom:48px;">
+				{t.cleaningPage.owner.title}
+			</h2>
+
+			<div class="owner-images">
+				<div class="owner-images__landscape">
+					<img
+						src="/images/owner/sprinter-vlasnica-portret.jpg"
+						alt={t.cleaningPage.owner.portraitAlt}
+						loading="lazy"
+					/>
+				</div>
+				<div class="owner-images__vertical">
+					<img
+						src="/images/owner/sprinter-vlasnica-akcija.jpg"
+						alt={t.cleaningPage.owner.actionAlt}
+						loading="lazy"
+					/>
+				</div>
+			</div>
+
+			<div class="owner-narrative">
+				<p class="owner__quote">"{t.cleaningPage.owner.quote}"</p>
+				<div class="owner-narrative__body">
+					{#each t.cleaningPage.owner.bio as para}
+						<p>{para}</p>
+					{/each}
+				</div>
+				<div class="owner__sig">
+					<strong>{t.owner.name}</strong>
+					<span>{t.owner.role}</span>
+				</div>
+			</div>
+		</div>
+	</section>
+
 	<!-- TOC strip -->
 	<nav class="toc-strip" aria-label={t.cleaningPage.eyebrow}>
 		<div class="wrap">
