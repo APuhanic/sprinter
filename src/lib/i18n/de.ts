@@ -225,10 +225,8 @@ export default {
 			quote:
 				'Ordnung, Ästhetik und absolute Diskretion. Ich kümmere mich um Ihren Raum mit Präzision und persönlicher Verantwortung.',
 			bio: [
-				'Mein Name ist Zvjezdana Puhanić. Als Geschäftsführerin sehe ich meine Berufung nicht als bloßen Reinigungsdienst, sondern als Mission, Ihrem Wohnraum Glanz und Harmonie zurückzugeben.',
-				'Ich glaube, dass luxuriöse Räume mehr verdienen als »normales Aufräumen« – sie verdienen deutsche Disziplin, absolute Diskretion und ein Auge, das sieht, was anderen entgeht.',
-				'Meine berufliche Erfahrung habe ich in der Hotellerie geschliffen, wo ich kompromisslose Standards in Organisation und Sorgfalt verinnerlicht habe. In den letzten Jahren habe ich mich ausschließlich der Pflege exklusiver Villen und Residenzen in Deutschland gewidmet — und verstanden, dass Kunden dieses Profils keine gewöhnliche Arbeitskraft suchen, sondern einen vertrauenswürdigen Partner mit allen nötigen Fähigkeiten.',
-				'Für mich ist diese Arbeit Leidenschaft. Obwohl ich das Unternehmen leite, gehe ich jedes Projekt persönlich an. Ich bin diejenige, die den Prozess organisiert, ich bin diejenige, die jedes Detail überwacht, und ich bin diejenige, die die Geräte in den Händen hält. Nur so kann ich das Ergebnis garantieren, das hinter meinem Namen steht.'
+				'Mein Name ist Zvjezdana Puhanić. Hinter der Reinigung stehe ich persönlich — vom ersten Rundgang bis zum letzten Detail. Jahre in der Hotellerie und in der Pflege exklusiver Villen in Deutschland haben Standards geformt, bei denen ich keine Kompromisse mache.',
+				'Ein luxuriöser Raum verdient mehr als gewöhnliches Aufräumen — Disziplin, Diskretion, ein Auge fürs Detail. Deshalb führe ich jedes Projekt selbst: organisiere den Ablauf, überwache die Details, halte die Geräte in den Händen.'
 			],
 			portraitAlt: 'Zvjezdana Puhanić — Geschäftsführerin, Sprinter d.o.o.',
 			actionAlt: 'Zvjezdana Puhanić — professionelle Reinigung mit Kärcher-Ausrüstung'

@@ -773,56 +773,76 @@ button {
 	border-top: 1px solid var(--line);
 }
 
-/* Owner section — cleaning page (two photos + narrative) */
-.owner-images {
-	display: grid;
-	grid-template-columns: 1.6fr 1fr;
-	gap: 16px;
-	height: clamp(360px, 46vw, 540px);
-	margin-bottom: 64px;
+/* Owner section — cleaning page (two photos woven through narrative) */
+.owner-section__title {
+	max-width: 18ch;
+	margin: 0 0 56px;
 }
-.owner-images > div {
+.owner-photo {
+	margin: 0;
 	overflow: hidden;
 	background: var(--soft);
+	border: 1px solid var(--line-strong);
+	border-radius: 4px;
 }
-.owner-images img {
+.owner-photo img {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
 	display: block;
 }
-.owner-images__landscape img {
+.owner-photo--landscape {
+	aspect-ratio: 21 / 10;
+	margin-bottom: 64px;
+}
+.owner-photo--landscape img {
 	object-position: center 32%;
 }
-@media (max-width: 700px) {
-	.owner-images {
-		grid-template-columns: 1fr;
-		height: auto;
-		gap: 12px;
-		margin-bottom: 40px;
-	}
-	.owner-images__landscape {
-		aspect-ratio: 16 / 10;
-	}
-	.owner-images__vertical {
-		aspect-ratio: 3 / 4;
-	}
-}
-
 .owner-narrative {
-	max-width: 68ch;
+	max-width: 64ch;
 }
-.owner-narrative__body {
-	margin-top: 28px;
-	display: grid;
-	gap: 18px;
-}
-.owner-narrative__body p {
-	margin: 0;
+.owner-narrative__para {
+	margin: 28px 0 0;
 	font-size: 16px;
 	line-height: 1.65;
 	color: var(--fg);
 	opacity: 0.84;
+}
+.owner-action-row {
+	display: grid;
+	grid-template-columns: 0.85fr 1.15fr;
+	gap: 56px;
+	align-items: center;
+	margin-top: 72px;
+}
+.owner-photo--vertical {
+	aspect-ratio: 3 / 4;
+	max-height: 560px;
+	width: 100%;
+}
+.owner-action-row__text .owner-narrative__para {
+	margin-top: 0;
+}
+.owner-action-row__text .owner__sig {
+	margin-top: 28px;
+}
+@media (max-width: 800px) {
+	.owner-section__title {
+		margin-bottom: 36px;
+	}
+	.owner-photo--landscape {
+		aspect-ratio: 16 / 10;
+		margin-bottom: 36px;
+	}
+	.owner-action-row {
+		grid-template-columns: 1fr;
+		gap: 32px;
+		margin-top: 44px;
+	}
+	.owner-photo--vertical {
+		max-height: none;
+		max-width: 380px;
+	}
 }
 
 /* Short-term rental note strip (cleaning page) */
@@ -1091,6 +1111,15 @@ button {
 	.svc-detail:nth-child(even) .svc-detail__text {
 		order: 0;
 	}
+}
+.svc-detail--no-photo,
+.svc-detail--no-photo:nth-child(even) {
+	grid-template-columns: 1fr;
+}
+.svc-detail--no-photo .svc-detail__text,
+.svc-detail--no-photo:nth-child(even) .svc-detail__text {
+	order: 0;
+	max-width: 72ch;
 }
 .svc-detail__title {
 	font-family: var(--font-display);
