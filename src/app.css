@@ -772,6 +772,58 @@ button {
 	padding-top: 20px;
 	border-top: 1px solid var(--line);
 }
+
+/* Owner section — cleaning page (two photos + narrative) */
+.owner-images {
+	display: grid;
+	grid-template-columns: 1.6fr 1fr;
+	gap: 16px;
+	height: clamp(360px, 46vw, 540px);
+	margin-bottom: 64px;
+}
+.owner-images > div {
+	overflow: hidden;
+	background: var(--soft);
+}
+.owner-images img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+.owner-images__landscape img {
+	object-position: center 32%;
+}
+@media (max-width: 700px) {
+	.owner-images {
+		grid-template-columns: 1fr;
+		height: auto;
+		gap: 12px;
+		margin-bottom: 40px;
+	}
+	.owner-images__landscape {
+		aspect-ratio: 16 / 10;
+	}
+	.owner-images__vertical {
+		aspect-ratio: 3 / 4;
+	}
+}
+
+.owner-narrative {
+	max-width: 68ch;
+}
+.owner-narrative__body {
+	margin-top: 28px;
+	display: grid;
+	gap: 18px;
+}
+.owner-narrative__body p {
+	margin: 0;
+	font-size: 16px;
+	line-height: 1.65;
+	color: var(--fg);
+	opacity: 0.84;
+}
 .owner__sig strong {
 	font-weight: 500;
 	font-size: 15px;

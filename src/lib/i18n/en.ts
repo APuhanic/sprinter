@@ -215,7 +215,21 @@ export default {
 		faqAccent: 'ask',
 		faqSub: "If your question isn't here, message us — we reply same-day.",
 		priceLabel: 'Price',
-		sendInquiry: 'Send a request'
+		sendInquiry: 'Send a request',
+		owner: {
+			eyebrow: 'Who stands behind Sprinter',
+			title: 'More than cleanliness',
+			quote:
+				'Order, aesthetics, and absolute discretion. I look after your space with precision and personal responsibility.',
+			bio: [
+				"My name is Zvjezdana Puhanić. As director of the company, I don't see my work as a mere cleaning service, but as a mission to restore brilliance and harmony to your living space.",
+				"I believe a luxurious space deserves more than 'ordinary tidying' — it deserves German discipline, absolute discretion, and an eye that sees what others miss.",
+				"I honed my professional experience in hospitality, where I absorbed uncompromising standards of organisation and meticulousness. Over the past several years I dedicated myself exclusively to maintaining exclusive villas and residences in Germany, understanding that clients of this profile aren't looking for ordinary labour — they want a trusted partner with every necessary skill.",
+				'For me, this work is a passion. Though I run the company, I approach every project personally. I am the one who organises the process, I am the one who oversees every detail, and I am the one who holds the equipment. Only that way can I guarantee a result that stands behind my name.'
+			],
+			portraitAlt: 'Zvjezdana Puhanić — director, Sprinter d.o.o.',
+			actionAlt: 'Zvjezdana Puhanić — professional cleaning with Kärcher equipment'
+		}
 	},
 
 	// Per-service detail
