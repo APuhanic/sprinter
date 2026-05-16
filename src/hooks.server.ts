@@ -25,14 +25,18 @@ export const handleError: HandleServerError = ({ error, event, status, message }
 	};
 };
 
+// Third-party origins: GTM container loads GA4 + Meta Pixel; without the
+// allowances below they get blocked. Verified against the GTM container audit:
+// GTM-W3FW6X9G fires GA4 (G-N7KN4GW622) page/click events and a Meta Pixel
+// (4495323150737492) page_view. Cloudflare Turnstile keeps its own entries.
 const CSP = [
 	"default-src 'self'",
-	"script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
+	"script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net",
 	"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
 	"font-src 'self' https://fonts.gstatic.com",
-	"img-src 'self' data:",
-	"frame-src 'self' https://www.google.com https://challenges.cloudflare.com",
-	"connect-src 'self'",
+	"img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.googletagmanager.com https://www.facebook.com",
+	"frame-src 'self' https://www.google.com https://challenges.cloudflare.com https://www.googletagmanager.com https://td.doubleclick.net",
+	"connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.googletagmanager.com https://*.facebook.com https://*.facebook.net",
 	"frame-ancestors 'self'",
 	"base-uri 'self'",
 	"form-action 'self'",
@@ -63,7 +67,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 	const resolution = resolveRedirect(event.url.pathname, searchParams);
 	if (resolution?.kind === 'redirect') {
-		throw redirect(301, resolution.to);
+		// Preserve query string so utm_* params (Google Ads, GBP) survive 301 hops
+		throw redirect(301, resolution.to + event.url.search);
 	}
 	if (resolution?.kind === 'gone') {
 		return new Response(
