@@ -225,10 +225,8 @@ export default {
 			quote:
 				'Red, estetika i apsolutna diskrecija. Vodim brigu o Vašem prostoru preciznošću i osobnom odgovornošću.',
 			bio: [
-				'Moje ime je Zvjezdana Puhanić. Kao direktorica tvrtke, svoj poziv ne vidim kao puki servis za čišćenje, već kao misiju vraćanja sjaja i sklada u Vaš životni prostor.',
-				'Vjerujem da luksuzan prostor zaslužuje više od „običnog spremanja“ – on zaslužuje njemačku disciplinu, apsolutnu diskreciju i oko koje vidi ono što drugima promiče.',
-				'Svoje profesionalno iskustvo brusila sam u hotelijerstvu, gdje sam usvojila beskompromisne standarde organizacije i pedantnosti. Posljednji niz godina posvetila sam isključivo održavanju ekskluzivnih vila i rezidencija u Njemačkoj, shvaćajući da klijenti moga profila ne traže običnu radnu snagu, već partnera od povjerenja sa svom potrebnom vještinom.',
-				'Za mene je ovaj posao strast. Iako vodim tvrtku, svakom projektu pristupam osobno. Ja sam ta koja organizira proces, ja sam ta koja nadzire svaki detalj i ja sam ona koja drži opremu u rukama. Samo tako mogu garantirati rezultat koji stoji iza moga imena.'
+				'Moje ime je Zvjezdana Puhanić. Iza čišćenja stojim osobno — od prvog izviđanja prostora do zadnjeg detalja. Godine u hotelijerstvu i održavanju ekskluzivnih vila u Njemačkoj usadile su mi standarde koje ne mijenjam.',
+				'Luksuzan prostor zaslužuje više od običnog spremanja — disciplinu, diskreciju, oko za detalj. Zato svaki projekt vodim sama: organiziram proces, nadziem detalje, držim opremu u rukama.'
 			],
 			portraitAlt: 'Zvjezdana Puhanić — direktorica Sprinter d.o.o.',
 			actionAlt: 'Zvjezdana Puhanić — profesionalno čišćenje s Kärcher opremom'
