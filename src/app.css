@@ -19,13 +19,12 @@
 
 :root {
 	/* WCAG AA: --muted needs ≥ 4.5:1 on --bg. #7a6f60 was 4.33:1 (fail).
-	   --accent needs ≥ 4.5:1 for text use on --bg and white-on-accent. #c2603a
-	   was 3.68:1 / 4.17:1 (both fail). Darkened both to clear contrast checks
-	   while staying within the warm terracotta palette. */
+	   --accent needs ≥ 4.5:1 for text use on --bg. #c2603a was 3.68:1 (fail),
+	   #b35530 was 4.34:1 (still fail for small text). #a84c28 = 4.97:1 (pass). */
 	--bg: #f5f0e8;
 	--fg: #1a1612;
 	--muted: #6a604f;
-	--accent: #b35530;
+	--accent: #a84c28;
 	--soft: #e6dccc;
 	--line: rgba(26, 22, 18, 0.12);
 	--line-strong: rgba(26, 22, 18, 0.22);
