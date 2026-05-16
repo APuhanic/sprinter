@@ -603,6 +603,41 @@ button {
 		gap: 24px;
 	}
 }
+
+/* Mobile header + utility strip tightening */
+@media (max-width: 600px) {
+	.utility .wrap {
+		gap: 4px 16px;
+		padding-block: 6px;
+	}
+	.brand__word {
+		display: none;
+	}
+	.lang-toggle {
+		font-size: 10px;
+		letter-spacing: 0.06em;
+	}
+	.lang-toggle a,
+	.lang-toggle button {
+		padding: 3px 7px;
+	}
+	.nav {
+		gap: 18px;
+	}
+	.hero[data-variant='typographic'] {
+		padding-block: 36px 28px;
+	}
+	.hero[data-variant='typographic'] .hero__sub {
+		margin-top: 20px;
+	}
+	.hero[data-variant='typographic'] .hero__cta {
+		margin-top: 28px;
+	}
+	.hero[data-variant='typographic'] .hero__meta {
+		margin-top: 48px;
+	}
+}
+
 .hero__meta-label {
 	font-family: var(--font-mono);
 	font-size: 11px;
