@@ -23,7 +23,10 @@ export const pathRedirects: Record<string, string> = {
 	'/usluge-ciscenja': '/hr/usluge-ciscenja',
 	'/usluga-ciscenja': '/hr/usluge-ciscenja', // singular variant in Yoast sitemap
 	'/luksuzni-transferi-s-osobnim-vozacem': '/hr/luksuzni-transferi',
-	'/kontakt': '/hr/kontakt'
+	'/kontakt': '/hr/kontakt',
+	// Transport ad (currently paused) points here; route exists but is
+	// noindexed in backup state — kept live so paid traffic doesn't 404
+	'/usluge-prijevoza': '/hr/usluge-prijevoza'
 };
 
 /**

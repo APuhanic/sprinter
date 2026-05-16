@@ -123,40 +123,44 @@
 	</section>
 
 	<!-- Owner / Vision -->
-	<section class="section section--tight">
+	<section class="section section--tight owner-section">
 		<div class="wrap">
-			<div class="eyebrow" style="margin-bottom:24px;">{t.cleaningPage.owner.eyebrow}</div>
-			<h2 class="section-title" style="max-width:18ch; margin-bottom:48px;">
+			<div class="eyebrow" style="margin-bottom:20px;">{t.cleaningPage.owner.eyebrow}</div>
+			<h2 class="section-title owner-section__title">
 				{t.cleaningPage.owner.title}
 			</h2>
 
-			<div class="owner-images">
-				<div class="owner-images__landscape">
-					<img
-						src="/images/owner/sprinter-vlasnica-portret.jpg"
-						alt={t.cleaningPage.owner.portraitAlt}
-						loading="lazy"
-					/>
-				</div>
-				<div class="owner-images__vertical">
+			<figure class="owner-photo owner-photo--landscape">
+				<img
+					src="/images/owner/sprinter-vlasnica-portret.jpg"
+					alt={t.cleaningPage.owner.portraitAlt}
+					loading="lazy"
+				/>
+			</figure>
+
+			<div class="owner-narrative">
+				<p class="owner__quote">"{t.cleaningPage.owner.quote}"</p>
+				{#if t.cleaningPage.owner.bio[0]}
+					<p class="owner-narrative__para">{t.cleaningPage.owner.bio[0]}</p>
+				{/if}
+			</div>
+
+			<div class="owner-action-row">
+				<figure class="owner-photo owner-photo--vertical">
 					<img
 						src="/images/owner/sprinter-vlasnica-akcija.jpg"
 						alt={t.cleaningPage.owner.actionAlt}
 						loading="lazy"
 					/>
-				</div>
-			</div>
-
-			<div class="owner-narrative">
-				<p class="owner__quote">"{t.cleaningPage.owner.quote}"</p>
-				<div class="owner-narrative__body">
-					{#each t.cleaningPage.owner.bio as para}
-						<p>{para}</p>
-					{/each}
-				</div>
-				<div class="owner__sig">
-					<strong>{t.owner.name}</strong>
-					<span>{t.owner.role}</span>
+				</figure>
+				<div class="owner-action-row__text">
+					{#if t.cleaningPage.owner.bio[1]}
+						<p class="owner-narrative__para">{t.cleaningPage.owner.bio[1]}</p>
+					{/if}
+					<div class="owner__sig">
+						<strong>{t.owner.name}</strong>
+						<span>{t.owner.role}</span>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -177,7 +181,11 @@
 		<div class="wrap">
 			{#each t.cleaningServices as s (s.id)}
 				{@const parts = renderName(s.name, s.nameAccent)}
-				<div class="svc-detail" id={s.id}>
+				<div
+					class="svc-detail"
+					class:svc-detail--no-photo={!servicePhotos[s.id]}
+					id={s.id}
+				>
 					<div class="svc-detail__text">
 						<div class="svc-detail__num">{s.num} / 05</div>
 						<h2 class="svc-detail__title">
@@ -221,19 +229,25 @@
 							</a>
 						</div>
 					</div>
-					<div>
-						{#if servicePhotos[s.id]}
+					{#if servicePhotos[s.id]}
+						<div>
 							<div class="svc-detail__photo">
 								<img src={servicePhotos[s.id]} alt={s.photoTag} loading="lazy" />
 							</div>
-						{:else}
-							<div class="ph" style="height:460px;" aria-label="Placeholder: {s.photoTag}">
-								<span class="ph__label">[ photo · {s.photoTag} ]</span>
-							</div>
-						{/if}
-					</div>
+						</div>
+					{/if}
 				</div>
 			{/each}
+		</div>
+	</section>
+
+	<!-- Short-term rental note -->
+	<section class="section section--tight">
+		<div class="wrap">
+			<aside class="airbnb-note">
+				<div class="airbnb-note__tag">{t.cleaningPage.airbnbTag}</div>
+				<p class="airbnb-note__text">{t.cleaningPage.airbnbNote}</p>
+			</aside>
 		</div>
 	</section>
 
