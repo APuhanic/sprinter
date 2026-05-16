@@ -31,7 +31,7 @@ export default {
 		sub: 'Profesionalno čišćenje u Puli i Istri — od apartmana i obiteljskih kuća, do ureda i jahti. Pažljivo, bez improvizacije.',
 		meta: [
 			{ label: 'Sjedište', text: 'Capelleri 5, Pula' },
-			{ label: 'Pokrivenost', text: 'Pula i okolica, do 30 km' },
+			{ label: 'Pokrivenost', text: 'Pula + Istra' },
 			{ label: 'Odgovor', text: 'Najavite dolazak — javljamo se isti dan' },
 			{ label: 'Plaćanje', text: 'Gotovina · Transakcijski račun' }
 		],

@@ -31,7 +31,7 @@ export default {
 		sub: 'Professional cleaning across Pula and Istria — apartments and family homes, offices and yachts. Done carefully, without improvising.',
 		meta: [
 			{ label: 'Based in', text: 'Capelleri 5, Pula' },
-			{ label: 'Service area', text: 'Pula and around, up to 30 km' },
+			{ label: 'Service area', text: 'Pula + Istria' },
 			{ label: 'Response', text: 'Same-day reply, often within an hour' },
 			{ label: 'Payment', text: 'Cash · Bank transfer' }
 		],
