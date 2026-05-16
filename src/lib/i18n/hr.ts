@@ -215,7 +215,21 @@ export default {
 		faqAccent: 'pitaju',
 		faqSub: 'Ako nešto nije ovdje, pišite nam — odgovaramo u istom danu.',
 		priceLabel: 'Cijena',
-		sendInquiry: 'Pošalji upit'
+		sendInquiry: 'Pošalji upit',
+		owner: {
+			eyebrow: 'Tko stoji iza Sprintera',
+			title: 'Više od čistoće',
+			quote:
+				'Red, estetika i apsolutna diskrecija. Vodim brigu o Vašem prostoru preciznošću i osobnom odgovornošću.',
+			bio: [
+				'Moje ime je Zvjezdana Puhanić. Kao direktorica tvrtke, svoj poziv ne vidim kao puki servis za čišćenje, već kao misiju vraćanja sjaja i sklada u Vaš životni prostor.',
+				'Vjerujem da luksuzan prostor zaslužuje više od „običnog spremanja“ – on zaslužuje njemačku disciplinu, apsolutnu diskreciju i oko koje vidi ono što drugima promiče.',
+				'Svoje profesionalno iskustvo brusila sam u hotelijerstvu, gdje sam usvojila beskompromisne standarde organizacije i pedantnosti. Posljednji niz godina posvetila sam isključivo održavanju ekskluzivnih vila i rezidencija u Njemačkoj, shvaćajući da klijenti moga profila ne traže običnu radnu snagu, već partnera od povjerenja sa svom potrebnom vještinom.',
+				'Za mene je ovaj posao strast. Iako vodim tvrtku, svakom projektu pristupam osobno. Ja sam ta koja organizira proces, ja sam ta koja nadzire svaki detalj i ja sam ona koja drži opremu u rukama. Samo tako mogu garantirati rezultat koji stoji iza moga imena.'
+			],
+			portraitAlt: 'Zvjezdana Puhanić — direktorica Sprinter d.o.o.',
+			actionAlt: 'Zvjezdana Puhanić — profesionalno čišćenje s Kärcher opremom'
+		}
 	},
 
 	// Per-service detail (used on cleaning page)
