@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { telHrefCleaning as telHref, waHrefCleaning as waHref } from '$lib/contact';
+	import { telHref, waHref } from '$lib/contact';
 	import { cleaningService } from '$lib/jsonld';
 
 	let { data }: { data: PageData } = $props();
@@ -22,28 +22,44 @@
 	let showFreq = $derived(calcType === 'regular' || calcType === 'office');
 	let showSize = $derived(calcType !== 'yacht');
 
+	// Canonical pricing tiers from sprinter.hr/usluge-ciscenja — see also
+	// the cleaningServices i18n entries. Calculator must agree with what
+	// the on-page tier table shows so quote messages don't contradict it.
 	function calcEstimate(type: CalcType, size: number, freq: CalcFreq): [number, number] {
 		if (type === 'turnover') {
-			const base = 35 + Math.max(0, (size - 50) / 20) * 8;
-			return [Math.round((base * 0.95) / 5) * 5, Math.round((base * 1.2) / 5) * 5];
+			// Apartmani u Istri tiers: do 50 m² 70€, do 80 m² 100€, do 100 m² 120€, preko 100 m² 140€
+			let base: number;
+			if (size <= 50) base = 70;
+			else if (size <= 80) base = 100;
+			else if (size <= 100) base = 120;
+			else base = 140 + Math.max(0, Math.ceil((size - 100) / 25)) * 15;
+			return [Math.round(base / 5) * 5, Math.round((base * 1.3) / 5) * 5];
 		}
 		if (type === 'deep') {
-			const hours = Math.max(4, Math.ceil(size / 15));
-			return [hours * 18, Math.round((hours * 18 * 1.3) / 5) * 5];
+			// Generalno čišćenje: 2 €/m², 80€ floor so small flats stay sensible
+			const min = Math.max(80, Math.round(size * 2));
+			return [Math.round(min / 5) * 5, Math.round((min * 1.4) / 5) * 5];
 		}
 		if (type === 'regular') {
-			const hours = Math.max(3, Math.ceil(size / 20));
-			const mult = { oneoff: 1.15, weekly: 0.9, fortnight: 0.95, monthly: 1.05 }[freq];
+			// Redovno (stanovi/kuće): do 45 m² 45€, 45–90 m² 60€, scale beyond
+			let base: number;
+			if (size <= 45) base = 45;
+			else if (size <= 90) base = 60;
+			else base = 60 + Math.ceil((size - 90) / 15) * 10;
+			const mult = { oneoff: 1.15, weekly: 0.9, fortnight: 0.95, monthly: 1.0 }[freq];
 			return [
-				Math.round((hours * 16 * mult * 0.95) / 5) * 5,
-				Math.round((hours * 16 * mult * 1.15) / 5) * 5
+				Math.round((base * mult) / 5) * 5,
+				Math.round((base * mult * 1.4) / 5) * 5
 			];
 		}
 		if (type === 'office') {
-			const hours = Math.max(3, Math.ceil(size / 25));
-			return [Math.round((hours * 14 * 0.95) / 5) * 5, Math.round((hours * 14 * 1.2) / 5) * 5];
+			// Poslovni prostori: 0,75 – 2 €/m²; floor 45€ for tiny offices
+			const low = Math.max(45, Math.round(size * 0.75));
+			const high = Math.max(90, Math.round(size * 2));
+			return [Math.round(low / 5) * 5, Math.round(high / 5) * 5];
 		}
-		return [80, 220]; // yacht
+		// yacht — quote-only, broad range surfaced
+		return [80, 240];
 	}
 
 	let estimate = $derived(calcEstimate(calcType, calcSize, calcFreq));
@@ -206,6 +222,17 @@
 							<span class="amt">{s.price}</span>
 							<span class="from">· {s.priceNote}</span>
 						</div>
+						{#if s.tiers && s.tiers.length}
+							<ul class="svc-detail__tiers">
+								{#each s.tiers as tier}
+									<li>
+										<span class="svc-detail__tiers-range">{tier.range}</span>
+										<span class="svc-detail__tiers-price">{tier.price}</span>
+									</li>
+								{/each}
+							</ul>
+						{/if}
+						<p class="svc-detail__disclaimer">{t.cleaningPage.priceDisclaimer}</p>
 						<div style="margin-top:28px; display:flex; gap:12px; flex-wrap:wrap;">
 							<a
 								class="btn btn--primary"
@@ -422,35 +449,7 @@
 		</div>
 	</section>
 
-	<!-- Testimonial placeholders -->
-	<section class="section section--tight">
-		<div class="wrap">
-			<div class="section-head">
-				<div>
-					<div class="eyebrow">{t.cleaningPage.testiEyebrow}</div>
-				</div>
-				<div>
-					<h2 class="section-title">{t.cleaningPage.testiTitle}</h2>
-					<p class="section-sub" style="margin-top:24px;">{t.cleaningPage.testiSub}</p>
-				</div>
-			</div>
-			<div class="testi-grid">
-				{#each [0, 1, 2] as i}
-					<div class="testi">
-						<span class="testi__placeholder-tag">{t.cleaningPage.testiTagPlaceholder}</span>
-						<p class="testi__quote">{t.cleaningPage.testiPlaceholder}</p>
-						<div class="testi__meta">
-							<div class="testi__avatar"></div>
-							<div>
-								<div class="testi__name">{t.cleaningPage.testiClient}</div>
-								<div class="testi__role">{t.cleaningPage.testiRoles[i]}</div>
-							</div>
-						</div>
-					</div>
-				{/each}
-			</div>
-		</div>
-	</section>
+	<!-- Testimonials — hidden until real Google reviews are wired in -->
 
 	<!-- Contact island -->
 	<section class="section section--tight">

@@ -71,6 +71,19 @@
 		</div>
 	</div>
 
+	<!-- Home feature image (placeholder visual until real on-site photography exists) -->
+	<section class="section section--tight">
+		<div class="wrap">
+			<figure class="home-feature">
+				<img
+					src="/images/cleaning/ciscenje-kauc.jpg"
+					alt={t.home.featureAlt}
+					loading="lazy"
+				/>
+			</figure>
+		</div>
+	</section>
+
 	<!-- Services -->
 	<section class="section" id="services-anchor">
 		<div class="wrap">

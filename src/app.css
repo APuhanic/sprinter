@@ -609,6 +609,27 @@ button {
 	}
 }
 
+/* Home feature image (between marquee and services) */
+.home-feature {
+	margin: 0;
+	overflow: hidden;
+	background: var(--soft);
+	border: 1px solid var(--line-strong);
+	border-radius: 4px;
+	aspect-ratio: 21 / 10;
+}
+.home-feature img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+@media (max-width: 700px) {
+	.home-feature {
+		aspect-ratio: 16 / 10;
+	}
+}
+
 /* Mobile header + utility strip tightening */
 @media (max-width: 600px) {
 	.utility .wrap {
@@ -1183,6 +1204,37 @@ button {
 	font-family: var(--font-mono);
 	font-size: 11px;
 	letter-spacing: 0.1em;
+	color: var(--muted);
+	text-transform: uppercase;
+}
+.svc-detail__tiers {
+	list-style: none;
+	margin: 16px 0 0;
+	padding: 0;
+	display: grid;
+	gap: 8px;
+	max-width: 44ch;
+}
+.svc-detail__tiers li {
+	display: flex;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 6px 0;
+	border-bottom: 1px solid var(--line);
+	font-size: 14px;
+}
+.svc-detail__tiers-range {
+	color: var(--muted);
+}
+.svc-detail__tiers-price {
+	font-family: var(--font-mono);
+	letter-spacing: 0.02em;
+}
+.svc-detail__disclaimer {
+	margin: 14px 0 0;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	letter-spacing: 0.06em;
 	color: var(--muted);
 	text-transform: uppercase;
 }

@@ -19,6 +19,7 @@
 	<meta name="description" content={t.transfersPage.leadTwo} />
 	<meta property="og:title" content="{t.transfersPage.title}{t.transfersPage.titleSuffix} — Sprinter" />
 	<meta property="og:description" content={t.transfersPage.leadTwo} />
+	<meta property="og:image" content="https://sprinter.hr/images/og/transfers-og.jpg" />
 	{@html `<script type="application/ld+json">${serviceJsonLd}</` + `script>`}
 </svelte:head>
 

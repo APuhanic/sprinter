@@ -27,7 +27,8 @@
 	let navItems = $derived([
 		{ href: `/${lang}`, label: t.nav.home },
 		{ href: `/${lang}/${slugs[lang].cleaning}`, label: t.nav.cleaning },
-		{ href: `/${lang}/${slugs[lang].transfers}`, label: t.nav.transfers }
+		{ href: `/${lang}/${slugs[lang].transfers}`, label: t.nav.transfers },
+		{ href: `/${lang}/kontakt`, label: t.nav.contact }
 	]);
 
 	const SITE_URL = 'https://sprinter.hr';
@@ -60,9 +61,10 @@
 		content={lang === 'hr' ? 'hr_HR' : lang === 'de' ? 'de_DE' : 'en_US'}
 	/>
 	<meta property="og:url" content={canonical} />
-	<meta property="og:image" content={`${SITE_URL}/images/hero/rental-hero.jpg`} />
-	<meta property="og:image:width" content="1920" />
-	<meta property="og:image:height" content="908" />
+	<!-- Default OG: cleaning-themed. /luksuzni-transferi overrides with its own. -->
+	<meta property="og:image" content={`${SITE_URL}/images/og/cleaning-og.jpg`} />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
 	<meta name="twitter:card" content="summary_large_image" />
 	{@html `<script type="application/ld+json">${businessJsonLd}</` + `script>`}
 </svelte:head>
