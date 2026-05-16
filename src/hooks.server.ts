@@ -44,6 +44,18 @@ const CSP = [
 	'upgrade-insecure-requests'
 ].join('; ');
 
+/**
+ * Block indexing on any host that isn't the production canonical. Vercel
+ * preview deployments (sprinter-git-*.vercel.app, sprinter-zeta.vercel.app)
+ * and localhost must never appear in Google — they would dilute the prod
+ * site and risk leaking unfinished work into search.
+ */
+function applyNoindexIfNotProduction(headers: Headers, hostname: string) {
+	if (!/^(www\.)?sprinter\.hr$/i.test(hostname)) {
+		headers.set('X-Robots-Tag', 'noindex, nofollow');
+	}
+}
+
 function applySecurityHeaders(headers: Headers) {
 	headers.set('Strict-Transport-Security', 'max-age=15552000');
 	headers.set('X-Content-Type-Options', 'nosniff');
@@ -91,5 +103,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 	});
 
 	applySecurityHeaders(response.headers);
+	applyNoindexIfNotProduction(response.headers, event.url.hostname);
 	return response;
 };
