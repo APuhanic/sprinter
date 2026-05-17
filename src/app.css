@@ -227,6 +227,11 @@ button {
 	justify-content: space-between;
 	flex-wrap: wrap;
 }
+.utility__group {
+	display: inline-flex;
+	gap: 28px;
+	flex-wrap: wrap;
+}
 .utility a {
 	opacity: 0.85;
 }
@@ -603,6 +608,65 @@ button {
 		gap: 24px;
 	}
 }
+
+/* Home feature image (between marquee and services) */
+.home-feature {
+	margin: 0;
+	overflow: hidden;
+	background: var(--soft);
+	border: 1px solid var(--line-strong);
+	border-radius: 4px;
+	aspect-ratio: 21 / 10;
+}
+.home-feature img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+@media (max-width: 700px) {
+	.home-feature {
+		aspect-ratio: 16 / 10;
+	}
+}
+
+/* Mobile header + utility strip tightening */
+@media (max-width: 600px) {
+	.utility .wrap {
+		gap: 4px 16px;
+		padding-block: 6px;
+	}
+	.utility__group {
+		gap: 4px 14px;
+	}
+	.brand__word {
+		display: none;
+	}
+	.lang-toggle {
+		font-size: 10px;
+		letter-spacing: 0.06em;
+	}
+	.lang-toggle a,
+	.lang-toggle button {
+		padding: 3px 7px;
+	}
+	.nav {
+		gap: 18px;
+	}
+	.hero[data-variant='typographic'] {
+		padding-block: 36px 28px;
+	}
+	.hero[data-variant='typographic'] .hero__sub {
+		margin-top: 20px;
+	}
+	.hero[data-variant='typographic'] .hero__cta {
+		margin-top: 28px;
+	}
+	.hero[data-variant='typographic'] .hero__meta {
+		margin-top: 48px;
+	}
+}
+
 .hero__meta-label {
 	font-family: var(--font-mono);
 	font-size: 11px;
@@ -728,6 +792,117 @@ button {
 	margin-top: 32px;
 	padding-top: 20px;
 	border-top: 1px solid var(--line);
+}
+
+/* Owner section — cleaning page (two photos woven through narrative) */
+.owner-section__title {
+	max-width: 18ch;
+	margin: 0 0 56px;
+}
+.owner-photo {
+	margin: 0;
+	overflow: hidden;
+	background: var(--soft);
+	border: 1px solid var(--line-strong);
+	border-radius: 4px;
+}
+.owner-photo img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+.owner-photo--landscape {
+	aspect-ratio: 21 / 10;
+	margin-bottom: 64px;
+}
+.owner-photo--landscape img {
+	object-position: center 32%;
+}
+.owner-narrative {
+	max-width: 64ch;
+}
+.owner-narrative__para {
+	margin: 28px 0 0;
+	font-size: 16px;
+	line-height: 1.65;
+	color: var(--fg);
+	opacity: 0.84;
+}
+.owner-action-row {
+	display: grid;
+	grid-template-columns: 0.85fr 1.15fr;
+	gap: 56px;
+	align-items: center;
+	margin-top: 72px;
+}
+.owner-photo--vertical {
+	aspect-ratio: 3 / 4;
+	max-height: 560px;
+	width: 100%;
+}
+.owner-photo--vertical img {
+	/* Source is a 9:19 portrait; default center crop cuts ~18% off the top,
+	   which is exactly where her head sits. Anchor the crop high so the face
+	   stays whole and the bottom (vacuum cart) absorbs the loss instead. */
+	object-position: center 18%;
+}
+.owner-action-row__text .owner-narrative__para {
+	margin-top: 0;
+}
+.owner-action-row__text .owner__sig {
+	margin-top: 28px;
+}
+@media (max-width: 800px) {
+	.owner-section__title {
+		margin-bottom: 36px;
+	}
+	.owner-photo--landscape {
+		aspect-ratio: 16 / 10;
+		margin-bottom: 36px;
+	}
+	.owner-action-row {
+		grid-template-columns: 1fr;
+		gap: 32px;
+		margin-top: 44px;
+	}
+	.owner-photo--vertical {
+		max-height: none;
+		max-width: 380px;
+	}
+}
+
+/* Short-term rental note strip (cleaning page) */
+.airbnb-note {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 32px;
+	align-items: center;
+	padding: 28px 36px;
+	background: var(--fg);
+	color: var(--bg);
+	border-radius: 2px;
+}
+.airbnb-note__tag {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--accent);
+	white-space: nowrap;
+}
+.airbnb-note__text {
+	margin: 0;
+	font-size: 16px;
+	line-height: 1.55;
+	max-width: 70ch;
+}
+@media (max-width: 700px) {
+	.airbnb-note {
+		grid-template-columns: 1fr;
+		gap: 12px;
+		padding: 20px 24px;
+	}
 }
 .owner__sig strong {
 	font-weight: 500;
@@ -964,6 +1139,15 @@ button {
 		order: 0;
 	}
 }
+.svc-detail--no-photo,
+.svc-detail--no-photo:nth-child(even) {
+	grid-template-columns: 1fr;
+}
+.svc-detail--no-photo .svc-detail__text,
+.svc-detail--no-photo:nth-child(even) .svc-detail__text {
+	order: 0;
+	max-width: 72ch;
+}
 .svc-detail__title {
 	font-family: var(--font-display);
 	font-size: clamp(36px, 5vw, 64px);
@@ -1026,6 +1210,37 @@ button {
 	font-family: var(--font-mono);
 	font-size: 11px;
 	letter-spacing: 0.1em;
+	color: var(--muted);
+	text-transform: uppercase;
+}
+.svc-detail__tiers {
+	list-style: none;
+	margin: 16px 0 0;
+	padding: 0;
+	display: grid;
+	gap: 8px;
+	max-width: 44ch;
+}
+.svc-detail__tiers li {
+	display: flex;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 6px 0;
+	border-bottom: 1px solid var(--line);
+	font-size: 14px;
+}
+.svc-detail__tiers-range {
+	color: var(--muted);
+}
+.svc-detail__tiers-price {
+	font-family: var(--font-mono);
+	letter-spacing: 0.02em;
+}
+.svc-detail__disclaimer {
+	margin: 14px 0 0;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	letter-spacing: 0.06em;
 	color: var(--muted);
 	text-transform: uppercase;
 }

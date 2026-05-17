@@ -9,7 +9,7 @@
 </script>
 
 <svelte:head>
-	<title>{t.thankYou.title} — Sprinter d.o.o.</title>
+	<title>Sprinter - {t.thankYou.title}</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 

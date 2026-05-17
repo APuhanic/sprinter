@@ -14,9 +14,9 @@
 </script>
 
 <svelte:head>
-	<title>Sprinter — {t.nav.cleaning}, Pula i Istra</title>
+	<title>Sprinter - {t.nav.cleaning}, Pula i Istra</title>
 	<meta name="description" content={t.home.sub} />
-	<meta property="og:title" content="Sprinter — {t.nav.cleaning}, Pula i Istra" />
+	<meta property="og:title" content="Sprinter - {t.nav.cleaning}, Pula i Istra" />
 	<meta property="og:description" content={t.home.sub} />
 </svelte:head>
 
@@ -70,6 +70,19 @@
 			{/each}
 		</div>
 	</div>
+
+	<!-- Home feature image (placeholder visual until real on-site photography exists) -->
+	<section class="section section--tight">
+		<div class="wrap">
+			<figure class="home-feature">
+				<img
+					src="/images/cleaning/ciscenje-kauc.jpg"
+					alt={t.home.featureAlt}
+					loading="lazy"
+				/>
+			</figure>
+		</div>
+	</section>
 
 	<!-- Services -->
 	<section class="section" id="services-anchor">
