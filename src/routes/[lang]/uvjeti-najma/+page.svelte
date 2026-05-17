@@ -10,7 +10,7 @@
 </script>
 
 <svelte:head>
-	<title>{t.footer.rentalTerms} — Sprinter d.o.o.</title>
+	<title>Sprinter - {t.footer.rentalTerms}</title>
 	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 

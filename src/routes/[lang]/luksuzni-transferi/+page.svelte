@@ -15,9 +15,9 @@
 </script>
 
 <svelte:head>
-	<title>{t.transfersPage.title}{t.transfersPage.titleSuffix} — Sprinter</title>
+	<title>Sprinter - {t.transfersPage.title}{t.transfersPage.titleSuffix}</title>
 	<meta name="description" content={t.transfersPage.leadTwo} />
-	<meta property="og:title" content="{t.transfersPage.title}{t.transfersPage.titleSuffix} — Sprinter" />
+	<meta property="og:title" content="Sprinter - {t.transfersPage.title}{t.transfersPage.titleSuffix}" />
 	<meta property="og:description" content={t.transfersPage.leadTwo} />
 	<meta property="og:image" content="https://sprinter.hr/images/og/transfers-og.jpg" />
 	{@html `<script type="application/ld+json">${serviceJsonLd}</` + `script>`}

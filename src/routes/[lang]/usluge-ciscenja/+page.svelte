@@ -2,12 +2,43 @@
 	import type { PageData } from './$types';
 	import { telHref, waHref } from '$lib/contact';
 	import { cleaningService } from '$lib/jsonld';
+	import Reviews from '$lib/components/Reviews.svelte';
 
 	let { data }: { data: PageData } = $props();
 	let lang = $derived(data.lang);
 	let t = $derived(data.t);
+	let reviews = $derived(data.reviews);
 
-	const serviceJsonLd = JSON.stringify(cleaningService());
+	// Enrich the Service JSON-LD with AggregateRating + Review[] when we have
+	// reviews. Google attaches review rich-results to the Service entity here.
+	const serviceJsonLd = JSON.stringify(
+		(() => {
+			const base = cleaningService();
+			if (!reviews || reviews.reviews.length === 0) return base;
+			return {
+				...base,
+				aggregateRating: {
+					'@type': 'AggregateRating',
+					ratingValue: reviews.rating.toFixed(1),
+					reviewCount: reviews.userRatingCount,
+					bestRating: '5',
+					worstRating: '1'
+				},
+				review: reviews.reviews.map((r) => ({
+					'@type': 'Review',
+					reviewRating: {
+						'@type': 'Rating',
+						ratingValue: r.rating,
+						bestRating: '5',
+						worstRating: '1'
+					},
+					author: { '@type': 'Person', name: r.author.name },
+					datePublished: r.publishTime,
+					reviewBody: r.originalText ?? r.text
+				}))
+			};
+		})()
+	);
 
 	// FAQ — first item open by default
 	let openFaq = $state(0);
@@ -97,9 +128,9 @@
 </script>
 
 <svelte:head>
-	<title>{t.cleaningPage.titleA} {t.cleaningPage.titleB} — Sprinter</title>
+	<title>Sprinter - {t.cleaningPage.titleA} {t.cleaningPage.titleB}</title>
 	<meta name="description" content={t.cleaningPage.sub} />
-	<meta property="og:title" content="{t.cleaningPage.titleA} {t.cleaningPage.titleB} — Sprinter" />
+	<meta property="og:title" content="Sprinter - {t.cleaningPage.titleA} {t.cleaningPage.titleB}" />
 	<meta property="og:description" content={t.cleaningPage.sub} />
 	{@html `<script type="application/ld+json">${serviceJsonLd}</` + `script>`}
 </svelte:head>
@@ -449,7 +480,10 @@
 		</div>
 	</section>
 
-	<!-- Testimonials — hidden until real Google reviews are wired in -->
+	<!-- Live Google reviews — silently absent when API key/place id missing -->
+	{#if reviews && reviews.reviews.length > 0}
+		<Reviews data={reviews} {t} />
+	{/if}
 
 	<!-- Contact island -->
 	<section class="section section--tight">

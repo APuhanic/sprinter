@@ -848,9 +848,15 @@ export default {
 		whatsapp: 'WhatsApp'
 	},
 
-	// Testimonials
+	// Testimonials (live Google reviews)
 	testimonials: {
-		title: 'Što kažu naši klijenti'
+		eyebrow: 'Recenzije',
+		title: 'Što kažu naši klijenti',
+		basedOn: 'na temelju {n} Google recenzija',
+		translatedBy: 'Prevedeno s Google-a',
+		showOriginal: 'Prikaži original',
+		hideOriginal: 'Sakrij original',
+		viewAll: 'Pogledajte sve na Google-u'
 	},
 
 	// Thank you page
