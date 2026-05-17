@@ -10,7 +10,7 @@
 </script>
 
 <svelte:head>
-	<title>{status} — {t.error.notFoundTitle} — Sprinter d.o.o.</title>
+	<title>Sprinter - {status} {t.error.notFoundTitle}</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 

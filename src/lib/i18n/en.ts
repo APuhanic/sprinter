@@ -848,9 +848,15 @@ export default {
 		whatsapp: 'WhatsApp'
 	},
 
-	// Testimonials
+	// Testimonials (live Google reviews)
 	testimonials: {
-		title: 'What our clients say'
+		eyebrow: 'Reviews',
+		title: 'What our clients say',
+		basedOn: 'based on {n} Google reviews',
+		translatedBy: 'Translated by Google',
+		showOriginal: 'Show original',
+		hideOriginal: 'Hide original',
+		viewAll: 'See all on Google'
 	},
 
 	// Thank you page

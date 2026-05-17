@@ -16,7 +16,7 @@
 </script>
 
 <svelte:head>
-	<title>{t.transport.title} — Sprinter d.o.o.</title>
+	<title>Sprinter - {t.transport.title}</title>
 	<meta name="robots" content="noindex, nofollow" />
 	{@html `<script type="application/ld+json">${serviceJsonLd}</` + `script>`}
 </svelte:head>

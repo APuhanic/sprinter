@@ -20,7 +20,7 @@
 </script>
 
 <svelte:head>
-	<title>{vehicle.name} — Sprinter d.o.o.</title>
+	<title>Sprinter - {vehicle.name}</title>
 	<meta name="robots" content="noindex, nofollow" />
 	{@html `<script type="application/ld+json">${vehicleJsonLd}</` + `script>`}
 </svelte:head>

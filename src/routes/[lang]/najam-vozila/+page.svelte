@@ -43,7 +43,7 @@
 </script>
 
 <svelte:head>
-	<title>{t.rental.title} — Sprinter d.o.o.</title>
+	<title>Sprinter - {t.rental.title}</title>
 	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 

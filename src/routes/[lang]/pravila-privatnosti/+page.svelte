@@ -7,9 +7,9 @@
 </script>
 
 <svelte:head>
-	<title>{t.footer.privacy} — Sprinter d.o.o.</title>
+	<title>Sprinter - {t.footer.privacy}</title>
 	<meta name="description" content={t.privacy.metaDescription} />
-	<meta property="og:title" content="{t.footer.privacy} — Sprinter d.o.o." />
+	<meta property="og:title" content="Sprinter - {t.footer.privacy}" />
 	<meta property="og:description" content={t.privacy.metaDescription} />
 </svelte:head>
 

@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>{status} — Sprinter d.o.o.</title>
+	<title>Sprinter - {status}</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
