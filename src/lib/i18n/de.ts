@@ -17,7 +17,7 @@ export default {
 	// Header banner / utility strip
 	banner: {
 		notice: 'Wir nehmen aktuell neue Kunden an',
-		address: 'Capelleri 5, Pula',
+		address: 'Capelleri ul. 5, 52100 Pula',
 		phone: contact.phone,
 		hours: 'Mo – So · 08—19 Uhr'
 	},
@@ -30,7 +30,7 @@ export default {
 		titleB: 'Postkarte',
 		sub: 'Professionelle Reinigung in Pula und Istrien — von Apartments und Familienhäusern bis zu Büros und Yachten. Sorgfältig, ohne Improvisation.',
 		meta: [
-			{ label: 'Sitz', text: 'Capelleri 5, Pula' },
+			{ label: 'Sitz', text: 'Capelleri ul. 5, 52100 Pula' },
 			{ label: 'Einsatzgebiet', text: 'Pula + Istrien' },
 			{ label: 'Antwort', text: 'Antwort am selben Tag, oft binnen einer Stunde' },
 			{ label: 'Zahlung', text: 'Bar · Banküberweisung' }
@@ -60,6 +60,7 @@ export default {
 		// Hours strip labels
 		hoursLabel: 'Mo — So',
 		hoursValue: '08 — 19 Uhr',
+		featureAlt: 'Professionelle Innenreinigung in ganz Istrien',
 		// Marquee
 		marquee: [
 			'Apartment-Wechsel',
@@ -193,7 +194,7 @@ export default {
 		eyebrow: 'Leistung · 01',
 		titleA: 'Professionelle',
 		titleB: 'Reinigung',
-		sub: 'Fünf Reinigungsdienste in Pula und ganz Istrien. Spezialisten für Ferienvermietung, ebenso sorgfältig bei allem anderen.',
+		sub: 'Fünf Reinigungsdienste in Pula und ganz Istrien. Spezialisten für Airbnb und Ferienvermietung, ebenso sorgfältig bei allem anderen.',
 		index: 'Index',
 		areasEyebrow: 'Wir decken ab',
 		areasTitle: 'Pula und das weitere Istrien',
@@ -215,6 +216,7 @@ export default {
 		faqAccent: 'fragen',
 		faqSub: 'Wenn Ihre Frage nicht dabei ist, schreiben Sie uns — Antwort am selben Tag.',
 		priceLabel: 'Preis',
+		priceDisclaimer: 'Alle Preise verstehen sich ohne MwSt.',
 		sendInquiry: 'Anfrage senden',
 		airbnbTag: 'Airbnb · Booking · Vrbo',
 		airbnbNote:
@@ -249,8 +251,13 @@ export default {
 				'Bestätigung der Bereitschaft vor Gastankunft',
 				'Notfalleinsatz innerhalb von 2 Stunden'
 			],
-			price: 'ab 80 €',
-			priceNote: 'pro Objekt',
+			price: 'ab 70 €',
+			priceNote: 'bis 50 m²',
+			tiers: [
+				{ range: 'bis 80 m²', price: 'ab 100 €' },
+				{ range: 'bis 100 m²', price: 'ab 120 €' },
+				{ range: 'über 100 m²', price: 'ab 140 €' }
+			],
 			photoTag: 'Apartment-Küche, frisch'
 		},
 		{
@@ -267,9 +274,10 @@ export default {
 				'Hinter und unter Möbeln',
 				'Mittel inklusive'
 			],
-			price: 'ab 18 €/h',
-			priceNote: 'mind. 4h',
-			photoTag: 'Detail, Küche vorher/nachher'
+			price: 'ab 2,00 €/m²',
+			priceNote: 'Grundreinigung',
+			tiers: [{ range: 'Stundensatz (1 Person)', price: '15 € – 22 €' }],
+			photoTag: 'Tiefenreinigung von Polstermöbeln'
 		},
 		{
 			id: 'regular',
@@ -285,9 +293,14 @@ export default {
 				'Schlüssel auf Vertrauensbasis möglich',
 				'Kostenlose Stornierung bis 24h vorher'
 			],
-			price: 'ab 16 €/h',
-			priceNote: 'mind. 3h',
-			photoTag: 'Wohnzimmer, frisch gewischt'
+			price: 'ab 45 €',
+			priceNote: 'bis 45 m²',
+			tiers: [
+				{ range: '45 – 90 m²', price: 'ab 60 €' },
+				{ range: 'Fensterreinigung', price: 'ab 1,50 €/m²' },
+				{ range: 'Stundensatz (1 Person)', price: '15 € – 22 €' }
+			],
+			photoTag: 'Sprinter trifft mit Ausrüstung ein'
 		},
 		{
 			id: 'office',
@@ -303,8 +316,9 @@ export default {
 				'Monatliche Rechnung, R1-Beleg',
 				'NDA auf Anfrage'
 			],
-			price: 'auf Anfrage',
-			priceNote: 'abhängig von m²',
+			price: '0,75 € – 2 €',
+			priceNote: 'pro m²',
+			tiers: [{ range: 'Stundensatz (1 Person)', price: 'ab 15 €' }],
 			photoTag: 'Büro, Empfang'
 		},
 		{
@@ -321,9 +335,10 @@ export default {
 				'Marinetaugliche Mittel',
 				'Wir polieren keine Rümpfe'
 			],
-			price: 'ab 100 €',
-			priceNote: 'pro Charter-Tag',
-			photoTag: 'Yacht, Deck & Teak'
+			price: 'auf Anfrage',
+			priceNote: 'Preis je nach Boot',
+			tiers: [{ range: 'Stundensatz (1 Person)', price: '15 € – 30 €' }],
+			photoTag: 'Terrasse mit Meerblick'
 		}
 	],
 
@@ -821,8 +836,7 @@ export default {
 		formSubmit: 'Senden',
 		office: 'Büro',
 		workingHours: 'Öffnungszeiten',
-		weekdays: 'Montag - Samstag: 08:00 – 20:00',
-		sunday: 'Sonntag: 09:00 – 13:00',
+		weekdays: 'Montag — Sonntag: 08:00 – 19:00',
 		findUs: 'So finden Sie uns',
 		getDirections: 'Wegbeschreibung'
 	},
@@ -835,9 +849,15 @@ export default {
 		whatsapp: 'WhatsApp'
 	},
 
-	// Testimonials
+	// Testimonials (live Google reviews)
 	testimonials: {
-		title: 'Stimmen unserer Kunden'
+		eyebrow: 'Bewertungen',
+		title: 'Stimmen unserer Kunden',
+		basedOn: 'basierend auf {n} Google-Bewertungen',
+		translatedBy: 'Übersetzt von Google',
+		showOriginal: 'Original anzeigen',
+		hideOriginal: 'Original ausblenden',
+		viewAll: 'Alle auf Google ansehen'
 	},
 
 	// Thank you page

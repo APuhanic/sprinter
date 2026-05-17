@@ -26,7 +26,10 @@ export const pathRedirects: Record<string, string> = {
 	'/kontakt': '/hr/kontakt',
 	// Transport ad (currently paused) points here; route exists but is
 	// noindexed in backup state — kept live so paid traffic doesn't 404
-	'/usluge-prijevoza': '/hr/usluge-prijevoza'
+	'/usluge-prijevoza': '/hr/usluge-prijevoza',
+	// Cookie content is now subsumed by the privacy notice — equity flows
+	// to the same topic. Previously 410'd; promoted to 301 on audit advice.
+	'/cookie-policy': '/hr/pravila-privatnosti'
 };
 
 /**
@@ -70,12 +73,12 @@ export const goneList: ReadonlySet<string> = new Set<string>([
 	'/add-oglas-automobili-gospodarska',
 	'/add-oglas-gospodarska-vozila',
 
-	// Cookie policy — site no longer uses cookies, policy page removed
-	'/cookie-policy',
-
 	// WP default + dev artifacts that ended up indexed
 	'/primjer-stranice',
-	'/test'
+	'/test',
+
+	// WP admin entry point — should never resolve on the new site
+	'/wp-login.php'
 ]);
 
 /**
