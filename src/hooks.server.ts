@@ -34,7 +34,7 @@ const CSP = [
 	"script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net",
 	"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
 	"font-src 'self' https://fonts.gstatic.com",
-	"img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.googletagmanager.com https://www.facebook.com",
+	"img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.googletagmanager.com https://www.facebook.com https://*.googleusercontent.com",
 	"frame-src 'self' https://www.google.com https://challenges.cloudflare.com https://www.googletagmanager.com https://td.doubleclick.net",
 	"connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.googletagmanager.com https://*.facebook.com https://*.facebook.net",
 	"frame-ancestors 'self'",
@@ -43,6 +43,18 @@ const CSP = [
 	"object-src 'none'",
 	'upgrade-insecure-requests'
 ].join('; ');
+
+/**
+ * Block indexing on any host that isn't the production canonical. Vercel
+ * preview deployments (sprinter-git-*.vercel.app, sprinter-zeta.vercel.app)
+ * and localhost must never appear in Google — they would dilute the prod
+ * site and risk leaking unfinished work into search.
+ */
+function applyNoindexIfNotProduction(headers: Headers, hostname: string) {
+	if (!/^(www\.)?sprinter\.hr$/i.test(hostname)) {
+		headers.set('X-Robots-Tag', 'noindex, nofollow');
+	}
+}
 
 function applySecurityHeaders(headers: Headers) {
 	headers.set('Strict-Transport-Security', 'max-age=15552000');
@@ -72,7 +84,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 	if (resolution?.kind === 'gone') {
 		return new Response(
-			'<!doctype html><html><head><meta name="robots" content="noindex"><title>410 Gone</title></head><body><h1>410 Gone</h1><p>This page is no longer available.</p><p><a href="/hr">Sprinter homepage</a></p></body></html>',
+			'<!doctype html><html><head><meta name="robots" content="noindex"><title>Sprinter - 410 Gone</title></head><body><h1>410 Gone</h1><p>This page is no longer available.</p><p><a href="/hr">Sprinter homepage</a></p></body></html>',
 			{
 				status: 410,
 				headers: {
@@ -91,5 +103,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 	});
 
 	applySecurityHeaders(response.headers);
+	applyNoindexIfNotProduction(response.headers, event.url.hostname);
 	return response;
 };

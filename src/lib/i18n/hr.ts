@@ -17,7 +17,7 @@ export default {
 	// Header banner / utility strip
 	banner: {
 		notice: 'Trenutno primamo nove klijente',
-		address: 'Capelleri 5, Pula',
+		address: 'Capelleri ul. 5, 52100 Pula',
 		phone: contact.phone,
 		hours: 'Pon – Ned · 08—19h'
 	},
@@ -30,7 +30,7 @@ export default {
 		titleB: 'razglednice',
 		sub: 'Profesionalno čišćenje u Puli i Istri — od apartmana i obiteljskih kuća, do ureda i jahti. Pažljivo, bez improvizacije.',
 		meta: [
-			{ label: 'Sjedište', text: 'Capelleri 5, Pula' },
+			{ label: 'Sjedište', text: 'Capelleri ul. 5, 52100 Pula' },
 			{ label: 'Pokrivenost', text: 'Pula + Istra' },
 			{ label: 'Odgovor', text: 'Najavite dolazak — javljamo se isti dan' },
 			{ label: 'Plaćanje', text: 'Gotovina · Transakcijski račun' }
@@ -60,6 +60,7 @@ export default {
 		// Hours strip labels
 		hoursLabel: 'Pon — Ned',
 		hoursValue: '08 — 19h',
+		featureAlt: 'Profesionalno čišćenje interijera u Istri',
 		// Marquee
 		marquee: [
 			'Apartmanski turnover',
@@ -193,7 +194,7 @@ export default {
 		eyebrow: 'Usluga · 01',
 		titleA: 'Profesionalno',
 		titleB: 'čišćenje',
-		sub: 'Pet vrsta usluga čišćenja u Puli i diljem Istre. Specijalisti za turistički najam, jednako pažljivi prema svemu ostalom.',
+		sub: 'Pet vrsta usluga čišćenja u Puli i diljem Istre. Specijalisti za Airbnb i turistički najam, jednako pažljivi prema svemu ostalom.',
 		index: 'Indeks',
 		areasEyebrow: 'Pokrivamo',
 		areasTitle: 'Pula i šira Istra',
@@ -215,6 +216,7 @@ export default {
 		faqAccent: 'pitaju',
 		faqSub: 'Ako nešto nije ovdje, pišite nam — odgovaramo u istom danu.',
 		priceLabel: 'Cijena',
+		priceDisclaimer: 'Sve cijene su bez PDV-a.',
 		sendInquiry: 'Pošalji upit',
 		airbnbTag: 'Airbnb · Booking · Vrbo',
 		airbnbNote:
@@ -249,8 +251,13 @@ export default {
 				'Potvrda spremnosti prije prijave gosta',
 				'Hitne intervencije unutar 2 sata'
 			],
-			price: 'od 80 €',
-			priceNote: 'po objektu',
+			price: 'od 70 €',
+			priceNote: 'do 50 m²',
+			tiers: [
+				{ range: 'do 80 m²', price: 'od 100 €' },
+				{ range: 'do 100 m²', price: 'od 120 €' },
+				{ range: 'preko 100 m²', price: 'od 140 €' }
+			],
 			photoTag: 'Apartmanska kuhinja, posprema'
 		},
 		{
@@ -267,9 +274,10 @@ export default {
 				'Iza i ispod namještaja',
 				'Sredstva uključena'
 			],
-			price: 'od 18 €/h',
-			priceNote: 'minimalno 4h',
-			photoTag: 'Detalj, kuhinja prije/poslije'
+			price: 'od 2,00 €/m²',
+			priceNote: 'generalno čišćenje',
+			tiers: [{ range: 'Radni sat (1 osoba)', price: '15 € – 22 €' }],
+			photoTag: 'Dubinsko čišćenje namještaja'
 		},
 		{
 			id: 'regular',
@@ -285,9 +293,14 @@ export default {
 				'Mogućnost ključa na povjerenje',
 				'Otkaz bez naknade do 24h prije'
 			],
-			price: 'od 16 €/h',
-			priceNote: 'minimalno 3h',
-			photoTag: 'Dnevni boravak, mokri pod'
+			price: 'od 45 €',
+			priceNote: 'do 45 m²',
+			tiers: [
+				{ range: '45 – 90 m²', price: 'od 60 €' },
+				{ range: 'Pranje prozora', price: 'od 1,50 €/m²' },
+				{ range: 'Radni sat (1 osoba)', price: '15 € – 22 €' }
+			],
+			photoTag: 'Sprinter dolazi s opremom'
 		},
 		{
 			id: 'office',
@@ -303,8 +316,9 @@ export default {
 				'Mjesečno fakturiranje, R1 račun',
 				'NDA na zahtjev'
 			],
-			price: 'po dogovoru',
-			priceNote: 'ovisno o m²',
+			price: '0,75 € – 2 €',
+			priceNote: 'po m²',
+			tiers: [{ range: 'Radni sat (1 osoba)', price: 'od 15 €' }],
 			photoTag: 'Ured, recepcijski pult'
 		},
 		{
@@ -321,9 +335,10 @@ export default {
 				'Sredstva sigurna za morsko okruženje',
 				'Ne radimo poliranje trupa'
 			],
-			price: 'od 100 €',
-			priceNote: 'po danu charteru',
-			photoTag: 'Jahta, paluba & teak'
+			price: 'po dogovoru',
+			priceNote: 'cijena specifična po plovilu',
+			tiers: [{ range: 'Radni sat (1 osoba)', price: '15 € – 30 €' }],
+			photoTag: 'Terasa s pogledom na more'
 		}
 	],
 
@@ -820,8 +835,7 @@ export default {
 		formSubmit: 'Pošalji',
 		office: 'Ured',
 		workingHours: 'Radno vrijeme',
-		weekdays: 'Ponedjeljak - Subota: 08:00 – 20:00 h',
-		sunday: 'Nedjelja: 09:00 – 13:00 h',
+		weekdays: 'Ponedjeljak — Nedjelja: 08:00 – 19:00 h',
 		findUs: 'Pronađite nas',
 		getDirections: 'Upute za dolazak'
 	},
@@ -834,9 +848,15 @@ export default {
 		whatsapp: 'WhatsApp'
 	},
 
-	// Testimonials
+	// Testimonials (live Google reviews)
 	testimonials: {
-		title: 'Što kažu naši klijenti'
+		eyebrow: 'Recenzije',
+		title: 'Što kažu naši klijenti',
+		basedOn: 'na temelju {n} Google recenzija',
+		translatedBy: 'Prevedeno s Google-a',
+		showOriginal: 'Prikaži original',
+		hideOriginal: 'Sakrij original',
+		viewAll: 'Pogledajte sve na Google-u'
 	},
 
 	// Thank you page
