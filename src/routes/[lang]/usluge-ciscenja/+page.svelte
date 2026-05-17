@@ -9,36 +9,40 @@
 	let t = $derived(data.t);
 	let reviews = $derived(data.reviews);
 
-	// Enrich the Service JSON-LD with AggregateRating + Review[] when we have
-	// reviews. Google attaches review rich-results to the Service entity here.
-	const serviceJsonLd = JSON.stringify(
-		(() => {
-			const base = cleaningService();
-			if (!reviews || reviews.reviews.length === 0) return base;
-			return {
-				...base,
-				aggregateRating: {
-					'@type': 'AggregateRating',
-					ratingValue: reviews.rating.toFixed(1),
-					reviewCount: reviews.userRatingCount,
+	const serviceJsonLd = JSON.stringify(cleaningService());
+
+	// Reviews + AggregateRating are attached to LocalBusiness via @id reference,
+	// NOT to Service. Google rejects review/aggregateRating on Service entities
+	// for rich-result eligibility (Search Console flagged "Invalid object type
+	// for field '<parent_node>'" when these were on Service). Same @id as the
+	// LocalBusiness emitted in [lang]/+layout.svelte → Google merges the nodes.
+	const businessReviewsJsonLd = (() => {
+		if (!reviews || reviews.reviews.length === 0) return null;
+		return JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'LocalBusiness',
+			'@id': 'https://sprinter.hr/#business',
+			aggregateRating: {
+				'@type': 'AggregateRating',
+				ratingValue: reviews.rating.toFixed(1),
+				reviewCount: reviews.userRatingCount,
+				bestRating: '5',
+				worstRating: '1'
+			},
+			review: reviews.reviews.map((r) => ({
+				'@type': 'Review',
+				reviewRating: {
+					'@type': 'Rating',
+					ratingValue: r.rating,
 					bestRating: '5',
 					worstRating: '1'
 				},
-				review: reviews.reviews.map((r) => ({
-					'@type': 'Review',
-					reviewRating: {
-						'@type': 'Rating',
-						ratingValue: r.rating,
-						bestRating: '5',
-						worstRating: '1'
-					},
-					author: { '@type': 'Person', name: r.author.name },
-					datePublished: r.publishTime,
-					reviewBody: r.originalText ?? r.text
-				}))
-			};
-		})()
-	);
+				author: { '@type': 'Person', name: r.author.name },
+				datePublished: r.publishTime,
+				reviewBody: r.originalText ?? r.text
+			}))
+		});
+	})();
 
 	// FAQ — first item open by default
 	let openFaq = $state(0);
@@ -133,6 +137,9 @@
 	<meta property="og:title" content="Sprinter - {t.cleaningPage.titleA} {t.cleaningPage.titleB}" />
 	<meta property="og:description" content={t.cleaningPage.sub} />
 	{@html `<script type="application/ld+json">${serviceJsonLd}</` + `script>`}
+	{#if businessReviewsJsonLd}
+		{@html `<script type="application/ld+json">${businessReviewsJsonLd}</` + `script>`}
+	{/if}
 </svelte:head>
 
 <main class="page-fade">
