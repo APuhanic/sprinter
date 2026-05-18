@@ -170,11 +170,6 @@ export default {
 			num: 'III',
 			title: 'The clean',
 			desc: 'Permanent team, our own kit. No subcontractors.'
-		},
-		{
-			num: 'IV',
-			title: 'Quality check',
-			desc: 'Photo report on completion. Invoice by email, payment end of month.'
 		}
 	],
 

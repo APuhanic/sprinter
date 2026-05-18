@@ -170,11 +170,6 @@ export default {
 			num: 'III',
 			title: 'Die Reinigung',
 			desc: 'Festes Team, eigene Ausrüstung. Keine Subunternehmer.'
-		},
-		{
-			num: 'IV',
-			title: 'Qualitätsprüfung',
-			desc: 'Foto-Bericht nach Abschluss. Rechnung per E-Mail, Zahlung zum Monatsende.'
 		}
 	],
 

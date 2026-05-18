@@ -170,11 +170,6 @@ export default {
 			num: 'III',
 			title: 'Čišćenje',
 			desc: 'Stalna ekipa, vlastita oprema. Bez podizvođača.'
-		},
-		{
-			num: 'IV',
-			title: 'Provjera',
-			desc: 'Foto-izvještaj po završetku. Račun mailom, plaćanje na kraju mjeseca.'
 		}
 	],
 
