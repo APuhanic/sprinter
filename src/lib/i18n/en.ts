@@ -859,6 +859,31 @@ export default {
 		getDirections: 'Get directions'
 	},
 
+	// Kontakt WhatsApp bridge page (Google Ads landing)
+	contactWa: {
+		title: 'Contact WhatsApp — Sprinter Transfers Pula',
+		metaDescription:
+			'Book a private transfer or taxi ride in Pula via WhatsApp. Quick response, fixed prices, available 24/7.',
+		eyebrow: 'Contact · WhatsApp',
+		h1: 'Contact us on WhatsApp',
+		intro1:
+			'Sprinter arranges private transfers and taxi rides in Pula and across Istria — name-sign meet-and-greet at Pula Airport, intercity transfers, local taxi rides. We drive Mercedes E-Class and V-Class, 24/7, fixed prices with no surprises.',
+		intro2:
+			'WhatsApp is the fastest way to get a quote and confirm a booking. We respond within minutes, in English, Croatian, German or Italian. No call centres — you speak directly with us.',
+		intro3:
+			'Tap the button below to open the chat. If you prefer the phone, the number is right under the button.',
+		ctaButton: '💬 Send a message on WhatsApp',
+		phoneFallback: 'Or call us at',
+		tipsTitle: 'What to include in your first message',
+		tipsList: [
+			'Date and approximate departure time',
+			'Pickup location (e.g. "Pula Airport, terminal")',
+			'Destination (city, hotel, or exact address)',
+			'Number of passengers and amount of luggage',
+			'Whether you need a return trip or one-way only'
+		]
+	},
+
 	// Common
 	common: {
 		phone: contact.phone,
