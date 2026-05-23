@@ -10,6 +10,7 @@
 		type PaxKind,
 		type Lang
 	} from '$lib/data/transferPricing';
+	import DateInput from './DateInput.svelte';
 
 	type CalcStrings = {
 		title: string;
@@ -461,7 +462,7 @@
 			<div class="tr-calc__two-col">
 				<label class="tr-calc__field">
 					<span class="tr-calc__label">{s.date}</span>
-					<input class="tr-calc__input" type="date" bind:value={date} min={today} />
+					<DateInput bind:value={date} min={today} aria-label={s.date} />
 				</label>
 				<label class="tr-calc__field">
 					<span class="tr-calc__label">{s.time}</span>
@@ -501,12 +502,7 @@
 							<div class="tr-calc__two-col">
 								<label class="tr-calc__field" style="margin-bottom:0">
 									<span class="tr-calc__label">{s.returnDate}</span>
-									<input
-										class="tr-calc__input"
-										type="date"
-										bind:value={returnDate}
-										min={date || today}
-									/>
+									<DateInput bind:value={returnDate} min={date || today} aria-label={s.returnDate} />
 								</label>
 								<label class="tr-calc__field" style="margin-bottom:0">
 									<span class="tr-calc__label">{s.returnTime}</span>
