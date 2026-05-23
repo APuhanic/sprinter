@@ -859,6 +859,31 @@ export default {
 		getDirections: 'Upute za dolazak'
 	},
 
+	// Kontakt WhatsApp bridge page (Google Ads landing)
+	contactWa: {
+		title: 'Kontakt WhatsApp — Sprinter Transferi Pula',
+		metaDescription:
+			'Rezervirajte privatni transfer ili taxi vožnju u Puli putem WhatsAppa. Brz odgovor, fiksne cijene, dostupni 24/7.',
+		eyebrow: 'Kontakt · WhatsApp',
+		h1: 'Kontaktirajte nas putem WhatsAppa',
+		intro1:
+			'Sprinter organizira privatne transfere i taxi vožnje u Puli i diljem Istre — doček na zračnoj luci Pula s natpisom imena, međugradski transferi, lokalne taxi vožnje. Vozimo Mercedes E-klasu i V-klasu, 0–24, fiksne cijene bez iznenađenja.',
+		intro2:
+			'WhatsApp je najbrži način da dobijete ponudu i potvrdite rezervaciju. Javljamo se unutar nekoliko minuta, na hrvatskom, engleskom, njemačkom ili talijanskom. Bez pozivnih centara — pišete izravno s nama.',
+		intro3:
+			'Kliknite gumb ispod da otvorite razgovor. Ako više volite telefon, broj se nalazi neposredno ispod gumba.',
+		ctaButton: '💬 Pošaljite poruku na WhatsApp',
+		phoneFallback: 'Ili nas nazovite na',
+		tipsTitle: 'Što napisati u prvoj poruci',
+		tipsList: [
+			'Datum i okvirno vrijeme polaska',
+			'Mjesto preuzimanja (npr. „Zračna luka Pula, terminal“)',
+			'Destinacija (grad, hotel ili točna adresa)',
+			'Broj putnika i količina prtljage',
+			'Trebate li povratak ili samo u jednom smjeru'
+		]
+	},
+
 	// Common
 	common: {
 		phone: contact.phone,
