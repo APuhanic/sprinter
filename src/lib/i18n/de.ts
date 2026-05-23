@@ -10,7 +10,7 @@ export default {
 		cleaning: 'Reinigung',
 		transport: 'Transport',
 		rental: 'Mieten',
-		transfers: 'Transfers',
+		transfers: 'Transfers / Taxi',
 		contact: 'Kontakt'
 	},
 
@@ -19,7 +19,7 @@ export default {
 		notice: 'Wir nehmen aktuell neue Kunden an',
 		address: 'Capelleri ul. 5, 52100 Pula',
 		phone: contact.phone,
-		hours: 'Mo – So · 08—19 Uhr'
+		hours: 'Mo – So · 07—24 Uhr'
 	},
 
 	// Homepage
@@ -59,8 +59,17 @@ export default {
 		ctaSeeAll: 'Alle Details öffnen',
 		// Hours strip labels
 		hoursLabel: 'Mo — So',
-		hoursValue: '08 — 19 Uhr',
+		hoursValue: '07 — 24 Uhr',
 		featureAlt: 'Professionelle Innenreinigung in ganz Istrien',
+		// Transfers hero (top of homepage)
+		transfersEyebrow: 'Private Transfers / Taxi · Pula · Istrien · Europa',
+		transfersTitleA: 'Wir fahren Sie',
+		transfersTitleB: 'zuverlässig',
+		transfersSub:
+			'Privattransfer mit persönlichem Fahrer oder Taxifahrt in Pula — Online-Preisrechner, keine Überraschungen.',
+		transfersCtaBook: 'Transfer buchen',
+		transfersCtaTaxi: 'Taxi-Anfrage senden',
+		transfersCtaMore: 'Mehr erfahren',
 		// Marquee
 		marquee: [
 			'Apartment-Wechsel',
@@ -595,13 +604,13 @@ export default {
 	// Transfers page (Redesign)
 	transfersPage: {
 		eyebrow: 'Service · 03',
-		title: 'Private Transfers',
-		titleAccent: 'Transfers',
-		titleSuffix: ' · Pula · Istrien · Europa',
+		title: 'Private Transfers / Taxi',
+		titleAccent: 'Transfers / Taxi',
+		titleSuffix: ' - Pula - Istrien - Europa',
 		leadOne:
 			'Sie setzen sich. Der Fahrer schließt die Tür. Und Sie müssen an nichts anderes mehr denken.',
 		leadTwo:
-			'Sprinter ist ein Familienunternehmen aus Pula. Wir organisieren private Transfers mit persönlichem Fahrer in Istrien und Europa — zuverlässig, pünktlich, ohne Überraschungen.',
+			'<p>Sprinter ist ein Familienunternehmen aus Pula. Wir organisieren private Transfers und Taxifahrten in Pula, in ganz Istrien und Europa — zuverlässig, pünktlich, ohne Überraschungen.</p><p>Möchten Sie eine Fahrt vom oder zum Flughafen Pula im Voraus buchen, nutzen Sie unseren <a href="#kalkulator">Rechner</a>.</p><p>Für eine Taxifahrt in Pula oder darüber hinaus schreiben Sie uns einfach eine Nachricht.</p><p>Unsere Preise sind transparent. Sehen Sie unseren <a href="#kalkulator">Rechner</a> oder die <a href="#taksimetar">Taxameter-Preise</a>.</p>',
 		fleetEyebrow: 'Fuhrpark',
 		fleetTitle: 'Zwei Fahrzeuge, ein Standard',
 		fleetSub: 'Wählen Sie die richtige Größe — die Preisgestaltung bleibt transparent.',
@@ -613,7 +622,7 @@ export default {
 			'Geräumig und ruhig für bis zu 7 Passagiere — entspannte und sichere Beförderung für Gruppen oder Familien.',
 		taximeterEyebrow: 'Stadtfahrten',
 		taximeterTitle: 'Taxameter — Pula & Stadt',
-		taximeterSub: 'Nachttarif (22:00 – 06:00) ist 20% höher als der Tagestarif.',
+		taximeterSub: '',
 		taximeterStart: 'Grundpreis',
 		taximeterPerKm: 'Pro km',
 		taximeterPerMin: 'Pro Minute'

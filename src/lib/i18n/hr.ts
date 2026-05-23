@@ -10,7 +10,7 @@ export default {
 		cleaning: 'Čišćenje',
 		transport: 'Prijevoz',
 		rental: 'Najam vozila',
-		transfers: 'Transferi',
+		transfers: 'Transferi / Taxi',
 		contact: 'Kontakt'
 	},
 
@@ -19,7 +19,7 @@ export default {
 		notice: 'Trenutno primamo nove klijente',
 		address: 'Capelleri ul. 5, 52100 Pula',
 		phone: contact.phone,
-		hours: 'Pon – Ned · 08—19h'
+		hours: 'Pon – Ned · 07—24h'
 	},
 
 	// Homepage
@@ -59,8 +59,17 @@ export default {
 		ctaSeeAll: 'Otvori sve detalje',
 		// Hours strip labels
 		hoursLabel: 'Pon — Ned',
-		hoursValue: '08 — 19h',
+		hoursValue: '07 — 24h',
 		featureAlt: 'Profesionalno čišćenje interijera u Istri',
+		// Transfers hero (top of homepage)
+		transfersEyebrow: 'Privatni transferi / taxi · Pula · Istra · Europa',
+		transfersTitleA: 'Vozimo vas',
+		transfersTitleB: 'pouzdano',
+		transfersSub:
+			'Privatni transfer s osobnim vozačem ili taxi vožnja u Puli — online kalkulator cijene, bez iznenađenja.',
+		transfersCtaBook: 'Rezerviraj transfer',
+		transfersCtaTaxi: 'Pošalji taxi upit',
+		transfersCtaMore: 'Saznajte više',
 		// Marquee
 		marquee: [
 			'Apartmanski turnover',
@@ -595,13 +604,13 @@ export default {
 	// Transfers page (redesign)
 	transfersPage: {
 		eyebrow: 'Usluga · 03',
-		title: 'Privatni transferi',
-		titleAccent: 'transferi',
-		titleSuffix: ' · Pula · Istra · Europa',
+		title: 'Privatni transferi / taxi',
+		titleAccent: 'transferi / taxi',
+		titleSuffix: ' - Pula - Istra - Europa',
 		leadOne:
 			'Sjednete. Vozač zatvori vrata. I više ne morate misliti ni na što drugo.',
 		leadTwo:
-			'Sprinter je obiteljska tvrtka iz Pule. Organiziramo privatne transfere s osobnim vozačem po Istri i Europi — pouzdano, točno na vrijeme, bez iznenađenja.',
+			'<p>Sprinter je obiteljska tvrtka iz Pule. Organiziramo privatne transfere i taxi vožnje u Puli, po Istri i Europi — pouzdano, točno na vrijeme, bez iznenađenja.</p><p>Želite li unaprijed rezervirati vožnju iz zračne luke Pula i nazad, učinite to u našem <a href="#kalkulator">kalkulatoru</a>.</p><p>Želite li pak vožnju taxijem po Puli ili dalje, pošaljite nam poruku.</p><p>Naše cijene su bez iznenađenja. Pogledajte naš <a href="#kalkulator">kalkulator</a> ili <a href="#taksimetar">cjenik taksimetra</a>.</p>',
 		fleetEyebrow: 'Vozila',
 		fleetTitle: 'Dva vozila, jedan standard',
 		fleetSub: 'Odaberite veličinu — cijena ostaje transparentna u oba slučaja.',
@@ -613,7 +622,7 @@ export default {
 			'Prostran i tih za do 7 putnika — opušten i siguran prijevoz za grupe, obitelji ili dodatnu prtljagu.',
 		taximeterEyebrow: 'Lokalne vožnje',
 		taximeterTitle: 'Taksimetar — Pula i okolica',
-		taximeterSub: 'Noćna tarifa (22:00 – 06:00) je 20% viša od dnevne.',
+		taximeterSub: '',
 		taximeterStart: 'Polazak',
 		taximeterPerKm: 'Po km',
 		taximeterPerMin: 'Po minuti'

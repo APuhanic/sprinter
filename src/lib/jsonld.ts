@@ -36,8 +36,8 @@ export function localBusiness() {
 					'Saturday',
 					'Sunday'
 				],
-				opens: '08:00',
-				closes: '19:00'
+				opens: '07:00',
+				closes: '24:00'
 			}
 		],
 		areaServed: { '@type': 'Country', name: 'Croatia' }
@@ -110,7 +110,7 @@ export function transferService() {
 		'@type': 'TaxiService',
 		provider: { '@id': `${SITE_URL}/#business` },
 		areaServed: { '@type': 'Country', name: 'Croatia' },
-		name: 'Privatni transferi',
-		description: 'Transferi Mercedes-Benz E-klasa i V-klasa s osobnim vozačem. Dostupno 0–24.'
+		name: 'Privatni transferi / taxi',
+		description: 'Privatni transferi i taxi vožnje s osobnim vozačem — Mercedes-Benz E-klasa i V-klasa. Pula, Istra i Europa.'
 	};
 }
