@@ -6,6 +6,7 @@
 		'aria-label'?: string;
 		placeholder?: string;
 		invalidMessage?: string;
+		openPickerLabel?: string;
 	};
 
 	let {
@@ -14,7 +15,8 @@
 		id,
 		'aria-label': ariaLabel,
 		placeholder = 'dd.mm.gggg.',
-		invalidMessage
+		invalidMessage,
+		openPickerLabel = 'Otvori kalendar'
 	}: Props = $props();
 
 	let nativeRef: HTMLInputElement | undefined = $state();
@@ -50,12 +52,16 @@
 			return;
 		}
 		const iso = parseDisplay(t);
-		if (iso) {
-			if (value !== iso) value = iso;
-			invalid = false;
-		} else {
+		if (!iso) {
 			invalid = true;
+			return;
 		}
+		if (min && iso < min) {
+			invalid = true;
+			return;
+		}
+		if (value !== iso) value = iso;
+		invalid = false;
 	});
 
 	$effect(() => {
@@ -63,7 +69,9 @@
 		const currentParsed = parseDisplay(typed);
 		if (currentParsed === v) return;
 		// Don't clobber an in-progress invalid entry — let the user keep editing.
-		if (typed !== '' && currentParsed === null) return;
+		// Covers both unparseable text (currentParsed === null) and parseable-but-rejected
+		// dates (e.g. before `min`, where value wasn't written).
+		if (typed !== '' && invalid) return;
 		const formatted = formatDisplay(v);
 		if (formatted !== typed) typed = formatted;
 	});
@@ -98,7 +106,7 @@
 		type="button"
 		class="date-input__btn"
 		onclick={openPicker}
-		aria-label={ariaLabel ? `${ariaLabel} — otvori kalendar` : 'Otvori kalendar'}
+		aria-label={ariaLabel ? `${ariaLabel} — ${openPickerLabel.toLowerCase()}` : openPickerLabel}
 	>
 		<svg
 			width="18"
@@ -122,7 +130,6 @@
 		bind:value
 		{min}
 		tabindex="-1"
-		aria-hidden="true"
 	/>
 	{#if invalid && invalidMessage}
 		<p class="date-input__msg">{invalidMessage}</p>
