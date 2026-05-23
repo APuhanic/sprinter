@@ -609,7 +609,7 @@ export default {
 		leadOne:
 			'You sit down. The driver closes the door. And you no longer need to think about anything else.',
 		leadTwo:
-			'<p>Sprinter is a family business from Pula. We arrange private transfers and taxi rides in Pula, across Istria and Europe — reliable, on time, no surprises.</p><p>To book a ride to or from Pula Airport in advance, use our <a href="#kalkulator">calculator</a>.</p><p>For a taxi ride around Pula or further out, send us a message.</p><p>Our prices come without surprises. See our <a href="#kalkulator">calculator</a> or <a href="#taksimetar">taximeter rates</a>.</p>',
+			'<p>Sprinter is a family business from Pula. We arrange private transfers and taxi rides in Pula, across Istria and Europe — reliable, on time, no surprises.</p><p>To book a ride to or from Pula Airport, use our <a href="#kalkulator">price calculator</a>.</p><p>For a taxi ride around Pula or further afield, just send us a message.</p><p>Prices are transparent — see the <a href="#kalkulator">calculator</a> for transfers or the <a href="#taksimetar">taximeter rates</a> for local rides.</p>',
 		fleetEyebrow: 'Fleet',
 		fleetTitle: 'Two vehicles, one standard',
 		fleetSub: 'Pick the right size — pricing stays transparent either way.',
@@ -624,7 +624,12 @@ export default {
 		taximeterSub: '',
 		taximeterStart: 'Start',
 		taximeterPerKm: 'Per km',
-		taximeterPerMin: 'Per min'
+		taximeterPerMin: 'Per min',
+		trustEyebrow: 'What is included',
+		trustSignAirport: 'Name-sign meet-and-greet',
+		trustChildSeat: 'Free child seat',
+		trustWaiting: 'Free airport waiting',
+		trustWhatsApp: 'WhatsApp confirmation in 30 min'
 	},
 
 	// Transfer calculator UI strings
@@ -668,8 +673,10 @@ export default {
 		flightPh: 'e.g. FR1234 (optional)',
 		note: 'Note / Exact address',
 		notePh: 'For larger cities please give the exact address. Child seat, special requests...',
-		addReturn: 'Add return journey',
 		returnDiscount: '−10% discount',
+		tripOneWay: 'One-way',
+		tripReturn: 'Round trip',
+		tripReturnSuffix: '−10%',
 		returnDate: 'Return date',
 		returnTime: 'Return time',
 		returnNoteLabel: 'Return',
@@ -692,6 +699,8 @@ export default {
 		total: 'Total',
 		vatIncl: 'VAT incl.',
 		errorBook: 'Please enter your name, phone, date and time.',
+		returnAfterOutboundError: 'Return date must be on or after the outbound date.',
+		openPickerLabel: 'Open calendar',
 		sendBooking: 'Send booking via WhatsApp',
 		sendInquiry: 'Send price request via WhatsApp',
 		formNote: 'Available 24/7 · sprinter.hr · +385 95 722 6918',
@@ -848,6 +857,31 @@ export default {
 		weekdays: 'Monday — Sunday: 08:00 – 19:00',
 		findUs: 'Find us',
 		getDirections: 'Get directions'
+	},
+
+	// Kontakt WhatsApp bridge page (Google Ads landing)
+	contactWa: {
+		title: 'Contact WhatsApp — Sprinter Transfers Pula',
+		metaDescription:
+			'Book a private transfer or taxi ride in Pula via WhatsApp. Quick response, fixed prices, available 24/7.',
+		eyebrow: 'Contact · WhatsApp',
+		h1: 'Contact us on WhatsApp',
+		intro1:
+			'Sprinter arranges private transfers and taxi rides in Pula and across Istria — name-sign meet-and-greet at Pula Airport, intercity transfers, local taxi rides. We drive Mercedes E-Class and V-Class, 24/7, fixed prices with no surprises.',
+		intro2:
+			'WhatsApp is the fastest way to get a quote and confirm a booking. We respond within minutes, in English, Croatian, German or Italian. No call centres — you speak directly with us.',
+		intro3:
+			'Tap the button below to open the chat. If you prefer the phone, the number is right under the button.',
+		ctaButton: '💬 Send a message on WhatsApp',
+		phoneFallback: 'Or call us at',
+		tipsTitle: 'What to include in your first message',
+		tipsList: [
+			'Date and approximate departure time',
+			'Pickup location (e.g. "Pula Airport, terminal")',
+			'Destination (city, hotel, or exact address)',
+			'Number of passengers and amount of luggage',
+			'Whether you need a return trip or one-way only'
+		]
 	},
 
 	// Common
