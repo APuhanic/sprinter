@@ -77,6 +77,30 @@
 		</div>
 	</section>
 
+	<!-- Trust signals -->
+	<section class="section section--tight tr-trust-section">
+		<div class="wrap">
+			<ul class="tr-trust" aria-label={t.transfersPage.trustEyebrow}>
+				<li class="tr-trust__item">
+					<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 12h20" /><path d="M22 12l-4-4M22 12l-4 4" /><path d="M5 8v8" /></svg>
+					<span>{t.transfersPage.trustSignAirport}</span>
+				</li>
+				<li class="tr-trust__item">
+					<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="6" r="3" /><path d="M6 20v-3a4 4 0 014-4h4a4 4 0 014 4v3" /></svg>
+					<span>{t.transfersPage.trustChildSeat}</span>
+				</li>
+				<li class="tr-trust__item">
+					<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
+					<span>{t.transfersPage.trustWaiting}</span>
+				</li>
+				<li class="tr-trust__item">
+					<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 01-8.5 8.5 8.5 8.5 0 01-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 1121 11.5z" /></svg>
+					<span>{t.transfersPage.trustWhatsApp}</span>
+				</li>
+			</ul>
+		</div>
+	</section>
+
 	<!-- Calculator -->
 	<section class="section section--tight" id="kalkulator">
 		<div class="wrap">

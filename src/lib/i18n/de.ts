@@ -610,7 +610,7 @@ export default {
 		leadOne:
 			'Sie setzen sich. Der Fahrer schließt die Tür. Und Sie müssen an nichts anderes mehr denken.',
 		leadTwo:
-			'<p>Sprinter ist ein Familienunternehmen aus Pula. Wir organisieren private Transfers und Taxifahrten in Pula, in ganz Istrien und Europa — zuverlässig, pünktlich, ohne Überraschungen.</p><p>Möchten Sie eine Fahrt vom oder zum Flughafen Pula im Voraus buchen, nutzen Sie unseren <a href="#kalkulator">Rechner</a>.</p><p>Für eine Taxifahrt in Pula oder darüber hinaus schreiben Sie uns einfach eine Nachricht.</p><p>Unsere Preise sind transparent. Sehen Sie unseren <a href="#kalkulator">Rechner</a> oder die <a href="#taksimetar">Taxameter-Preise</a>.</p>',
+			'<p>Sprinter ist ein Familienunternehmen aus Pula. Wir organisieren private Transfers und Taxifahrten in Pula, in ganz Istrien und Europa — zuverlässig, pünktlich, ohne Überraschungen.</p><p>Zur Buchung einer Fahrt vom oder zum Flughafen Pula nutzen Sie unseren <a href="#kalkulator">Preisrechner</a>.</p><p>Für eine Taxifahrt in Pula oder weiter weg schreiben Sie uns einfach eine Nachricht.</p><p>Unsere Preise sind transparent — sehen Sie den <a href="#kalkulator">Rechner</a> für Transfers oder die <a href="#taksimetar">Taxameter-Preise</a> für lokale Fahrten.</p>',
 		fleetEyebrow: 'Fuhrpark',
 		fleetTitle: 'Zwei Fahrzeuge, ein Standard',
 		fleetSub: 'Wählen Sie die richtige Größe — die Preisgestaltung bleibt transparent.',
@@ -625,7 +625,12 @@ export default {
 		taximeterSub: '',
 		taximeterStart: 'Grundpreis',
 		taximeterPerKm: 'Pro km',
-		taximeterPerMin: 'Pro Minute'
+		taximeterPerMin: 'Pro Minute',
+		trustEyebrow: 'Was inklusive ist',
+		trustSignAirport: 'Empfang mit Namensschild',
+		trustChildSeat: 'Kindersitz kostenlos',
+		trustWaiting: 'Kostenlose Wartezeit am Flughafen',
+		trustWhatsApp: 'WhatsApp-Bestätigung in 30 Min.'
 	},
 
 	// Transfer-Kalkulator
@@ -669,8 +674,10 @@ export default {
 		flightPh: 'z. B. FR1234 (optional)',
 		note: 'Notiz / genaue Adresse',
 		notePh: 'Für größere Städte bitte genaue Adresse angeben. Kindersitz, Sonderwünsche...',
-		addReturn: 'Rückfahrt hinzufügen',
 		returnDiscount: '−10 % Rabatt',
+		tripOneWay: 'Einfache Fahrt',
+		tripReturn: 'Hin- und Rückfahrt',
+		tripReturnSuffix: '−10 %',
 		returnDate: 'Rückfahrtsdatum',
 		returnTime: 'Rückfahrtszeit',
 		returnNoteLabel: 'Rückfahrt',
@@ -693,6 +700,8 @@ export default {
 		total: 'Gesamt',
 		vatIncl: 'inkl. MwSt.',
 		errorBook: 'Bitte geben Sie Name, Telefon, Datum und Uhrzeit ein.',
+		returnAfterOutboundError: 'Das Rückfahrtsdatum muss am oder nach dem Hinfahrtsdatum liegen.',
+		openPickerLabel: 'Kalender öffnen',
 		sendBooking: 'Buchung per WhatsApp senden',
 		sendInquiry: 'Preisanfrage per WhatsApp senden',
 		formNote: 'Verfügbar 24/7 · sprinter.hr · +385 95 722 6918',
