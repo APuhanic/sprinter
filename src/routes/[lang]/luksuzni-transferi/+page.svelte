@@ -12,13 +12,21 @@
 
 	const eClassImg = '/images/transfers/e-class-1.jpg';
 	const vClassImg = '/images/transfers/v-class-1.jpg';
+
+	let metaDescription = $derived(
+		t.transfersPage.leadTwo
+			.replace(/<[^>]+>/g, ' ')
+			.replace(/\s+/g, ' ')
+			.trim()
+			.slice(0, 200)
+	);
 </script>
 
 <svelte:head>
 	<title>Sprinter - {t.transfersPage.title}{t.transfersPage.titleSuffix}</title>
-	<meta name="description" content={t.transfersPage.leadTwo} />
+	<meta name="description" content={metaDescription} />
 	<meta property="og:title" content="Sprinter - {t.transfersPage.title}{t.transfersPage.titleSuffix}" />
-	<meta property="og:description" content={t.transfersPage.leadTwo} />
+	<meta property="og:description" content={metaDescription} />
 	<meta property="og:image" content="https://sprinter.hr/images/og/transfers-og.jpg" />
 	{@html `<script type="application/ld+json">${serviceJsonLd}</` + `script>`}
 </svelte:head>
@@ -30,14 +38,14 @@
 			<div class="eyebrow" style="margin-bottom:32px;">{t.transfersPage.eyebrow}</div>
 			<h1 class="display tr-hero__title">
 				{t.transfersPage.title}
-				<em class="tr-hero__title-suffix">{t.transfersPage.titleSuffix.replace(/^ · /, '· ')}</em>
+				<em class="tr-hero__title-suffix">{t.transfersPage.titleSuffix.replace(/^ /, '')}</em>
 			</h1>
 			<p class="lede" style="margin-top:32px; max-width:48ch;">
 				{t.transfersPage.leadOne}
 			</p>
-			<p class="lede" style="margin-top:14px; max-width:54ch; opacity:0.72;">
-				{t.transfersPage.leadTwo}
-			</p>
+			<div class="lede tr-hero__lead2" style="margin-top:14px; max-width:54ch; opacity:0.82;">
+				{@html t.transfersPage.leadTwo}
+			</div>
 			<div class="hero__cta">
 				<a
 					class="btn btn--primary"
@@ -132,7 +140,9 @@
 				</div>
 				<div>
 					<h2 class="section-title">{t.transfersPage.taximeterTitle}</h2>
-					<p class="section-sub" style="margin-top:24px;">{t.transfersPage.taximeterSub}</p>
+					{#if t.transfersPage.taximeterSub}
+						<p class="section-sub" style="margin-top:24px;">{t.transfersPage.taximeterSub}</p>
+					{/if}
 				</div>
 			</div>
 
@@ -255,6 +265,20 @@
 		font-size: 0.6em;
 		margin-top: 8px;
 		letter-spacing: -0.005em;
+	}
+	.tr-hero__lead2 :global(p) {
+		margin: 0 0 12px;
+	}
+	.tr-hero__lead2 :global(p:last-child) {
+		margin-bottom: 0;
+	}
+	.tr-hero__lead2 :global(a) {
+		color: var(--accent);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+	.tr-hero__lead2 :global(a:hover) {
+		text-decoration-thickness: 2px;
 	}
 
 	.tr-fleet {

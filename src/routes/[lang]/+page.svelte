@@ -8,26 +8,60 @@
 	let t = $derived(data.t);
 
 	let cleaningHref = $derived(`/${lang}/${slugs[lang].cleaning}`);
+	let transfersHref = $derived(`/${lang}/${slugs[lang].transfers}`);
 
 	// Marquee items doubled so the loop seams don't show
 	let marqueeItems = $derived([...t.home.marquee, ...t.home.marquee]);
 </script>
 
 <svelte:head>
-	<title>Sprinter - {t.nav.cleaning}, Pula i Istra</title>
-	<meta name="description" content={t.home.sub} />
-	<meta property="og:title" content="Sprinter - {t.nav.cleaning}, Pula i Istra" />
-	<meta property="og:description" content={t.home.sub} />
+	<title>Sprinter - {t.nav.transfers}, Pula · Istra · Europa</title>
+	<meta name="description" content={t.home.transfersSub} />
+	<meta property="og:title" content="Sprinter - {t.nav.transfers}, Pula · Istra · Europa" />
+	<meta property="og:description" content={t.home.transfersSub} />
 </svelte:head>
 
 <main class="page-fade">
-	<!-- Hero — typographic -->
+	<!-- Transfers hero — primary service, top of homepage -->
+	<section class="hero hero--transfers" data-variant="typographic">
+		<div class="wrap">
+			<div class="eyebrow" style="margin-bottom:32px;">{t.home.transfersEyebrow}</div>
+			<h1 class="hero__title display">
+				{t.home.transfersTitleA} <em>{t.home.transfersTitleB}</em>.
+			</h1>
+			<p class="lede hero__sub">{t.home.transfersSub}</p>
+			<div class="hero__cta">
+				<a class="btn btn--primary" data-variant="pill" href={transfersHref}>
+					<span>{t.home.transfersCtaBook}</span>
+					<span class="arrow" aria-hidden="true" style="margin-left:4px;">→</span>
+				</a>
+				<a
+					class="btn btn--ghost"
+					data-variant="pill"
+					href={waHref()}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="flex-shrink:0;">
+						<circle cx="7" cy="7" r="6" fill="#25D366" />
+						<path
+							d="M4.6 5.2c.1-.4.4-.5.6-.5h.4c.1 0 .2.1.3.3l.4.9c.1.2 0 .3 0 .4l-.3.4c.4.7.9 1.2 1.6 1.6l.4-.3c.1-.1.2-.1.4 0l.9.4c.2.1.3.2.3.3v.4c0 .3-.2.5-.5.6-.4.1-.8.1-1.2 0a4.6 4.6 0 0 1-3-3c-.1-.4-.1-.8 0-1.1z"
+							fill="#fff"
+						/>
+					</svg>
+					<span>{t.home.transfersCtaTaxi}</span>
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- Cleaning hero — typographic -->
 	<section class="hero" data-variant="typographic">
 		<div class="wrap">
 			<div class="eyebrow" style="margin-bottom:32px;">{t.home.eyebrow}</div>
-			<h1 class="hero__title display">
+			<h2 class="hero__title display">
 				{t.home.titleA} <em>{t.home.titleB}</em>.
-			</h1>
+			</h2>
 			<p class="lede hero__sub">{t.home.sub}</p>
 			<div class="hero__cta">
 				<a
