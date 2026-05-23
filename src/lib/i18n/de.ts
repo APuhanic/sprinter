@@ -610,7 +610,7 @@ export default {
 		leadOne:
 			'Sie setzen sich. Der Fahrer schließt die Tür. Und Sie müssen an nichts anderes mehr denken.',
 		leadTwo:
-			'<p>Sprinter ist ein Familienunternehmen aus Pula. Wir organisieren private Transfers und Taxifahrten in Pula, in ganz Istrien und Europa — zuverlässig, pünktlich, ohne Überraschungen.</p><p>Möchten Sie eine Fahrt vom oder zum Flughafen Pula im Voraus buchen, nutzen Sie unseren <a href="#kalkulator">Rechner</a>.</p><p>Für eine Taxifahrt in Pula oder darüber hinaus schreiben Sie uns einfach eine Nachricht.</p><p>Unsere Preise sind transparent. Sehen Sie unseren <a href="#kalkulator">Rechner</a> oder die <a href="#taksimetar">Taxameter-Preise</a>.</p>',
+			'<p>Sprinter ist ein Familienunternehmen aus Pula. Wir organisieren private Transfers und Taxifahrten in Pula, in ganz Istrien und Europa — zuverlässig, pünktlich, ohne Überraschungen.</p><p>Zur Buchung einer Fahrt vom oder zum Flughafen Pula nutzen Sie unseren <a href="#kalkulator">Preisrechner</a>.</p><p>Für eine Taxifahrt in Pula oder weiter weg schreiben Sie uns einfach eine Nachricht.</p><p>Unsere Preise sind transparent — sehen Sie den <a href="#kalkulator">Rechner</a> für Transfers oder die <a href="#taksimetar">Taxameter-Preise</a> für lokale Fahrten.</p>',
 		fleetEyebrow: 'Fuhrpark',
 		fleetTitle: 'Zwei Fahrzeuge, ein Standard',
 		fleetSub: 'Wählen Sie die richtige Größe — die Preisgestaltung bleibt transparent.',
@@ -625,7 +625,12 @@ export default {
 		taximeterSub: '',
 		taximeterStart: 'Grundpreis',
 		taximeterPerKm: 'Pro km',
-		taximeterPerMin: 'Pro Minute'
+		taximeterPerMin: 'Pro Minute',
+		trustEyebrow: 'Was inklusive ist',
+		trustSignAirport: 'Empfang mit Namensschild',
+		trustChildSeat: 'Kindersitz kostenlos',
+		trustWaiting: 'Kostenlose Wartezeit am Flughafen',
+		trustWhatsApp: 'WhatsApp-Bestätigung in 30 Min.'
 	},
 
 	// Transfer-Kalkulator
@@ -669,8 +674,10 @@ export default {
 		flightPh: 'z. B. FR1234 (optional)',
 		note: 'Notiz / genaue Adresse',
 		notePh: 'Für größere Städte bitte genaue Adresse angeben. Kindersitz, Sonderwünsche...',
-		addReturn: 'Rückfahrt hinzufügen',
 		returnDiscount: '−10 % Rabatt',
+		tripOneWay: 'Einfache Fahrt',
+		tripReturn: 'Hin- und Rückfahrt',
+		tripReturnSuffix: '−10 %',
 		returnDate: 'Rückfahrtsdatum',
 		returnTime: 'Rückfahrtszeit',
 		returnNoteLabel: 'Rückfahrt',
@@ -693,6 +700,8 @@ export default {
 		total: 'Gesamt',
 		vatIncl: 'inkl. MwSt.',
 		errorBook: 'Bitte geben Sie Name, Telefon, Datum und Uhrzeit ein.',
+		returnAfterOutboundError: 'Das Rückfahrtsdatum muss am oder nach dem Hinfahrtsdatum liegen.',
+		openPickerLabel: 'Kalender öffnen',
 		sendBooking: 'Buchung per WhatsApp senden',
 		sendInquiry: 'Preisanfrage per WhatsApp senden',
 		formNote: 'Verfügbar 24/7 · sprinter.hr · +385 95 722 6918',
@@ -849,6 +858,31 @@ export default {
 		weekdays: 'Montag — Sonntag: 08:00 – 19:00',
 		findUs: 'So finden Sie uns',
 		getDirections: 'Wegbeschreibung'
+	},
+
+	// Kontakt WhatsApp bridge page (Google Ads landing)
+	contactWa: {
+		title: 'Kontakt WhatsApp — Sprinter Transfers Pula',
+		metaDescription:
+			'Buchen Sie einen privaten Transfer oder eine Taxifahrt in Pula per WhatsApp. Schnelle Antwort, Festpreise, rund um die Uhr verfügbar.',
+		eyebrow: 'Kontakt · WhatsApp',
+		h1: 'Kontaktieren Sie uns über WhatsApp',
+		intro1:
+			'Sprinter organisiert private Transfers und Taxifahrten in Pula und in ganz Istrien — Empfang am Flughafen Pula mit Namensschild, Stadtübergreifende Transfers, lokale Taxifahrten. Wir fahren Mercedes E-Klasse und V-Klasse, rund um die Uhr, Festpreise ohne Überraschungen.',
+		intro2:
+			'WhatsApp ist der schnellste Weg, ein Angebot einzuholen und eine Buchung zu bestätigen. Wir antworten innerhalb weniger Minuten, auf Deutsch, Kroatisch, Englisch oder Italienisch. Keine Callcenter — Sie sprechen direkt mit uns.',
+		intro3:
+			'Tippen Sie auf den Button unten, um den Chat zu öffnen. Falls Sie lieber telefonieren, finden Sie die Nummer direkt unter dem Button.',
+		ctaButton: '💬 Nachricht über WhatsApp senden',
+		phoneFallback: 'Oder rufen Sie uns an',
+		tipsTitle: 'Was Ihre erste Nachricht enthalten sollte',
+		tipsList: [
+			'Datum und ungefähre Abfahrtszeit',
+			'Abholort (z. B. „Flughafen Pula, Terminal")',
+			'Ziel (Stadt, Hotel oder genaue Adresse)',
+			'Anzahl der Passagiere und Gepäckmenge',
+			'Ob Sie eine Rückfahrt oder nur eine einfache Fahrt benötigen'
+		]
 	},
 
 	// Common
