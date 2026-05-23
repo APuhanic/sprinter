@@ -10,6 +10,7 @@
 		type PaxKind,
 		type Lang
 	} from '$lib/data/transferPricing';
+	import DateInput from './DateInput.svelte';
 
 	type CalcStrings = {
 		title: string;
@@ -51,7 +52,6 @@
 		flightPh: string;
 		note: string;
 		notePh: string;
-		addReturn: string;
 		returnDiscount: string;
 		returnDate: string;
 		returnTime: string;
@@ -65,10 +65,15 @@
 		total: string;
 		vatIncl: string;
 		errorBook: string;
+		returnAfterOutboundError: string;
+		openPickerLabel: string;
 		sendBooking: string;
 		sendInquiry: string;
 		formNote: string;
 		whatsapp: string;
+		tripOneWay: string;
+		tripReturn: string;
+		tripReturnSuffix: string;
 	};
 
 	type Props = {
@@ -261,6 +266,10 @@
 			errorBook = true;
 			return;
 		}
+		if (returnEnabled && (!returnDate || !returnTime)) {
+			errorBook = true;
+			return;
+		}
 
 		const emoji = current.isInquiry ? '❓' : '🚗';
 		const type = current.isInquiry ? s.sendInquiry : s.sendBooking;
@@ -377,6 +386,37 @@
 		</div>
 	</div>
 
+	<!-- Trip type -->
+	<div class="tr-calc__trip">
+		<div
+			class="tr-calc__trip-toggle"
+			role="radiogroup"
+			aria-label={s.tripOneWay + ' / ' + s.tripReturn}
+		>
+			<label class="tr-calc__trip-opt" class:tr-calc__trip-opt--active={!returnEnabled}>
+				<input
+					type="radio"
+					name="tr-trip"
+					value="one"
+					checked={!returnEnabled}
+					onchange={() => (returnEnabled = false)}
+				/>
+				<span>{s.tripOneWay}</span>
+			</label>
+			<label class="tr-calc__trip-opt" class:tr-calc__trip-opt--active={returnEnabled}>
+				<input
+					type="radio"
+					name="tr-trip"
+					value="return"
+					checked={returnEnabled}
+					onchange={() => (returnEnabled = true)}
+				/>
+				<span>{s.tripReturn}</span>
+				<span class="tr-calc__trip-badge">{s.tripReturnSuffix}</span>
+			</label>
+		</div>
+	</div>
+
 	<button class="tr-calc__btn" type="button" onclick={calculate}>{s.calculate}</button>
 	{#if errorRoute}
 		<p class="tr-calc__error">{s.errorRoute}</p>
@@ -461,7 +501,12 @@
 			<div class="tr-calc__two-col">
 				<label class="tr-calc__field">
 					<span class="tr-calc__label">{s.date}</span>
-					<input class="tr-calc__input" type="date" bind:value={date} min={today} />
+					<DateInput
+						bind:value={date}
+						min={today}
+						aria-label={s.date}
+						openPickerLabel={s.openPickerLabel}
+					/>
 				</label>
 				<label class="tr-calc__field">
 					<span class="tr-calc__label">{s.time}</span>
@@ -488,45 +533,42 @@
 				<textarea class="tr-calc__input" bind:value={note} placeholder={s.notePh}></textarea>
 			</label>
 
-			{#if !current.isInquiry}
+			{#if !current.isInquiry && returnEnabled}
 				<div class="tr-calc__return">
-					<label class="tr-calc__return-check">
-						<input type="checkbox" bind:checked={returnEnabled} />
-						<span class="tr-calc__return-label">{s.addReturn}</span>
+					<div class="tr-calc__return-header">
+						<span class="tr-calc__return-label">{s.returnRow}</span>
 						<span class="tr-calc__discount-badge">{s.returnDiscount}</span>
-					</label>
-
-					{#if returnEnabled}
-						<div class="tr-calc__return-fields">
-							<div class="tr-calc__two-col">
-								<label class="tr-calc__field" style="margin-bottom:0">
-									<span class="tr-calc__label">{s.returnDate}</span>
-									<input
-										class="tr-calc__input"
-										type="date"
-										bind:value={returnDate}
-										min={date || today}
-									/>
-								</label>
-								<label class="tr-calc__field" style="margin-bottom:0">
-									<span class="tr-calc__label">{s.returnTime}</span>
-									<select class="tr-calc__input" bind:value={returnTime}>
-										<option value="">{s.timePlaceholder}</option>
-										{#each timeOptions as t (t)}
-											<option value={t}>{t}</option>
-										{/each}
-									</select>
-								</label>
-							</div>
-							{#if returnFare !== null}
-								<p class="tr-calc__return-note">
-									{s.returnNoteLabel}: <strong>{returnFare} €</strong> (−10%{isNight
-										? ` · ${s.nightTag}`
-										: ''})
-								</p>
-							{/if}
+					</div>
+					<div class="tr-calc__return-fields tr-calc__return-fields--bare">
+						<div class="tr-calc__two-col">
+							<label class="tr-calc__field" style="margin-bottom:0">
+								<span class="tr-calc__label">{s.returnDate}</span>
+								<DateInput
+									bind:value={returnDate}
+									min={date || today}
+									aria-label={s.returnDate}
+									openPickerLabel={s.openPickerLabel}
+									invalidMessage={s.returnAfterOutboundError}
+								/>
+							</label>
+							<label class="tr-calc__field" style="margin-bottom:0">
+								<span class="tr-calc__label">{s.returnTime}</span>
+								<select class="tr-calc__input" bind:value={returnTime}>
+									<option value="">{s.timePlaceholder}</option>
+									{#each timeOptions as t (t)}
+										<option value={t}>{t}</option>
+									{/each}
+								</select>
+							</label>
 						</div>
-					{/if}
+						{#if returnFare !== null}
+							<p class="tr-calc__return-note">
+								{s.returnNoteLabel}: <strong>{returnFare} €</strong> (−10%{isNight
+									? ` · ${s.nightTag}`
+									: ''})
+							</p>
+						{/if}
+					</div>
 				</div>
 			{/if}
 

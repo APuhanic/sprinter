@@ -610,7 +610,7 @@ export default {
 		leadOne:
 			'Sjednete. Vozač zatvori vrata. I više ne morate misliti ni na što drugo.',
 		leadTwo:
-			'<p>Sprinter je obiteljska tvrtka iz Pule. Organiziramo privatne transfere i taxi vožnje u Puli, po Istri i Europi — pouzdano, točno na vrijeme, bez iznenađenja.</p><p>Želite li unaprijed rezervirati vožnju iz zračne luke Pula i nazad, učinite to u našem <a href="#kalkulator">kalkulatoru</a>.</p><p>Želite li pak vožnju taxijem po Puli ili dalje, pošaljite nam poruku.</p><p>Naše cijene su bez iznenađenja. Pogledajte naš <a href="#kalkulator">kalkulator</a> ili <a href="#taksimetar">cjenik taksimetra</a>.</p>',
+			'<p>Sprinter je obiteljska tvrtka iz Pule. Organiziramo privatne transfere i taxi vožnje u Puli, po Istri i Europi — pouzdano, točno na vrijeme, bez iznenađenja.</p><p>Za rezervaciju vožnje iz ili u zračnu luku Pula koristite naš <a href="#kalkulator">kalkulator cijene</a>.</p><p>Za taxi vožnju po Puli ili dalje, jednostavno nam pošaljite poruku.</p><p>Cijene su transparentne — pogledajte <a href="#kalkulator">kalkulator</a> za transfere ili <a href="#taksimetar">cjenik taksimetra</a> za lokalne vožnje.</p>',
 		fleetEyebrow: 'Vozila',
 		fleetTitle: 'Dva vozila, jedan standard',
 		fleetSub: 'Odaberite veličinu — cijena ostaje transparentna u oba slučaja.',
@@ -625,7 +625,12 @@ export default {
 		taximeterSub: '',
 		taximeterStart: 'Polazak',
 		taximeterPerKm: 'Po km',
-		taximeterPerMin: 'Po minuti'
+		taximeterPerMin: 'Po minuti',
+		trustEyebrow: 'Što je uključeno',
+		trustSignAirport: 'Doček s natpisom imena',
+		trustChildSeat: 'Besplatno dječje sjedalo',
+		trustWaiting: 'Besplatno čekanje na aerodromu',
+		trustWhatsApp: 'Potvrda na WhatsApp u 30 min'
 	},
 
 	// Kalkulator transfera
@@ -669,8 +674,10 @@ export default {
 		flightPh: 'npr. FR1234 (neobavezno)',
 		note: 'Napomena / točna adresa',
 		notePh: 'Za veće gradove navedite točnu adresu. Dječje sjedalo, posebni zahtjevi...',
-		addReturn: 'Dodaj povratak',
 		returnDiscount: '−10% popusta',
+		tripOneWay: 'Jednosmjerno',
+		tripReturn: 'Povratno',
+		tripReturnSuffix: '−10%',
 		returnDate: 'Datum povratka',
 		returnTime: 'Vrijeme povratka',
 		returnNoteLabel: 'Povratak',
@@ -693,6 +700,8 @@ export default {
 		total: 'Ukupno',
 		vatIncl: 'PDV uklj.',
 		errorBook: 'Molimo unesite ime, telefon, datum i vrijeme.',
+		returnAfterOutboundError: 'Datum povratka mora biti nakon datuma polaska.',
+		openPickerLabel: 'Otvori kalendar',
 		sendBooking: 'Pošalji rezervaciju na WhatsApp',
 		sendInquiry: 'Pošalji upit za cijenu na WhatsApp',
 		formNote: 'Dostupni 0 – 24 · sprinter.hr · +385 95 722 6918',
@@ -848,6 +857,31 @@ export default {
 		weekdays: 'Ponedjeljak — Nedjelja: 08:00 – 19:00 h',
 		findUs: 'Pronađite nas',
 		getDirections: 'Upute za dolazak'
+	},
+
+	// Kontakt WhatsApp bridge page (Google Ads landing)
+	contactWa: {
+		title: 'Kontakt WhatsApp — Sprinter Transferi Pula',
+		metaDescription:
+			'Rezervirajte privatni transfer ili taxi vožnju u Puli putem WhatsAppa. Brz odgovor, fiksne cijene, dostupni 24/7.',
+		eyebrow: 'Kontakt · WhatsApp',
+		h1: 'Kontaktirajte nas putem WhatsAppa',
+		intro1:
+			'Sprinter organizira privatne transfere i taxi vožnje u Puli i diljem Istre — doček na zračnoj luci Pula s natpisom imena, međugradski transferi, lokalne taxi vožnje. Vozimo Mercedes E-klasu i V-klasu, 0–24, fiksne cijene bez iznenađenja.',
+		intro2:
+			'WhatsApp je najbrži način da dobijete ponudu i potvrdite rezervaciju. Javljamo se unutar nekoliko minuta, na hrvatskom, engleskom, njemačkom ili talijanskom. Bez pozivnih centara — pišete izravno s nama.',
+		intro3:
+			'Kliknite gumb ispod da otvorite razgovor. Ako više volite telefon, broj se nalazi neposredno ispod gumba.',
+		ctaButton: '💬 Pošaljite poruku na WhatsApp',
+		phoneFallback: 'Ili nas nazovite na',
+		tipsTitle: 'Što napisati u prvoj poruci',
+		tipsList: [
+			'Datum i okvirno vrijeme polaska',
+			'Mjesto preuzimanja (npr. „Zračna luka Pula, terminal“)',
+			'Destinacija (grad, hotel ili točna adresa)',
+			'Broj putnika i količina prtljage',
+			'Trebate li povratak ili samo u jednom smjeru'
+		]
 	},
 
 	// Common
