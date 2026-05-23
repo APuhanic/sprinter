@@ -610,7 +610,13 @@ export default {
 			'Elegancija i udobnost za do 3 putnika — pravi izbor kad su diskrecija i stil najvažniji.',
 		vClassName: 'Mercedes-Benz V-klasa',
 		vClassDesc:
-			'Prostran i tih za do 7 putnika — opušten i siguran prijevoz za grupe, obitelji ili dodatnu prtljagu.'
+			'Prostran i tih za do 7 putnika — opušten i siguran prijevoz za grupe, obitelji ili dodatnu prtljagu.',
+		taximeterEyebrow: 'Lokalne vožnje',
+		taximeterTitle: 'Taksimetar — Pula i okolica',
+		taximeterSub: 'Noćna tarifa (22:00 – 06:00) je 20% viša od dnevne.',
+		taximeterStart: 'Polazak',
+		taximeterPerKm: 'Po km',
+		taximeterPerMin: 'Po minuti'
 	},
 
 	// Kalkulator transfera

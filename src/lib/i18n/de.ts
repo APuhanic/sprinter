@@ -610,7 +610,13 @@ export default {
 			'Eleganz und Komfort für bis zu 3 Passagiere — die richtige Wahl, wenn Diskretion und Stil zählen.',
 		vClassName: 'Mercedes-Benz V-Klasse',
 		vClassDesc:
-			'Geräumig und ruhig für bis zu 7 Passagiere — entspannte und sichere Beförderung für Gruppen oder Familien.'
+			'Geräumig und ruhig für bis zu 7 Passagiere — entspannte und sichere Beförderung für Gruppen oder Familien.',
+		taximeterEyebrow: 'Stadtfahrten',
+		taximeterTitle: 'Taxameter — Pula & Stadt',
+		taximeterSub: 'Nachttarif (22:00 – 06:00) ist 20% höher als der Tagestarif.',
+		taximeterStart: 'Grundpreis',
+		taximeterPerKm: 'Pro km',
+		taximeterPerMin: 'Pro Minute'
 	},
 
 	// Transfer-Kalkulator
