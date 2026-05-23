@@ -609,7 +609,13 @@ export default {
 			'Elegance and comfort for up to 3 passengers — the right choice when discretion and style matter most.',
 		vClassName: 'Mercedes-Benz V-Class',
 		vClassDesc:
-			'Roomy and quiet for up to 7 passengers — relaxed, safe transport for groups, families, or extra luggage.'
+			'Roomy and quiet for up to 7 passengers — relaxed, safe transport for groups, families, or extra luggage.',
+		taximeterEyebrow: 'Local rides',
+		taximeterTitle: 'Taximeter — Pula & city',
+		taximeterSub: 'Night rate (22:00 – 06:00) is 20% higher than the day rate.',
+		taximeterStart: 'Start',
+		taximeterPerKm: 'Per km',
+		taximeterPerMin: 'Per min'
 	},
 
 	// Transfer calculator UI strings
