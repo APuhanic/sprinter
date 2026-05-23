@@ -26,6 +26,18 @@ test.describe('DateInput component (mounted in TransferCalculator)', () => {
 		const input = wrap.locator('.date-input__text');
 		await input.fill('99.99.9999.');
 		await expect(wrap).toHaveClass(/date-input--invalid/);
+		const isoValue = await page.locator('.date-input__native').first().inputValue();
+		expect(isoValue).toBe('');
+	});
+
+	test('rejects date before min', async ({ page }) => {
+		const wrap = page.locator('.date-input').first();
+		const input = wrap.locator('.date-input__text');
+		// min is set to today via the outbound date in TransferCalculator
+		await input.fill('01.01.2020.');
+		await expect(wrap).toHaveClass(/date-input--invalid/);
+		const isoValue = await page.locator('.date-input__native').first().inputValue();
+		expect(isoValue).toBe('');
 	});
 
 	test('clearing the input clears the bound ISO value', async ({ page }) => {
