@@ -1,139 +1,82 @@
 /**
- * Transfer pricing — Sprinter d.o.o.
+ * Transfer tariff — Sprinter d.o.o.
  *
- * Prices are stored per origin (airport / pula) → destination, with two columns:
- *   [E-Class fare, V-Class fare] in € including VAT.
+ * Per-km cascading tariff. The customer enters any pickup/destination address
+ * (Google Places Autocomplete), Maps Directions returns the driving distance,
+ * and this module turns that distance into a price.
  *
- * Destination *keys* are canonical (mostly place names). They are also the default
- * English label. For other languages, `destinationLabels` provides overrides.
+ * - Base "polazak" fare per vehicle (boarding fee)
+ * - Each segment has its own €/km rate; rates fall as distance grows so longer
+ *   trips are cheaper per km
+ * - Trips beyond MAX_KM are inquiry-only — no auto-quote
  */
 
-export type Origin = 'airport' | 'pula';
 export type PaxKind = 'small' | 'large';
+export type Vehicle = 'e' | 'v';
 
-export const prices: Record<Origin, Record<string, [number, number]>> = {
-	airport: {
-		Pula: [30, 40],
-		Verudela: [40, 50],
-		Fažana: [40, 50],
-		'Marina Veruda': [40, 50],
-		'Banjole (Hotel Delmar)': [40, 60],
-		'Ližnjan (Hotel Emotion)': [50, 60],
-		Medulin: [40, 50],
-		Stinjan: [40, 50],
-		Rovinj: [75, 95],
-		Vrsar: [85, 115],
-		Poreč: [95, 125],
-		Novigrad: [145, 185],
-		Umag: [145, 185],
-		Rabac: [90, 120],
-		Opatija: [165, 210],
-		'Mali Lošinj': [340, 420],
-		Rijeka: [150, 200],
-		'Rijeka (Airport RJK)': [200, 270],
-		Zagreb: [380, 460],
-		Trieste: [240, 340],
-		'Trieste (Airport)': [290, 360],
-		'Venice (Airport)': [440, 530],
-		'Ljubljana (Airport)': [370, 460]
-	},
-	pula: {
-		Rijeka: [150, 200],
-		'Rijeka (Airport RJK)': [200, 270],
-		Zagreb: [380, 460],
-		Trieste: [240, 340],
-		'Trieste (Airport)': [290, 360],
-		'Venice (Airport)': [440, 530],
-		'Ljubljana (Airport)': [370, 460]
+const E_START = 4.0;
+const V_START = 5.0;
+
+// [upper bound of segment in km, €/km within that segment]
+const E_SEG: ReadonlyArray<readonly [number, number]> = [
+	[5, 2.5],
+	[10, 2.3],
+	[15, 2.1],
+	[20, 1.9],
+	[25, 1.8],
+	[30, 1.75],
+	[35, 1.7],
+	[40, 1.65],
+	[45, 1.6],
+	[50, 1.55],
+	[60, 1.5],
+	[70, 1.45],
+	[80, 1.4],
+	[95, 1.35],
+	[100, 1.3]
+];
+
+const V_SEG: ReadonlyArray<readonly [number, number]> = [
+	[5, 3.5],
+	[10, 3.1],
+	[15, 2.85],
+	[20, 2.6],
+	[25, 2.4],
+	[30, 2.3],
+	[35, 2.2],
+	[40, 2.1],
+	[45, 2.05],
+	[50, 2.0],
+	[60, 1.9],
+	[70, 1.85],
+	[80, 1.8],
+	[95, 1.75],
+	[100, 1.7]
+];
+
+export const MAX_KM = 110;
+
+/**
+ * Returns the one-way fare in € (rounded to the nearest €), or null when the
+ * distance exceeds MAX_KM (caller should switch to inquiry mode).
+ */
+export function calcFare(km: number, vehicle: Vehicle): number | null {
+	if (km <= 0) return null;
+	if (km > MAX_KM) return null;
+
+	const seg = vehicle === 'e' ? E_SEG : V_SEG;
+	const start = vehicle === 'e' ? E_START : V_START;
+
+	let total = start;
+	let prev = 0;
+	for (const [to, rate] of seg) {
+		if (km <= prev) break;
+		total += (Math.min(km, to) - prev) * rate;
+		prev = to;
 	}
-};
-
-export const travelTime: Record<Origin, Record<string, string>> = {
-	airport: {
-		Pula: '~15 min',
-		Verudela: '~15 min',
-		Fažana: '~20 min',
-		'Marina Veruda': '~15 min',
-		'Banjole (Hotel Delmar)': '~25 min',
-		'Ližnjan (Hotel Emotion)': '~30 min',
-		Medulin: '~20 min',
-		Stinjan: '~20 min',
-		Rovinj: '~45 min',
-		Vrsar: '~55 min',
-		Poreč: '~1h',
-		Novigrad: '~1h 10min',
-		Umag: '~1h 15min',
-		Rabac: '~1h',
-		Opatija: '~1h 30min',
-		'Mali Lošinj': '~2h 30min',
-		Rijeka: '~1h 45min',
-		'Rijeka (Airport RJK)': '~2h',
-		Zagreb: '~3h 30min',
-		Trieste: '~1h 30min',
-		'Trieste (Airport)': '~1h 45min',
-		'Venice (Airport)': '~2h 30min',
-		'Ljubljana (Airport)': '~2h 30min'
-	},
-	pula: {
-		Rijeka: '~1h 30min',
-		'Rijeka (Airport RJK)': '~1h 45min',
-		Zagreb: '~3h 30min',
-		Trieste: '~1h 15min',
-		'Trieste (Airport)': '~1h 30min',
-		'Venice (Airport)': '~2h 15min',
-		'Ljubljana (Airport)': '~2h 15min'
-	}
-};
-
-export type Lang = 'hr' | 'en' | 'de';
-
-/** Per-language overrides for destination labels. Keys not listed fall back to the canonical key. */
-const destinationLabels: Record<Lang, Record<string, string>> = {
-	en: {},
-	hr: {
-		'Rijeka (Airport RJK)': 'Rijeka (Aerodrom RJK)',
-		Trieste: 'Trst',
-		'Trieste (Airport)': 'Trst (Aerodrom)',
-		'Venice (Airport)': 'Venecija (Aerodrom)',
-		'Ljubljana (Airport)': 'Ljubljana (Aerodrom)'
-	},
-	de: {
-		'Rijeka (Airport RJK)': 'Rijeka (Flughafen RJK)',
-		Trieste: 'Triest',
-		'Trieste (Airport)': 'Triest (Flughafen)',
-		'Venice (Airport)': 'Venedig (Flughafen)',
-		'Ljubljana (Airport)': 'Ljubljana (Flughafen)'
-	}
-};
-
-export function destLabel(key: string, lang: Lang): string {
-	return destinationLabels[lang]?.[key] ?? key;
+	return Math.round(total);
 }
 
-const originLabels: Record<Origin, Record<Lang, string>> = {
-	airport: {
-		en: 'Pula Airport',
-		hr: 'Aerodrom Pula',
-		de: 'Flughafen Pula'
-	},
-	pula: {
-		en: 'Pula (centre / hotel)',
-		hr: 'Pula (centar / hotel)',
-		de: 'Pula (Zentrum / Hotel)'
-	}
-};
-
-export function originLabel(origin: Origin, lang: Lang): string {
-	return originLabels[origin][lang];
-}
-
-export function originShortLabel(origin: Origin, lang: Lang): string {
-	if (origin === 'airport') {
-		return { en: 'Pula Airport', hr: 'Aerodrom Pula', de: 'Flughafen Pula' }[lang];
-	}
-	return 'Pula';
-}
-
-export function destinationsFor(origin: Origin): string[] {
-	return Object.keys(prices[origin]);
+export function vehicleFromPax(pax: PaxKind): Vehicle {
+	return pax === 'small' ? 'e' : 'v';
 }
