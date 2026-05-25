@@ -24,6 +24,7 @@
 		mapsUnavailable: string;
 		longTripTitle: string;
 		longTripBody: string;
+		trafficNote: string;
 		passengers: string;
 		eClass: string;
 		eClassRange: string;
@@ -42,7 +43,6 @@
 		date: string;
 		time: string;
 		timePlaceholder: string;
-		nightNotice: string;
 		flight: string;
 		flightPh: string;
 		note: string;
@@ -54,7 +54,6 @@
 		returnDate: string;
 		returnTime: string;
 		returnNoteLabel: string;
-		nightTag: string;
 		termsTitle: string;
 		terms: string[];
 		orderSummary: string;
@@ -82,6 +81,7 @@
 	// ── Route / Maps state ────────────────────────────────────────────────
 	let fromInput = $state<HTMLInputElement | null>(null);
 	let toInput = $state<HTMLInputElement | null>(null);
+	let mapElement = $state<HTMLDivElement | null>(null);
 	let fromText = $state('');
 	let toText = $state('');
 	let fromPlace: google.maps.places.PlaceResult | null = $state(null);
@@ -93,6 +93,8 @@
 	let routeStatus = $state<RouteStatus>('idle');
 	let mapsError = $state(false);
 	let directionsService: google.maps.DirectionsService | null = null;
+	let directionsRenderer: google.maps.DirectionsRenderer | null = null;
+	let mapInstance: google.maps.Map | null = null;
 
 	// ── Vehicle / trip ────────────────────────────────────────────────────
 	let pax = $state<PaxKind>('small');
@@ -116,35 +118,21 @@
 		pax === 'small' ? `${s.eClass} · ${s.eClassRange}` : `${s.vClass} · ${s.vClassRange}`
 	);
 
-	let parsedHour = $derived(time ? parseInt(time.split(':')[0], 10) : -1);
-	let isNight = $derived(parsedHour >= 22 || (parsedHour >= 0 && parsedHour < 6));
-
 	// One-way fare from the cascading tariff; null when route not OK or out of range.
 	let oneWayFare = $derived(routeStatus === 'ok' ? calcFare(lastKm, vehicle) : null);
-
-	let baseFare = $derived.by(() => {
-		if (oneWayFare === null) return null;
-		return isNight ? Math.round(oneWayFare * 1.25) : oneWayFare;
-	});
 	let returnFare = $derived.by(() => {
 		if (oneWayFare === null || !returnEnabled) return null;
-		const base = Math.round(oneWayFare * 0.9);
-		return isNight ? Math.round(base * 1.25) : base;
+		return Math.round(oneWayFare * 0.9);
 	});
 	let totalFare = $derived.by(() => {
-		if (baseFare === null) return null;
-		return baseFare + (returnFare ?? 0);
+		if (oneWayFare === null) return null;
+		return oneWayFare + (returnFare ?? 0);
 	});
 
-	// "Inquiry mode" — long trip, or Maps disabled. No price; we just relay
-	// the trip details to WhatsApp and confirm by hand.
 	let isInquiry = $derived(
 		routeStatus === 'long' || (mapsError && (fromText.trim() !== '' || toText.trim() !== ''))
 	);
 
-	// Booking form visibility — auto-reveals once the customer has committed
-	// to a route (autocomplete picked + Maps replied), or in the inquiry
-	// fallback once they've typed enough.
 	let showBookingForm = $derived(
 		routeStatus === 'ok' ||
 			routeStatus === 'long' ||
@@ -159,7 +147,7 @@
 	let toName = $derived(placeLabel(toPlace, toText || s.toLabel));
 
 	let travelTimeText = $derived(
-		routeStatus === 'ok' && lastMin > 0
+		(routeStatus === 'ok' || routeStatus === 'long') && lastMin > 0
 			? `~${lastMin} min · ${Math.round(lastKm)} km`
 			: ''
 	);
@@ -180,6 +168,10 @@
 	let initialized = false;
 	const removeListeners: Array<() => void> = [];
 
+	// Centered on the Istrian peninsula at zoom 9 — covers Pula → Rovinj → Opatija.
+	const MAP_DEFAULT_CENTER = { lat: 44.8666, lng: 13.8496 };
+	const MAP_DEFAULT_ZOOM = 9;
+
 	async function initMaps() {
 		if (initialized) return;
 		initialized = true;
@@ -192,6 +184,27 @@
 		try {
 			await loadGoogleMaps(lang);
 			directionsService = new google.maps.DirectionsService();
+
+			if (mapElement) {
+				mapInstance = new google.maps.Map(mapElement, {
+					center: MAP_DEFAULT_CENTER,
+					zoom: MAP_DEFAULT_ZOOM,
+					disableDefaultUI: true,
+					zoomControl: true,
+					gestureHandling: 'cooperative',
+					clickableIcons: false
+				});
+				directionsRenderer = new google.maps.DirectionsRenderer({
+					map: mapInstance,
+					suppressMarkers: false,
+					preserveViewport: false,
+					polylineOptions: {
+						strokeColor: '#c2603a',
+						strokeWeight: 5,
+						strokeOpacity: 0.9
+					}
+				});
+			}
 
 			const opts: google.maps.places.AutocompleteOptions = {
 				componentRestrictions: { country: 'hr' },
@@ -242,14 +255,12 @@
 				lastKm = (leg.distance?.value ?? 0) / 1000;
 				lastMin = Math.round((leg.duration?.value ?? 0) / 60);
 				routeStatus = lastKm > MAX_KM ? 'long' : 'ok';
+				directionsRenderer?.setDirections(res);
 			}
 		);
 	}
 
 	function invalidateOnType(which: 'from' | 'to') {
-		// If the user keeps typing after picking a suggestion, the input no
-		// longer matches the resolved place — drop the result so the form
-		// goes back to "pick a place" mode.
 		if (which === 'from' && fromPlace) {
 			const v = fromInput?.value ?? '';
 			const matched = fromPlace.formatted_address ?? fromPlace.name ?? '';
@@ -271,7 +282,6 @@
 		const tmpText = fromText;
 		fromText = toText;
 		toText = tmpText;
-		// Keep the underlying input.value in sync (Google reads it directly).
 		if (fromInput) fromInput.value = fromText;
 		if (toInput) toInput.value = toText;
 		const tmpPlace = fromPlace;
@@ -325,12 +335,12 @@
 
 		if (isInquiry) {
 			msg += `💶 ${s.onRequest}\n`;
-		} else if (returnEnabled && returnFare !== null && baseFare !== null) {
+		} else if (returnEnabled && returnFare !== null && oneWayFare !== null) {
 			msg += `💶 *${s.total}: ${totalFare} €* (${s.vatIncl})\n`;
-			msg += `   ↗ ${s.outbound}: ${baseFare} €${isNight ? ' (+25% night)' : ''}\n`;
+			msg += `   ↗ ${s.outbound}: ${oneWayFare} €\n`;
 			msg += `   ↙ ${s.returnRow}: ${returnFare} € (−10%)\n`;
-		} else if (baseFare !== null) {
-			msg += `💶 *${s.total}: ${baseFare} €*${isNight ? ' (+25% night)' : ''} (${s.vatIncl})\n`;
+		} else if (oneWayFare !== null) {
+			msg += `💶 *${s.total}: ${oneWayFare} €* (${s.vatIncl})\n`;
 		}
 
 		msg += `\n👤 ${s.fullName}: ${name.trim()}\n`;
@@ -338,7 +348,7 @@
 		if (email.trim()) msg += `📧 ${s.email}: ${email.trim()}\n`;
 		msg += `\n✈️ *${s.outbound.toUpperCase()}*\n`;
 		msg += `📅 ${s.date}: ${fmtDate(date)}\n`;
-		msg += `🕐 ${s.time}: ${time}${isNight ? ' 🌙' : ''}\n`;
+		msg += `🕐 ${s.time}: ${time}\n`;
 		if (flight.trim()) msg += `✈️ ${s.flight}: ${flight.trim()}\n`;
 
 		if (returnEnabled && returnDate && returnTime) {
@@ -486,47 +496,45 @@
 				<p class="tr-calc__result-inquiry">🕐 {s.travelTimeLabel}: {travelTimeText}</p>
 			{/if}
 		</div>
-	{:else if routeStatus === 'ok' && baseFare !== null}
+	{:else if routeStatus === 'ok' && oneWayFare !== null}
 		<div class="tr-calc__result">
 			<div class="tr-calc__result-route">{fromName} → {toName}</div>
-			<div class="tr-calc__result-price">{totalFare ?? baseFare} €</div>
+			<div class="tr-calc__result-price">{totalFare ?? oneWayFare} €</div>
 			<div class="tr-calc__result-vehicle">{vehicleLabel}</div>
 
 			{#if returnEnabled && returnFare !== null}
 				<div class="tr-calc__breakdown">
 					<div class="tr-calc__brk-row">
 						<span>{s.outbound}</span>
-						<span>
-							{baseFare} €{#if isNight}<small class="tr-calc__night-tag">
-									&nbsp;· {s.nightTag}</small
-								>{/if}
-						</span>
+						<span>{oneWayFare} €</span>
 					</div>
 					<div class="tr-calc__brk-row">
-						<span
-							>{s.returnRow} <small class="tr-calc__discount">(−10%)</small></span
-						>
-						<span>
-							{returnFare} €{#if isNight}<small class="tr-calc__night-tag">
-									&nbsp;· {s.nightTag}</small
-								>{/if}
-						</span>
+						<span>{s.returnRow} <small class="tr-calc__discount">(−10%)</small></span>
+						<span>{returnFare} €</span>
 					</div>
 					<div class="tr-calc__brk-row tr-calc__brk-total">
 						<span>{s.total}</span>
 						<span>{totalFare} €</span>
 					</div>
 				</div>
-			{:else if isNight && oneWayFare !== null}
-				<div class="tr-calc__brk-note">
-					{s.outbound}: {oneWayFare} € · {s.nightTag} → {baseFare} €
-				</div>
 			{/if}
 
 			{#if travelTimeText}
 				<p class="tr-calc__result-inquiry">🕐 {s.travelTimeLabel}: {travelTimeText}</p>
 			{/if}
+			<p class="tr-calc__traffic-note">⚠️ {s.trafficNote}</p>
 		</div>
+	{/if}
+
+	<!-- Map preview (route visualisation) -->
+	{#if !mapsError}
+		<div
+			class="tr-calc__map"
+			class:tr-calc__map--visible={routeStatus === 'ok' ||
+				routeStatus === 'long' ||
+				routeStatus === 'loading'}
+			bind:this={mapElement}
+		></div>
 	{/if}
 
 	<!-- Booking form -->
@@ -589,10 +597,6 @@
 				</label>
 			</div>
 
-			{#if isNight && !isInquiry}
-				<div class="tr-calc__night-notice">🌙 {s.nightNotice}</div>
-			{/if}
-
 			<label class="tr-calc__field">
 				<span class="tr-calc__label">{s.flight}</span>
 				<input
@@ -638,9 +642,7 @@
 						</div>
 						{#if returnFare !== null}
 							<p class="tr-calc__return-note">
-								{s.returnNoteLabel}: <strong>{returnFare} €</strong> (−10%{isNight
-									? ` · ${s.nightTag}`
-									: ''})
+								{s.returnNoteLabel}: <strong>{returnFare} €</strong> (−10%)
 							</p>
 						{/if}
 					</div>
@@ -653,12 +655,12 @@
 				<ul>
 					{#each s.terms as term (term)}
 						<li>{term}</li>
-					{/each}
+				{/each}
 				</ul>
 			</div>
 
 			<!-- Summary -->
-			{#if !isInquiry && baseFare !== null}
+			{#if !isInquiry && oneWayFare !== null}
 				<div class="tr-calc__summary">
 					<div class="tr-calc__summary-title">{s.orderSummary}</div>
 					<div class="tr-calc__summary-rows">
@@ -666,7 +668,7 @@
 						<div>📍 {fromName} → {toName}</div>
 						<div>🚘 {vehicleLabel}</div>
 						{#if date && time}
-							<div>📅 {s.outbound}: {fmtDate(date)} · {time}{isNight ? ' 🌙' : ''}</div>
+							<div>📅 {s.outbound}: {fmtDate(date)} · {time}</div>
 						{/if}
 						{#if returnEnabled && returnDate && returnTime}
 							<div>🔄 {s.returnRow}: {fmtDate(returnDate)} · {returnTime}</div>
@@ -675,7 +677,7 @@
 					<div class="tr-calc__summary-totals">
 						<div class="tr-calc__brk-row">
 							<span>{s.outbound}</span>
-							<span>{baseFare} €{isNight ? ' 🌙' : ''}</span>
+							<span>{oneWayFare} €</span>
 						</div>
 						{#if returnEnabled && returnFare !== null}
 							<div class="tr-calc__brk-row">
@@ -813,5 +815,32 @@
 		max-width: 42ch;
 		margin: 0 auto 10px;
 		opacity: 0.75;
+	}
+
+	/* Traffic delay note inside the result panel (dark bg) */
+	.tr-calc__traffic-note {
+		margin-top: 14px;
+		font-size: 12.5px;
+		line-height: 1.5;
+		max-width: 44ch;
+		margin-left: auto;
+		margin-right: auto;
+		color: color-mix(in srgb, var(--accent) 55%, white 45%);
+		opacity: 0.85;
+	}
+
+	/* Map preview */
+	.tr-calc__map {
+		display: none;
+		width: 100%;
+		height: 240px;
+		margin-top: 18px;
+		border-radius: 2px;
+		overflow: hidden;
+		background: color-mix(in srgb, var(--soft) 40%, transparent);
+		border: 1px solid var(--line);
+	}
+	.tr-calc__map--visible {
+		display: block;
 	}
 </style>
