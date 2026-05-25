@@ -1,39 +1,34 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import {
-		prices,
-		travelTime,
-		destinationsFor,
-		destLabel,
-		originLabel,
-		originShortLabel,
-		type Origin,
+		calcFare,
+		vehicleFromPax,
+		MAX_KM,
 		type PaxKind,
-		type Lang
+		type Vehicle
 	} from '$lib/data/transferPricing';
+	import { loadGoogleMaps, hasGoogleMapsKey } from '$lib/googleMaps';
 	import DateInput from './DateInput.svelte';
+	import type { Lang } from '$lib/i18n';
 
 	type CalcStrings = {
 		title: string;
 		vatNote: string;
-		pickup: string;
-		pickupPlaceholder: string;
-		pickupAirport: string;
-		pickupPula: string;
-		pickupCustom: string;
-		yourPickup: string;
-		yourPickupPh: string;
-		yourDest: string;
-		yourDestPh: string;
-		customNote: string;
-		destination: string;
-		destinationPlaceholder: string;
-		destinationCustom: string;
+		fromLabel: string;
+		fromPh: string;
+		toLabel: string;
+		toPh: string;
+		swap: string;
+		routeCalculating: string;
+		routeError: string;
+		mapsUnavailable: string;
+		longTripTitle: string;
+		longTripBody: string;
 		passengers: string;
 		eClass: string;
 		eClassRange: string;
 		vClass: string;
 		vClassRange: string;
-		calculate: string;
 		errorRoute: string;
 		bookingTitle: string;
 		bookingInquiry: string;
@@ -53,6 +48,9 @@
 		note: string;
 		notePh: string;
 		returnDiscount: string;
+		tripOneWay: string;
+		tripReturn: string;
+		tripReturnSuffix: string;
 		returnDate: string;
 		returnTime: string;
 		returnNoteLabel: string;
@@ -71,9 +69,6 @@
 		sendInquiry: string;
 		formNote: string;
 		whatsapp: string;
-		tripOneWay: string;
-		tripReturn: string;
-		tripReturnSuffix: string;
 	};
 
 	type Props = {
@@ -84,13 +79,26 @@
 
 	let { lang, strings: s, whatsAppNumber }: Props = $props();
 
-	// Form state
-	let origin = $state<'' | Origin | 'custom'>('');
-	let destination = $state<string>(''); // canonical key or 'custom_dest'
-	let pax = $state<PaxKind>('small');
-	let customOrigin = $state('');
-	let customDest = $state('');
+	// ── Route / Maps state ────────────────────────────────────────────────
+	let fromInput = $state<HTMLInputElement | null>(null);
+	let toInput = $state<HTMLInputElement | null>(null);
+	let fromText = $state('');
+	let toText = $state('');
+	let fromPlace: google.maps.places.PlaceResult | null = $state(null);
+	let toPlace: google.maps.places.PlaceResult | null = $state(null);
+	let lastKm = $state(0);
+	let lastMin = $state(0);
 
+	type RouteStatus = 'idle' | 'loading' | 'ok' | 'long' | 'error';
+	let routeStatus = $state<RouteStatus>('idle');
+	let mapsError = $state(false);
+	let directionsService: google.maps.DirectionsService | null = null;
+
+	// ── Vehicle / trip ────────────────────────────────────────────────────
+	let pax = $state<PaxKind>('small');
+	let returnEnabled = $state(false);
+
+	// ── Booking form fields ───────────────────────────────────────────────
 	let name = $state('');
 	let phone = $state('');
 	let email = $state('');
@@ -98,138 +106,29 @@
 	let time = $state('');
 	let flight = $state('');
 	let note = $state('');
-	let returnEnabled = $state(false);
 	let returnDate = $state('');
 	let returnTime = $state('');
-
-	// UI flags
-	let errorRoute = $state(false);
 	let errorBook = $state(false);
-	let resultShown = $state(false);
 
-	let timeOptions = generateTimes();
-	function generateTimes() {
-		const list: string[] = [];
-		for (let h = 0; h < 24; h++) {
-			for (const m of [0, 30]) {
-				list.push(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`);
-			}
-		}
-		return list;
-	}
-
-	const today = new Date().toISOString().split('T')[0];
-
-	// Resolved labels / data after Calculate is pressed
-	type CurrentData = {
-		originLabel: string;
-		destLabel: string;
-		vehicleLabel: string;
-		oneWay: number | null; // null when inquiry
-		isInquiry: boolean;
-	};
-	let current = $state<CurrentData | null>(null);
-
-	// Reset visible result + booking when inputs change
-	function resetResult() {
-		resultShown = false;
-		errorRoute = false;
-		errorBook = false;
-		returnEnabled = false;
-		current = null;
-	}
-
-	// When origin changes, reset destination since the list depends on origin.
-	$effect.pre(() => {
-		// Pure tracking — Svelte will re-run on origin change
-		origin;
-		destination = '';
-		resetResult();
-	});
-
-	let destOptions = $derived<string[]>(
-		origin === 'airport' || origin === 'pula' ? destinationsFor(origin) : []
-	);
-	let showCustomOrigin = $derived(origin === 'custom');
-	let showDestSelect = $derived(origin === 'airport' || origin === 'pula');
-	let isCustomDest = $derived(destination === 'custom_dest');
-
+	// ── Derived ────────────────────────────────────────────────────────────
+	let vehicle = $derived<Vehicle>(vehicleFromPax(pax));
 	let vehicleLabel = $derived(
-		pax === 'small'
-			? `${s.eClass} · ${s.eClassRange}`
-			: `${s.vClass} · ${s.vClassRange}`
+		pax === 'small' ? `${s.eClass} · ${s.eClassRange}` : `${s.vClass} · ${s.vClassRange}`
 	);
 
-	function calculate() {
-		errorRoute = false;
-		resultShown = false;
-
-		if (origin === 'custom') {
-			const co = customOrigin.trim();
-			const cd = customDest.trim();
-			if (!co || !cd) {
-				errorRoute = true;
-				return;
-			}
-			current = {
-				originLabel: co,
-				destLabel: cd,
-				vehicleLabel,
-				oneWay: null,
-				isInquiry: true
-			};
-		} else if (origin === 'airport' || origin === 'pula') {
-			if (!destination) {
-				errorRoute = true;
-				return;
-			}
-			if (destination === 'custom_dest') {
-				current = {
-					originLabel: originShortLabel(origin, lang),
-					destLabel: s.destinationCustom,
-					vehicleLabel,
-					oneWay: null,
-					isInquiry: true
-				};
-			} else {
-				const row = prices[origin][destination];
-				if (!row) {
-					errorRoute = true;
-					return;
-				}
-				const fare = pax === 'small' ? row[0] : row[1];
-				current = {
-					originLabel: originShortLabel(origin, lang),
-					destLabel: destLabel(destination, lang),
-					vehicleLabel,
-					oneWay: fare,
-					isInquiry: false
-				};
-			}
-		} else {
-			errorRoute = true;
-			return;
-		}
-
-		resultShown = true;
-		// scroll booking into view
-		setTimeout(() => {
-			document
-				.getElementById('tr-booking')
-				?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-		}, 250);
-	}
-
-	// Derived computed pricing for the result + summary
 	let parsedHour = $derived(time ? parseInt(time.split(':')[0], 10) : -1);
 	let isNight = $derived(parsedHour >= 22 || (parsedHour >= 0 && parsedHour < 6));
+
+	// One-way fare from the cascading tariff; null when route not OK or out of range.
+	let oneWayFare = $derived(routeStatus === 'ok' ? calcFare(lastKm, vehicle) : null);
+
 	let baseFare = $derived.by(() => {
-		if (!current || current.oneWay === null) return null;
-		return isNight ? Math.round(current.oneWay * 1.25) : current.oneWay;
+		if (oneWayFare === null) return null;
+		return isNight ? Math.round(oneWayFare * 1.25) : oneWayFare;
 	});
 	let returnFare = $derived.by(() => {
-		if (!current || current.oneWay === null || !returnEnabled) return null;
-		const base = Math.round(current.oneWay * 0.9);
+		if (oneWayFare === null || !returnEnabled) return null;
+		const base = Math.round(oneWayFare * 0.9);
 		return isNight ? Math.round(base * 1.25) : base;
 	});
 	let totalFare = $derived.by(() => {
@@ -237,11 +136,163 @@
 		return baseFare + (returnFare ?? 0);
 	});
 
-	function fmtDate(d: string) {
-		if (!d) return '';
-		const map: Record<Lang, string> = { hr: 'hr-HR', en: 'en-GB', de: 'de-DE' };
+	// "Inquiry mode" — long trip, or Maps disabled. No price; we just relay
+	// the trip details to WhatsApp and confirm by hand.
+	let isInquiry = $derived(
+		routeStatus === 'long' || (mapsError && (fromText.trim() !== '' || toText.trim() !== ''))
+	);
+
+	// Booking form visibility — auto-reveals once the customer has committed
+	// to a route (autocomplete picked + Maps replied), or in the inquiry
+	// fallback once they've typed enough.
+	let showBookingForm = $derived(
+		routeStatus === 'ok' ||
+			routeStatus === 'long' ||
+			(mapsError && fromText.trim().length > 2 && toText.trim().length > 2)
+	);
+
+	function placeLabel(p: google.maps.places.PlaceResult | null, fallback: string): string {
+		const raw = p?.name || p?.formatted_address || fallback;
+		return raw.split(',')[0].trim();
+	}
+	let fromName = $derived(placeLabel(fromPlace, fromText || s.fromLabel));
+	let toName = $derived(placeLabel(toPlace, toText || s.toLabel));
+
+	let travelTimeText = $derived(
+		routeStatus === 'ok' && lastMin > 0
+			? `~${lastMin} min · ${Math.round(lastKm)} km`
+			: ''
+	);
+
+	const today = new Date().toISOString().split('T')[0];
+
+	const timeOptions = (() => {
+		const list: string[] = [];
+		for (let h = 0; h < 24; h++) {
+			for (const m of [0, 30]) {
+				list.push(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`);
+			}
+		}
+		return list;
+	})();
+
+	// ── Google Maps init ──────────────────────────────────────────────────
+	let initialized = false;
+	const removeListeners: Array<() => void> = [];
+
+	async function initMaps() {
+		if (initialized) return;
+		initialized = true;
+
+		if (!hasGoogleMapsKey()) {
+			mapsError = true;
+			return;
+		}
+
 		try {
-			return new Date(d).toLocaleDateString(map[lang], {
+			await loadGoogleMaps(lang);
+			directionsService = new google.maps.DirectionsService();
+
+			const opts: google.maps.places.AutocompleteOptions = {
+				componentRestrictions: { country: 'hr' },
+				fields: ['geometry', 'name', 'formatted_address']
+			};
+
+			if (fromInput) {
+				const ac = new google.maps.places.Autocomplete(fromInput, opts);
+				const listener = ac.addListener('place_changed', () => {
+					fromPlace = ac.getPlace();
+					fromText = fromInput?.value ?? '';
+					maybeRunRoute();
+				});
+				removeListeners.push(() => google.maps.event.removeListener(listener));
+			}
+			if (toInput) {
+				const ac = new google.maps.places.Autocomplete(toInput, opts);
+				const listener = ac.addListener('place_changed', () => {
+					toPlace = ac.getPlace();
+					toText = toInput?.value ?? '';
+					maybeRunRoute();
+				});
+				removeListeners.push(() => google.maps.event.removeListener(listener));
+			}
+		} catch (err) {
+			console.warn('[Sprinter] Google Maps unavailable:', err);
+			mapsError = true;
+		}
+	}
+
+	function maybeRunRoute() {
+		if (!fromPlace?.geometry?.location || !toPlace?.geometry?.location || !directionsService) {
+			return;
+		}
+		routeStatus = 'loading';
+		directionsService.route(
+			{
+				origin: fromPlace.geometry.location,
+				destination: toPlace.geometry.location,
+				travelMode: google.maps.TravelMode.DRIVING
+			},
+			(res, status) => {
+				if (status !== 'OK' || !res) {
+					routeStatus = 'error';
+					return;
+				}
+				const leg = res.routes[0].legs[0];
+				lastKm = (leg.distance?.value ?? 0) / 1000;
+				lastMin = Math.round((leg.duration?.value ?? 0) / 60);
+				routeStatus = lastKm > MAX_KM ? 'long' : 'ok';
+			}
+		);
+	}
+
+	function invalidateOnType(which: 'from' | 'to') {
+		// If the user keeps typing after picking a suggestion, the input no
+		// longer matches the resolved place — drop the result so the form
+		// goes back to "pick a place" mode.
+		if (which === 'from' && fromPlace) {
+			const v = fromInput?.value ?? '';
+			const matched = fromPlace.formatted_address ?? fromPlace.name ?? '';
+			if (v !== matched) {
+				fromPlace = null;
+				if (routeStatus !== 'idle') routeStatus = 'idle';
+			}
+		} else if (which === 'to' && toPlace) {
+			const v = toInput?.value ?? '';
+			const matched = toPlace.formatted_address ?? toPlace.name ?? '';
+			if (v !== matched) {
+				toPlace = null;
+				if (routeStatus !== 'idle') routeStatus = 'idle';
+			}
+		}
+	}
+
+	function swapInputs() {
+		const tmpText = fromText;
+		fromText = toText;
+		toText = tmpText;
+		// Keep the underlying input.value in sync (Google reads it directly).
+		if (fromInput) fromInput.value = fromText;
+		if (toInput) toInput.value = toText;
+		const tmpPlace = fromPlace;
+		fromPlace = toPlace;
+		toPlace = tmpPlace;
+		if (fromPlace && toPlace) maybeRunRoute();
+	}
+
+	onMount(() => {
+		initMaps();
+		return () => {
+			while (removeListeners.length) removeListeners.pop()?.();
+		};
+	});
+
+	// ── WhatsApp ──────────────────────────────────────────────────────────
+	function fmtDate(d: string): string {
+		if (!d) return '';
+		const loc: Record<Lang, string> = { hr: 'hr-HR', en: 'en-GB', de: 'de-DE' };
+		try {
+			return new Date(d).toLocaleDateString(loc[lang], {
 				day: '2-digit',
 				month: 'short',
 				year: 'numeric'
@@ -251,17 +302,8 @@
 		}
 	}
 
-	let travelTimeText = $derived.by(() => {
-		if (!current || current.isInquiry) return '';
-		if (origin !== 'airport' && origin !== 'pula') return '';
-		const key = destination;
-		const t = travelTime[origin][key];
-		return t ? `${s.travelTimeLabel}: ${t}` : '';
-	});
-
 	function sendWhatsApp() {
 		errorBook = false;
-		if (!current) return;
 		if (!name.trim() || !phone.trim() || !date || !time) {
 			errorBook = true;
 			return;
@@ -271,26 +313,29 @@
 			return;
 		}
 
-		const emoji = current.isInquiry ? '❓' : '🚗';
-		const type = current.isInquiry ? s.sendInquiry : s.sendBooking;
+		const emoji = isInquiry ? '❓' : '🚗';
+		const heading = isInquiry ? s.sendInquiry : s.sendBooking;
 
-		let msg = `${emoji} *${type.toUpperCase()} – SPRINTER*\n\n`;
-		msg += `📍 *${s.travelTimeLabel.split(':')[0] || 'Route'}:* ${current.originLabel} → ${current.destLabel}\n`;
-		msg += `🚘 *${s.passengers}:* ${current.vehicleLabel}\n`;
+		let msg = `${emoji} *${heading.toUpperCase()} – SPRINTER*\n\n`;
+		msg += `📍 ${fromName} → ${toName}\n`;
+		if (routeStatus === 'ok' || routeStatus === 'long') {
+			msg += `📏 ${Math.round(lastKm)} km · ~${lastMin} min\n`;
+		}
+		msg += `🚘 ${s.passengers}: ${vehicleLabel}\n`;
 
-		if (current.isInquiry) {
-			msg += `💶 *${s.onRequest}:* ON REQUEST\n`;
+		if (isInquiry) {
+			msg += `💶 ${s.onRequest}\n`;
 		} else if (returnEnabled && returnFare !== null && baseFare !== null) {
-			msg += `💶 *${s.total}:* ${totalFare} € (${s.vatIncl})\n`;
+			msg += `💶 *${s.total}: ${totalFare} €* (${s.vatIncl})\n`;
 			msg += `   ↗ ${s.outbound}: ${baseFare} €${isNight ? ' (+25% night)' : ''}\n`;
 			msg += `   ↙ ${s.returnRow}: ${returnFare} € (−10%)\n`;
-		} else {
-			msg += `💶 *${s.total}:* ${baseFare} €${isNight ? ' (+25% night)' : ''} (${s.vatIncl})\n`;
+		} else if (baseFare !== null) {
+			msg += `💶 *${s.total}: ${baseFare} €*${isNight ? ' (+25% night)' : ''} (${s.vatIncl})\n`;
 		}
 
-		msg += `\n👤 *${s.fullName}:* ${name.trim()}\n`;
-		msg += `📞 *${s.phone}:* ${phone.trim()}\n`;
-		if (email.trim()) msg += `📧 *${s.email}:* ${email.trim()}\n`;
+		msg += `\n👤 ${s.fullName}: ${name.trim()}\n`;
+		msg += `📞 ${s.phone}: ${phone.trim()}\n`;
+		if (email.trim()) msg += `📧 ${s.email}: ${email.trim()}\n`;
 		msg += `\n✈️ *${s.outbound.toUpperCase()}*\n`;
 		msg += `📅 ${s.date}: ${fmtDate(date)}\n`;
 		msg += `🕐 ${s.time}: ${time}${isNight ? ' 🌙' : ''}\n`;
@@ -302,7 +347,7 @@
 			msg += `🕐 ${s.time}: ${returnTime}\n`;
 		}
 
-		if (note.trim()) msg += `\n📝 *${s.note}:* ${note.trim()}`;
+		if (note.trim()) msg += `\n📝 ${s.note}: ${note.trim()}`;
 
 		const url = `https://wa.me/${whatsAppNumber}?text=${encodeURIComponent(msg)}`;
 		window.open(url, '_blank', 'noopener,noreferrer');
@@ -315,57 +360,64 @@
 		<span class="tr-calc__title-sub">({s.vatNote})</span>
 	</div>
 
-	<!-- Pick-up -->
-	<label class="tr-calc__field">
-		<span class="tr-calc__label">{s.pickup}</span>
-		<select class="tr-calc__input" bind:value={origin}>
-			<option value="">{s.pickupPlaceholder}</option>
-			<option value="airport">{s.pickupAirport}</option>
-			<option value="pula">{s.pickupPula}</option>
-			<option value="custom">📍 {s.pickupCustom}</option>
-		</select>
-	</label>
-
-	<!-- Custom origin / destination -->
-	{#if showCustomOrigin}
-		<div class="tr-calc__custom">
-			<p class="tr-calc__custom-note">{s.customNote}</p>
-			<label class="tr-calc__field">
-				<span class="tr-calc__label">{s.yourPickup}</span>
-				<input
-					class="tr-calc__input"
-					type="text"
-					bind:value={customOrigin}
-					placeholder={s.yourPickupPh}
-				/>
-			</label>
-			<label class="tr-calc__field" style="margin-bottom:0">
-				<span class="tr-calc__label">{s.yourDest}</span>
-				<input
-					class="tr-calc__input"
-					type="text"
-					bind:value={customDest}
-					placeholder={s.yourDestPh}
-				/>
-			</label>
-		</div>
+	{#if mapsError}
+		<div class="tr-calc__maps-warn">{s.mapsUnavailable}</div>
 	{/if}
 
-	<!-- Destination -->
-	{#if showDestSelect}
-		<label class="tr-calc__field">
-			<span class="tr-calc__label">{s.destination}</span>
-			<select class="tr-calc__input" bind:value={destination}>
-				<option value="">{s.destinationPlaceholder}</option>
-				{#each destOptions as key (key)}
-					<option value={key}>{destLabel(key, lang)}</option>
-				{/each}
-				<option value="custom_dest">📍 {s.destinationCustom}</option>
-			</select>
+	<!-- Route inputs -->
+	<div class="tr-calc__route">
+		<label class="tr-calc__field tr-calc__field--addr">
+			<span class="tr-calc__label">{s.fromLabel}</span>
+			<span class="tr-calc__pin tr-calc__pin--from" aria-hidden="true"></span>
+			<input
+				bind:this={fromInput}
+				bind:value={fromText}
+				oninput={() => invalidateOnType('from')}
+				class="tr-calc__input tr-calc__input--addr"
+				type="text"
+				autocomplete="off"
+				placeholder={s.fromPh}
+			/>
 		</label>
-	{/if}
 
-	<!-- Passengers -->
+		<button
+			type="button"
+			class="tr-calc__swap"
+			onclick={swapInputs}
+			aria-label={s.swap}
+			tabindex="-1"
+		>
+			<svg
+				width="16"
+				height="16"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				aria-hidden="true"
+			>
+				<path d="M7 10l-3 3 3 3M4 13h12M17 14l3-3-3-3M20 11H8" />
+			</svg>
+		</button>
+
+		<label class="tr-calc__field tr-calc__field--addr">
+			<span class="tr-calc__label">{s.toLabel}</span>
+			<span class="tr-calc__pin tr-calc__pin--to" aria-hidden="true"></span>
+			<input
+				bind:this={toInput}
+				bind:value={toText}
+				oninput={() => invalidateOnType('to')}
+				class="tr-calc__input tr-calc__input--addr"
+				type="text"
+				autocomplete="off"
+				placeholder={s.toPh}
+			/>
+		</label>
+	</div>
+
+	<!-- Vehicle -->
 	<div class="tr-calc__field">
 		<span class="tr-calc__label">{s.passengers}</span>
 		<div class="tr-calc__pax">
@@ -417,38 +469,47 @@
 		</div>
 	</div>
 
-	<button class="tr-calc__btn" type="button" onclick={calculate}>{s.calculate}</button>
-	{#if errorRoute}
-		<p class="tr-calc__error">{s.errorRoute}</p>
-	{/if}
-
-	<!-- Result -->
-	{#if resultShown && current}
+	<!-- Result panel -->
+	{#if routeStatus === 'loading'}
+		<div class="tr-calc__result tr-calc__result--soft">
+			<span class="tr-calc__loading">{s.routeCalculating}</span>
+		</div>
+	{:else if routeStatus === 'error'}
+		<p class="tr-calc__error">{s.routeError}</p>
+	{:else if routeStatus === 'long'}
+		<div class="tr-calc__result tr-calc__result--inquiry">
+			<div class="tr-calc__result-route">{fromName} → {toName}</div>
+			<div class="tr-calc__longtrip-title">{s.longTripTitle}</div>
+			<p class="tr-calc__longtrip-body">{s.longTripBody}</p>
+			<div class="tr-calc__result-vehicle">{vehicleLabel}</div>
+			{#if travelTimeText}
+				<p class="tr-calc__result-inquiry">🕐 {s.travelTimeLabel}: {travelTimeText}</p>
+			{/if}
+		</div>
+	{:else if routeStatus === 'ok' && baseFare !== null}
 		<div class="tr-calc__result">
-			<div class="tr-calc__result-route">{current.originLabel} → {current.destLabel}</div>
-			<div class="tr-calc__result-price">
-				{#if current.isInquiry}
-					{s.onRequest}
-				{:else}
-					{totalFare ?? baseFare} €
-				{/if}
-			</div>
-			<div class="tr-calc__result-vehicle">{current.vehicleLabel}</div>
+			<div class="tr-calc__result-route">{fromName} → {toName}</div>
+			<div class="tr-calc__result-price">{totalFare ?? baseFare} €</div>
+			<div class="tr-calc__result-vehicle">{vehicleLabel}</div>
 
-			{#if !current.isInquiry && returnEnabled && returnFare !== null && baseFare !== null}
+			{#if returnEnabled && returnFare !== null}
 				<div class="tr-calc__breakdown">
 					<div class="tr-calc__brk-row">
 						<span>{s.outbound}</span>
 						<span>
-							{baseFare} €
-							{#if isNight}<small class="tr-calc__night-tag">&nbsp;· {s.nightTag}</small>{/if}
+							{baseFare} €{#if isNight}<small class="tr-calc__night-tag">
+									&nbsp;· {s.nightTag}</small
+								>{/if}
 						</span>
 					</div>
 					<div class="tr-calc__brk-row">
-						<span>{s.returnRow} <small class="tr-calc__discount">(−10%)</small></span>
+						<span
+							>{s.returnRow} <small class="tr-calc__discount">(−10%)</small></span
+						>
 						<span>
-							{returnFare} €
-							{#if isNight}<small class="tr-calc__night-tag">&nbsp;· {s.nightTag}</small>{/if}
+							{returnFare} €{#if isNight}<small class="tr-calc__night-tag">
+									&nbsp;· {s.nightTag}</small
+								>{/if}
 						</span>
 					</div>
 					<div class="tr-calc__brk-row tr-calc__brk-total">
@@ -456,30 +517,39 @@
 						<span>{totalFare} €</span>
 					</div>
 				</div>
-			{:else if !current.isInquiry && isNight}
+			{:else if isNight && oneWayFare !== null}
 				<div class="tr-calc__brk-note">
-					{s.outbound}: {current.oneWay} € · {s.nightTag} → {baseFare} €
+					{s.outbound}: {oneWayFare} € · {s.nightTag} → {baseFare} €
 				</div>
 			{/if}
 
-			{#if current.isInquiry}
-				<p class="tr-calc__result-inquiry">{s.onRequestSub}</p>
-			{:else if travelTimeText}
-				<p class="tr-calc__result-inquiry">🕐 {travelTimeText}</p>
+			{#if travelTimeText}
+				<p class="tr-calc__result-inquiry">🕐 {s.travelTimeLabel}: {travelTimeText}</p>
 			{/if}
 		</div>
 	{/if}
 
-	<!-- Booking section -->
-	{#if resultShown && current}
+	<!-- Booking form -->
+	{#if showBookingForm}
 		<div class="tr-calc__booking" id="tr-booking">
 			<div class="tr-calc__title">
-				{current.isInquiry ? s.bookingInquiry : s.bookingTitle}
+				{isInquiry ? s.bookingInquiry : s.bookingTitle}
 			</div>
+
+			{#if isInquiry}
+				<p class="tr-calc__result-inquiry" style="text-align:left; margin: -10px 0 18px;">
+					{s.onRequestSub}
+				</p>
+			{/if}
 
 			<label class="tr-calc__field">
 				<span class="tr-calc__label">{s.fullName}</span>
-				<input class="tr-calc__input" type="text" bind:value={name} placeholder={s.fullNamePh} />
+				<input
+					class="tr-calc__input"
+					type="text"
+					bind:value={name}
+					placeholder={s.fullNamePh}
+				/>
 			</label>
 
 			<div class="tr-calc__two-col">
@@ -519,13 +589,18 @@
 				</label>
 			</div>
 
-			{#if isNight && !current.isInquiry}
+			{#if isNight && !isInquiry}
 				<div class="tr-calc__night-notice">🌙 {s.nightNotice}</div>
 			{/if}
 
 			<label class="tr-calc__field">
 				<span class="tr-calc__label">{s.flight}</span>
-				<input class="tr-calc__input" type="text" bind:value={flight} placeholder={s.flightPh} />
+				<input
+					class="tr-calc__input"
+					type="text"
+					bind:value={flight}
+					placeholder={s.flightPh}
+				/>
 			</label>
 
 			<label class="tr-calc__field">
@@ -533,7 +608,7 @@
 				<textarea class="tr-calc__input" bind:value={note} placeholder={s.notePh}></textarea>
 			</label>
 
-			{#if !current.isInquiry && returnEnabled}
+			{#if !isInquiry && returnEnabled}
 				<div class="tr-calc__return">
 					<div class="tr-calc__return-header">
 						<span class="tr-calc__return-label">{s.returnRow}</span>
@@ -582,14 +657,14 @@
 				</ul>
 			</div>
 
-			<!-- Total summary -->
-			{#if !current.isInquiry && baseFare !== null}
+			<!-- Summary -->
+			{#if !isInquiry && baseFare !== null}
 				<div class="tr-calc__summary">
 					<div class="tr-calc__summary-title">{s.orderSummary}</div>
 					<div class="tr-calc__summary-rows">
 						{#if name.trim()}<div>👤 {name.trim()}</div>{/if}
-						<div>📍 {current.originLabel} → {current.destLabel}</div>
-						<div>🚘 {current.vehicleLabel}</div>
+						<div>📍 {fromName} → {toName}</div>
+						<div>🚘 {vehicleLabel}</div>
 						{#if date && time}
 							<div>📅 {s.outbound}: {fmtDate(date)} · {time}{isNight ? ' 🌙' : ''}</div>
 						{/if}
@@ -604,7 +679,9 @@
 						</div>
 						{#if returnEnabled && returnFare !== null}
 							<div class="tr-calc__brk-row">
-								<span>{s.returnRow} <small class="tr-calc__discount">(−10%)</small></span>
+								<span
+									>{s.returnRow} <small class="tr-calc__discount">(−10%)</small></span
+								>
 								<span>{returnFare} €</span>
 							</div>
 						{/if}
@@ -633,10 +710,108 @@
 						d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"
 					/>
 				</svg>
-				<span>{current.isInquiry ? s.sendInquiry : s.sendBooking}</span>
+				<span>{isInquiry ? s.sendInquiry : s.sendBooking}</span>
 			</button>
 
 			<p class="tr-calc__form-note">{s.formNote}</p>
 		</div>
 	{/if}
 </div>
+
+<style>
+	/* Address inputs with pin + swap */
+	.tr-calc__route {
+		position: relative;
+	}
+	.tr-calc__field--addr {
+		position: relative;
+	}
+	.tr-calc__input--addr {
+		padding-left: 36px;
+	}
+	.tr-calc__pin {
+		position: absolute;
+		left: 14px;
+		bottom: 17px;
+		width: 9px;
+		height: 9px;
+		border-radius: 50%;
+		pointer-events: none;
+	}
+	.tr-calc__pin--from {
+		background: var(--accent);
+	}
+	.tr-calc__pin--to {
+		background: var(--accent);
+		box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+	}
+
+	.tr-calc__swap {
+		position: absolute;
+		right: 8px;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 34px;
+		height: 34px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: var(--bg);
+		border: 1px solid var(--line);
+		color: var(--accent);
+		border-radius: 50%;
+		cursor: pointer;
+		transition: border-color 0.18s ease, transform 0.25s ease;
+		z-index: 2;
+	}
+	.tr-calc__swap:hover {
+		border-color: var(--accent);
+		transform: translateY(-50%) rotate(180deg);
+	}
+	.tr-calc__swap:focus-visible {
+		outline: 2px solid color-mix(in srgb, var(--accent) 45%, transparent);
+		outline-offset: 2px;
+	}
+
+	.tr-calc__maps-warn {
+		margin-bottom: 18px;
+		padding: 12px 14px;
+		background: color-mix(in srgb, var(--accent) 6%, var(--bg));
+		border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+		border-radius: 2px;
+		font-size: 13px;
+		color: var(--accent);
+		line-height: 1.5;
+	}
+
+	.tr-calc__loading {
+		display: inline-block;
+		font-family: var(--font-mono);
+		font-size: 12px;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--accent);
+	}
+	:global(.tr-calc__result--soft) {
+		background: color-mix(in srgb, var(--soft) 30%, transparent) !important;
+		color: var(--fg) !important;
+	}
+	:global(.tr-calc__result--inquiry) {
+		background: var(--fg);
+		color: var(--bg);
+	}
+	.tr-calc__longtrip-title {
+		font-family: var(--font-display);
+		font-size: clamp(22px, 3vw, 28px);
+		color: color-mix(in srgb, var(--accent) 70%, white 30%);
+		margin: 6px 0 4px;
+		letter-spacing: -0.005em;
+	}
+	.tr-calc__longtrip-body {
+		font-size: 13.5px;
+		line-height: 1.55;
+		max-width: 42ch;
+		margin: 0 auto 10px;
+		opacity: 0.75;
+	}
+</style>
