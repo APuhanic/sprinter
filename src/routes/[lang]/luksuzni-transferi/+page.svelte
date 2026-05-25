@@ -90,10 +90,6 @@
 					<span>{t.transfersPage.trustChildSeat}</span>
 				</li>
 				<li class="tr-trust__item">
-					<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
-					<span>{t.transfersPage.trustWaiting}</span>
-				</li>
-				<li class="tr-trust__item">
 					<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 01-8.5 8.5 8.5 8.5 0 01-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 1121 11.5z" /></svg>
 					<span>{t.transfersPage.trustWhatsApp}</span>
 				</li>
@@ -150,67 +146,6 @@
 							<span>{t.transferCalc.vClassRange}</span>
 						</div>
 					</div>
-				</article>
-			</div>
-		</div>
-	</section>
-
-	<!-- Taximeter rates -->
-	<section class="section section--tight" id="taksimetar">
-		<div class="wrap">
-			<div class="section-head">
-				<div>
-					<div class="eyebrow">{t.transfersPage.taximeterEyebrow}</div>
-				</div>
-				<div>
-					<h2 class="section-title">{t.transfersPage.taximeterTitle}</h2>
-					{#if t.transfersPage.taximeterSub}
-						<p class="section-sub" style="margin-top:24px;">{t.transfersPage.taximeterSub}</p>
-					{/if}
-				</div>
-			</div>
-
-			<div class="tr-tax">
-				<article class="tr-tax__card">
-					<header class="tr-tax__head">
-						<span class="tr-tax__label">{t.transferCalc.eClass}</span>
-						<span class="tr-tax__range">{t.transferCalc.eClassRange}</span>
-					</header>
-					<dl class="tr-tax__rows">
-						<div class="tr-tax__row">
-							<dt>{t.transfersPage.taximeterStart}</dt>
-							<dd>4,00 €</dd>
-						</div>
-						<div class="tr-tax__row">
-							<dt>{t.transfersPage.taximeterPerKm}</dt>
-							<dd>2,50 €</dd>
-						</div>
-						<div class="tr-tax__row">
-							<dt>{t.transfersPage.taximeterPerMin}</dt>
-							<dd>0,50 €</dd>
-						</div>
-					</dl>
-				</article>
-
-				<article class="tr-tax__card">
-					<header class="tr-tax__head">
-						<span class="tr-tax__label">{t.transferCalc.vClass}</span>
-						<span class="tr-tax__range">{t.transferCalc.vClassRange}</span>
-					</header>
-					<dl class="tr-tax__rows">
-						<div class="tr-tax__row">
-							<dt>{t.transfersPage.taximeterStart}</dt>
-							<dd>5,00 €</dd>
-						</div>
-						<div class="tr-tax__row">
-							<dt>{t.transfersPage.taximeterPerKm}</dt>
-							<dd>3,50 €</dd>
-						</div>
-						<div class="tr-tax__row">
-							<dt>{t.transfersPage.taximeterPerMin}</dt>
-							<dd>0,60 €</dd>
-						</div>
-					</dl>
 				</article>
 			</div>
 		</div>
@@ -348,67 +283,5 @@
 		letter-spacing: 0.14em;
 		text-transform: uppercase;
 		color: var(--accent);
-	}
-
-	.tr-tax {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 28px;
-	}
-	@media (max-width: 800px) {
-		.tr-tax {
-			grid-template-columns: 1fr;
-		}
-	}
-	.tr-tax__card {
-		background: var(--bg);
-		border: 1px solid var(--line-strong);
-		padding: clamp(20px, 2.6vw, 28px) clamp(22px, 3vw, 32px);
-	}
-	.tr-tax__head {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		gap: 16px;
-		padding-bottom: 14px;
-		border-bottom: 1px solid var(--line);
-	}
-	.tr-tax__label {
-		font-family: var(--font-mono);
-		font-size: 11px;
-		letter-spacing: 0.16em;
-		text-transform: uppercase;
-		color: var(--ink, currentColor);
-	}
-	.tr-tax__range {
-		font-family: var(--font-mono);
-		font-size: 11px;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-		color: var(--accent);
-	}
-	.tr-tax__rows {
-		margin: 0;
-		padding: 8px 0 0;
-	}
-	.tr-tax__row {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		padding: 12px 0;
-		border-bottom: 1px solid var(--line);
-	}
-	.tr-tax__row:last-child {
-		border-bottom: none;
-	}
-	.tr-tax__row dt {
-		color: var(--muted);
-		font-size: 15px;
-	}
-	.tr-tax__row dd {
-		margin: 0;
-		font-family: var(--font-mono);
-		font-size: 15px;
-		font-variant-numeric: tabular-nums;
 	}
 </style>

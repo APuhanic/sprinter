@@ -31,12 +31,12 @@ export const handleError: HandleServerError = ({ error, event, status, message }
 // (4495323150737492) page_view. Cloudflare Turnstile keeps its own entries.
 const CSP = [
 	"default-src 'self'",
-	"script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net",
+	"script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://maps.googleapis.com",
 	"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
 	"font-src 'self' https://fonts.gstatic.com",
-	"img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.googletagmanager.com https://www.facebook.com https://*.googleusercontent.com",
+	"img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.googletagmanager.com https://www.facebook.com https://*.googleusercontent.com https://maps.googleapis.com https://maps.gstatic.com",
 	"frame-src 'self' https://www.google.com https://challenges.cloudflare.com https://www.googletagmanager.com https://td.doubleclick.net",
-	"connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.googletagmanager.com https://*.facebook.com https://*.facebook.net",
+	"connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.googletagmanager.com https://*.facebook.com https://*.facebook.net https://maps.googleapis.com",
 	"frame-ancestors 'self'",
 	"base-uri 'self'",
 	"form-action 'self'",
