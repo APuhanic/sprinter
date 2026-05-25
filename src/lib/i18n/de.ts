@@ -640,6 +640,7 @@ export default {
 		mapsUnavailable: 'Live-Berechnung derzeit nicht verfügbar — senden Sie eine Anfrage, Antwort innerhalb von 30 Minuten.',
 		longTripTitle: 'Fahrt über 110 km',
 		longTripBody: 'Für diese Strecke bestätigen wir den Preis persönlich. Senden Sie eine Anfrage oder füllen Sie das Formular aus — wir antworten sofort.',
+		trafficNote: 'Bei Verkehrsstaus kann sich der Preis um 0,30 € pro Minute Verzögerung erhöhen.',
 		passengers: 'Passagiere',
 		eClass: 'Mercedes E-Klasse',
 		eClassRange: '1 – 3 Passagiere',
@@ -658,7 +659,6 @@ export default {
 		date: 'Datum',
 		time: 'Uhrzeit',
 		timePlaceholder: '— Uhrzeit wählen —',
-		nightNotice: 'Nachttransfer (22:00 – 06:00) · +25 % Zuschlag automatisch berechnet.',
 		flight: 'Flugnummer (bei Flughafentransfer)',
 		flightPh: 'z. B. FR1234 (optional)',
 		note: 'Notiz',
@@ -670,11 +670,10 @@ export default {
 		returnDate: 'Rückfahrtsdatum',
 		returnTime: 'Rückfahrtszeit',
 		returnNoteLabel: 'Rückfahrt',
-		nightTag: '+25 % Nacht',
 		termsTitle: 'Bedingungen & Informationen',
 		terms: [
 			'💶 Der Preis wird anhand der tatsächlichen Streckenkilometer berechnet. Fahrten über 110 km — Preis wird persönlich per WhatsApp bestätigt.',
-			'🌙 Nachttransfers (22:00 – 06:00) enthalten +25 % Zuschlag, automatisch berechnet.',
+			'⚠️ Bei Verkehrsstaus kann sich der Preis um 0,30 € pro Minute Verzögerung erhöhen.',
 			'🚗 Empfang mit Namensschild am Flughafen — auf Anfrage.',
 			'👶 Kindersitz kostenlos verfügbar — bitte im Kommentarfeld vermerken.',
 			'🔄 Rückfahrt mit 10 % Rabatt.',
@@ -691,7 +690,7 @@ export default {
 		openPickerLabel: 'Kalender öffnen',
 		sendBooking: 'Buchung per WhatsApp senden',
 		sendInquiry: 'Preisanfrage per WhatsApp senden',
-		formNote: 'Verfügbar 24/7 · sprinter.hr · +385 95 722 6918',
+		formNote: 'Verfügbar 07 – 24 · sprinter.hr · +385 95 722 6918',
 		whatsapp: 'WhatsApp'
 	},
 
