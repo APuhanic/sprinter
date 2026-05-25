@@ -640,6 +640,7 @@ export default {
 		mapsUnavailable: 'Trenutno bez automatskog izračuna — pošaljite upit, javljamo se u 30 minuta.',
 		longTripTitle: 'Vožnja dulja od 110 km',
 		longTripBody: 'Za ovu rutu cijenu potvrđujemo osobno. Pošaljite upit ili ispunite formu — javljamo se odmah.',
+		trafficNote: 'U slučaju prometnih zastoja, cijena se može uvećati za 0,30 € po minuti zastoja.',
 		passengers: 'Putnici',
 		eClass: 'Mercedes E-klasa',
 		eClassRange: '1 – 3 putnika',
@@ -658,7 +659,6 @@ export default {
 		date: 'Datum',
 		time: 'Vrijeme',
 		timePlaceholder: '— Odaberite vrijeme —',
-		nightNotice: 'Noćni transfer (22:00 – 06:00) · automatski se primjenjuje +25% doplate.',
 		flight: 'Broj leta (ako je transfer s aerodroma)',
 		flightPh: 'npr. FR1234 (neobavezno)',
 		note: 'Napomena',
@@ -670,11 +670,10 @@ export default {
 		returnDate: 'Datum povratka',
 		returnTime: 'Vrijeme povratka',
 		returnNoteLabel: 'Povratak',
-		nightTag: '+25% noćni',
 		termsTitle: 'Uvjeti i informacije',
 		terms: [
 			'💶 Cijena se računa po stvarnim kilometrima rute. Vožnje preko 110 km — cijenu potvrđujemo osobno na WhatsAppu.',
-			'🌙 Noćni transferi (22:00 – 06:00) imaju +25% doplate, automatski izračunatu.',
+			'⚠️ U slučaju prometnih zastoja, cijena se može uvećati za 0,30 € po minuti zastoja.',
 			'🚗 Doček s natpisom imena na aerodromu — na zahtjev.',
 			'👶 Dječje sjedalo besplatno — molimo navedite u polju za napomenu.',
 			'🔄 Povratna vožnja s 10% popusta.',
@@ -691,7 +690,7 @@ export default {
 		openPickerLabel: 'Otvori kalendar',
 		sendBooking: 'Pošalji rezervaciju na WhatsApp',
 		sendInquiry: 'Pošalji upit za cijenu na WhatsApp',
-		formNote: 'Dostupni 0 – 24 · sprinter.hr · +385 95 722 6918',
+		formNote: 'Dostupni 07 – 24 · sprinter.hr · +385 95 722 6918',
 		whatsapp: 'WhatsApp'
 	},
 
