@@ -639,6 +639,7 @@ export default {
 		mapsUnavailable: 'Live quotes unavailable right now — send a request, we reply within 30 minutes.',
 		longTripTitle: 'Trip longer than 110 km',
 		longTripBody: 'For this route we confirm the price personally. Send a request or fill in the form — we reply right away.',
+		trafficNote: 'In case of traffic delays, the fare may increase by €0.30 per minute of delay.',
 		passengers: 'Passengers',
 		eClass: 'Mercedes E-Class',
 		eClassRange: '1 – 3 passengers',
@@ -657,7 +658,6 @@ export default {
 		date: 'Date',
 		time: 'Time',
 		timePlaceholder: '— Select time —',
-		nightNotice: 'Night transfer (22:00 – 06:00) · +25% surcharge automatically applied.',
 		flight: 'Flight number (if airport transfer)',
 		flightPh: 'e.g. FR1234 (optional)',
 		note: 'Note',
@@ -669,11 +669,10 @@ export default {
 		returnDate: 'Return date',
 		returnTime: 'Return time',
 		returnNoteLabel: 'Return',
-		nightTag: '+25% night',
 		termsTitle: 'Terms & information',
 		terms: [
 			'💶 Price is calculated from the actual route distance. Trips over 110 km — price confirmed personally on WhatsApp.',
-			'🌙 Night transfers (22:00 – 06:00) include a +25% surcharge, applied automatically.',
+			'⚠️ In case of traffic delays, the fare may increase by €0.30 per minute of delay.',
 			'🚗 Name-sign meet & greet at the airport — on request.',
 			'👶 Child seat available free of charge — please note in the comment field.',
 			'🔄 Return journey at 10% discount.',
@@ -690,7 +689,7 @@ export default {
 		openPickerLabel: 'Open calendar',
 		sendBooking: 'Send booking via WhatsApp',
 		sendInquiry: 'Send price request via WhatsApp',
-		formNote: 'Available 24/7 · sprinter.hr · +385 95 722 6918',
+		formNote: 'Available 07 – 24 · sprinter.hr · +385 95 722 6918',
 		whatsapp: 'WhatsApp'
 	},
 
