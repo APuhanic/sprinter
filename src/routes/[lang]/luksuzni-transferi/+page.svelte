@@ -13,13 +13,7 @@
 	const eClassImg = '/images/transfers/e-class-1.jpg';
 	const vClassImg = '/images/transfers/v-class-1.jpg';
 
-	let metaDescription = $derived(
-		t.transfersPage.leadTwo
-			.replace(/<[^>]+>/g, ' ')
-			.replace(/\s+/g, ' ')
-			.trim()
-			.slice(0, 200)
-	);
+	let metaDescription = $derived(t.transfersPage.companyText.slice(0, 200));
 </script>
 
 <svelte:head>
@@ -43,57 +37,28 @@
 			<p class="lede" style="margin-top:32px; max-width:48ch;">
 				{t.transfersPage.leadOne}
 			</p>
-			<div class="lede tr-hero__lead2" style="margin-top:14px; max-width:54ch; opacity:0.82;">
-				{@html t.transfersPage.leadTwo}
-			</div>
-			<div class="hero__cta">
-				<a
-					class="btn btn--primary"
-					data-variant="pill"
-					href={waHref()}
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<svg
-						width="14"
-						height="14"
-						viewBox="0 0 14 14"
-						aria-hidden="true"
-						style="flex-shrink:0;"
-					>
-						<circle cx="7" cy="7" r="6" fill="#25D366" />
-						<path
-							d="M4.6 5.2c.1-.4.4-.5.6-.5h.4c.1 0 .2.1.3.3l.4.9c.1.2 0 .3 0 .4l-.3.4c.4.7.9 1.2 1.6 1.6l.4-.3c.1-.1.2-.1.4 0l.9.4c.2.1.3.2.3.3v.4c0 .3-.2.5-.5.6-.4.1-.8.1-1.2 0a4.6 4.6 0 0 1-3-3c-.1-.4-.1-.8 0-1.1z"
-							fill="#fff"
-						/>
-					</svg>
-					<span>{t.transferCalc.whatsapp}</span>
-					<span class="arrow" aria-hidden="true" style="margin-left:4px;">→</span>
-				</a>
-				<a class="btn btn--ghost" data-variant="pill" href={telHref}>
-					{t.home.ctaCall} · {t.banner.phone}
-				</a>
-			</div>
 		</div>
 	</section>
 
-	<!-- Trust signals -->
-	<section class="section section--tight tr-trust-section">
+	<!-- CTA callout (solid rust banner) -->
+	<section class="section section--tight">
 		<div class="wrap">
-			<ul class="tr-trust" aria-label={t.transfersPage.trustEyebrow}>
-				<li class="tr-trust__item">
-					<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 12h20" /><path d="M22 12l-4-4M22 12l-4 4" /><path d="M5 8v8" /></svg>
-					<span>{t.transfersPage.trustSignAirport}</span>
-				</li>
-				<li class="tr-trust__item">
-					<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="6" r="3" /><path d="M6 20v-3a4 4 0 014-4h4a4 4 0 014 4v3" /></svg>
-					<span>{t.transfersPage.trustChildSeat}</span>
-				</li>
-				<li class="tr-trust__item">
-					<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 01-8.5 8.5 8.5 8.5 0 01-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 1121 11.5z" /></svg>
-					<span>{t.transfersPage.trustWhatsApp}</span>
-				</li>
-			</ul>
+			<a class="tr-cta-callout" href="#kalkulator">
+				<svg
+					class="tr-cta-callout__icon"
+					width="26"
+					height="26"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.6"
+					aria-hidden="true"
+				>
+					<path d="M21 11.5a8.38 8.38 0 01-8.5 8.5 8.5 8.5 0 01-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 1121 11.5z" />
+				</svg>
+				<p>{t.transfersPage.ctaCallout}</p>
+				<span class="tr-cta-callout__arrow" aria-hidden="true">→</span>
+			</a>
 		</div>
 	</section>
 
@@ -104,7 +69,30 @@
 				lang={lang as 'hr' | 'en' | 'de'}
 				strings={t.transferCalc}
 				whatsAppNumber={contact.whatsappNumber}
+				phoneNumber={contact.tel}
+				emailAddress={contact.email}
 			/>
+		</div>
+	</section>
+
+	<!-- Company text -->
+	<section class="section section--tight">
+		<div class="wrap">
+			<p class="tr-company-text">{t.transfersPage.companyText}</p>
+		</div>
+	</section>
+
+	<!-- Terms -->
+	<section class="section section--tight">
+		<div class="wrap">
+			<div class="tr-terms">
+				<h2 class="tr-terms__title">{t.transfersPage.termsTitle}</h2>
+				<ul class="tr-terms__list">
+					{#each t.transfersPage.terms as term (term)}
+						<li>{term}</li>
+					{/each}
+				</ul>
+			</div>
 		</div>
 	</section>
 
@@ -207,7 +195,6 @@
 			</div>
 		</div>
 	</section>
-
 </main>
 
 <style>
@@ -225,19 +212,89 @@
 		margin-top: 8px;
 		letter-spacing: -0.005em;
 	}
-	.tr-hero__lead2 :global(p) {
-		margin: 0 0 12px;
+
+	.tr-cta-callout {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		padding: clamp(20px, 2.8vw, 28px) clamp(22px, 3.4vw, 32px);
+		background: var(--accent);
+		color: #fff;
+		border-radius: 2px;
+		max-width: 720px;
+		margin: 0 auto;
+		text-decoration: none;
+		transition: filter 0.18s ease, transform 0.18s ease;
 	}
-	.tr-hero__lead2 :global(p:last-child) {
-		margin-bottom: 0;
+	.tr-cta-callout:hover {
+		filter: brightness(1.06);
 	}
-	.tr-hero__lead2 :global(a) {
-		color: var(--accent);
-		text-decoration: underline;
-		text-underline-offset: 3px;
+	.tr-cta-callout:hover .tr-cta-callout__arrow {
+		transform: translateX(4px);
 	}
-	.tr-hero__lead2 :global(a:hover) {
-		text-decoration-thickness: 2px;
+	.tr-cta-callout__icon {
+		color: #fff;
+		flex-shrink: 0;
+		opacity: 0.9;
+	}
+	.tr-cta-callout p {
+		margin: 0;
+		flex: 1;
+		font-size: clamp(17px, 2vw, 21px);
+		line-height: 1.35;
+		font-weight: 500;
+		letter-spacing: -0.005em;
+	}
+	.tr-cta-callout__arrow {
+		font-size: 22px;
+		line-height: 1;
+		opacity: 0.95;
+		transition: transform 0.18s ease;
+		flex-shrink: 0;
+	}
+
+	.tr-company-text {
+		max-width: 60ch;
+		margin: 0 auto;
+		text-align: center;
+		font-size: clamp(15px, 1.6vw, 17px);
+		line-height: 1.65;
+		color: var(--muted);
+	}
+
+	.tr-terms {
+		max-width: 720px;
+		margin: 0 auto;
+	}
+	.tr-terms__title {
+		font-family: var(--font-display);
+		font-size: clamp(22px, 2.4vw, 28px);
+		margin: 0 0 18px;
+		letter-spacing: -0.005em;
+	}
+	.tr-terms__list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+	.tr-terms__list li {
+		position: relative;
+		padding-left: 22px;
+		font-size: 14.5px;
+		line-height: 1.6;
+		color: var(--fg);
+	}
+	.tr-terms__list li::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 10px;
+		width: 8px;
+		height: 1px;
+		background: var(--accent);
 	}
 
 	.tr-fleet {
