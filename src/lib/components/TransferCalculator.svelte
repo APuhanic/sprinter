@@ -40,6 +40,9 @@
 		call: string;
 		email: string;
 		hours: string;
+		estimateNote: string;
+		longHaulCaveat: string;
+		phone: string;
 		// WhatsApp message labels
 		mDest: string;
 		mVeh: string;
@@ -85,6 +88,7 @@
 	// ── Vehicle + form ────────────────────────────────────────────────────
 	let vehicle = $state<Vehicle>('e');
 	let name = $state('');
+	let phone = $state('');
 	let paxCount = $state(1);
 	let date = $state('');
 	let time = $state('');
@@ -96,6 +100,8 @@
 	);
 
 	let fare = $derived(routeStatus === 'ok' ? calcFare(lastKm, vehicle) : null);
+	let isEstimate = $derived(routeStatus === 'ok' && lastKm > 100);
+	let isLongHaul = $derived(routeStatus === 'ok' && lastKm > 200);
 
 	function placeLabel(p: google.maps.places.PlaceResult | null, fallback: string): string {
 		const raw = p?.name || p?.formatted_address || fallback;
@@ -267,11 +273,16 @@
 		lines.push('');
 		lines.push(`📍 ${fromFullText()} → ${toFullText()}`);
 		lines.push(`🚘 ${s.mVeh}: ${vehicleLabel}`);
-		if (fare !== null) lines.push(`💶 ${s.mPrice}: ${fare} €`);
+		if (fare !== null) {
+			const priceText = isEstimate ? `~${fare} € (${s.estimateNote})` : `${fare} €`;
+			lines.push(`💶 ${s.mPrice}: ${priceText}`);
+			if (isLongHaul) lines.push(`⚠ ${s.longHaulCaveat}`);
+		}
 		if (date) lines.push(`📅 ${s.mDate}: ${fmtDate(date)}`);
 		if (time) lines.push(`⏰ ${s.mTime}: ${time}`);
 		if (paxCount) lines.push(`👥 ${s.mPax}: ${paxCount}`);
 		if (name.trim()) lines.push(`👤 ${s.mName}: ${name.trim()}`);
+		if (phone.trim()) lines.push(`📞 ${phone.trim()}`);
 		if (note.trim()) lines.push(`✏ ${s.mNote}: ${note.trim()}`);
 		return lines.join('\n');
 	}
@@ -390,7 +401,15 @@
 	{:else if routeStatus === 'ok' && fare !== null}
 		<div class="tr-calc__result">
 			<div class="tr-calc__result-route">{fromName} → {toName}</div>
-			<div class="tr-calc__result-price">{fare} €</div>
+			<div class="tr-calc__result-price">
+				{#if isEstimate}~{/if}{fare} €
+			</div>
+			{#if isEstimate}
+				<div class="tr-calc__estimate-tag">({s.estimateNote})</div>
+			{/if}
+			{#if isLongHaul}
+				<div class="tr-calc__longhaul">⚠ {s.longHaulCaveat}</div>
+			{/if}
 			<div class="tr-calc__result-vehicle">{vehicleLabel}</div>
 			{#if travelTimeText}
 				<p class="tr-calc__result-inquiry">🕐 {s.travelTimeLabel}: {travelTimeText}</p>
@@ -454,6 +473,11 @@
 				/>
 			</label>
 		</div>
+
+		<label class="tr-calc__field">
+			<span class="tr-calc__label">{s.phone}</span>
+			<input class="tr-calc__input" type="tel" bind:value={phone} placeholder="+385…" />
+		</label>
 
 		<label class="tr-calc__field">
 			<span class="tr-calc__label">{s.note}</span>
@@ -524,6 +548,55 @@
 </div>
 
 <style>
+	/* Dark calculator panel on the page's beige background.
+	   Re-maps the global theme tokens for everything inside .tr-calc so app.css
+	   rules that reference these vars resolve to dark values automatically.
+	   Accent stays brand rust (#a84c28) for cohesion with the rest of the page. */
+	:global(.tr-calc) {
+		--bg: #14171c;
+		--fg: #f2f1ec;
+		--muted: #9aa0aa;
+		--soft: #1b1f26;
+		--line: rgba(255, 255, 255, 0.1);
+		--line-strong: rgba(255, 255, 255, 0.2);
+		border-color: rgba(255, 255, 255, 0.08) !important;
+	}
+	/* Result panel uses bg+fg inverted in app.css; remap so it stays dark. */
+	:global(.tr-calc__result) {
+		background: #1b1f26 !important;
+		color: var(--fg) !important;
+		border: 1px solid rgba(255, 255, 255, 0.06);
+	}
+	:global(.tr-calc__result-price) {
+		color: #d6764e !important;
+	}
+	:global(.tr-calc__result-vehicle) {
+		border-color: rgba(255, 255, 255, 0.18);
+		color: var(--muted);
+	}
+	.tr-calc__estimate-tag {
+		font-family: var(--font-mono);
+		font-size: 11px;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: color-mix(in srgb, #d6764e 70%, white 30%);
+		margin: -2px 0 10px;
+		opacity: 0.85;
+	}
+	.tr-calc__longhaul {
+		display: inline-block;
+		margin: 4px auto 12px;
+		padding: 8px 14px;
+		max-width: 44ch;
+		background: color-mix(in srgb, #d6764e 14%, transparent);
+		border: 1px solid color-mix(in srgb, #d6764e 50%, transparent);
+		border-radius: 2px;
+		font-size: 12.5px;
+		line-height: 1.5;
+		color: color-mix(in srgb, #d6764e 75%, white 25%);
+		text-align: left;
+	}
+
 	.tr-calc__field--addr {
 		position: relative;
 	}

@@ -40,14 +40,14 @@
 		</div>
 	</section>
 
-	<!-- CTA callout (gold banner) -->
+	<!-- CTA callout (solid rust banner) -->
 	<section class="section section--tight">
 		<div class="wrap">
-			<div class="tr-cta-callout">
+			<a class="tr-cta-callout" href="#kalkulator">
 				<svg
 					class="tr-cta-callout__icon"
-					width="22"
-					height="22"
+					width="26"
+					height="26"
 					viewBox="0 0 24 24"
 					fill="none"
 					stroke="currentColor"
@@ -57,7 +57,8 @@
 					<path d="M21 11.5a8.38 8.38 0 01-8.5 8.5 8.5 8.5 0 01-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 1121 11.5z" />
 				</svg>
 				<p>{t.transfersPage.ctaCallout}</p>
-			</div>
+				<span class="tr-cta-callout__arrow" aria-hidden="true">→</span>
+			</a>
 		</div>
 	</section>
 
@@ -215,23 +216,41 @@
 	.tr-cta-callout {
 		display: flex;
 		align-items: center;
-		gap: 14px;
-		padding: clamp(16px, 2.4vw, 22px) clamp(18px, 3vw, 28px);
-		background: color-mix(in srgb, var(--accent) 8%, var(--bg));
-		border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+		gap: 16px;
+		padding: clamp(20px, 2.8vw, 28px) clamp(22px, 3.4vw, 32px);
+		background: var(--accent);
+		color: #fff;
 		border-radius: 2px;
-		max-width: 640px;
+		max-width: 720px;
 		margin: 0 auto;
+		text-decoration: none;
+		transition: filter 0.18s ease, transform 0.18s ease;
+	}
+	.tr-cta-callout:hover {
+		filter: brightness(1.06);
+	}
+	.tr-cta-callout:hover .tr-cta-callout__arrow {
+		transform: translateX(4px);
 	}
 	.tr-cta-callout__icon {
-		color: var(--accent);
+		color: #fff;
 		flex-shrink: 0;
+		opacity: 0.9;
 	}
 	.tr-cta-callout p {
 		margin: 0;
-		font-size: clamp(15px, 1.6vw, 17px);
-		line-height: 1.5;
-		color: var(--fg);
+		flex: 1;
+		font-size: clamp(17px, 2vw, 21px);
+		line-height: 1.35;
+		font-weight: 500;
+		letter-spacing: -0.005em;
+	}
+	.tr-cta-callout__arrow {
+		font-size: 22px;
+		line-height: 1;
+		opacity: 0.95;
+		transition: transform 0.18s ease;
+		flex-shrink: 0;
 	}
 
 	.tr-company-text {
