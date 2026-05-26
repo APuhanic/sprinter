@@ -1,21 +1,14 @@
-/**
- * Transfer tariff — Sprinter d.o.o.
- *
- * Per-km cascading tariff. The customer enters any pickup/destination address
- * (Google Places Autocomplete), Maps Directions returns the driving distance,
- * and this module turns that distance into a price.
- *
- * - Base "polazak" fare per vehicle (boarding fee)
- * - Each segment has its own €/km rate; rates fall as distance grows so longer
- *   trips are cheaper per km
- * - Trips beyond MAX_KM are inquiry-only — no auto-quote
- */
+// Cascading per-km tariff with a flat €/km past 100 km. No distance cap.
 
 export type PaxKind = 'small' | 'large';
 export type Vehicle = 'e' | 'v';
 
 const E_START = 4.0;
 const V_START = 5.0;
+
+// Flat per-km rate applied to the entire distance for trips beyond 100 km.
+const E_FAR = 1.71;
+const V_FAR = 2.23;
 
 // [upper bound of segment in km, €/km within that segment]
 const E_SEG: ReadonlyArray<readonly [number, number]> = [
@@ -54,15 +47,13 @@ const V_SEG: ReadonlyArray<readonly [number, number]> = [
 	[100, 1.7]
 ];
 
-export const MAX_KM = 110;
-
-/**
- * Returns the one-way fare in € (rounded to the nearest €), or null when the
- * distance exceeds MAX_KM (caller should switch to inquiry mode).
- */
 export function calcFare(km: number, vehicle: Vehicle): number | null {
 	if (km <= 0) return null;
-	if (km > MAX_KM) return null;
+
+	if (km > 100) {
+		const far = vehicle === 'e' ? E_FAR : V_FAR;
+		return Math.round(km * far);
+	}
 
 	const seg = vehicle === 'e' ? E_SEG : V_SEG;
 	const start = vehicle === 'e' ? E_START : V_START;

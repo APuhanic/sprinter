@@ -1,12 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import {
-		calcFare,
-		vehicleFromPax,
-		MAX_KM,
-		type PaxKind,
-		type Vehicle
-	} from '$lib/data/transferPricing';
+	import { calcFare, type Vehicle } from '$lib/data/transferPricing';
 	import { loadGoogleMaps, hasGoogleMapsKey } from '$lib/googleMaps';
 	import DateInput from './DateInput.svelte';
 	import type { Lang } from '$lib/i18n';
@@ -18,65 +12,57 @@
 		fromPh: string;
 		toLabel: string;
 		toPh: string;
-		swap: string;
+		sendLocation: string;
 		routeCalculating: string;
 		routeError: string;
 		mapsUnavailable: string;
-		longTripTitle: string;
-		longTripBody: string;
 		trafficNote: string;
-		passengers: string;
 		eClass: string;
 		eClassRange: string;
 		vClass: string;
 		vClassRange: string;
-		errorRoute: string;
 		bookingTitle: string;
-		bookingInquiry: string;
 		travelTimeLabel: string;
-		onRequest: string;
-		onRequestSub: string;
 		fullName: string;
 		fullNamePh: string;
-		phone: string;
-		email: string;
+		paxCount: string;
 		date: string;
 		time: string;
 		timePlaceholder: string;
-		flight: string;
-		flightPh: string;
 		note: string;
 		notePh: string;
-		returnDiscount: string;
-		tripOneWay: string;
-		tripReturn: string;
-		tripReturnSuffix: string;
-		returnDate: string;
-		returnTime: string;
-		returnNoteLabel: string;
-		termsTitle: string;
-		terms: string[];
-		orderSummary: string;
-		outbound: string;
-		returnRow: string;
-		total: string;
 		vatIncl: string;
 		errorBook: string;
-		returnAfterOutboundError: string;
 		openPickerLabel: string;
 		sendBooking: string;
-		sendInquiry: string;
 		formNote: string;
 		whatsapp: string;
+		call: string;
+		email: string;
+		hours: string;
+		// WhatsApp message labels
+		mDest: string;
+		mVeh: string;
+		mPrice: string;
+		mDate: string;
+		mTime: string;
+		mPax: string;
+		mName: string;
+		mNote: string;
+		bookMsg: string;
+		locMsg: string;
+		mailSubject: string;
 	};
 
 	type Props = {
 		lang: Lang;
 		strings: CalcStrings;
 		whatsAppNumber: string;
+		phoneNumber: string;
+		emailAddress: string;
 	};
 
-	let { lang, strings: s, whatsAppNumber }: Props = $props();
+	let { lang, strings: s, whatsAppNumber, phoneNumber, emailAddress }: Props = $props();
 
 	// ── Route / Maps state ────────────────────────────────────────────────
 	let fromInput = $state<HTMLInputElement | null>(null);
@@ -89,55 +75,27 @@
 	let lastKm = $state(0);
 	let lastMin = $state(0);
 
-	type RouteStatus = 'idle' | 'loading' | 'ok' | 'long' | 'error';
+	type RouteStatus = 'idle' | 'loading' | 'ok' | 'error';
 	let routeStatus = $state<RouteStatus>('idle');
 	let mapsError = $state(false);
 	let directionsService: google.maps.DirectionsService | null = null;
 	let directionsRenderer: google.maps.DirectionsRenderer | null = null;
 	let mapInstance: google.maps.Map | null = null;
 
-	// ── Vehicle / trip ────────────────────────────────────────────────────
-	let pax = $state<PaxKind>('small');
-	let returnEnabled = $state(false);
-
-	// ── Booking form fields ───────────────────────────────────────────────
+	// ── Vehicle + form ────────────────────────────────────────────────────
+	let vehicle = $state<Vehicle>('e');
 	let name = $state('');
-	let phone = $state('');
-	let email = $state('');
+	let paxCount = $state(1);
 	let date = $state('');
 	let time = $state('');
-	let flight = $state('');
 	let note = $state('');
-	let returnDate = $state('');
-	let returnTime = $state('');
 	let errorBook = $state(false);
 
-	// ── Derived ────────────────────────────────────────────────────────────
-	let vehicle = $derived<Vehicle>(vehicleFromPax(pax));
 	let vehicleLabel = $derived(
-		pax === 'small' ? `${s.eClass} · ${s.eClassRange}` : `${s.vClass} · ${s.vClassRange}`
+		vehicle === 'e' ? `${s.eClass} · ${s.eClassRange}` : `${s.vClass} · ${s.vClassRange}`
 	);
 
-	// One-way fare from the cascading tariff; null when route not OK or out of range.
-	let oneWayFare = $derived(routeStatus === 'ok' ? calcFare(lastKm, vehicle) : null);
-	let returnFare = $derived.by(() => {
-		if (oneWayFare === null || !returnEnabled) return null;
-		return Math.round(oneWayFare * 0.9);
-	});
-	let totalFare = $derived.by(() => {
-		if (oneWayFare === null) return null;
-		return oneWayFare + (returnFare ?? 0);
-	});
-
-	let isInquiry = $derived(
-		routeStatus === 'long' || (mapsError && (fromText.trim() !== '' || toText.trim() !== ''))
-	);
-
-	let showBookingForm = $derived(
-		routeStatus === 'ok' ||
-			routeStatus === 'long' ||
-			(mapsError && fromText.trim().length > 2 && toText.trim().length > 2)
-	);
+	let fare = $derived(routeStatus === 'ok' ? calcFare(lastKm, vehicle) : null);
 
 	function placeLabel(p: google.maps.places.PlaceResult | null, fallback: string): string {
 		const raw = p?.name || p?.formatted_address || fallback;
@@ -147,9 +105,7 @@
 	let toName = $derived(placeLabel(toPlace, toText || s.toLabel));
 
 	let travelTimeText = $derived(
-		(routeStatus === 'ok' || routeStatus === 'long') && lastMin > 0
-			? `~${lastMin} min · ${Math.round(lastKm)} km`
-			: ''
+		routeStatus === 'ok' && lastMin > 0 ? `~${lastMin} min · ${Math.round(lastKm)} km` : ''
 	);
 
 	const today = new Date().toISOString().split('T')[0];
@@ -168,7 +124,6 @@
 	let initialized = false;
 	const removeListeners: Array<() => void> = [];
 
-	// Centered on the Istrian peninsula at zoom 9 — covers Pula → Rovinj → Opatija.
 	const MAP_DEFAULT_CENTER = { lat: 44.8666, lng: 13.8496 };
 	const MAP_DEFAULT_ZOOM = 9;
 
@@ -207,7 +162,6 @@
 			}
 
 			const opts: google.maps.places.AutocompleteOptions = {
-				componentRestrictions: { country: 'hr' },
 				fields: ['geometry', 'name', 'formatted_address']
 			};
 
@@ -254,7 +208,7 @@
 				const leg = res.routes[0].legs[0];
 				lastKm = (leg.distance?.value ?? 0) / 1000;
 				lastMin = Math.round((leg.duration?.value ?? 0) / 60);
-				routeStatus = lastKm > MAX_KM ? 'long' : 'ok';
+				routeStatus = 'ok';
 				directionsRenderer?.setDirections(res);
 			}
 		);
@@ -278,18 +232,6 @@
 		}
 	}
 
-	function swapInputs() {
-		const tmpText = fromText;
-		fromText = toText;
-		toText = tmpText;
-		if (fromInput) fromInput.value = fromText;
-		if (toInput) toInput.value = toText;
-		const tmpPlace = fromPlace;
-		fromPlace = toPlace;
-		toPlace = tmpPlace;
-		if (fromPlace && toPlace) maybeRunRoute();
-	}
-
 	onMount(() => {
 		initMaps();
 		return () => {
@@ -297,7 +239,7 @@
 		};
 	});
 
-	// ── WhatsApp ──────────────────────────────────────────────────────────
+	// ── WhatsApp / actions ────────────────────────────────────────────────
 	function fmtDate(d: string): string {
 		if (!d) return '';
 		const loc: Record<Lang, string> = { hr: 'hr-HR', en: 'en-GB', de: 'de-DE' };
@@ -312,55 +254,64 @@
 		}
 	}
 
-	function sendWhatsApp() {
+	function fromFullText(): string {
+		return fromPlace?.formatted_address ?? fromPlace?.name ?? fromText.trim();
+	}
+	function toFullText(): string {
+		return toPlace?.formatted_address ?? toPlace?.name ?? toText.trim();
+	}
+
+	function buildBookingMessage(): string {
+		const lines: string[] = [];
+		lines.push(s.bookMsg);
+		lines.push('');
+		lines.push(`📍 ${fromFullText()} → ${toFullText()}`);
+		lines.push(`🚘 ${s.mVeh}: ${vehicleLabel}`);
+		if (fare !== null) lines.push(`💶 ${s.mPrice}: ${fare} €`);
+		if (date) lines.push(`📅 ${s.mDate}: ${fmtDate(date)}`);
+		if (time) lines.push(`⏰ ${s.mTime}: ${time}`);
+		if (paxCount) lines.push(`👥 ${s.mPax}: ${paxCount}`);
+		if (name.trim()) lines.push(`👤 ${s.mName}: ${name.trim()}`);
+		if (note.trim()) lines.push(`✏ ${s.mNote}: ${note.trim()}`);
+		return lines.join('\n');
+	}
+
+	let waHref = $derived.by(() => {
+		if (routeStatus !== 'ok' || fare === null) {
+			return `https://wa.me/${whatsAppNumber}`;
+		}
+		return `https://wa.me/${whatsAppNumber}?text=${encodeURIComponent(buildBookingMessage())}`;
+	});
+
+	let mailHref = $derived.by(() => {
+		if (routeStatus !== 'ok' || fare === null) {
+			return `mailto:${emailAddress}`;
+		}
+		const subject = `${s.mailSubject}: ${fromName} → ${toName}`;
+		return `mailto:${emailAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+			buildBookingMessage()
+		)}`;
+	});
+
+	function sendLocation(ev: Event) {
+		ev.preventDefault();
+		const dest = toFullText();
+		let msg = s.locMsg;
+		if (dest) msg += `\n🏁 ${s.mDest}: ${dest}`;
+		window.open(`https://wa.me/${whatsAppNumber}?text=${encodeURIComponent(msg)}`, '_blank');
+	}
+
+	function sendBooking(ev: Event) {
 		errorBook = false;
-		if (!name.trim() || !phone.trim() || !date || !time) {
+		if (routeStatus !== 'ok' || fare === null) {
 			errorBook = true;
+			ev.preventDefault();
 			return;
 		}
-		if (returnEnabled && (!returnDate || !returnTime)) {
+		if (!name.trim() || !date || !time) {
 			errorBook = true;
-			return;
+			ev.preventDefault();
 		}
-
-		const emoji = isInquiry ? '❓' : '🚗';
-		const heading = isInquiry ? s.sendInquiry : s.sendBooking;
-
-		let msg = `${emoji} *${heading.toUpperCase()} – SPRINTER*\n\n`;
-		msg += `📍 ${fromName} → ${toName}\n`;
-		if (routeStatus === 'ok' || routeStatus === 'long') {
-			msg += `📏 ${Math.round(lastKm)} km · ~${lastMin} min\n`;
-		}
-		msg += `🚘 ${s.passengers}: ${vehicleLabel}\n`;
-
-		if (isInquiry) {
-			msg += `💶 ${s.onRequest}\n`;
-		} else if (returnEnabled && returnFare !== null && oneWayFare !== null) {
-			msg += `💶 *${s.total}: ${totalFare} €* (${s.vatIncl})\n`;
-			msg += `   ↗ ${s.outbound}: ${oneWayFare} €\n`;
-			msg += `   ↙ ${s.returnRow}: ${returnFare} € (−10%)\n`;
-		} else if (oneWayFare !== null) {
-			msg += `💶 *${s.total}: ${oneWayFare} €* (${s.vatIncl})\n`;
-		}
-
-		msg += `\n👤 ${s.fullName}: ${name.trim()}\n`;
-		msg += `📞 ${s.phone}: ${phone.trim()}\n`;
-		if (email.trim()) msg += `📧 ${s.email}: ${email.trim()}\n`;
-		msg += `\n✈️ *${s.outbound.toUpperCase()}*\n`;
-		msg += `📅 ${s.date}: ${fmtDate(date)}\n`;
-		msg += `🕐 ${s.time}: ${time}\n`;
-		if (flight.trim()) msg += `✈️ ${s.flight}: ${flight.trim()}\n`;
-
-		if (returnEnabled && returnDate && returnTime) {
-			msg += `\n🔄 *${s.returnRow.toUpperCase()}*\n`;
-			msg += `📅 ${s.date}: ${fmtDate(returnDate)}\n`;
-			msg += `🕐 ${s.time}: ${returnTime}\n`;
-		}
-
-		if (note.trim()) msg += `\n📝 ${s.note}: ${note.trim()}`;
-
-		const url = `https://wa.me/${whatsAppNumber}?text=${encodeURIComponent(msg)}`;
-		window.open(url, '_blank', 'noopener,noreferrer');
 	}
 </script>
 
@@ -374,109 +325,59 @@
 		<div class="tr-calc__maps-warn">{s.mapsUnavailable}</div>
 	{/if}
 
-	<!-- Route inputs -->
-	<div class="tr-calc__route">
-		<label class="tr-calc__field tr-calc__field--addr">
-			<span class="tr-calc__label">{s.fromLabel}</span>
-			<span class="tr-calc__pin tr-calc__pin--from" aria-hidden="true"></span>
-			<input
-				bind:this={fromInput}
-				bind:value={fromText}
-				oninput={() => invalidateOnType('from')}
-				class="tr-calc__input tr-calc__input--addr"
-				type="text"
-				autocomplete="off"
-				placeholder={s.fromPh}
-			/>
-		</label>
+	<!-- Pickup -->
+	<label class="tr-calc__field tr-calc__field--addr">
+		<span class="tr-calc__label">{s.fromLabel}</span>
+		<span class="tr-calc__pin tr-calc__pin--from" aria-hidden="true"></span>
+		<input
+			bind:this={fromInput}
+			bind:value={fromText}
+			oninput={() => invalidateOnType('from')}
+			class="tr-calc__input tr-calc__input--addr"
+			type="text"
+			autocomplete="off"
+			placeholder={s.fromPh}
+		/>
+	</label>
+	<button type="button" class="tr-calc__send-loc" onclick={sendLocation}>
+		<span aria-hidden="true">📍</span> {s.sendLocation}
+	</button>
 
-		<button
-			type="button"
-			class="tr-calc__swap"
-			onclick={swapInputs}
-			aria-label={s.swap}
-			tabindex="-1"
-		>
-			<svg
-				width="16"
-				height="16"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				aria-hidden="true"
-			>
-				<path d="M7 10l-3 3 3 3M4 13h12M17 14l3-3-3-3M20 11H8" />
-			</svg>
-		</button>
-
-		<label class="tr-calc__field tr-calc__field--addr">
-			<span class="tr-calc__label">{s.toLabel}</span>
-			<span class="tr-calc__pin tr-calc__pin--to" aria-hidden="true"></span>
-			<input
-				bind:this={toInput}
-				bind:value={toText}
-				oninput={() => invalidateOnType('to')}
-				class="tr-calc__input tr-calc__input--addr"
-				type="text"
-				autocomplete="off"
-				placeholder={s.toPh}
-			/>
-		</label>
-	</div>
+	<!-- Destination -->
+	<label class="tr-calc__field tr-calc__field--addr">
+		<span class="tr-calc__label">{s.toLabel}</span>
+		<span class="tr-calc__pin tr-calc__pin--to" aria-hidden="true"></span>
+		<input
+			bind:this={toInput}
+			bind:value={toText}
+			oninput={() => invalidateOnType('to')}
+			class="tr-calc__input tr-calc__input--addr"
+			type="text"
+			autocomplete="off"
+			placeholder={s.toPh}
+		/>
+	</label>
 
 	<!-- Vehicle -->
-	<div class="tr-calc__field">
-		<span class="tr-calc__label">{s.passengers}</span>
-		<div class="tr-calc__pax">
-			<label class="tr-calc__pax-opt">
-				<input type="radio" name="tr-pax" value="small" bind:group={pax} />
-				<div>
-					<span class="tr-calc__pax-title">{s.eClassRange}</span>
-					<span class="tr-calc__pax-sub">{s.eClass}</span>
-				</div>
-			</label>
-			<label class="tr-calc__pax-opt">
-				<input type="radio" name="tr-pax" value="large" bind:group={pax} />
-				<div>
-					<span class="tr-calc__pax-title">{s.vClassRange}</span>
-					<span class="tr-calc__pax-sub">{s.vClass}</span>
-				</div>
-			</label>
-		</div>
-	</div>
-
-	<!-- Trip type -->
-	<div class="tr-calc__trip">
-		<div
-			class="tr-calc__trip-toggle"
-			role="radiogroup"
-			aria-label={s.tripOneWay + ' / ' + s.tripReturn}
+	<div class="tr-calc__veh">
+		<button
+			type="button"
+			class="tr-calc__veh-btn"
+			class:tr-calc__veh-btn--on={vehicle === 'e'}
+			onclick={() => (vehicle = 'e')}
 		>
-			<label class="tr-calc__trip-opt" class:tr-calc__trip-opt--active={!returnEnabled}>
-				<input
-					type="radio"
-					name="tr-trip"
-					value="one"
-					checked={!returnEnabled}
-					onchange={() => (returnEnabled = false)}
-				/>
-				<span>{s.tripOneWay}</span>
-			</label>
-			<label class="tr-calc__trip-opt" class:tr-calc__trip-opt--active={returnEnabled}>
-				<input
-					type="radio"
-					name="tr-trip"
-					value="return"
-					checked={returnEnabled}
-					onchange={() => (returnEnabled = true)}
-				/>
-				<span>{s.tripReturn}</span>
-				<span class="tr-calc__trip-badge">{s.tripReturnSuffix}</span>
-			</label>
-		</div>
+			<span class="tr-calc__veh-title">{s.eClass}</span>
+			<span class="tr-calc__veh-sub">{s.eClassRange}</span>
+		</button>
+		<button
+			type="button"
+			class="tr-calc__veh-btn"
+			class:tr-calc__veh-btn--on={vehicle === 'v'}
+			onclick={() => (vehicle = 'v')}
+		>
+			<span class="tr-calc__veh-title">{s.vClass}</span>
+			<span class="tr-calc__veh-sub">{s.vClassRange}</span>
+		</button>
 	</div>
 
 	<!-- Result panel -->
@@ -486,39 +387,11 @@
 		</div>
 	{:else if routeStatus === 'error'}
 		<p class="tr-calc__error">{s.routeError}</p>
-	{:else if routeStatus === 'long'}
-		<div class="tr-calc__result tr-calc__result--inquiry">
-			<div class="tr-calc__result-route">{fromName} → {toName}</div>
-			<div class="tr-calc__longtrip-title">{s.longTripTitle}</div>
-			<p class="tr-calc__longtrip-body">{s.longTripBody}</p>
-			<div class="tr-calc__result-vehicle">{vehicleLabel}</div>
-			{#if travelTimeText}
-				<p class="tr-calc__result-inquiry">🕐 {s.travelTimeLabel}: {travelTimeText}</p>
-			{/if}
-		</div>
-	{:else if routeStatus === 'ok' && oneWayFare !== null}
+	{:else if routeStatus === 'ok' && fare !== null}
 		<div class="tr-calc__result">
 			<div class="tr-calc__result-route">{fromName} → {toName}</div>
-			<div class="tr-calc__result-price">{totalFare ?? oneWayFare} €</div>
+			<div class="tr-calc__result-price">{fare} €</div>
 			<div class="tr-calc__result-vehicle">{vehicleLabel}</div>
-
-			{#if returnEnabled && returnFare !== null}
-				<div class="tr-calc__breakdown">
-					<div class="tr-calc__brk-row">
-						<span>{s.outbound}</span>
-						<span>{oneWayFare} €</span>
-					</div>
-					<div class="tr-calc__brk-row">
-						<span>{s.returnRow} <small class="tr-calc__discount">(−10%)</small></span>
-						<span>{returnFare} €</span>
-					</div>
-					<div class="tr-calc__brk-row tr-calc__brk-total">
-						<span>{s.total}</span>
-						<span>{totalFare} €</span>
-					</div>
-				</div>
-			{/if}
-
 			{#if travelTimeText}
 				<p class="tr-calc__result-inquiry">🕐 {s.travelTimeLabel}: {travelTimeText}</p>
 			{/if}
@@ -526,30 +399,51 @@
 		</div>
 	{/if}
 
-	<!-- Map preview (route visualisation) -->
+	<!-- Map preview -->
 	{#if !mapsError}
 		<div
 			class="tr-calc__map"
-			class:tr-calc__map--visible={routeStatus === 'ok' ||
-				routeStatus === 'long' ||
-				routeStatus === 'loading'}
+			class:tr-calc__map--visible={routeStatus === 'ok' || routeStatus === 'loading'}
 			bind:this={mapElement}
 		></div>
 	{/if}
 
 	<!-- Booking form -->
-	{#if showBookingForm}
-		<div class="tr-calc__booking" id="tr-booking">
-			<div class="tr-calc__title">
-				{isInquiry ? s.bookingInquiry : s.bookingTitle}
-			</div>
+	<div class="tr-calc__booking">
+		<div class="tr-calc__title">{s.bookingTitle}</div>
 
-			{#if isInquiry}
-				<p class="tr-calc__result-inquiry" style="text-align:left; margin: -10px 0 18px;">
-					{s.onRequestSub}
-				</p>
-			{/if}
+		<div class="tr-calc__two-col">
+			<label class="tr-calc__field">
+				<span class="tr-calc__label">{s.date}</span>
+				<DateInput
+					bind:value={date}
+					min={today}
+					aria-label={s.date}
+					openPickerLabel={s.openPickerLabel}
+				/>
+			</label>
+			<label class="tr-calc__field">
+				<span class="tr-calc__label">{s.time}</span>
+				<select class="tr-calc__input" bind:value={time}>
+					<option value="">{s.timePlaceholder}</option>
+					{#each timeOptions as t (t)}
+						<option value={t}>{t}</option>
+					{/each}
+				</select>
+			</label>
+		</div>
 
+		<div class="tr-calc__two-col">
+			<label class="tr-calc__field">
+				<span class="tr-calc__label">{s.paxCount}</span>
+				<input
+					class="tr-calc__input"
+					type="number"
+					min="1"
+					max="7"
+					bind:value={paxCount}
+				/>
+			</label>
 			<label class="tr-calc__field">
 				<span class="tr-calc__label">{s.fullName}</span>
 				<input
@@ -559,172 +453,77 @@
 					placeholder={s.fullNamePh}
 				/>
 			</label>
+		</div>
 
-			<div class="tr-calc__two-col">
-				<label class="tr-calc__field">
-					<span class="tr-calc__label">{s.phone}</span>
-					<input class="tr-calc__input" type="tel" bind:value={phone} placeholder="+385..." />
-				</label>
-				<label class="tr-calc__field">
-					<span class="tr-calc__label">{s.email}</span>
-					<input
-						class="tr-calc__input"
-						type="email"
-						bind:value={email}
-						placeholder="your@email.com"
-					/>
-				</label>
-			</div>
+		<label class="tr-calc__field">
+			<span class="tr-calc__label">{s.note}</span>
+			<input class="tr-calc__input" type="text" bind:value={note} placeholder={s.notePh} />
+		</label>
 
-			<div class="tr-calc__two-col">
-				<label class="tr-calc__field">
-					<span class="tr-calc__label">{s.date}</span>
-					<DateInput
-						bind:value={date}
-						min={today}
-						aria-label={s.date}
-						openPickerLabel={s.openPickerLabel}
-					/>
-				</label>
-				<label class="tr-calc__field">
-					<span class="tr-calc__label">{s.time}</span>
-					<select class="tr-calc__input" bind:value={time}>
-						<option value="">{s.timePlaceholder}</option>
-						{#each timeOptions as t (t)}
-							<option value={t}>{t}</option>
-						{/each}
-					</select>
-				</label>
-			</div>
+		{#if errorBook}
+			<p class="tr-calc__error">{s.errorBook}</p>
+		{/if}
 
-			<label class="tr-calc__field">
-				<span class="tr-calc__label">{s.flight}</span>
-				<input
-					class="tr-calc__input"
-					type="text"
-					bind:value={flight}
-					placeholder={s.flightPh}
+		<a
+			class="tr-calc__send"
+			href={waHref}
+			target="_blank"
+			rel="noopener noreferrer"
+			onclick={sendBooking}
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="18"
+				height="18"
+				viewBox="0 0 24 24"
+				fill="currentColor"
+				aria-hidden="true"
+			>
+				<path
+					d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"
 				/>
-			</label>
+			</svg>
+			<span>{s.sendBooking}</span>
+		</a>
 
-			<label class="tr-calc__field">
-				<span class="tr-calc__label">{s.note}</span>
-				<textarea class="tr-calc__input" bind:value={note} placeholder={s.notePh}></textarea>
-			</label>
-
-			{#if !isInquiry && returnEnabled}
-				<div class="tr-calc__return">
-					<div class="tr-calc__return-header">
-						<span class="tr-calc__return-label">{s.returnRow}</span>
-						<span class="tr-calc__discount-badge">{s.returnDiscount}</span>
-					</div>
-					<div class="tr-calc__return-fields tr-calc__return-fields--bare">
-						<div class="tr-calc__two-col">
-							<label class="tr-calc__field" style="margin-bottom:0">
-								<span class="tr-calc__label">{s.returnDate}</span>
-								<DateInput
-									bind:value={returnDate}
-									min={date || today}
-									aria-label={s.returnDate}
-									openPickerLabel={s.openPickerLabel}
-									invalidMessage={s.returnAfterOutboundError}
-								/>
-							</label>
-							<label class="tr-calc__field" style="margin-bottom:0">
-								<span class="tr-calc__label">{s.returnTime}</span>
-								<select class="tr-calc__input" bind:value={returnTime}>
-									<option value="">{s.timePlaceholder}</option>
-									{#each timeOptions as t (t)}
-										<option value={t}>{t}</option>
-									{/each}
-								</select>
-							</label>
-						</div>
-						{#if returnFare !== null}
-							<p class="tr-calc__return-note">
-								{s.returnNoteLabel}: <strong>{returnFare} €</strong> (−10%)
-							</p>
-						{/if}
-					</div>
-				</div>
-			{/if}
-
-			<!-- Terms -->
-			<div class="tr-calc__terms">
-				<div class="tr-calc__terms-title">{s.termsTitle}</div>
-				<ul>
-					{#each s.terms as term (term)}
-						<li>{term}</li>
-				{/each}
-				</ul>
-			</div>
-
-			<!-- Summary -->
-			{#if !isInquiry && oneWayFare !== null}
-				<div class="tr-calc__summary">
-					<div class="tr-calc__summary-title">{s.orderSummary}</div>
-					<div class="tr-calc__summary-rows">
-						{#if name.trim()}<div>👤 {name.trim()}</div>{/if}
-						<div>📍 {fromName} → {toName}</div>
-						<div>🚘 {vehicleLabel}</div>
-						{#if date && time}
-							<div>📅 {s.outbound}: {fmtDate(date)} · {time}</div>
-						{/if}
-						{#if returnEnabled && returnDate && returnTime}
-							<div>🔄 {s.returnRow}: {fmtDate(returnDate)} · {returnTime}</div>
-						{/if}
-					</div>
-					<div class="tr-calc__summary-totals">
-						<div class="tr-calc__brk-row">
-							<span>{s.outbound}</span>
-							<span>{oneWayFare} €</span>
-						</div>
-						{#if returnEnabled && returnFare !== null}
-							<div class="tr-calc__brk-row">
-								<span
-									>{s.returnRow} <small class="tr-calc__discount">(−10%)</small></span
-								>
-								<span>{returnFare} €</span>
-							</div>
-						{/if}
-						<div class="tr-calc__summary-total">
-							{s.total}: <strong>{totalFare} €</strong>
-							<span class="tr-calc__vat">({s.vatIncl})</span>
-						</div>
-					</div>
-				</div>
-			{/if}
-
-			{#if errorBook}
-				<p class="tr-calc__error">{s.errorBook}</p>
-			{/if}
-
-			<button class="tr-calc__send" type="button" onclick={sendWhatsApp}>
+		<div class="tr-calc__quick-row">
+			<a class="tr-calc__quick tr-calc__quick--gold" href={`tel:${phoneNumber}`}>
 				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="18"
-					height="18"
+					width="14"
+					height="14"
 					viewBox="0 0 24 24"
-					fill="currentColor"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
 					aria-hidden="true"
 				>
 					<path
-						d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"
+						d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3-8.6A2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.3-1.2a2 2 0 012.1-.5c.9.3 1.8.6 2.8.7a2 2 0 011.8 2z"
 					/>
 				</svg>
-				<span>{isInquiry ? s.sendInquiry : s.sendBooking}</span>
-			</button>
-
-			<p class="tr-calc__form-note">{s.formNote}</p>
+				<span>{s.call}</span>
+			</a>
+			<a class="tr-calc__quick" href={mailHref}>
+				<svg
+					width="14"
+					height="14"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					aria-hidden="true"
+				>
+					<path d="M4 4h16v16H4zM4 6l8 6 8-6" />
+				</svg>
+				<span>{s.email}</span>
+			</a>
 		</div>
-	{/if}
+
+		<p class="tr-calc__hours">🕐 {s.hours}</p>
+	</div>
 </div>
 
 <style>
-	/* Address inputs with pin + swap */
-	.tr-calc__route {
-		position: relative;
-	}
 	.tr-calc__field--addr {
 		position: relative;
 	}
@@ -748,31 +547,58 @@
 		box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
 	}
 
-	.tr-calc__swap {
-		position: absolute;
-		right: 8px;
-		top: 50%;
-		transform: translateY(-50%);
-		width: 34px;
-		height: 34px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+	.tr-calc__send-loc {
+		display: inline-block;
+		margin: -8px 0 14px;
+		padding: 0;
+		font-size: 12.5px;
+		color: var(--accent);
+		background: transparent;
+		border: 0;
+		text-decoration: none;
+		cursor: pointer;
+		font-family: inherit;
+	}
+	.tr-calc__send-loc:hover {
+		text-decoration: underline;
+	}
+
+	.tr-calc__veh {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 10px;
+		margin-bottom: 18px;
+	}
+	.tr-calc__veh-btn {
 		background: var(--bg);
 		border: 1px solid var(--line);
-		color: var(--accent);
-		border-radius: 50%;
+		border-radius: 2px;
+		padding: 14px;
+		text-align: center;
 		cursor: pointer;
-		transition: border-color 0.18s ease, transform 0.25s ease;
-		z-index: 2;
+		color: var(--fg);
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		transition: border-color 0.18s ease, background 0.18s ease;
 	}
-	.tr-calc__swap:hover {
+	.tr-calc__veh-btn:hover {
 		border-color: var(--accent);
-		transform: translateY(-50%) rotate(180deg);
 	}
-	.tr-calc__swap:focus-visible {
-		outline: 2px solid color-mix(in srgb, var(--accent) 45%, transparent);
-		outline-offset: 2px;
+	.tr-calc__veh-btn--on {
+		border-color: var(--accent);
+		background: color-mix(in srgb, var(--accent) 6%, var(--bg));
+	}
+	.tr-calc__veh-title {
+		font-size: 15px;
+		font-weight: 500;
+	}
+	.tr-calc__veh-btn--on .tr-calc__veh-title {
+		color: var(--accent);
+	}
+	.tr-calc__veh-sub {
+		font-size: 12px;
+		color: var(--muted);
 	}
 
 	.tr-calc__maps-warn {
@@ -798,26 +624,7 @@
 		background: color-mix(in srgb, var(--soft) 30%, transparent) !important;
 		color: var(--fg) !important;
 	}
-	:global(.tr-calc__result--inquiry) {
-		background: var(--fg);
-		color: var(--bg);
-	}
-	.tr-calc__longtrip-title {
-		font-family: var(--font-display);
-		font-size: clamp(22px, 3vw, 28px);
-		color: color-mix(in srgb, var(--accent) 70%, white 30%);
-		margin: 6px 0 4px;
-		letter-spacing: -0.005em;
-	}
-	.tr-calc__longtrip-body {
-		font-size: 13.5px;
-		line-height: 1.55;
-		max-width: 42ch;
-		margin: 0 auto 10px;
-		opacity: 0.75;
-	}
 
-	/* Traffic delay note inside the result panel (dark bg) */
 	.tr-calc__traffic-note {
 		margin-top: 14px;
 		font-size: 12.5px;
@@ -829,7 +636,6 @@
 		opacity: 0.85;
 	}
 
-	/* Map preview */
 	.tr-calc__map {
 		display: none;
 		width: 100%;
@@ -842,5 +648,40 @@
 	}
 	.tr-calc__map--visible {
 		display: block;
+	}
+
+	.tr-calc__quick-row {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 10px;
+		margin-top: 12px;
+	}
+	.tr-calc__quick {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+		padding: 12px;
+		border: 1px solid var(--line);
+		border-radius: 2px;
+		font-size: 14px;
+		color: var(--muted);
+		text-decoration: none;
+		transition: border-color 0.18s ease, color 0.18s ease;
+	}
+	.tr-calc__quick:hover {
+		border-color: var(--accent);
+		color: var(--fg);
+	}
+	.tr-calc__quick--gold {
+		border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+		color: var(--accent);
+	}
+
+	.tr-calc__hours {
+		margin-top: 14px;
+		text-align: center;
+		font-size: 12.5px;
+		color: var(--muted);
 	}
 </style>
