@@ -40,28 +40,6 @@
 		</div>
 	</section>
 
-	<!-- CTA callout (solid rust banner) -->
-	<section class="section section--tight">
-		<div class="wrap">
-			<a class="tr-cta-callout" href="#kalkulator">
-				<svg
-					class="tr-cta-callout__icon"
-					width="26"
-					height="26"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="1.6"
-					aria-hidden="true"
-				>
-					<path d="M21 11.5a8.38 8.38 0 01-8.5 8.5 8.5 8.5 0 01-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 1121 11.5z" />
-				</svg>
-				<p>{t.transfersPage.ctaCallout}</p>
-				<span class="tr-cta-callout__arrow" aria-hidden="true">→</span>
-			</a>
-		</div>
-	</section>
-
 	<!-- Calculator -->
 	<section class="section section--tight" id="kalkulator">
 		<div class="wrap">
@@ -211,46 +189,6 @@
 		font-size: 0.6em;
 		margin-top: 8px;
 		letter-spacing: -0.005em;
-	}
-
-	.tr-cta-callout {
-		display: flex;
-		align-items: center;
-		gap: 16px;
-		padding: clamp(20px, 2.8vw, 28px) clamp(22px, 3.4vw, 32px);
-		background: var(--accent);
-		color: #fff;
-		border-radius: 2px;
-		max-width: 720px;
-		margin: 0 auto;
-		text-decoration: none;
-		transition: filter 0.18s ease, transform 0.18s ease;
-	}
-	.tr-cta-callout:hover {
-		filter: brightness(1.06);
-	}
-	.tr-cta-callout:hover .tr-cta-callout__arrow {
-		transform: translateX(4px);
-	}
-	.tr-cta-callout__icon {
-		color: #fff;
-		flex-shrink: 0;
-		opacity: 0.9;
-	}
-	.tr-cta-callout p {
-		margin: 0;
-		flex: 1;
-		font-size: clamp(17px, 2vw, 21px);
-		line-height: 1.35;
-		font-weight: 500;
-		letter-spacing: -0.005em;
-	}
-	.tr-cta-callout__arrow {
-		font-size: 22px;
-		line-height: 1;
-		opacity: 0.95;
-		transition: transform 0.18s ease;
-		flex-shrink: 0;
 	}
 
 	.tr-company-text {
