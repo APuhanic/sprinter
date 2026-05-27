@@ -609,17 +609,14 @@ export default {
 		titleSuffix: ' - Pula - Istrien - Europa',
 		leadOne:
 			'Sie setzen sich. Der Fahrer schließt die Tür. Und Sie müssen an nichts anderes mehr denken.',
-		ctaCallout:
-			'Buchen Sie schnell und einfach Ihre Taxifahrt oder Ihren Transfer über unser Formular.',
 		companyText:
 			'Sprinter ist ein Familienunternehmen aus Pula. Wir organisieren private Transfers und Taxifahrten in Pula, in ganz Istrien und Europa — zuverlässig, pünktlich, ohne Überraschungen.',
 		termsTitle: 'Bedingungen & Informationen',
 		terms: [
-			'Bei Verkehrsstaus kann sich der Preis um 0,30 € pro Minute Verzögerung erhöhen.',
 			'Empfang mit Namensschild — auf Anfrage.',
 			'Kindersitz kostenlos — bitte in der Anmerkung angeben.',
 			'Buchungsbestätigung per WhatsApp innerhalb von 30 Minuten.',
-			'Bei längeren Transfers können zusätzliche Kosten anfallen — Übernachtung des Fahrers, Maut, Wartezeit, Fähren.'
+			'Bei längeren Transfers können zusätzliche Kosten anfallen — Übernachtung des Fahrers, Wartezeit, Fähren.'
 		],
 		fleetEyebrow: 'Fuhrpark',
 		fleetTitle: 'Zwei Fahrzeuge, ein Standard',
@@ -648,7 +645,6 @@ export default {
 		routeCalculating: 'Berechne…',
 		routeError: 'Route konnte nicht berechnet werden. Bitte Adressen prüfen.',
 		mapsUnavailable: 'Live-Berechnung derzeit nicht verfügbar — senden Sie eine Anfrage, Antwort innerhalb von 30 Minuten.',
-		trafficNote: 'Bei Verkehrsstaus kann sich der Preis um 0,30 € pro Minute Verzögerung erhöhen.',
 		eClass: 'E-Klasse',
 		eClassRange: '1 – 3 Personen',
 		vClass: 'V-Klasse',
@@ -666,7 +662,16 @@ export default {
 		notePh: 'Flugnr., Kindersitz…',
 		vatIncl: 'inkl. MwSt.',
 		estimateNote: 'ca.',
-		longHaulCaveat: 'Preis enthält keine Übernachtung des Fahrers, Maut, Fähren.',
+		longHaulCaveat:
+			'Bei langen Strecken sind die Preise nur Richtwerte und können je nach Streckenlänge und Zusatzkosten variieren. Bitte warten Sie auf unsere Bestätigung.',
+		modeNowMain: 'Sofortige Fahrt',
+		modeNowSub: 'Book now',
+		modeLaterMain: 'Für später',
+		modeLaterSub: 'Book for later',
+		nowToken: 'SOFORT',
+		mapNavLabel: 'Navigation',
+		gpsAsking: 'Standort wird ermittelt…',
+		gpsDenied: 'Standortzugriff verweigert — Anfrage wird per WhatsApp gesendet.',
 		errorBook: 'Bitte geben Sie Name, Datum und Uhrzeit ein.',
 		sendBooking: 'Über WhatsApp buchen',
 		formNote: 'Verfügbar 07 – 24 · sprinter.hr · +385 95 722 6918',
@@ -705,7 +710,7 @@ export default {
 			'Großzügigkeit ohne Kompromisse. Unsere V-Klasse bietet entspannten und sicheren Transport für Gruppen oder Familien.',
 		pricingTitle: 'Wie erhalten Sie ein Angebot für Ihren Transfer?',
 		pricingIntro:
-			'Jeder Transfer ist einzigartig und beinhaltet variable Kosten wie Fahrerübernachtungen, Parkgebühren, Fähr-/Mautgebühren und Reisezeit.',
+			'Jeder Transfer ist einzigartig und beinhaltet variable Kosten wie Fahrerübernachtungen, Parkgebühren, Fährgebühren und Reisezeit.',
 		pricingNote:
 			'Wir erstellen jedes Angebot individuell, schnell und unkompliziert, sobald Sie uns Ihre Reisedetails mitteilen.',
 		pricingContact:
