@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import { calcFare, type Vehicle } from '$lib/data/transferPricing';
 	import { loadGoogleMaps, hasGoogleMapsKey } from '$lib/googleMaps';
-	import DateInput from './DateInput.svelte';
 	import type { Lang } from '$lib/i18n';
 
 	type CalcStrings = {
@@ -33,7 +32,6 @@
 		notePh: string;
 		vatIncl: string;
 		errorBook: string;
-		openPickerLabel: string;
 		sendBooking: string;
 		formNote: string;
 		whatsapp: string;
@@ -118,10 +116,11 @@
 
 	const timeOptions = (() => {
 		const list: string[] = [];
-		for (let h = 0; h < 24; h++) {
-			for (const m of [0, 30]) {
-				list.push(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`);
-			}
+		// Working hours only: 07:00 through 24:00, in 15-minute increments.
+		for (let mins = 7 * 60; mins <= 24 * 60; mins += 15) {
+			const h = Math.floor(mins / 60);
+			const m = mins % 60;
+			list.push(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`);
 		}
 		return list;
 	})();
@@ -434,11 +433,12 @@
 		<div class="tr-calc__two-col">
 			<label class="tr-calc__field">
 				<span class="tr-calc__label">{s.date}</span>
-				<DateInput
+				<input
+					class="tr-calc__input"
+					type="date"
 					bind:value={date}
 					min={today}
 					aria-label={s.date}
-					openPickerLabel={s.openPickerLabel}
 				/>
 			</label>
 			<label class="tr-calc__field">

@@ -668,7 +668,6 @@ export default {
 		estimateNote: 'okvirno',
 		longHaulCaveat: 'Cijena ne uključuje noćenje vozača, cestarine, trajekte.',
 		errorBook: 'Molimo unesite ime, datum i vrijeme.',
-		openPickerLabel: 'Otvori kalendar',
 		sendBooking: 'Rezerviraj na WhatsApp',
 		formNote: 'Dostupni 07 – 24 · sprinter.hr · +385 95 722 6918',
 		whatsapp: 'WhatsApp',
