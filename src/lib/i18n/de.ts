@@ -668,7 +668,6 @@ export default {
 		estimateNote: 'ca.',
 		longHaulCaveat: 'Preis enthält keine Übernachtung des Fahrers, Maut, Fähren.',
 		errorBook: 'Bitte geben Sie Name, Datum und Uhrzeit ein.',
-		openPickerLabel: 'Kalender öffnen',
 		sendBooking: 'Über WhatsApp buchen',
 		formNote: 'Verfügbar 07 – 24 · sprinter.hr · +385 95 722 6918',
 		whatsapp: 'WhatsApp',

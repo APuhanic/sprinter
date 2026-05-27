@@ -667,7 +667,6 @@ export default {
 		estimateNote: 'approx.',
 		longHaulCaveat: 'Price does not include driver overnight stay, tolls, ferries.',
 		errorBook: 'Please enter your name, date and time.',
-		openPickerLabel: 'Open calendar',
 		sendBooking: 'Book via WhatsApp',
 		formNote: 'Available 07 – 24 · sprinter.hr · +385 95 722 6918',
 		whatsapp: 'WhatsApp',
