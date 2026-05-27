@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import { calcFare, type Vehicle } from '$lib/data/transferPricing';
 	import { loadGoogleMaps, hasGoogleMapsKey } from '$lib/googleMaps';
-	import DateInput from './DateInput.svelte';
 	import type { Lang } from '$lib/i18n';
 
 	type CalcStrings = {
@@ -16,7 +15,6 @@
 		routeCalculating: string;
 		routeError: string;
 		mapsUnavailable: string;
-		trafficNote: string;
 		eClass: string;
 		eClassRange: string;
 		vClass: string;
@@ -33,7 +31,6 @@
 		notePh: string;
 		vatIncl: string;
 		errorBook: string;
-		openPickerLabel: string;
 		sendBooking: string;
 		formNote: string;
 		whatsapp: string;
@@ -42,6 +39,14 @@
 		hours: string;
 		estimateNote: string;
 		longHaulCaveat: string;
+		modeNowMain: string;
+		modeNowSub: string;
+		modeLaterMain: string;
+		modeLaterSub: string;
+		nowToken: string;
+		mapNavLabel: string;
+		gpsAsking: string;
+		gpsDenied: string;
 		phone: string;
 		// WhatsApp message labels
 		mDest: string;
@@ -101,7 +106,41 @@
 
 	let fare = $derived(routeStatus === 'ok' ? calcFare(lastKm, vehicle) : null);
 	let isEstimate = $derived(routeStatus === 'ok' && lastKm > 100);
-	let isLongHaul = $derived(routeStatus === 'ok' && lastKm > 200);
+	let isLongHaul = $derived(routeStatus === 'ok' && lastKm > 150);
+
+	// ── Booking-mode gate ─────────────────────────────────────────────────
+	// Dad's flow: user must pick "now" or "later" before the calculator unlocks.
+	// 'now' hides date/time and auto-fills them with today + the locale's "ODMAH"
+	// token so the WhatsApp message still has time info for the dispatcher.
+	let mode = $state<'now' | 'later' | null>(null);
+
+	function selectMode(next: 'now' | 'later') {
+		mode = next;
+		if (next === 'now') {
+			date = today;
+			time = s.nowToken;
+		} else {
+			// User picks fresh values for a scheduled ride.
+			date = '';
+			time = '';
+		}
+	}
+
+	// Multilingual rotating welcome banner — cycles through HR/DE/EN regardless
+	// of UI locale, so visitors landing in any language see all three.
+	const WELCOME_WORDS = [
+		'Dobrodošli',
+		'Putujte s nama',
+		'Uživajte',
+		'Willkommen',
+		'Reisen Sie mit uns',
+		'Genießen Sie',
+		'Welcome',
+		'Travel with us',
+		'Enjoy'
+	];
+	let welcomeIdx = $state(0);
+	let welcomeFade = $state(true);
 
 	function placeLabel(p: google.maps.places.PlaceResult | null, fallback: string): string {
 		const raw = p?.name || p?.formatted_address || fallback;
@@ -110,18 +149,26 @@
 	let fromName = $derived(placeLabel(fromPlace, fromText || s.fromLabel));
 	let toName = $derived(placeLabel(toPlace, toText || s.toLabel));
 
+	function fmtTime(mins: number): string {
+		if (mins < 60) return `${mins} min`;
+		const h = Math.floor(mins / 60);
+		const m = mins % 60;
+		return m > 0 ? `${h}h ${m} min` : `${h}h`;
+	}
+
 	let travelTimeText = $derived(
-		routeStatus === 'ok' && lastMin > 0 ? `~${lastMin} min · ${Math.round(lastKm)} km` : ''
+		routeStatus === 'ok' && lastMin > 0 ? `${fmtTime(lastMin)} · ${Math.round(lastKm)} km` : ''
 	);
 
 	const today = new Date().toISOString().split('T')[0];
 
 	const timeOptions = (() => {
 		const list: string[] = [];
-		for (let h = 0; h < 24; h++) {
-			for (const m of [0, 30]) {
-				list.push(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`);
-			}
+		// Working hours only: 07:00 through 24:00, in 15-minute increments.
+		for (let mins = 7 * 60; mins <= 24 * 60; mins += 15) {
+			const h = Math.floor(mins / 60);
+			const m = mins % 60;
+			list.push(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`);
 		}
 		return list;
 	})();
@@ -168,7 +215,10 @@
 			}
 
 			const opts: google.maps.places.AutocompleteOptions = {
-				fields: ['geometry', 'name', 'formatted_address']
+				fields: ['geometry', 'name', 'formatted_address'],
+				// Keep suggestions to the realistic operating area so users don't
+				// see Canada / Canary Islands in the dropdown.
+				componentRestrictions: { country: ['hr', 'si', 'it', 'at', 'de'] }
 			};
 
 			if (fromInput) {
@@ -240,7 +290,15 @@
 
 	onMount(() => {
 		initMaps();
+		const welcomeTimer = window.setInterval(() => {
+			welcomeFade = false;
+			window.setTimeout(() => {
+				welcomeIdx = (welcomeIdx + 1) % WELCOME_WORDS.length;
+				welcomeFade = true;
+			}, 500);
+		}, 2200);
 		return () => {
+			window.clearInterval(welcomeTimer);
 			while (removeListeners.length) removeListeners.pop()?.();
 		};
 	});
@@ -267,11 +325,18 @@
 		return toPlace?.formatted_address ?? toPlace?.name ?? toText.trim();
 	}
 
+	function buildMapsLink(): string {
+		const origin = encodeURIComponent(fromFullText());
+		const destination = encodeURIComponent(toFullText());
+		return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}`;
+	}
+
 	function buildBookingMessage(): string {
 		const lines: string[] = [];
 		lines.push(s.bookMsg);
 		lines.push('');
 		lines.push(`📍 ${fromFullText()} → ${toFullText()}`);
+		lines.push(`🗺️ ${s.mapNavLabel}: ${buildMapsLink()}`);
 		lines.push(`🚘 ${s.mVeh}: ${vehicleLabel}`);
 		if (fare !== null) {
 			const priceText = isEstimate ? `~${fare} € (${s.estimateNote})` : `${fare} €`;
@@ -304,12 +369,66 @@
 		)}`;
 	});
 
-	function sendLocation(ev: Event) {
-		ev.preventDefault();
+	let gpsBusy = $state(false);
+
+	function sendLocationFallback() {
 		const dest = toFullText();
 		let msg = s.locMsg;
 		if (dest) msg += `\n🏁 ${s.mDest}: ${dest}`;
 		window.open(`https://wa.me/${whatsAppNumber}?text=${encodeURIComponent(msg)}`, '_blank');
+	}
+
+	function reverseGeocode(lat: number, lng: number): Promise<string> {
+		return new Promise((resolve, reject) => {
+			if (!window.google?.maps) return reject(new Error('Maps not loaded'));
+			const geocoder = new google.maps.Geocoder();
+			geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+				if (status === 'OK' && results && results[0]) {
+					resolve(results[0].formatted_address);
+				} else {
+					reject(new Error(`Geocoder failed: ${status}`));
+				}
+			});
+		});
+	}
+
+	function sendLocation(ev: Event) {
+		ev.preventDefault();
+		if (gpsBusy) return;
+		// No GPS or Maps API → original WhatsApp inquiry flow.
+		if (!navigator.geolocation || mapsError) {
+			sendLocationFallback();
+			return;
+		}
+		gpsBusy = true;
+		navigator.geolocation.getCurrentPosition(
+			async (pos) => {
+				try {
+					const addr = await reverseGeocode(pos.coords.latitude, pos.coords.longitude);
+					// Populate the pickup field directly so the user sees the price.
+					fromText = addr;
+					fromPlace = {
+						formatted_address: addr,
+						name: addr,
+						geometry: {
+							location: new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude)
+						}
+					} as google.maps.places.PlaceResult;
+					maybeRunRoute();
+				} catch (err) {
+					console.warn('[Sprinter] reverse geocode failed:', err);
+					sendLocationFallback();
+				} finally {
+					gpsBusy = false;
+				}
+			},
+			(err) => {
+				console.warn('[Sprinter] geolocation denied:', err);
+				gpsBusy = false;
+				sendLocationFallback();
+			},
+			{ enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
+		);
 	}
 
 	function sendBooking(ev: Event) {
@@ -326,7 +445,34 @@
 	}
 </script>
 
-<div class="tr-calc">
+<div class="tr-welcome" aria-hidden="true">
+	<span class="tr-welcome__word" class:tr-welcome__word--hidden={!welcomeFade}>
+		{WELCOME_WORDS[welcomeIdx]}
+	</span>
+</div>
+
+<div class="tr-mode" role="group" aria-label={s.bookingTitle}>
+	<button
+		type="button"
+		class="tr-mode__btn"
+		class:tr-mode__btn--on={mode === 'now'}
+		onclick={() => selectMode('now')}
+	>
+		<span class="tr-mode__main">{s.modeNowMain}</span>
+		{#if s.modeNowSub}<span class="tr-mode__sub">{s.modeNowSub}</span>{/if}
+	</button>
+	<button
+		type="button"
+		class="tr-mode__btn"
+		class:tr-mode__btn--on={mode === 'later'}
+		onclick={() => selectMode('later')}
+	>
+		<span class="tr-mode__main">{s.modeLaterMain}</span>
+		{#if s.modeLaterSub}<span class="tr-mode__sub">{s.modeLaterSub}</span>{/if}
+	</button>
+</div>
+
+<div class="tr-calc" class:tr-calc--locked={mode === null} aria-disabled={mode === null}>
 	<div class="tr-calc__title">
 		{s.title}
 		<span class="tr-calc__title-sub">({s.vatNote})</span>
@@ -350,8 +496,9 @@
 			placeholder={s.fromPh}
 		/>
 	</label>
-	<button type="button" class="tr-calc__send-loc" onclick={sendLocation}>
-		<span aria-hidden="true">📍</span> {s.sendLocation}
+	<button type="button" class="tr-calc__send-loc" onclick={sendLocation} disabled={gpsBusy}>
+		<span aria-hidden="true">📍</span>
+		{gpsBusy ? s.gpsAsking : s.sendLocation}
 	</button>
 
 	<!-- Destination -->
@@ -414,7 +561,6 @@
 			{#if travelTimeText}
 				<p class="tr-calc__result-inquiry">🕐 {s.travelTimeLabel}: {travelTimeText}</p>
 			{/if}
-			<p class="tr-calc__traffic-note">⚠️ {s.trafficNote}</p>
 		</div>
 	{/if}
 
@@ -431,26 +577,29 @@
 	<div class="tr-calc__booking">
 		<div class="tr-calc__title">{s.bookingTitle}</div>
 
-		<div class="tr-calc__two-col">
-			<label class="tr-calc__field">
-				<span class="tr-calc__label">{s.date}</span>
-				<DateInput
-					bind:value={date}
-					min={today}
-					aria-label={s.date}
-					openPickerLabel={s.openPickerLabel}
-				/>
-			</label>
-			<label class="tr-calc__field">
-				<span class="tr-calc__label">{s.time}</span>
-				<select class="tr-calc__input" bind:value={time}>
-					<option value="">{s.timePlaceholder}</option>
-					{#each timeOptions as t (t)}
-						<option value={t}>{t}</option>
-					{/each}
-				</select>
-			</label>
-		</div>
+		{#if mode !== 'now'}
+			<div class="tr-calc__two-col">
+				<label class="tr-calc__field">
+					<span class="tr-calc__label">{s.date}</span>
+					<input
+						class="tr-calc__input"
+						type="date"
+						bind:value={date}
+						min={today}
+						aria-label={s.date}
+					/>
+				</label>
+				<label class="tr-calc__field">
+					<span class="tr-calc__label">{s.time}</span>
+					<select class="tr-calc__input" bind:value={time}>
+						<option value="">{s.timePlaceholder}</option>
+						{#each timeOptions as t (t)}
+							<option value={t}>{t}</option>
+						{/each}
+					</select>
+				</label>
+			</div>
+		{/if}
 
 		<div class="tr-calc__two-col">
 			<label class="tr-calc__field">
@@ -698,17 +847,6 @@
 		color: var(--fg) !important;
 	}
 
-	.tr-calc__traffic-note {
-		margin-top: 14px;
-		font-size: 12.5px;
-		line-height: 1.5;
-		max-width: 44ch;
-		margin-left: auto;
-		margin-right: auto;
-		color: color-mix(in srgb, var(--accent) 55%, white 45%);
-		opacity: 0.85;
-	}
-
 	.tr-calc__map {
 		display: none;
 		width: 100%;
@@ -756,5 +894,78 @@
 		text-align: center;
 		font-size: 12.5px;
 		color: var(--muted);
+	}
+
+	/* ── Welcome banner (animated multilingual greeting) ─────────────── */
+	.tr-welcome {
+		background: var(--accent);
+		border-radius: 2px;
+		padding: clamp(28px, 4vw, 40px) 22px;
+		text-align: center;
+		min-height: 86px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 18px;
+	}
+	.tr-welcome__word {
+		font-family: var(--font-display, 'Cormorant Garamond', Georgia, serif);
+		font-size: clamp(26px, 3.4vw, 36px);
+		font-weight: 500;
+		color: #fff;
+		line-height: 1.2;
+		transition: opacity 0.5s ease;
+		opacity: 1;
+	}
+	.tr-welcome__word--hidden {
+		opacity: 0;
+	}
+
+	/* ── Mode picker (now / later) ───────────────────────────────────── */
+	.tr-mode {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 10px;
+		margin-bottom: 18px;
+	}
+	.tr-mode__btn {
+		background: #1b1f26;
+		border: 1px solid rgba(255, 255, 255, 0.12);
+		border-radius: 2px;
+		padding: 16px 10px;
+		text-align: center;
+		cursor: pointer;
+		color: #f2f1ec;
+		font-family: inherit;
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		transition: border-color 0.18s ease, background 0.18s ease;
+	}
+	.tr-mode__btn:hover {
+		border-color: var(--accent);
+	}
+	.tr-mode__btn--on {
+		background: #0d0f12;
+		border-color: var(--accent);
+	}
+	.tr-mode__main {
+		font-size: 14px;
+		font-weight: 500;
+	}
+	.tr-mode__btn--on .tr-mode__main {
+		color: var(--accent);
+	}
+	.tr-mode__sub {
+		font-size: 11px;
+		color: #9aa0aa;
+	}
+
+	/* ── Locked calculator (until a mode is chosen) ──────────────────── */
+	.tr-calc--locked {
+		opacity: 0.45;
+		pointer-events: none;
+		user-select: none;
+		transition: opacity 0.2s ease;
 	}
 </style>

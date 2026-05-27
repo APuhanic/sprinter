@@ -608,17 +608,14 @@ export default {
 		titleSuffix: ' - Pula - Istria - Europe',
 		leadOne:
 			'You sit down. The driver closes the door. And you no longer need to think about anything else.',
-		ctaCallout:
-			'Quickly and easily book your taxi ride or transfer through our form.',
 		companyText:
 			'Sprinter is a family business from Pula. We arrange private transfers and taxi rides in Pula, across Istria and Europe — reliable, on time, no surprises.',
 		termsTitle: 'Terms & information',
 		terms: [
-			'In case of traffic delays, the fare may increase by €0.30 per minute of delay.',
 			'Name-sign meet & greet — on request.',
 			'Free child seat — please mention in the note.',
 			'Booking confirmation sent to your WhatsApp within 30 minutes.',
-			'Longer transfers may incur extra costs — driver overnight stay, tolls, waiting time, ferries.'
+			'Longer transfers may incur extra costs — driver overnight stay, waiting time, ferries.'
 		],
 		fleetEyebrow: 'Fleet',
 		fleetTitle: 'Two vehicles, one standard',
@@ -647,7 +644,6 @@ export default {
 		routeCalculating: 'Calculating…',
 		routeError: 'Route could not be calculated. Please check the addresses.',
 		mapsUnavailable: 'Live quotes unavailable right now — send a request, we reply within 30 minutes.',
-		trafficNote: 'In case of traffic delays, the fare may increase by €0.30 per minute of delay.',
 		eClass: 'E-Class',
 		eClassRange: '1 – 3 passengers',
 		vClass: 'V-Class',
@@ -665,9 +661,17 @@ export default {
 		notePh: 'Flight no., child seat…',
 		vatIncl: 'VAT incl.',
 		estimateNote: 'approx.',
-		longHaulCaveat: 'Price does not include driver overnight stay, tolls, ferries.',
+		longHaulCaveat:
+			'For long routes the fare is an estimate and may change depending on the route length and additional costs. Please wait for our confirmation.',
+		modeNowMain: 'Book now',
+		modeNowSub: '',
+		modeLaterMain: 'Book for later',
+		modeLaterSub: '',
+		nowToken: 'NOW',
+		mapNavLabel: 'Navigation',
+		gpsAsking: 'Locating you…',
+		gpsDenied: 'Location access denied — sending inquiry via WhatsApp.',
 		errorBook: 'Please enter your name, date and time.',
-		openPickerLabel: 'Open calendar',
 		sendBooking: 'Book via WhatsApp',
 		formNote: 'Available 07 – 24 · sprinter.hr · +385 95 722 6918',
 		whatsapp: 'WhatsApp',
@@ -705,7 +709,7 @@ export default {
 			'Spaciousness without compromise. Our V-Class offers relaxing and safe transport for groups or families.',
 		pricingTitle: 'How to get a quote for your transfer?',
 		pricingIntro:
-			'Each transfer is unique and includes variable costs such as driver overnight stays, parking, ferry/toll charges, and travel time.',
+			'Each transfer is unique and includes variable costs such as driver overnight stays, parking, ferry charges, and travel time.',
 		pricingNote:
 			'We tailor every quote individually, quickly, and simply once you send us your journey details.',
 		pricingContact:

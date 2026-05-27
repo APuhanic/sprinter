@@ -609,17 +609,14 @@ export default {
 		titleSuffix: ' - Pula - Istra - Europa',
 		leadOne:
 			'Sjednete. Vozač zatvori vrata. I više ne morate misliti ni na što drugo.',
-		ctaCallout:
-			'Brzo i jednostavno rezervirajte svoju taxi vožnju ili transfer preko našeg obrasca.',
 		companyText:
 			'Sprinter je obiteljska tvrtka iz Pule. Organiziramo privatne transfere i taxi vožnje u Puli, po Istri i Europi — pouzdano, točno na vrijeme, bez iznenađenja.',
 		termsTitle: 'Uvjeti i informacije',
 		terms: [
-			'U slučaju prometnih zastoja, cijena se može uvećati za 0,30 € po minuti zastoja.',
 			'Doček s natpisom imena — na zahtjev.',
 			'Besplatno dječje sjedalo — molimo navedite u napomeni.',
 			'Potvrda rezervacije stiže na vaš WhatsApp u roku 30 minuta.',
-			'Za duže transfere mogući su dodatni troškovi — noćenje vozača, cestarine, vrijeme čekanja, trajekti.'
+			'Za duže transfere mogući su dodatni troškovi — noćenje vozača, vrijeme čekanja, trajekti.'
 		],
 		fleetEyebrow: 'Vozila',
 		fleetTitle: 'Dva vozila, jedan standard',
@@ -648,7 +645,6 @@ export default {
 		routeCalculating: 'Računam…',
 		routeError: 'Rutu nije moguće izračunati. Provjerite adrese.',
 		mapsUnavailable: 'Trenutno bez automatskog izračuna — pošaljite upit, javljamo se u 30 minuta.',
-		trafficNote: 'U slučaju prometnih zastoja, cijena se može uvećati za 0,30 € po minuti zastoja.',
 		eClass: 'E-klasa',
 		eClassRange: '1 – 3 osobe',
 		vClass: 'V-klasa',
@@ -666,9 +662,17 @@ export default {
 		notePh: 'Let, dječje sjedalo…',
 		vatIncl: 'PDV uklj.',
 		estimateNote: 'okvirno',
-		longHaulCaveat: 'Cijena ne uključuje noćenje vozača, cestarine, trajekte.',
+		longHaulCaveat:
+			'Na dugačkim rutama cijene su okvirne i podložne promjeni koja ovisi o dužini rute i dodatnim troškovima. Molimo sačekajte našu potvrdu.',
+		modeNowMain: 'Vožnja odmah',
+		modeNowSub: 'Book now',
+		modeLaterMain: 'Za kasnije',
+		modeLaterSub: 'Book for later',
+		nowToken: 'ODMAH',
+		mapNavLabel: 'Navigacija',
+		gpsAsking: 'Tražim vašu lokaciju…',
+		gpsDenied: 'Pristup lokaciji odbijen — šaljemo upit na WhatsApp.',
 		errorBook: 'Molimo unesite ime, datum i vrijeme.',
-		openPickerLabel: 'Otvori kalendar',
 		sendBooking: 'Rezerviraj na WhatsApp',
 		formNote: 'Dostupni 07 – 24 · sprinter.hr · +385 95 722 6918',
 		whatsapp: 'WhatsApp',
@@ -706,7 +710,7 @@ export default {
 			'Prostranstva bez kompromisa. Naša V-klasa nudi relaksirajući i siguran prijevoz za grupe ili obitelji.',
 		pricingTitle: 'Kako do cijene za Vaš transfer?',
 		pricingIntro:
-			'Svaki je transfer specifičan i uključuje varijabilne troškove poput noćenja vozača, parking usluga, trajekta ili cestarina te vrijeme prijevoza.',
+			'Svaki je transfer specifičan i uključuje varijabilne troškove poput noćenja vozača, parking usluga, trajekata te vrijeme prijevoza.',
 		pricingNote:
 			'Svaki Vaš upit i svaku cijenu prilagoditi individualno, brzo i jednostavno nećon što nam pošaljete detalje putovanja.',
 		pricingContact:
