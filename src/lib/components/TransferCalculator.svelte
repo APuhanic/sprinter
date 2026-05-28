@@ -54,6 +54,7 @@
 		mConfirmLater: string;
 		mFrom: string;
 		mTo: string;
+		mRoute: string;
 		mDest: string;
 		mVehE: string;
 		mVehV: string;
@@ -335,53 +336,78 @@
 		return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addr)}`;
 	}
 
+	// Full-route link (origin → destination) — the route-overview preview that
+	// shows distance/time end to end.
+	function buildDirLink(): string {
+		const origin = encodeURIComponent(fromFullText());
+		const destination = encodeURIComponent(toFullText());
+		return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}`;
+	}
+
 	const WA_LINE = '───────────────';
+
+	// Emoji as explicit code points so the message can never degrade to □/�
+	// boxes: \u{FE0F} forces emoji (not text) presentation for ✏ ⚠ 🗓 🗺, and
+	// escapes survive any file-encoding round-trip.
+	const E = {
+		now: '\u{1F534}', // 🔴
+		booking: '\u{1F5D3}\u{FE0F}', // 🗓️
+		price: '\u{1F4B6}', // 💶
+		from: '\u{1F4CD}', // 📍
+		to: '\u{1F3C1}', // 🏁
+		veh: '\u{1F698}', // 🚘
+		pax: '\u{1F465}', // 👥
+		name: '\u{1F464}', // 👤
+		phone: '\u{1F4DE}', // 📞
+		note: '\u{270F}\u{FE0F}', // ✏️
+		warn: '\u{26A0}\u{FE0F}', // ⚠️
+		route: '\u{1F5FA}\u{FE0F}' // 🗺️
+	};
 
 	function buildBookingMessage(): string {
 		const L: string[] = [];
 
 		// Status — "now" omits the date; "later" carries the scheduled date/time.
 		if (mode === 'later') {
-			L.push(`🗓️ *${s.mBooking} — ${fmtBookingDateTime()}*`);
+			L.push(`${E.booking} *${s.mBooking} — ${fmtBookingDateTime()}*`);
 		} else {
-			L.push(`🔴 *${s.mNow}*`);
+			L.push(`${E.now} *${s.mNow}*`);
 		}
 		L.push('');
 
 		// Price (bold, right under the status)
 		if (fare !== null) {
 			const priceText = isEstimate ? `~${fare} €` : `${fare} €`;
-			L.push(`💶 *${s.mPrice.toUpperCase()}: ${priceText}*`);
+			L.push(`${E.price} *${s.mPrice.toUpperCase()}: ${priceText}*`);
 			L.push('');
 		}
-
-		// Confirmation request
-		L.push(`_${mode === 'later' ? s.mConfirmLater : s.mConfirmNow}_`);
-		if (isLongHaul) {
-			L.push('');
-			L.push(`⚠ ${s.longHaulCaveat}`);
-		}
-		L.push('');
 
 		// Route — from / to on separate lines, full addresses.
 		L.push(WA_LINE);
-		L.push(`📍 *${s.mFrom}*`);
+		L.push(`${E.from} *${s.mFrom}*`);
 		L.push(fromFullText());
 		L.push('');
-		L.push(`🏁 *${s.mTo}*`);
+		L.push(`${E.to} *${s.mTo}*`);
 		L.push(toFullText());
 		L.push(WA_LINE);
 
 		// Vehicle + details
-		L.push(`🚘 ${vehicleDesc}`);
-		L.push(`👥 ${s.mPax}: ${paxCount}`);
-		if (name.trim()) L.push(`👤 ${s.mName}: ${name.trim()}`);
-		if (phone.trim()) L.push(`📞 ${phone.trim()}`);
-		if (note.trim()) L.push(`✏ ${s.mNote}: ${note.trim()}`);
+		L.push(`${E.veh} ${vehicleDesc}`);
+		L.push(`${E.pax} ${s.mPax}: ${paxCount}`);
+		if (name.trim()) L.push(`${E.name} ${s.mName}: ${name.trim()}`);
+		if (phone.trim()) L.push(`${E.phone} ${phone.trim()}`);
+		if (note.trim()) L.push(`${E.note} ${s.mNote}: ${note.trim()}`);
 		L.push(WA_LINE);
 
-		// Navigation links (bottom only — no long link in the middle)
+		// Confirmation request — moved to the bottom, just above navigation.
+		L.push(`_${mode === 'later' ? s.mConfirmLater : s.mConfirmNow}_`);
+		if (isLongHaul) L.push(`${E.warn} ${s.longHaulCaveat}`);
+		L.push(WA_LINE);
+
+		// Navigation, all grouped at the bottom: full route overview (dir) +
+		// single-pin From/To search links.
 		L.push(`${s.mapNavLabel}:`);
+		L.push(`${E.route} ${s.mRoute}: ${buildDirLink()}`);
 		L.push(`From: ${buildSearchLink(fromFullText())}`);
 		L.push(`To: ${buildSearchLink(toFullText())}`);
 
