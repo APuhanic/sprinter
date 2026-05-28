@@ -685,6 +685,7 @@ export default {
 		mConfirmLater: 'Molim potvrdu dostupnosti. Hvala!',
 		mFrom: 'OD:',
 		mTo: 'DO:',
+		mRoute: 'Pregled rute',
 		mDest: 'Odredište',
 		mVehE: 'Mercedes crni karavan · BM-979-DE',
 		mVehV: 'Mercedes bijeli kombi · BM-507-DD',
