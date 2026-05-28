@@ -40,24 +40,27 @@
 		estimateNote: string;
 		longHaulCaveat: string;
 		modeNowMain: string;
-		modeNowSub: string;
 		modeLaterMain: string;
-		modeLaterSub: string;
 		nowToken: string;
 		mapNavLabel: string;
 		gpsAsking: string;
 		gpsDenied: string;
 		phone: string;
 		// WhatsApp message labels
+		mNow: string;
+		mBooking: string;
+		mAt: string;
+		mConfirmNow: string;
+		mConfirmLater: string;
+		mFrom: string;
+		mTo: string;
 		mDest: string;
-		mVeh: string;
+		mVehE: string;
+		mVehV: string;
 		mPrice: string;
-		mDate: string;
-		mTime: string;
 		mPax: string;
 		mName: string;
 		mNote: string;
-		bookMsg: string;
 		locMsg: string;
 		mailSubject: string;
 	};
@@ -103,6 +106,8 @@
 	let vehicleLabel = $derived(
 		vehicle === 'e' ? `${s.eClass} · ${s.eClassRange}` : `${s.vClass} · ${s.vClassRange}`
 	);
+	// Concrete vehicle + plate for the WhatsApp dispatcher message.
+	let vehicleDesc = $derived(vehicle === 'e' ? s.mVehE : s.mVehV);
 
 	let fare = $derived(routeStatus === 'ok' ? calcFare(lastKm, vehicle) : null);
 	let isEstimate = $derived(routeStatus === 'ok' && lastKm > 100);
@@ -141,6 +146,11 @@
 	];
 	let welcomeIdx = $state(0);
 	let welcomeFade = $state(true);
+	let welcomeWord = $derived(WELCOME_WORDS[welcomeIdx]);
+	// Shrink the font for longer words/phrases so they stay inside the fixed box.
+	let welcomeSize = $derived(
+		welcomeWord.length <= 8 ? 'lg' : welcomeWord.length <= 12 ? 'md' : 'sm'
+	);
 
 	function placeLabel(p: google.maps.places.PlaceResult | null, fallback: string): string {
 		const raw = p?.name || p?.formatted_address || fallback;
@@ -304,18 +314,12 @@
 	});
 
 	// ── WhatsApp / actions ────────────────────────────────────────────────
-	function fmtDate(d: string): string {
-		if (!d) return '';
-		const loc: Record<Lang, string> = { hr: 'hr-HR', en: 'en-GB', de: 'de-DE' };
-		try {
-			return new Date(d).toLocaleDateString(loc[lang], {
-				day: '2-digit',
-				month: 'short',
-				year: 'numeric'
-			});
-		} catch {
-			return d;
-		}
+	// Compact date for the booking header: "28.05." — never locale month names.
+	function fmtBookingDateTime(): string {
+		if (!date) return time;
+		const [, mo, da] = date.split('-');
+		const datePart = `${da}.${mo}.`;
+		return time ? `${datePart} ${s.mAt} ${time}` : datePart;
 	}
 
 	function fromFullText(): string {
@@ -325,31 +329,63 @@
 		return toPlace?.formatted_address ?? toPlace?.name ?? toText.trim();
 	}
 
-	function buildMapsLink(): string {
-		const origin = encodeURIComponent(fromFullText());
-		const destination = encodeURIComponent(toFullText());
-		return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}`;
+	// Single-point search link — drops one pin so the driver navigates from
+	// their current location, not from a fixed origin.
+	function buildSearchLink(addr: string): string {
+		return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addr)}`;
 	}
 
+	const WA_LINE = '───────────────';
+
 	function buildBookingMessage(): string {
-		const lines: string[] = [];
-		lines.push(s.bookMsg);
-		lines.push('');
-		lines.push(`📍 ${fromFullText()} → ${toFullText()}`);
-		lines.push(`🗺️ ${s.mapNavLabel}: ${buildMapsLink()}`);
-		lines.push(`🚘 ${s.mVeh}: ${vehicleLabel}`);
-		if (fare !== null) {
-			const priceText = isEstimate ? `~${fare} € (${s.estimateNote})` : `${fare} €`;
-			lines.push(`💶 ${s.mPrice}: ${priceText}`);
-			if (isLongHaul) lines.push(`⚠ ${s.longHaulCaveat}`);
+		const L: string[] = [];
+
+		// Status — "now" omits the date; "later" carries the scheduled date/time.
+		if (mode === 'later') {
+			L.push(`🗓️ *${s.mBooking} — ${fmtBookingDateTime()}*`);
+		} else {
+			L.push(`🔴 *${s.mNow}*`);
 		}
-		if (date) lines.push(`📅 ${s.mDate}: ${fmtDate(date)}`);
-		if (time) lines.push(`⏰ ${s.mTime}: ${time}`);
-		if (paxCount) lines.push(`👥 ${s.mPax}: ${paxCount}`);
-		if (name.trim()) lines.push(`👤 ${s.mName}: ${name.trim()}`);
-		if (phone.trim()) lines.push(`📞 ${phone.trim()}`);
-		if (note.trim()) lines.push(`✏ ${s.mNote}: ${note.trim()}`);
-		return lines.join('\n');
+		L.push('');
+
+		// Price (bold, right under the status)
+		if (fare !== null) {
+			const priceText = isEstimate ? `~${fare} €` : `${fare} €`;
+			L.push(`💶 *${s.mPrice.toUpperCase()}: ${priceText}*`);
+			L.push('');
+		}
+
+		// Confirmation request
+		L.push(`_${mode === 'later' ? s.mConfirmLater : s.mConfirmNow}_`);
+		if (isLongHaul) {
+			L.push('');
+			L.push(`⚠ ${s.longHaulCaveat}`);
+		}
+		L.push('');
+
+		// Route — from / to on separate lines, full addresses.
+		L.push(WA_LINE);
+		L.push(`📍 *${s.mFrom}*`);
+		L.push(fromFullText());
+		L.push('');
+		L.push(`🏁 *${s.mTo}*`);
+		L.push(toFullText());
+		L.push(WA_LINE);
+
+		// Vehicle + details
+		L.push(`🚘 ${vehicleDesc}`);
+		L.push(`👥 ${s.mPax}: ${paxCount}`);
+		if (name.trim()) L.push(`👤 ${s.mName}: ${name.trim()}`);
+		if (phone.trim()) L.push(`📞 ${phone.trim()}`);
+		if (note.trim()) L.push(`✏ ${s.mNote}: ${note.trim()}`);
+		L.push(WA_LINE);
+
+		// Navigation links (bottom only — no long link in the middle)
+		L.push(`${s.mapNavLabel}:`);
+		L.push(`From: ${buildSearchLink(fromFullText())}`);
+		L.push(`To: ${buildSearchLink(toFullText())}`);
+
+		return L.join('\n');
 	}
 
 	let waHref = $derived.by(() => {
@@ -374,7 +410,7 @@
 	function sendLocationFallback() {
 		const dest = toFullText();
 		let msg = s.locMsg;
-		if (dest) msg += `\n🏁 ${s.mDest}: ${dest}`;
+		if (dest) msg += `\n\n🏁 ${s.mDest}: ${dest}`;
 		window.open(`https://wa.me/${whatsAppNumber}?text=${encodeURIComponent(msg)}`, '_blank');
 	}
 
@@ -446,10 +482,64 @@
 </script>
 
 <div class="tr-welcome" aria-hidden="true">
-	<span class="tr-welcome__word" class:tr-welcome__word--hidden={!welcomeFade}>
-		{WELCOME_WORDS[welcomeIdx]}
+	<span
+		class="tr-welcome__word"
+		class:tr-welcome__word--hidden={!welcomeFade}
+		class:is-lg={welcomeSize === 'lg'}
+		class:is-md={welcomeSize === 'md'}
+		class:is-sm={welcomeSize === 'sm'}
+	>
+		{welcomeWord}
 	</span>
 </div>
+
+<!-- Light point ("comet") that traces the active box border. SVG animateMotion
+     is the primary path; on devices where it doesn't run, the solid rust fill +
+     white text from .tr-mode__btn--on still makes the active box unmistakable. -->
+{#snippet comet()}
+	<svg
+		class="tr-mode__comet"
+		preserveAspectRatio="none"
+		viewBox="0 0 170 92"
+		aria-hidden="true"
+	>
+		<rect
+			x="3"
+			y="3"
+			width="164"
+			height="86"
+			rx="12"
+			fill="none"
+			stroke="#ffe9a8"
+			stroke-width="1"
+			stroke-opacity="0.2"
+		/>
+		<circle r="2.2" fill="#ffe9a8" opacity="0.5">
+			<animateMotion
+				dur="4.5s"
+				repeatCount="indefinite"
+				begin="-0.1s"
+				path="M15,3 H155 Q167,3 167,15 V77 Q167,89 155,89 H15 Q3,89 3,77 V15 Q3,3 15,3 Z"
+			/>
+		</circle>
+		<circle r="1.6" fill="#ffe9a8" opacity="0.3">
+			<animateMotion
+				dur="4.5s"
+				repeatCount="indefinite"
+				begin="-0.22s"
+				path="M15,3 H155 Q167,3 167,15 V77 Q167,89 155,89 H15 Q3,89 3,77 V15 Q3,3 15,3 Z"
+			/>
+		</circle>
+		<circle r="3.5" fill="#fff6db">
+			<animateMotion
+				dur="4.5s"
+				repeatCount="indefinite"
+				rotate="auto"
+				path="M15,3 H155 Q167,3 167,15 V77 Q167,89 155,89 H15 Q3,89 3,77 V15 Q3,3 15,3 Z"
+			/>
+		</circle>
+	</svg>
+{/snippet}
 
 <div class="tr-mode" role="group" aria-label={s.bookingTitle}>
 	<button
@@ -458,8 +548,8 @@
 		class:tr-mode__btn--on={mode === 'now'}
 		onclick={() => selectMode('now')}
 	>
+		{#if mode === 'now'}{@render comet()}{/if}
 		<span class="tr-mode__main">{s.modeNowMain}</span>
-		{#if s.modeNowSub}<span class="tr-mode__sub">{s.modeNowSub}</span>{/if}
 	</button>
 	<button
 		type="button"
@@ -467,8 +557,8 @@
 		class:tr-mode__btn--on={mode === 'later'}
 		onclick={() => selectMode('later')}
 	>
+		{#if mode === 'later'}{@render comet()}{/if}
 		<span class="tr-mode__main">{s.modeLaterMain}</span>
-		{#if s.modeLaterSub}<span class="tr-mode__sub">{s.modeLaterSub}</span>{/if}
 	</button>
 </div>
 
@@ -910,12 +1000,23 @@
 	}
 	.tr-welcome__word {
 		font-family: var(--font-display, 'Cormorant Garamond', Georgia, serif);
-		font-size: clamp(26px, 3.4vw, 36px);
 		font-weight: 500;
 		color: #fff;
-		line-height: 1.2;
+		line-height: 1.15;
 		transition: opacity 0.5s ease;
 		opacity: 1;
+		text-align: center;
+		padding: 0 8px;
+	}
+	/* Font scales to word length so long phrases stay inside the fixed box. */
+	.tr-welcome__word.is-lg {
+		font-size: clamp(34px, 9vw, 46px);
+	}
+	.tr-welcome__word.is-md {
+		font-size: clamp(28px, 7vw, 38px);
+	}
+	.tr-welcome__word.is-sm {
+		font-size: clamp(22px, 5.6vw, 30px);
 	}
 	.tr-welcome__word--hidden {
 		opacity: 0;
@@ -929,36 +1030,48 @@
 		margin-bottom: 18px;
 	}
 	.tr-mode__btn {
-		background: #1b1f26;
+		position: relative;
+		overflow: hidden;
+		background: #14171c;
 		border: 1px solid rgba(255, 255, 255, 0.12);
 		border-radius: 2px;
-		padding: 16px 10px;
+		padding: 18px 12px;
+		min-height: 58px;
 		text-align: center;
 		cursor: pointer;
-		color: #f2f1ec;
 		font-family: inherit;
 		display: flex;
-		flex-direction: column;
-		gap: 2px;
+		align-items: center;
+		justify-content: center;
 		transition: border-color 0.18s ease, background 0.18s ease;
 	}
 	.tr-mode__btn:hover {
 		border-color: var(--accent);
 	}
+	/* Active: solid rust + white text. This is the guaranteed cue — it always
+	   works even when the comet animation below cannot run. */
 	.tr-mode__btn--on {
-		background: #0d0f12;
-		border-color: var(--accent);
+		background: #a84c28;
+		border-color: #a84c28;
 	}
 	.tr-mode__main {
-		font-size: 14px;
-		font-weight: 500;
+		position: relative;
+		z-index: 1;
+		font-size: clamp(18px, 2.4vw, 20px);
+		font-weight: 600;
+		color: #5a5f68;
+		transition: color 0.18s ease;
 	}
 	.tr-mode__btn--on .tr-mode__main {
-		color: var(--accent);
+		color: #fff;
 	}
-	.tr-mode__sub {
-		font-size: 11px;
-		color: #9aa0aa;
+	.tr-mode__comet {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
 	}
 
 	/* ── Locked calculator (until a mode is chosen) ──────────────────── */
