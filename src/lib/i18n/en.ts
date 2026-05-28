@@ -684,6 +684,7 @@ export default {
 		mConfirmLater: 'Please confirm availability. Thank you!',
 		mFrom: 'FROM:',
 		mTo: 'TO:',
+		mRoute: 'Route overview',
 		mDest: 'Destination',
 		mVehE: 'Mercedes black wagon · BM-979-DE',
 		mVehV: 'Mercedes white van · BM-507-DD',
