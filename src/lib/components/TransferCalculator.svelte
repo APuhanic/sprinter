@@ -41,6 +41,7 @@
 		longHaulCaveat: string;
 		modeNowMain: string;
 		modeLaterMain: string;
+		modePrompt: string;
 		nowToken: string;
 		mapNavLabel: string;
 		gpsAsking: string;
@@ -589,6 +590,10 @@
 	</button>
 </div>
 
+{#if mode === null}
+	<p class="tr-mode__hint">↑ {s.modePrompt}</p>
+{/if}
+
 <div class="tr-calc" class:tr-calc--locked={mode === null} aria-disabled={mode === null}>
 	<div class="tr-calc__title">
 		{s.title}
@@ -1084,6 +1089,16 @@
 		gap: 10px;
 		margin-bottom: 18px;
 	}
+	/* Gate prompt — shown only while no mode is chosen, so the dimmed calculator
+	   reads as "pick one first" rather than broken. On the light page bg, dark
+	   rust is the high-contrast choice (not white). */
+	.tr-mode__hint {
+		margin: -8px 0 18px;
+		text-align: center;
+		font-size: 13px;
+		font-weight: 600;
+		color: #9a4a2a;
+	}
 	.tr-mode__btn {
 		position: relative;
 		overflow: hidden;
@@ -1141,7 +1156,7 @@
 	.tr-calc--locked {
 		/* Dimmed = "pick now/later first", but not so faint the price/fields wash
 		   out in direct sun before a mode is chosen. */
-		opacity: 0.55;
+		opacity: 0.65;
 		pointer-events: none;
 		user-select: none;
 		transition: opacity 0.2s ease;
