@@ -180,7 +180,7 @@
 		/* Single line, never the awkward "Privatni transferi /" + "taxi" break.
 		   7vw-ish keeps it one line at any width; clamp caps it big on desktop,
 		   small enough to fit the narrowest phone (the beach/sun test). */
-		font-size: clamp(22px, 6.4vw, 54px);
+		font-size: clamp(26px, 7.6vw, 70px);
 		line-height: 1.1;
 		letter-spacing: -0.01em;
 		white-space: nowrap;
