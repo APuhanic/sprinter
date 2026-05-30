@@ -665,6 +665,7 @@ export default {
 			'For long routes the fare is an estimate and may change depending on the route length and additional costs. Please wait for our confirmation.',
 		modeNowMain: 'Book now',
 		modeLaterMain: 'Book later',
+		modePrompt: 'Choose an option to calculate your price.',
 		nowToken: 'NOW',
 		mapNavLabel: 'Navigation',
 		gpsAsking: 'Locating you…',

@@ -666,6 +666,7 @@ export default {
 			'Na dugačkim rutama cijene su okvirne i podložne promjeni koja ovisi o dužini rute i dodatnim troškovima. Molimo sačekajte našu potvrdu.',
 		modeNowMain: 'Vožnja odmah',
 		modeLaterMain: 'Za kasnije',
+		modePrompt: 'Odaberite opciju za izračun cijene.',
 		nowToken: 'ODMAH',
 		mapNavLabel: 'Navigacija',
 		gpsAsking: 'Tražim vašu lokaciju…',
