@@ -666,6 +666,7 @@ export default {
 			'Bei langen Strecken sind die Preise nur Richtwerte und können je nach Streckenlänge und Zusatzkosten variieren. Bitte warten Sie auf unsere Bestätigung.',
 		modeNowMain: 'Sofort',
 		modeLaterMain: 'Später',
+		modePrompt: 'Wählen Sie eine Option, um den Preis zu berechnen.',
 		nowToken: 'SOFORT',
 		mapNavLabel: 'Navigation',
 		gpsAsking: 'Standort wird ermittelt…',
