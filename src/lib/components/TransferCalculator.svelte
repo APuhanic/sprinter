@@ -330,10 +330,11 @@
 		return toPlace?.formatted_address ?? toPlace?.name ?? toText.trim();
 	}
 
-	// Single-point search link — drops one pin so the driver navigates from
-	// their current location, not from a fixed origin.
-	function buildSearchLink(addr: string): string {
-		return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addr)}`;
+	// One-tap navigation: opens Google Maps directions straight to this point
+	// with the driver's current location as origin (dir + destination only →
+	// Maps fills in "from here"). Actual turn-by-turn nav, not a search pin.
+	function buildNavLink(addr: string): string {
+		return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(addr)}&travelmode=driving`;
 	}
 
 	// Full-route link (origin → destination) — the route-overview preview that
@@ -341,7 +342,7 @@
 	function buildDirLink(): string {
 		const origin = encodeURIComponent(fromFullText());
 		const destination = encodeURIComponent(toFullText());
-		return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}`;
+		return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`;
 	}
 
 	const WA_LINE = '───────────────';
@@ -408,8 +409,8 @@
 		// single-pin From/To search links.
 		L.push(`${s.mapNavLabel}:`);
 		L.push(`${E.route} ${s.mRoute}: ${buildDirLink()}`);
-		L.push(`From: ${buildSearchLink(fromFullText())}`);
-		L.push(`To: ${buildSearchLink(toFullText())}`);
+		L.push(`From: ${buildNavLink(fromFullText())}`);
+		L.push(`To: ${buildNavLink(toFullText())}`);
 
 		return L.join('\n');
 	}
@@ -833,20 +834,38 @@
 		border: 1px solid rgba(255, 255, 255, 0.06);
 	}
 	:global(.tr-calc__result-price) {
-		color: #d6764e !important;
+		/* The single biggest, most important number on the screen — pure white
+		   and larger so it reads instantly in sun (was rust = near-invisible). */
+		color: #ffffff !important;
+		font-size: clamp(48px, 13vw, 62px) !important;
+		font-weight: 600 !important;
+	}
+	:global(.tr-calc__result-route) {
+		color: #ffffff !important;
+		opacity: 1 !important;
+		font-size: 13px !important;
+		font-weight: 600 !important;
+	}
+	:global(.tr-calc__result-inquiry) {
+		color: #ffffff !important;
+		opacity: 1 !important;
+		font-size: 14px !important;
+		font-weight: 600 !important;
+		font-style: normal !important;
 	}
 	:global(.tr-calc__result-vehicle) {
-		border-color: rgba(255, 255, 255, 0.18);
-		color: var(--muted);
+		border-color: rgba(255, 255, 255, 0.4) !important;
+		color: #ffffff !important;
+		opacity: 1 !important;
 	}
 	.tr-calc__estimate-tag {
 		font-family: var(--font-mono);
 		font-size: 11px;
 		letter-spacing: 0.14em;
 		text-transform: uppercase;
-		color: color-mix(in srgb, #d6764e 70%, white 30%);
+		color: #f3e7e0;
 		margin: -2px 0 10px;
-		opacity: 0.85;
+		opacity: 1;
 	}
 	.tr-calc__longhaul {
 		display: inline-block;
@@ -856,9 +875,9 @@
 		background: color-mix(in srgb, #d6764e 14%, transparent);
 		border: 1px solid color-mix(in srgb, #d6764e 50%, transparent);
 		border-radius: 2px;
-		font-size: 12.5px;
+		font-size: 13px;
 		line-height: 1.5;
-		color: color-mix(in srgb, #d6764e 75%, white 25%);
+		color: #ffffff;
 		text-align: left;
 	}
 
@@ -889,16 +908,20 @@
 		display: inline-block;
 		margin: -8px 0 14px;
 		padding: 0;
-		font-size: 12.5px;
-		color: var(--accent);
+		font-size: 13px;
+		font-weight: 600;
+		color: #ffffff;
 		background: transparent;
 		border: 0;
-		text-decoration: none;
+		/* White, so persistent underline keeps the "this is tappable" cue. */
+		text-decoration: underline;
+		text-decoration-color: rgba(255, 255, 255, 0.45);
+		text-underline-offset: 3px;
 		cursor: pointer;
 		font-family: inherit;
 	}
 	.tr-calc__send-loc:hover {
-		text-decoration: underline;
+		text-decoration-color: #ffffff;
 	}
 
 	.tr-calc__veh {
@@ -929,14 +952,17 @@
 	}
 	.tr-calc__veh-title {
 		font-size: 15px;
-		font-weight: 500;
+		font-weight: 700;
+		color: #ffffff;
 	}
+	/* Active vehicle is shown by the rust border + tinted fill, not rust text. */
 	.tr-calc__veh-btn--on .tr-calc__veh-title {
-		color: var(--accent);
+		color: #ffffff;
 	}
 	.tr-calc__veh-sub {
 		font-size: 12px;
-		color: var(--muted);
+		font-weight: 500;
+		color: #ffffff;
 	}
 
 	.tr-calc__maps-warn {
@@ -946,7 +972,7 @@
 		border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
 		border-radius: 2px;
 		font-size: 13px;
-		color: var(--accent);
+		color: #ffffff;
 		line-height: 1.5;
 	}
 
@@ -956,7 +982,7 @@
 		font-size: 12px;
 		letter-spacing: 0.14em;
 		text-transform: uppercase;
-		color: var(--accent);
+		color: #ffffff;
 	}
 	:global(.tr-calc__result--soft) {
 		background: color-mix(in srgb, var(--soft) 30%, transparent) !important;
@@ -988,11 +1014,12 @@
 		align-items: center;
 		justify-content: center;
 		gap: 8px;
-		padding: 12px;
-		border: 1px solid var(--line);
+		padding: 14px;
+		border: 1px solid var(--line-strong);
 		border-radius: 2px;
-		font-size: 14px;
-		color: var(--muted);
+		font-size: 16px;
+		font-weight: 600;
+		color: #ffffff;
 		text-decoration: none;
 		transition: border-color 0.18s ease, color 0.18s ease;
 	}
@@ -1001,15 +1028,15 @@
 		color: var(--fg);
 	}
 	.tr-calc__quick--gold {
-		border-color: color-mix(in srgb, var(--accent) 60%, transparent);
-		color: var(--accent);
+		border-color: color-mix(in srgb, var(--accent) 70%, transparent);
+		color: #ffffff;
 	}
 
 	.tr-calc__hours {
 		margin-top: 14px;
 		text-align: center;
-		font-size: 12.5px;
-		color: var(--muted);
+		font-size: 13px;
+		color: #f5f5f5;
 	}
 
 	/* ── Welcome banner (animated multilingual greeting) ─────────────── */
@@ -1026,23 +1053,25 @@
 	}
 	.tr-welcome__word {
 		font-family: var(--font-display, 'Cormorant Garamond', Georgia, serif);
-		font-weight: 500;
-		color: #fff;
+		font-weight: 700;
+		color: #ffffff;
 		line-height: 1.15;
 		transition: opacity 0.5s ease;
 		opacity: 1;
 		text-align: center;
 		padding: 0 8px;
+		/* Depth so the white serif holds up against the rust panel in sunlight. */
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
 	}
 	/* Font scales to word length so long phrases stay inside the fixed box. */
 	.tr-welcome__word.is-lg {
-		font-size: clamp(34px, 9vw, 46px);
+		font-size: clamp(32px, 9vw, 44px);
 	}
 	.tr-welcome__word.is-md {
-		font-size: clamp(28px, 7vw, 38px);
+		font-size: clamp(26px, 7vw, 36px);
 	}
 	.tr-welcome__word.is-sm {
-		font-size: clamp(22px, 5.6vw, 30px);
+		font-size: clamp(22px, 5.6vw, 28px);
 	}
 	.tr-welcome__word--hidden {
 		opacity: 0;
@@ -1058,8 +1087,8 @@
 	.tr-mode__btn {
 		position: relative;
 		overflow: hidden;
-		background: #14171c;
-		border: 1px solid rgba(255, 255, 255, 0.12);
+		background: #0d0f12;
+		border: 1px solid rgba(255, 255, 255, 0.14);
 		border-radius: 2px;
 		padding: 18px 12px;
 		min-height: 58px;
@@ -1079,17 +1108,25 @@
 	.tr-mode__btn--on {
 		background: #a84c28;
 		border-color: #a84c28;
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
 	}
 	.tr-mode__main {
 		position: relative;
 		z-index: 1;
-		font-size: clamp(18px, 2.4vw, 20px);
+		font-size: clamp(17px, 2.4vw, 20px);
 		font-weight: 600;
-		color: #5a5f68;
+		/* White even when inactive — gray was invisible in direct sun. The active
+		   box is set apart by its rust fill + heavier weight, never by colour. */
+		color: #ffffff;
 		transition: color 0.18s ease;
 	}
 	.tr-mode__btn--on .tr-mode__main {
-		color: #fff;
+		color: #ffffff;
+		font-weight: 700;
+		letter-spacing: 0.02em;
+		/* White-on-rust is the tightest contrast pair (5.6:1); the shadow lifts the
+		   glyph edges so the active label stays crisp under glare. */
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 	}
 	.tr-mode__comet {
 		position: absolute;
@@ -1102,7 +1139,9 @@
 
 	/* ── Locked calculator (until a mode is chosen) ──────────────────── */
 	.tr-calc--locked {
-		opacity: 0.45;
+		/* Dimmed = "pick now/later first", but not so faint the price/fields wash
+		   out in direct sun before a mode is chosen. */
+		opacity: 0.55;
 		pointer-events: none;
 		user-select: none;
 		transition: opacity 0.2s ease;
