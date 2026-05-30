@@ -606,7 +606,7 @@ export default {
 		eyebrow: 'Usluga · 03',
 		title: 'Privatni transferi / taxi',
 		titleAccent: 'transferi / taxi',
-		titleSuffix: ' - Pula - Istra - Europa',
+		titleSuffix: ' — Pula · Istra · Europa',
 		leadOne:
 			'Sjednete. Vozač zatvori vrata. I više ne morate misliti ni na što drugo.',
 		companyText:
