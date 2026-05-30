@@ -830,6 +830,14 @@ export default {
 			`Per Article 6, Section 3 of the Tourism Services Law (NN 130/17), written complaints may be submitted to ${contact.email}`
 	},
 
+	// Cookie-consent banner (GDPR / Consent Mode v2)
+	consent: {
+		message: 'We use cookies for analytics and marketing.',
+		privacy: 'Privacy Policy',
+		accept: 'Accept',
+		reject: 'Reject'
+	},
+
 	// Contact page
 	contact: {
 		title: 'Contact',

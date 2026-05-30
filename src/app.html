@@ -11,6 +11,34 @@
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+		<!-- Consent Mode v2 — default to denied until the visitor opts in via the
+		     ConsentBanner; restore granted for returning visitors who accepted.
+		     Runs before GTM so GA4 / Ads tags start in the correct consent state. -->
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('consent', 'default', {
+				ad_storage: 'denied',
+				ad_user_data: 'denied',
+				ad_personalization: 'denied',
+				analytics_storage: 'denied',
+				functionality_storage: 'granted',
+				security_storage: 'granted',
+				wait_for_update: 500
+			});
+			try {
+				if (localStorage.getItem('sprinter-consent') === 'granted') {
+					gtag('consent', 'update', {
+						ad_storage: 'granted',
+						ad_user_data: 'granted',
+						ad_personalization: 'granted',
+						analytics_storage: 'granted'
+					});
+				}
+			} catch (e) {}
+		</script>
 		<!-- Google Tag Manager (container GTM-W3FW6X9G fires GA4 + Meta Pixel).
 		     Gated on hostname so dev + Vercel previews don't pollute analytics. -->
 		<script>

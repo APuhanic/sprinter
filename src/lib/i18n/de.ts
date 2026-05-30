@@ -831,6 +831,14 @@ export default {
 			`Gemäß Artikel 6, Absatz 3 des Gesetzes über Tourismusdienstleistungen (NN 130/17) können schriftliche Beschwerden an ${contact.email} gerichtet werden`
 	},
 
+	// Cookie-consent banner (GDPR / Consent Mode v2)
+	consent: {
+		message: 'Wir verwenden Cookies für Analyse und Marketing.',
+		privacy: 'Datenschutzerklärung',
+		accept: 'Akzeptieren',
+		reject: 'Ablehnen'
+	},
+
 	// Contact page
 	contact: {
 		title: 'Kontakt',

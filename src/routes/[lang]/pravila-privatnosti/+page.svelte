@@ -53,6 +53,37 @@
 			our address. Resend processes data within the EU/EEA in compliance with GDPR.
 		</p>
 
+		<h2>Analitika i marketing / Analytics &amp; Marketing</h2>
+		<p>
+			Uz vašu privolu koristimo kolačiće za analitiku i marketing, kojima upravljamo putem Google
+			Tag Managera: <strong>Google Analytics 4</strong> (Google Ireland Ltd.) za statistiku posjeta
+			i <strong>Meta Pixel</strong> (Meta Platforms Ireland Ltd.) za mjerenje učinkovitosti oglasa.
+			Ovi alati mogu prenositi podatke izvan EU/EEA-a (npr. u SAD) uz odgovarajuće zaštitne
+			mehanizme (standardne ugovorne klauzule). Kolačići se postavljaju samo ako ih prihvatite putem
+			trake za privolu pri prvom posjetu; svoj izbor možete povući brisanjem kolačića u pregledniku.
+			Pravna osnova je privola (čl. 6. st. 1. (a) GDPR).
+		</p>
+		<p>
+			With your consent, we use cookies for analytics and marketing, managed through Google Tag
+			Manager: <strong>Google Analytics 4</strong> (Google Ireland Ltd.) for visit statistics and
+			<strong>Meta Pixel</strong> (Meta Platforms Ireland Ltd.) for ad-performance measurement. These
+			tools may transfer data outside the EU/EEA (e.g. to the USA) under appropriate safeguards
+			(Standard Contractual Clauses). These cookies are set only if you accept them via the consent
+			banner on your first visit; you can withdraw your choice by clearing cookies in your browser.
+			The legal basis is consent (Art. 6(1)(a) GDPR).
+		</p>
+
+		<h2>Karte / Maps</h2>
+		<p>
+			Na stranici transfera koristimo <strong>Google Maps</strong> (Google Ireland Ltd.) za prikaz
+			karte i izračun rute. Učitavanjem karte vaš preglednik komunicira s Googleovim poslužiteljima.
+		</p>
+		<p>
+			On the transfers page we use <strong>Google Maps</strong> (Google Ireland Ltd.) to display the
+			map and calculate routes. Loading the map causes your browser to communicate with Google's
+			servers.
+		</p>
+
 		<h2>Pohrana podataka / Data Retention</h2>
 		<p>
 			Vaše osobne podatke čuvamo samo onoliko koliko je potrebno za obradu vašeg upita, a najduže
