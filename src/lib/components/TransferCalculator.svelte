@@ -521,54 +521,6 @@
 	</span>
 </div>
 
-<!-- Light point ("comet") that traces the active box border. SVG animateMotion
-     is the primary path; on devices where it doesn't run, the solid rust fill +
-     white text from .tr-mode__btn--on still makes the active box unmistakable. -->
-{#snippet comet()}
-	<svg
-		class="tr-mode__comet"
-		preserveAspectRatio="none"
-		viewBox="0 0 170 92"
-		aria-hidden="true"
-	>
-		<rect
-			x="3"
-			y="3"
-			width="164"
-			height="86"
-			rx="12"
-			fill="none"
-			stroke="#ffe9a8"
-			stroke-width="1"
-			stroke-opacity="0.2"
-		/>
-		<circle r="2.2" fill="#ffe9a8" opacity="0.5">
-			<animateMotion
-				dur="4.5s"
-				repeatCount="indefinite"
-				begin="-0.1s"
-				path="M15,3 H155 Q167,3 167,15 V77 Q167,89 155,89 H15 Q3,89 3,77 V15 Q3,3 15,3 Z"
-			/>
-		</circle>
-		<circle r="1.6" fill="#ffe9a8" opacity="0.3">
-			<animateMotion
-				dur="4.5s"
-				repeatCount="indefinite"
-				begin="-0.22s"
-				path="M15,3 H155 Q167,3 167,15 V77 Q167,89 155,89 H15 Q3,89 3,77 V15 Q3,3 15,3 Z"
-			/>
-		</circle>
-		<circle r="3.5" fill="#fff6db">
-			<animateMotion
-				dur="4.5s"
-				repeatCount="indefinite"
-				rotate="auto"
-				path="M15,3 H155 Q167,3 167,15 V77 Q167,89 155,89 H15 Q3,89 3,77 V15 Q3,3 15,3 Z"
-			/>
-		</circle>
-	</svg>
-{/snippet}
-
 <div class="tr-mode" role="group" aria-label={s.bookingTitle}>
 	<button
 		type="button"
@@ -576,7 +528,6 @@
 		class:tr-mode__btn--on={mode === 'now'}
 		onclick={() => selectMode('now')}
 	>
-		{#if mode === 'now'}{@render comet()}{/if}
 		<span class="tr-mode__main">{s.modeNowMain}</span>
 	</button>
 	<button
@@ -585,7 +536,6 @@
 		class:tr-mode__btn--on={mode === 'later'}
 		onclick={() => selectMode('later')}
 	>
-		{#if mode === 'later'}{@render comet()}{/if}
 		<span class="tr-mode__main">{s.modeLaterMain}</span>
 	</button>
 </div>
@@ -1118,8 +1068,8 @@
 	.tr-mode__btn:hover {
 		border-color: var(--accent);
 	}
-	/* Active: solid rust + white text. This is the guaranteed cue — it always
-	   works even when the comet animation below cannot run. */
+	/* Active: solid rust + white text — the guaranteed cue, independent of the
+	   animated border beam below (which is purely decorative). */
 	.tr-mode__btn--on {
 		background: #a84c28;
 		border-color: #a84c28;
@@ -1143,13 +1093,50 @@
 		   glyph edges so the active label stays crisp under glare. */
 		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 	}
-	.tr-mode__comet {
+	/* Active cue: a light beam that sweeps the button border on a loop. A masked
+	   conic-gradient ring — resolution-independent, stays exactly on the border
+	   at any size, and never touches layout, so the button can't appear to
+	   resize. (The old SVG comet distorted under non-uniform scaling, which read
+	   as the edge "breathing".) */
+	@property --tr-beam {
+		syntax: '<angle>';
+		initial-value: 0deg;
+		inherits: false;
+	}
+	.tr-mode__btn--on::after {
+		content: '';
 		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
+		inset: 0;
+		z-index: 0;
+		border-radius: inherit;
+		padding: 1.5px;
+		background: conic-gradient(
+			from var(--tr-beam),
+			transparent 0deg 290deg,
+			rgba(255, 233, 168, 0.7) 325deg,
+			#fff6db 348deg,
+			rgba(255, 233, 168, 0.7) 360deg
+		);
+		-webkit-mask:
+			linear-gradient(#000 0 0) content-box,
+			linear-gradient(#000 0 0);
+		mask:
+			linear-gradient(#000 0 0) content-box,
+			linear-gradient(#000 0 0);
+		-webkit-mask-composite: xor;
+		mask-composite: exclude;
 		pointer-events: none;
+		animation: tr-beam-spin 4.5s linear infinite;
+	}
+	@keyframes tr-beam-spin {
+		to {
+			--tr-beam: 360deg;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.tr-mode__btn--on::after {
+			animation: none;
+		}
 	}
 
 	/* ── Locked calculator (until a mode is chosen) ──────────────────── */
