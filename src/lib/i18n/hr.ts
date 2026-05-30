@@ -830,6 +830,14 @@ export default {
 		complaint: `Sukladno čl. 6. st. 3. Zakona o pružanju usluga u turizmu (NN 130/17), pisani prigovor možete podnijeti na ${contact.email}`
 	},
 
+	// Cookie-consent banner (GDPR / Consent Mode v2)
+	consent: {
+		message: 'Koristimo kolačiće za analitiku i marketing.',
+		privacy: 'Pravila privatnosti',
+		accept: 'Prihvati',
+		reject: 'Odbij'
+	},
+
 	// Contact page
 	contact: {
 		title: 'Kontakt',

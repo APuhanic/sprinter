@@ -4,6 +4,7 @@
 	import { languages, slugs, type Lang } from '$lib/i18n';
 	import { telHref, mailHref, waHref } from '$lib/contact';
 	import { localBusiness } from '$lib/jsonld';
+	import ConsentBanner from '$lib/components/ConsentBanner.svelte';
 
 	let { data, children }: { data: LayoutData; children: any } = $props();
 
@@ -182,3 +183,11 @@
 	</a>
 	<a href={telHref} class="ghost"><span>{callLabel}</span></a>
 </div>
+
+<ConsentBanner
+	message={t.consent.message}
+	privacy={t.consent.privacy}
+	accept={t.consent.accept}
+	reject={t.consent.reject}
+	privacyHref={`/${lang}/pravila-privatnosti`}
+/>
