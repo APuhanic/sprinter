@@ -177,18 +177,24 @@
 
 <style>
 	.tr-hero__title {
-		font-size: clamp(40px, 6vw, 76px);
-		line-height: 1;
+		/* Single line, never the awkward "Privatni transferi /" + "taxi" break.
+		   7vw-ish keeps it one line at any width; clamp caps it big on desktop,
+		   small enough to fit the narrowest phone (the beach/sun test). */
+		font-size: clamp(22px, 6.4vw, 54px);
+		line-height: 1.1;
 		letter-spacing: -0.01em;
-		max-width: 14ch;
+		white-space: nowrap;
 	}
 	.tr-hero__title-suffix {
 		display: block;
-		color: var(--accent);
+		/* Darker rust than --accent for stronger contrast on the beige hero. */
+		color: #9a4a2a;
 		font-style: italic;
+		font-weight: 600;
 		font-size: 0.6em;
-		margin-top: 8px;
+		margin-top: 6px;
 		letter-spacing: -0.005em;
+		white-space: normal;
 	}
 
 	.tr-company-text {
