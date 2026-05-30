@@ -96,7 +96,7 @@ export const queryRedirects: Array<{
 ];
 
 export type RedirectResolution =
-	| { kind: 'redirect'; to: string }
+	| { kind: 'redirect'; to: string; preserveQuery: boolean }
 	| { kind: 'gone' }
 	| null;
 
@@ -108,15 +108,18 @@ export function resolveRedirect(
 	const normalized =
 		pathname.length > 1 && pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
 
-	// Query-string redirects win (more specific than path-only)
+	// Query-string redirects win (more specific than path-only). The matched
+	// query (e.g. ?page_id=3) is a legacy WP locator with no meaning on the new
+	// site, so the target is the clean URL — don't carry the stale param over.
 	for (const rule of queryRedirects) {
 		if (normalized === rule.path && searchParams.get(rule.param) === rule.value) {
-			return { kind: 'redirect', to: rule.to };
+			return { kind: 'redirect', to: rule.to, preserveQuery: false };
 		}
 	}
 
+	// Path redirects keep the query string so utm_* (Google Ads, GBP) survive.
 	if (normalized in pathRedirects) {
-		return { kind: 'redirect', to: pathRedirects[normalized] };
+		return { kind: 'redirect', to: pathRedirects[normalized], preserveQuery: true };
 	}
 
 	if (goneList.has(normalized)) {
