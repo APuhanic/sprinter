@@ -79,8 +79,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 	const resolution = resolveRedirect(event.url.pathname, searchParams);
 	if (resolution?.kind === 'redirect') {
-		// Preserve query string so utm_* params (Google Ads, GBP) survive 301 hops
-		throw redirect(301, resolution.to + event.url.search);
+		// Preserve query string (utm_*, Google Ads, GBP) on path redirects; drop it
+		// on query-keyed redirects where the matched param was the legacy locator.
+		const target = resolution.preserveQuery ? resolution.to + event.url.search : resolution.to;
+		throw redirect(301, target);
 	}
 	if (resolution?.kind === 'gone') {
 		return new Response(
