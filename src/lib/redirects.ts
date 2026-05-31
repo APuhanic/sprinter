@@ -82,6 +82,28 @@ export const goneList: ReadonlySet<string> = new Set<string>([
 ]);
 
 /**
+ * Partner deep-links. A short branded path (e.g. /monumenti, handed to a hotel
+ * for their guests / QR codes) lands on the transfer calculator with the pickup
+ * prefilled, so the guest only picks a destination and books.
+ *
+ * Coordinates are stored inline (not geocoded at runtime): a partner is a fixed
+ * known location, and the project's Maps key does NOT have the Geocoding API
+ * enabled — only Maps JS + Places. Hardcoding the lat/lng (sourced once from the
+ * Places API) keeps prefill instant, free, and dependency-free. The label is
+ * what the guest sees + what the dispatcher receives.
+ *
+ * The redirect is 302 (temporary), not 301: the partnership / address may
+ * change and we don't want browsers caching the mapping. Add a slug to onboard.
+ */
+export const partnerPickups: Record<string, { label: string; lat: number; lng: number }> = {
+	monumenti: {
+		label: 'Monumenti Heritage Hotel, Ul. Vallelunga 89, Pula',
+		lat: 44.8760933,
+		lng: 13.8181913
+	}
+};
+
+/**
  * Redirects that key on a query-string match rather than just path.
  */
 export const queryRedirects: Array<{
@@ -96,7 +118,7 @@ export const queryRedirects: Array<{
 ];
 
 export type RedirectResolution =
-	| { kind: 'redirect'; to: string; preserveQuery: boolean }
+	| { kind: 'redirect'; to: string; preserveQuery: boolean; status?: 301 | 302 }
 	| { kind: 'gone' }
 	| null;
 
@@ -115,6 +137,15 @@ export function resolveRedirect(
 		if (normalized === rule.path && searchParams.get(rule.param) === rule.value) {
 			return { kind: 'redirect', to: rule.to, preserveQuery: false };
 		}
+	}
+
+	// Partner deep-links: /<slug> → calculator with the pickup prefilled. Carry
+	// the slug (not the address) so the page resolves label + coords from the
+	// shared map. Don't preserve the incoming query (target has its own).
+	// Temporary (302) — see partnerPickups.
+	const slug = normalized.replace(/^\//, '');
+	if (slug in partnerPickups) {
+		return { kind: 'redirect', to: `/hr/luksuzni-transferi?partner=${slug}`, preserveQuery: false, status: 302 };
 	}
 
 	// Path redirects keep the query string so utm_* (Google Ads, GBP) survive.

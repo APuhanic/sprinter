@@ -1,12 +1,18 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import { page } from '$app/stores';
 	import { telHref, waHref, contact } from '$lib/contact';
+	import { partnerPickups } from '$lib/redirects';
 	import { transferService } from '$lib/jsonld';
 	import TransferCalculator from '$lib/components/TransferCalculator.svelte';
 
 	let { data }: { data: PageData } = $props();
 	let lang = $derived(data.lang);
 	let t = $derived(data.t);
+
+	// Partner deep-links (e.g. /monumenti → ?partner=monumenti) prefill the
+	// calculator's pickup so a hotel guest only has to choose a destination.
+	let prefillPickup = $derived(partnerPickups[$page.url.searchParams.get('partner') ?? '']);
 
 	const serviceJsonLd = JSON.stringify(transferService());
 
@@ -49,6 +55,7 @@
 				whatsAppNumber={contact.whatsappNumber}
 				phoneNumber={contact.tel}
 				emailAddress={contact.email}
+				{prefillPickup}
 			/>
 		</div>
 	</section>
