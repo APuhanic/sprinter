@@ -75,9 +75,12 @@
 		whatsAppNumber: string;
 		phoneNumber: string;
 		emailAddress: string;
+		/** Partner deep-link pickup to prefill (label + coords; see /monumenti). */
+		prefillPickup?: { label: string; lat: number; lng: number };
 	};
 
-	let { lang, strings: s, whatsAppNumber, phoneNumber, emailAddress }: Props = $props();
+	let { lang, strings: s, whatsAppNumber, phoneNumber, emailAddress, prefillPickup }: Props =
+		$props();
 
 	// ── Route / Maps state ────────────────────────────────────────────────
 	let fromInput = $state<HTMLInputElement | null>(null);
@@ -303,8 +306,26 @@
 		}
 	}
 
+	// Prefill the pickup from a partner deep-link (e.g. /monumenti). Coords come
+	// from the partner map, so fromPlace gets a real location and a route + price
+	// computes the moment the guest enters a destination — no Geocoding API call
+	// (the project's key doesn't have it enabled). If Maps failed to load we at
+	// least show the label so the guest sees their pickup.
+	function applyPickupPrefill(pickup: { label: string; lat: number; lng: number }) {
+		fromText = pickup.label;
+		if (mapsError || !window.google?.maps) return;
+		fromPlace = {
+			name: pickup.label,
+			formatted_address: pickup.label,
+			geometry: { location: new google.maps.LatLng(pickup.lat, pickup.lng) }
+		} as google.maps.places.PlaceResult;
+		maybeRunRoute();
+	}
+
 	onMount(() => {
-		initMaps();
+		initMaps().then(() => {
+			if (prefillPickup) applyPickupPrefill(prefillPickup);
+		});
 		const welcomeTimer = window.setInterval(() => {
 			welcomeFade = false;
 			window.setTimeout(() => {

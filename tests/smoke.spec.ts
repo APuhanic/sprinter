@@ -158,8 +158,5 @@ test('vehicle inquiry form computes live quote and submits', async ({ page }) =>
 	await expect(page.getByRole('heading', { name: 'Hvala na upitu' })).toBeVisible();
 });
 
-// TODO: transfers page now uses TransferCalculator which posts to WhatsApp (no /hvala redirect).
-// Rewrite this test to exercise the calculator's quote computation + WhatsApp link assembly.
-test.skip('transfers inquiry form submits and redirects to /hvala', async ({ page }) => {
-	await page.goto('/hr/luksuzni-transferi');
-});
+// Transfer calculator (quote computation, WhatsApp link assembly, validation,
+// edge cases) is covered in transfer-calculator.spec.ts.
