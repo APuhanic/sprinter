@@ -62,8 +62,12 @@
 		content={lang === 'hr' ? 'hr_HR' : lang === 'de' ? 'de_DE' : 'en_US'}
 	/>
 	<meta property="og:url" content={canonical} />
-	<!-- Default OG: cleaning-themed. /luksuzni-transferi overrides with its own. -->
-	<meta property="og:image" content={`${SITE_URL}/images/og/cleaning-og.jpg`} />
+	<!-- Single OG image. Pages set their own via load data (page.data.ogImage);
+	     everything else falls back to the cleaning-themed default. -->
+	<meta
+		property="og:image"
+		content={`${SITE_URL}${$page.data.ogImage ?? '/images/og/cleaning-og.jpg'}`}
+	/>
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
 	<meta name="twitter:card" content="summary_large_image" />

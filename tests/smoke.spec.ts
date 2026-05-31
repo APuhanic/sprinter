@@ -160,3 +160,20 @@ test('vehicle inquiry form computes live quote and submits', async ({ page }) =>
 
 // Transfer calculator (quote computation, WhatsApp link assembly, validation,
 // edge cases) is covered in transfer-calculator.spec.ts.
+
+test('each page emits exactly one, correct OG image', async ({ page }) => {
+	const ogImages = async (path: string) => {
+		await page.goto(path);
+		return page
+			.locator('meta[property="og:image"]')
+			.evaluateAll((els) => els.map((e) => e.getAttribute('content')));
+	};
+	// Transfers (and the /monumenti redirect target) → luxury vehicle image
+	expect(await ogImages('/hr/luksuzni-transferi')).toEqual([
+		'https://sprinter.hr/images/og/transfers-og.jpg'
+	]);
+	// Other pages → cleaning-themed default, also exactly one tag
+	expect(await ogImages('/hr/usluge-ciscenja')).toEqual([
+		'https://sprinter.hr/images/og/cleaning-og.jpg'
+	]);
+});
