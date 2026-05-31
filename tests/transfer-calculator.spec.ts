@@ -358,11 +358,24 @@ test.describe('partner pickup prefill', () => {
 		await expect(fromInput(page)).toHaveValue(HOTEL);
 	});
 
+	test('arriving via a partner link auto-activates the calculator (no grey gate)', async ({ page }) => {
+		await page.goto('/hr/luksuzni-transferi?partner=monumenti');
+		await expect(fromInput(page)).toHaveValue(HOTEL);
+		await expect(page.locator('.tr-calc')).toHaveAttribute('aria-disabled', 'false');
+		await expect(page.getByText('Odaberite opciju za izračun')).toHaveCount(0);
+		// "now" is pre-selected → time select is hidden
+		await expect(page.locator('select')).toHaveCount(0);
+	});
+
+	test('partner link scrolls down to the calculator', async ({ page }) => {
+		await page.goto('/hr/luksuzni-transferi?partner=monumenti');
+		await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(100);
+	});
+
 	test('prefilled pickup has coords, so a destination alone yields a price', async ({ page }) => {
 		await page.goto('/hr/luksuzni-transferi?partner=monumenti');
 		await expect(fromInput(page)).toHaveValue(HOTEL);
-		await chooseMode(page, 'now');
-		// only pick a destination — pickup (with coords) came from the deep-link
+		// no chooseMode — the deep-link already activated "now"; just pick a destination
 		await setRouteKm(page, 12);
 		await page.evaluate(() => {
 			(window as any).__pickPlace(document.querySelector('input[placeholder*="Rovinj"]'), 'Pula Airport');

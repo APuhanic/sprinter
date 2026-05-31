@@ -324,7 +324,13 @@
 
 	onMount(() => {
 		initMaps().then(() => {
-			if (prefillPickup) applyPickupPrefill(prefillPickup);
+			if (prefillPickup) {
+				// Partner deep-link: default to "now" so the guest meets an active
+				// calculator (pickup already filled) instead of a greyed-out gate.
+				// The now/later buttons stay, so they can switch to a scheduled ride.
+				selectMode('now');
+				applyPickupPrefill(prefillPickup);
+			}
 		});
 		const welcomeTimer = window.setInterval(() => {
 			welcomeFade = false;
