@@ -30,7 +30,9 @@
 		note: string;
 		notePh: string;
 		vatIncl: string;
-		errorBook: string;
+		errorRoute: string;
+		errorName: string;
+		errorDateTime: string;
 		sendBooking: string;
 		formNote: string;
 		whatsapp: string;
@@ -104,6 +106,7 @@
 	let time = $state('');
 	let note = $state('');
 	let errorBook = $state(false);
+	let bookErrorMsg = $state('');
 
 	let vehicleLabel = $derived(
 		vehicle === 'e' ? `${s.eClass} · ${s.eClassRange}` : `${s.vClass} · ${s.vClassRange}`
@@ -497,12 +500,25 @@
 
 	function sendBooking(ev: Event) {
 		errorBook = false;
+		// Cause-specific messages: a single generic "enter name, date and time"
+		// misled users — in "now" mode date/time are hidden, so when the real
+		// blocker was a missing route (address typed but no suggestion picked →
+		// no price), the error wrongly demanded fields they couldn't see.
 		if (routeStatus !== 'ok' || fare === null) {
+			bookErrorMsg = s.errorRoute;
 			errorBook = true;
 			ev.preventDefault();
 			return;
 		}
-		if (!name.trim() || !date || !time) {
+		if (!name.trim()) {
+			bookErrorMsg = s.errorName;
+			errorBook = true;
+			ev.preventDefault();
+			return;
+		}
+		// Date/time are auto-filled in "now" mode; only "later" can miss them.
+		if (mode === 'later' && (!date || !time)) {
+			bookErrorMsg = s.errorDateTime;
 			errorBook = true;
 			ev.preventDefault();
 		}
@@ -706,7 +722,7 @@
 		</label>
 
 		{#if errorBook}
-			<p class="tr-calc__error">{s.errorBook}</p>
+			<p class="tr-calc__error">{bookErrorMsg}</p>
 		{/if}
 
 		<a
