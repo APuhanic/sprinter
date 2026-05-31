@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { telHref, waHref, contact } from '$lib/contact';
 	import { partnerPickups } from '$lib/redirects';
@@ -13,6 +14,16 @@
 	// Partner deep-links (e.g. /monumenti → ?partner=monumenti) prefill the
 	// calculator's pickup so a hotel guest only has to choose a destination.
 	let prefillPickup = $derived(partnerPickups[$page.url.searchParams.get('partner') ?? '']);
+
+	// Arriving via a partner link → land the guest on the calculator (it sits
+	// below the hero), so the prefilled pickup is immediately in view.
+	onMount(() => {
+		if (prefillPickup) {
+			requestAnimationFrame(() =>
+				document.getElementById('kalkulator')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+			);
+		}
+	});
 
 	const serviceJsonLd = JSON.stringify(transferService());
 
