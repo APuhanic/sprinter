@@ -7,7 +7,11 @@ declare global {
 			errorId?: string;
 		}
 		// interface Locals {}
-		// interface PageData {}
+		interface PageData {
+			// Per-page Open Graph image path (e.g. '/images/og/transfers-og.jpg').
+			// Rendered as the single og:image in the layout; falls back to default.
+			ogImage?: string;
+		}
 		// interface PageState {}
 		// interface Platform {}
 	}

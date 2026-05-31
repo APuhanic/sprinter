@@ -38,7 +38,8 @@
 	<meta name="description" content={metaDescription} />
 	<meta property="og:title" content="Sprinter - {t.transfersPage.title}{t.transfersPage.titleSuffix}" />
 	<meta property="og:description" content={metaDescription} />
-	<meta property="og:image" content="https://sprinter.hr/images/og/transfers-og.jpg" />
+	<!-- og:image is set via +page.ts (page.data.ogImage) so the layout renders a
+	     single, correct og:image for this page. -->
 	{@html `<script type="application/ld+json">${serviceJsonLd}</` + `script>`}
 </svelte:head>
 
