@@ -361,22 +361,41 @@
 		return toPlace?.formatted_address ?? toPlace?.name ?? toText.trim();
 	}
 
+	// Prefer the place's lat,lng over its full address: the resulting nav link is
+	// roughly half as long (no URL-encoded street/city) and points Maps at the
+	// exact coordinate. Falls back to the address when a place has no geometry
+	// (e.g. Maps failed to load and we only have typed text).
+	function coordsOf(place: google.maps.places.PlaceResult | null): string | null {
+		const loc = place?.geometry?.location;
+		if (!loc) return null;
+		return `${loc.lat()},${loc.lng()}`;
+	}
+
 	// One-tap navigation: opens Google Maps directions straight to this point
 	// with the driver's current location as origin (dir + destination only →
 	// Maps fills in "from here"). Actual turn-by-turn nav, not a search pin.
-	function buildNavLink(addr: string): string {
-		return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(addr)}&travelmode=driving`;
+	function buildNavLink(addr: string, coords: string | null): string {
+		const destination = coords ?? encodeURIComponent(addr);
+		return `https://www.google.com/maps/dir/?api=1&destination=${destination}&travelmode=driving`;
 	}
 
 	// Full-route link (origin → destination) — the route-overview preview that
 	// shows distance/time end to end.
 	function buildDirLink(): string {
-		const origin = encodeURIComponent(fromFullText());
-		const destination = encodeURIComponent(toFullText());
+		const origin = coordsOf(fromPlace) ?? encodeURIComponent(fromFullText());
+		const destination = coordsOf(toPlace) ?? encodeURIComponent(toFullText());
 		return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`;
 	}
 
 	const WA_LINE = '───────────────';
+
+	// Zero-width space placed right before each URL so WhatsApp doesn't treat it
+	// as a "naked" link and generate a big Maps preview card at the top of the
+	// message. The URL stays tappable; only the auto-preview is suppressed, so
+	// the message always opens with the status line (🔴/🗓️), never a map card.
+	// Explicit escape (not a literal invisible char) so it survives any
+	// file-encoding round-trip — same rationale as the emoji code points below.
+	const ZW = '\u200B';
 
 	// Emoji as explicit code points so the message can never degrade to □/�
 	// boxes: \u{FE0F} forces emoji (not text) presentation for ✏ ⚠ 🗓 🗺, and
@@ -439,9 +458,9 @@
 		// Navigation, all grouped at the bottom: full route overview (dir) +
 		// single-pin From/To search links.
 		L.push(`${s.mapNavLabel}:`);
-		L.push(`${E.route} ${s.mRoute}: ${buildDirLink()}`);
-		L.push(`From: ${buildNavLink(fromFullText())}`);
-		L.push(`To: ${buildNavLink(toFullText())}`);
+		L.push(`${E.route} ${s.mRoute}: ${ZW}${buildDirLink()}`);
+		L.push(`From: ${ZW}${buildNavLink(fromFullText(), coordsOf(fromPlace))}`);
+		L.push(`To: ${ZW}${buildNavLink(toFullText(), coordsOf(toPlace))}`);
 
 		return L.join('\n');
 	}
