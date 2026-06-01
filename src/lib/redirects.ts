@@ -100,6 +100,26 @@ export const partnerPickups: Record<string, { label: string; lat: number; lng: n
 		label: 'Monumenti Heritage Hotel, Ul. Vallelunga 89, Pula',
 		lat: 44.8760933,
 		lng: 13.8181913
+	},
+	premantura: {
+		label: 'Premantura Resort, Runke 43, Premantura',
+		lat: 44.8071583,
+		lng: 13.9157716
+	},
+	brioni: {
+		label: 'Grand Hotel Brioni Pula, Verudela 16',
+		lat: 44.838156,
+		lng: 13.8295628
+	},
+	valsabbion: {
+		label: 'Boutique Hotel Valsabbion, Pješčana Uvala IX 26, Pula',
+		lat: 44.8381261,
+		lng: 13.8459551
+	},
+	histria: {
+		label: 'Park Plaza Histria Pula, Verudela 17',
+		lat: 44.8362421,
+		lng: 13.8398263
 	}
 };
 
