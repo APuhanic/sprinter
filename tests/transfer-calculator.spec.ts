@@ -167,8 +167,8 @@ test.describe('booking-mode gate', () => {
 
 	test('choosing "Za kasnije" reveals date and time fields', async ({ page }) => {
 		await chooseMode(page, 'later');
-		await expect(page.locator('input[type="date"]')).toBeVisible();
-		await expect(page.locator('select')).toBeVisible();
+		await expect(page.locator('.tr-calc__date')).toBeVisible();
+		await expect(page.locator('select.tr-calc__input')).toBeVisible();
 	});
 });
 
@@ -251,8 +251,15 @@ test.describe('booking validation', () => {
 		d.setDate(d.getDate() + 3);
 		const iso = d.toISOString().split('T')[0];
 		const [, mo, da] = iso.split('-');
-		await page.locator('input[type="date"]').fill(iso);
-		await page.locator('select').selectOption('12:00');
+		// flatpickr keeps the input read-only (calendar-only); set the date through
+		// its instance so onChange fires and the ISO value flows into the message.
+		await page.evaluate((iso) => {
+			const el = document.querySelector('.tr-calc__date') as HTMLInputElement & {
+				_flatpickr?: { setDate: (d: Date, fire: boolean) => void };
+			};
+			el._flatpickr?.setDate(new Date(iso), true);
+		}, iso);
+		await page.locator('select.tr-calc__input').selectOption('12:00');
 		await nameInput(page).fill('Ivan');
 		await expect(errorEl(page)).toHaveCount(0);
 		const text = await reserveText(page);

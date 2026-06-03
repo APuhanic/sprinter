@@ -655,6 +655,7 @@ export default {
 		fullNamePh: '',
 		paxCount: 'Broj putnika',
 		date: 'Datum',
+		datePlaceholder: 'dd.mm.gggg.',
 		time: 'Vrijeme',
 		timePlaceholder: '— Odaberite vrijeme —',
 		phone: 'Telefon (neobavezno)',
