@@ -655,6 +655,7 @@ export default {
 		fullNamePh: '',
 		paxCount: 'Personen',
 		date: 'Datum',
+		datePlaceholder: 'tt.mm.jjjj',
 		time: 'Uhrzeit',
 		timePlaceholder: '— Uhrzeit wählen —',
 		phone: 'Telefon (optional)',
