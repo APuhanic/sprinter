@@ -1,5 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import type { Action } from 'svelte/action';
+	import flatpickr from 'flatpickr';
+	import { Croatian } from 'flatpickr/dist/l10n/hr.js';
+	import { German } from 'flatpickr/dist/l10n/de.js';
+	import type { Instance } from 'flatpickr/dist/types/instance';
+	import 'flatpickr/dist/flatpickr.css';
 	import { calcFare, type Vehicle } from '$lib/data/transferPricing';
 	import { loadGoogleMaps, hasGoogleMapsKey } from '$lib/googleMaps';
 	import type { Lang } from '$lib/i18n';
@@ -25,6 +31,7 @@
 		fullNamePh: string;
 		paxCount: string;
 		date: string;
+		datePlaceholder: string;
 		time: string;
 		timePlaceholder: string;
 		note: string;
@@ -179,6 +186,38 @@
 	);
 
 	const today = new Date().toISOString().split('T')[0];
+
+	// ── Date picker ───────────────────────────────────────────────────────
+	// Native <input type="date"> renders its format + calendar in the OS locale:
+	// a US-English desktop shows mm/dd/yyyy and an English calendar even when the
+	// page is HR/DE. flatpickr pins the display to dd.mm.yyyy on every device and
+	// localizes the calendar to the page language (set once at mount — switching
+	// language navigates to a new URL, which remounts this component). The stored
+	// value stays ISO (yyyy-mm-dd) so the WhatsApp/message builders are untouched.
+	function toISODate(d: Date): string {
+		return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(
+			d.getDate()
+		).padStart(2, '0')}`;
+	}
+
+	const datePicker: Action<HTMLInputElement> = (node) => {
+		const locale = lang === 'hr' ? Croatian : lang === 'de' ? German : 'default';
+		const fp = flatpickr(node, {
+			dateFormat: 'd.m.Y', // always dd.mm.yyyy — never the OS-default US format
+			locale,
+			minDate: 'today',
+			disableMobile: true, // force the same localized calendar on mobile too
+			defaultDate: date ? new Date(date) : undefined,
+			onChange: (selected) => {
+				date = selected[0] ? toISODate(selected[0]) : '';
+			}
+		}) as Instance;
+		return {
+			destroy() {
+				fp.destroy();
+			}
+		};
+	};
 
 	const timeOptions = (() => {
 		const list: string[] = [];
@@ -697,10 +736,11 @@
 				<label class="tr-calc__field">
 					<span class="tr-calc__label">{s.date}</span>
 					<input
-						class="tr-calc__input"
-						type="date"
-						bind:value={date}
-						min={today}
+						class="tr-calc__input tr-calc__date"
+						type="text"
+						use:datePicker
+						placeholder={s.datePlaceholder}
+						readonly
 						aria-label={s.date}
 					/>
 				</label>
@@ -812,6 +852,65 @@
 </div>
 
 <style>
+	/* ── flatpickr calendar, themed to the dark calculator panel ───────────
+	   The popup is portalled outside this component, so it needs :global. Brand
+	   rust (#a84c28) marks today / selected; greys match the panel tokens. */
+	:global(.flatpickr-calendar) {
+		background: #1b1f26;
+		border: 1px solid rgba(255, 255, 255, 0.12);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+	}
+	:global(.flatpickr-calendar.arrowTop::before),
+	:global(.flatpickr-calendar.arrowTop::after) {
+		border-bottom-color: #1b1f26;
+	}
+	:global(.flatpickr-calendar.arrowBottom::before),
+	:global(.flatpickr-calendar.arrowBottom::after) {
+		border-top-color: #1b1f26;
+	}
+	:global(.flatpickr-months .flatpickr-month),
+	:global(.flatpickr-current-month .flatpickr-monthDropdown-months),
+	:global(.flatpickr-current-month input.cur-year) {
+		color: #f2f1ec;
+		fill: #f2f1ec;
+	}
+	:global(.flatpickr-monthDropdown-months) {
+		background: #1b1f26;
+	}
+	:global(span.flatpickr-weekday) {
+		color: #9aa0aa;
+	}
+	:global(.flatpickr-prev-month svg),
+	:global(.flatpickr-next-month svg) {
+		fill: #f2f1ec;
+	}
+	:global(.flatpickr-prev-month:hover svg),
+	:global(.flatpickr-next-month:hover svg) {
+		fill: #a84c28;
+	}
+	:global(.flatpickr-day) {
+		color: #e8e7e2;
+	}
+	:global(.flatpickr-day:hover),
+	:global(.flatpickr-day:focus) {
+		background: rgba(168, 76, 40, 0.22);
+		border-color: transparent;
+	}
+	:global(.flatpickr-day.today) {
+		border-color: #a84c28;
+	}
+	:global(.flatpickr-day.selected),
+	:global(.flatpickr-day.selected:hover) {
+		background: #a84c28;
+		border-color: #a84c28;
+		color: #fff;
+	}
+	:global(.flatpickr-day.flatpickr-disabled),
+	:global(.flatpickr-day.prevMonthDay),
+	:global(.flatpickr-day.nextMonthDay) {
+		color: rgba(255, 255, 255, 0.25);
+	}
+
 	/* Dark calculator panel on the page's beige background.
 	   Re-maps the global theme tokens for everything inside .tr-calc so app.css
 	   rules that reference these vars resolve to dark values automatically.
