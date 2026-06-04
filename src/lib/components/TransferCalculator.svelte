@@ -318,7 +318,11 @@
 					routeStatus = 'error';
 					return;
 				}
-				const leg = res.routes[0].legs[0];
+				const leg = res.routes?.[0]?.legs?.[0];
+				if (!leg) {
+					routeStatus = 'error';
+					return;
+				}
 				lastKm = (leg.distance?.value ?? 0) / 1000;
 				lastMin = Math.round((leg.duration?.value ?? 0) / 60);
 				routeStatus = 'ok';

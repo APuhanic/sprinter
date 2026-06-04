@@ -39,6 +39,25 @@
 	box-sizing: border-box;
 }
 
+/* Visible keyboard focus everywhere (WCAG 2.4.7) — components that set
+   outline:none still get a ring when focused via the keyboard. */
+:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+
+/* Respect reduced-motion preferences (WCAG 2.3.3). */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
 html,
 body {
 	background: var(--bg);

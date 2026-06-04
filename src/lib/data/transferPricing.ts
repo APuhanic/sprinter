@@ -1,6 +1,5 @@
 // Cascading per-km tariff with a flat €/km past 100 km. No distance cap.
 
-export type PaxKind = 'small' | 'large';
 export type Vehicle = 'e' | 'v';
 
 const E_START = 4.0;
@@ -66,8 +65,4 @@ export function calcFare(km: number, vehicle: Vehicle): number | null {
 		prev = to;
 	}
 	return Math.round(total);
-}
-
-export function vehicleFromPax(pax: PaxKind): Vehicle {
-	return pax === 'small' ? 'e' : 'v';
 }

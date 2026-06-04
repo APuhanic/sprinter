@@ -1,12 +1,13 @@
 <script lang="ts">
 	import type { LayoutData } from './$types';
-	import { page } from '$app/stores';
+	import type { Snippet } from 'svelte';
+	import { page } from '$app/state';
 	import { slugs, LANGS, type Lang } from '$lib/i18n';
 	import { telHref, mailHref, waHref } from '$lib/contact';
 	import { localBusiness } from '$lib/jsonld';
 	import ConsentBanner from '$lib/components/ConsentBanner.svelte';
 
-	let { data, children }: { data: LayoutData; children: any } = $props();
+	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
 	let lang = $derived(data.lang);
 	let t = $derived(data.t);
@@ -14,13 +15,13 @@
 	const businessJsonLd = JSON.stringify(localBusiness());
 
 	function switchLangUrl(targetLang: Lang): string {
-		const currentPath = $page.url.pathname;
+		const currentPath = page.url.pathname;
 		const rest = currentPath.replace(new RegExp(`^/${lang}(?=/|$)`), '');
 		return `/${targetLang}${rest}`;
 	}
 
 	function isActive(href: string): boolean {
-		const current = $page.url.pathname;
+		const current = page.url.pathname;
 		if (href === `/${lang}`) return current === `/${lang}` || current === `/${lang}/`;
 		return current.startsWith(href);
 	}
@@ -33,7 +34,7 @@
 	]);
 
 	const SITE_URL = 'https://sprinter.hr';
-	let canonicalPath = $derived($page.url.pathname);
+	let canonicalPath = $derived(page.url.pathname);
 	let canonical = $derived(`${SITE_URL}${canonicalPath}`);
 	let hreflangs = $derived(
 		LANGS.map((l) => ({
@@ -42,7 +43,6 @@
 		}))
 	);
 
-	let waPhone = '+385 95 722 6918';
 	let callLabel = $derived(lang === 'hr' ? 'Nazovi' : lang === 'de' ? 'Anrufen' : 'Call');
 </script>
 
@@ -66,7 +66,7 @@
 	     everything else falls back to the cleaning-themed default. -->
 	<meta
 		property="og:image"
-		content={`${SITE_URL}${$page.data.ogImage ?? '/images/og/cleaning-og.jpg'}`}
+		content={`${SITE_URL}${page.data.ogImage ?? '/images/og/cleaning-og.jpg'}`}
 	/>
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
