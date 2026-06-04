@@ -59,7 +59,11 @@ export const vehicles: Vehicle[] = [
 		hasCruise: true,
 		year: 2021,
 		gearbox: 'Ručni',
-		images: ['/images/vehicles/ford-focus/1.jpg', '/images/vehicles/ford-focus/2.jpg', '/images/vehicles/ford-focus/3.jpg'],
+		images: [
+			'/images/vehicles/ford-focus/1.jpg',
+			'/images/vehicles/ford-focus/2.jpg',
+			'/images/vehicles/ford-focus/3.jpg'
+		],
 		description: [
 			'Upoznajte Ford Focus Karavan, savršen izbor za one koji traže praktičnost i udobnost.',
 			'Ovo vozilo pokreće štedljivi 1,5-litreni TDCi motor poznat po niskoj potrošnji goriva, što ga čini idealnim za duža putovanja.',
@@ -84,20 +88,24 @@ export const vehicles: Vehicle[] = [
 		hasCruise: true,
 		year: 2021,
 		gearbox: 'Automatski',
-		images: ['/images/vehicles/mercedes-e300/1.jpg', '/images/vehicles/mercedes-e300/2.jpg', '/images/vehicles/mercedes-e300/3.jpg'],
+		images: [
+			'/images/vehicles/mercedes-e300/1.jpg',
+			'/images/vehicles/mercedes-e300/2.jpg',
+			'/images/vehicles/mercedes-e300/3.jpg'
+		],
 		description: [
 			'Predstavljamo Mercedes-Benz E 300 s Avantgarde Luxury paketom opreme.',
 			'Vozilo pokreće benzinski motor s plug-in hibridnim sustavom, što omogućuje vožnju do 50 km isključivo na struju, a ukupna snaga sustava iznosi 320 KS.',
 			'Iz opreme izdvajamo: Sportska sjedala s memorijom te sportski volan. Unutrašnjost je obogaćena mahagonij završnom obradom. Ambijentalna rasvjeta stvara ugodnu atmosferu. Grijana sjedala i automatska klima za maksimalan komfor. Navigacija s proširenom stvarnošću (Augmented Reality) olakšava snalaženje na cesti.'
 		],
 		pricing: [
-			{ days: 1, price: 120, includedKm: 300, extraKmRate: 0.20 },
-			{ days: 2, price: 240, includedKm: 600, extraKmRate: 0.20 },
-			{ days: 3, price: 360, includedKm: 900, extraKmRate: 0.20 },
-			{ days: 4, price: 480, includedKm: 1200, extraKmRate: 0.20 },
-			{ days: 5, price: 600, includedKm: 1500, extraKmRate: 0.20 },
-			{ days: 6, price: 720, includedKm: 1800, extraKmRate: 0.20 },
-			{ days: 7, price: 840, includedKm: 2100, extraKmRate: 0.20 }
+			{ days: 1, price: 120, includedKm: 300, extraKmRate: 0.2 },
+			{ days: 2, price: 240, includedKm: 600, extraKmRate: 0.2 },
+			{ days: 3, price: 360, includedKm: 900, extraKmRate: 0.2 },
+			{ days: 4, price: 480, includedKm: 1200, extraKmRate: 0.2 },
+			{ days: 5, price: 600, includedKm: 1500, extraKmRate: 0.2 },
+			{ days: 6, price: 720, includedKm: 1800, extraKmRate: 0.2 },
+			{ days: 7, price: 840, includedKm: 2100, extraKmRate: 0.2 }
 		],
 		maxDaysBeforeContact: 7,
 		insuranceIncluded: true
@@ -111,7 +119,11 @@ export const vehicles: Vehicle[] = [
 		hasCruise: true,
 		year: 2021,
 		gearbox: 'Automatski',
-		images: ['/images/vehicles/mercedes-v-class/1.jpg', '/images/vehicles/mercedes-v-class/2.jpg', '/images/vehicles/mercedes-v-class/3.jpg'],
+		images: [
+			'/images/vehicles/mercedes-v-class/1.jpg',
+			'/images/vehicles/mercedes-v-class/2.jpg',
+			'/images/vehicles/mercedes-v-class/3.jpg'
+		],
 		description: [
 			'Tražite vrhunski prijevoz za grupu do osam osoba? Mercedes-Benz V-klasa je idealno rješenje.',
 			'Ova luksuzna putnička krstarica osigurava iznimnu udobnost, čineći svako putovanje pravim užitkom.',
@@ -119,13 +131,13 @@ export const vehicles: Vehicle[] = [
 			'Bez obzira na to radi li se o poslovnom putovanju ili obiteljskom izletu, V-klasa jamči luksuzan i udoban prijevoz.'
 		],
 		pricing: [
-			{ days: 1, price: 120, includedKm: 300, extraKmRate: 0.20 },
-			{ days: 2, price: 240, includedKm: 600, extraKmRate: 0.20 },
-			{ days: 3, price: 360, includedKm: 900, extraKmRate: 0.20 },
-			{ days: 4, price: 480, includedKm: 1200, extraKmRate: 0.20 },
-			{ days: 5, price: 600, includedKm: 1500, extraKmRate: 0.20 },
-			{ days: 6, price: 720, includedKm: 1800, extraKmRate: 0.20 },
-			{ days: 7, price: 840, includedKm: 2100, extraKmRate: 0.20 }
+			{ days: 1, price: 120, includedKm: 300, extraKmRate: 0.2 },
+			{ days: 2, price: 240, includedKm: 600, extraKmRate: 0.2 },
+			{ days: 3, price: 360, includedKm: 900, extraKmRate: 0.2 },
+			{ days: 4, price: 480, includedKm: 1200, extraKmRate: 0.2 },
+			{ days: 5, price: 600, includedKm: 1500, extraKmRate: 0.2 },
+			{ days: 6, price: 720, includedKm: 1800, extraKmRate: 0.2 },
+			{ days: 7, price: 840, includedKm: 2100, extraKmRate: 0.2 }
 		],
 		maxDaysBeforeContact: 7
 	},
@@ -167,7 +179,11 @@ export const vehicles: Vehicle[] = [
 		gearbox: 'Ručni',
 		capacity: '15 m²',
 		payload: '1200 kg',
-		images: ['/images/vehicles/mercedes-sprinter/1.jpg', '/images/vehicles/mercedes-sprinter/2.jpg', '/images/vehicles/mercedes-sprinter/3.jpg'],
+		images: [
+			'/images/vehicles/mercedes-sprinter/1.jpg',
+			'/images/vehicles/mercedes-sprinter/2.jpg',
+			'/images/vehicles/mercedes-sprinter/3.jpg'
+		],
 		description: [
 			'Mercedes-Benz Sprinter se s pravom naziva krstaricom među kombijima, kombinirajući impresivnu kvalitetu izrade s izvanrednom funkcionalnošću.',
 			'Odlikuje ga prostrani tovarni prostor, koji nudi obilje mjesta za prijevoz robe, što ga čini idealnim partnerom za posao. Njegova robusna konstrukcija i pouzdanost osiguravaju da će sve vaše dostave biti sigurne.',

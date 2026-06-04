@@ -21,8 +21,10 @@
 		<h2>Članak 1. Predmet ugovora i putovanje izvan RH</h2>
 		<p>
 			Predmet je najam tehnički ispravnog vozila s opremom i dokumentima.
-			<strong>Napuštanje Republike Hrvatske zabranjeno je bez pisane autorizacije Najmodavca i
-			dodatne police osiguranja.</strong>
+			<strong
+				>Napuštanje Republike Hrvatske zabranjeno je bez pisane autorizacije Najmodavca i dodatne
+				police osiguranja.</strong
+			>
 		</p>
 
 		<h2>Članak 2. Odgovornost korisnika i integritet imovine</h2>
@@ -33,10 +35,9 @@
 
 		<h2>Članak 3. Zabranjeni tereti</h2>
 		<p>
-			<strong>Zabranjeni su:</strong> prijevoz ilegalnih i opasnih tvari, šute, otvorenog
-			građevinskog materijala (pijesak, šljunak, cement, opeka), otvorenog smeća, gnojiva,
-			kemikalija i tereta koji mogu zaprljati prostor vozila. Kršenje aktivira penal za dubinsko
-			čišćenje.
+			<strong>Zabranjeni su:</strong> prijevoz ilegalnih i opasnih tvari, šute, otvorenog građevinskog
+			materijala (pijesak, šljunak, cement, opeka), otvorenog smeća, gnojiva, kemikalija i tereta koji
+			mogu zaprljati prostor vozila. Kršenje aktivira penal za dubinsko čišćenje.
 		</p>
 
 		<h2>Članak 4. Ograničenje brzine i GPS praćenje</h2>
@@ -48,8 +49,9 @@
 		<h2>Članak 5. Protokol povrata i depozit</h2>
 		<p>
 			Gorivo pri povratu mora odgovarati razini pri preuzimanju. Vozilo se vraća uredno i čisto.
-			Produžetak najma zahtijeva najmanje 24 sata obavijesti. <strong>Depozit pokriva samo penale
-			i administrativne troškove</strong> i vraća se odmah ili do dva radna dana.
+			Produžetak najma zahtijeva najmanje 24 sata obavijesti. <strong
+				>Depozit pokriva samo penale i administrativne troškove</strong
+			> i vraća se odmah ili do dva radna dana.
 		</p>
 
 		<h2>Članak 6. Fiksna tarifa penala</h2>
@@ -57,8 +59,12 @@
 			<table class="w-full text-sm border border-slate-200 rounded-lg overflow-hidden">
 				<thead class="bg-slate-50">
 					<tr>
-						<th class="text-left px-4 py-3 font-medium text-slate-700 border-b border-slate-200">Prekršaj</th>
-						<th class="text-left px-4 py-3 font-medium text-slate-700 border-b border-slate-200">Penal</th>
+						<th class="text-left px-4 py-3 font-medium text-slate-700 border-b border-slate-200"
+							>Prekršaj</th
+						>
+						<th class="text-left px-4 py-3 font-medium text-slate-700 border-b border-slate-200"
+							>Penal</th
+						>
 					</tr>
 				</thead>
 				<tbody>
@@ -94,14 +100,11 @@
 
 		<h2>Članak 8. Protokol raskida ugovora</h2>
 		<p>
-			Ekstremno kršenje (prekoračenje <strong>15 km/h</strong> iznad granice, neovlašteno napuštanje
-			RH ili višestruko kršenje) omogućava momentalni raskid bez upozorenja. Depozit se zadržava u
-			cijelosti.
+			Ekstremno kršenje (prekoračenje <strong>15 km/h</strong> iznad granice, neovlašteno napuštanje RH
+			ili višestruko kršenje) omogućava momentalni raskid bez upozorenja. Depozit se zadržava u cijelosti.
 		</p>
 
 		<h2>Članak 9. Završne odredbe</h2>
-		<p>
-			Potpisom Korisnik potvrđuje prihvaćanje svih uvjeta i tarife penala.
-		</p>
+		<p>Potpisom Korisnik potvrđuje prihvaćanje svih uvjeta i tarife penala.</p>
 	</div>
 </section>

@@ -165,7 +165,12 @@ export function resolveRedirect(
 	// Temporary (302) — see partnerPickups.
 	const slug = normalized.replace(/^\//, '');
 	if (slug in partnerPickups) {
-		return { kind: 'redirect', to: `/hr/luksuzni-transferi?partner=${slug}`, preserveQuery: false, status: 302 };
+		return {
+			kind: 'redirect',
+			to: `/hr/luksuzni-transferi?partner=${slug}`,
+			preserveQuery: false,
+			status: 302
+		};
 	}
 
 	// Path redirects keep the query string so utm_* (Google Ads, GBP) survive.

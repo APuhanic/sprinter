@@ -70,7 +70,11 @@
 							</div>
 							<div class="review__rating" aria-label={`${r.rating} / 5`}>
 								{#each stars(r.rating) as filled}
-									<svg class="star {filled ? 'star--on' : ''}" viewBox="0 0 20 20" aria-hidden="true">
+									<svg
+										class="star {filled ? 'star--on' : ''}"
+										viewBox="0 0 20 20"
+										aria-hidden="true"
+									>
 										<path
 											d="M10 1.5l2.7 5.5 6 .9-4.4 4.3 1 6-5.4-2.8L4.6 18.2l1-6L1.3 7.9l6-.9L10 1.5z"
 										/>
@@ -84,11 +88,7 @@
 						{#if r.originalText}
 							<div class="review__translation">
 								<span>{t.testimonials.translatedBy}</span>
-								<button
-									type="button"
-									class="review__toggle"
-									onclick={() => toggleOriginal(r.id)}
-								>
+								<button type="button" class="review__toggle" onclick={() => toggleOriginal(r.id)}>
 									{openOriginals[r.id] ? t.testimonials.hideOriginal : t.testimonials.showOriginal}
 								</button>
 							</div>
@@ -99,12 +99,7 @@
 
 			{#if data.placeUri}
 				<div class="reviews__footer">
-					<a
-						class="reviews__all"
-						href={data.placeUri}
-						target="_blank"
-						rel="noopener noreferrer"
-					>
+					<a class="reviews__all" href={data.placeUri} target="_blank" rel="noopener noreferrer">
 						{t.testimonials.viewAll}
 						<span class="arrow" aria-hidden="true">→</span>
 					</a>

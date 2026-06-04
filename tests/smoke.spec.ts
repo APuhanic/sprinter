@@ -28,9 +28,8 @@ test('rental list filter narrows vehicles', async ({ page }) => {
 
 test('vehicle detail page emits Product JSON-LD', async ({ page }) => {
 	await page.goto('/hr/najam-vozila/mercedes-e300');
-	const schemas = await page.$$eval(
-		'script[type="application/ld+json"]',
-		(nodes) => nodes.map((n) => JSON.parse(n.textContent || '{}')['@type'])
+	const schemas = await page.$$eval('script[type="application/ld+json"]', (nodes) =>
+		nodes.map((n) => JSON.parse(n.textContent || '{}')['@type'])
 	);
 	expect(schemas).toContain('Product');
 	// Rental is paused → the page emits LocalBusiness (umbrella), not AutoRental.
@@ -84,7 +83,9 @@ test('contact form rejects empty submission', async ({ page }) => {
 	await page.goto('/hr/kontakt');
 	// Bypass HTML5 required validation by removing the attribute, so we hit server-side validation
 	await page.evaluate(() => {
-		document.querySelectorAll('input[required], textarea[required]').forEach((el) => el.removeAttribute('required'));
+		document
+			.querySelectorAll('input[required], textarea[required]')
+			.forEach((el) => el.removeAttribute('required'));
 	});
 	await page.getByRole('button', { name: /Pošalji/ }).click();
 	await expect(page).toHaveURL(/\/hr\/kontakt/);

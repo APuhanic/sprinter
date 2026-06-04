@@ -104,16 +104,28 @@
 		{/if}
 
 		<!-- Notices -->
-		<div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-slate-600">
+		<div
+			class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-slate-600"
+		>
 			<div class="flex items-center gap-2">
 				<svg class="w-5 h-5 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M5 13l4 4L19 7"
+					/>
 				</svg>
 				<span>{t.rental.deliveryNote}</span>
 			</div>
 			<div class="flex items-center gap-2">
 				<svg class="w-5 h-5 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M5 13l4 4L19 7"
+					/>
 				</svg>
 				<span>{t.rental.driverNote}</span>
 			</div>

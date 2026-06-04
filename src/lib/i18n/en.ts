@@ -115,8 +115,7 @@ export default {
 			num: '02',
 			name: 'Deep cleaning',
 			nameAccent: 'Deep',
-			short:
-				'Seasonal or one-off, down to the detail — kitchen, bathroom, grout, oven, windows.'
+			short: 'Seasonal or one-off, down to the detail — kitchen, bathroom, grout, oven, windows.'
 		},
 		{
 			id: 'regular',
@@ -210,7 +209,7 @@ export default {
 		testiEyebrow: 'What clients say',
 		testiTitle: 'Reviews coming soon',
 		testiSub:
-			"We just started this side of the business — testimonials will land here over the summer.",
+			'We just started this side of the business — testimonials will land here over the summer.',
 		testiPlaceholder: 'A real client review will sit here. One per service category.',
 		testiClient: 'Client name',
 		testiRoles: ['Apartment owner', 'Family home', 'Office'],
@@ -246,8 +245,7 @@ export default {
 			num: '01',
 			name: 'Apartment turnover',
 			nameAccent: 'turnover',
-			long:
-				"Holiday rentals don't allow improvising. We come in after check-out, leave before check-in, and you don't have to think about it.",
+			long: "Holiday rentals don't allow improvising. We come in after check-out, leave before check-in, and you don't have to think about it.",
 			bullets: [
 				'24-step standard protocol',
 				'Linen and towels swapped (we bring them)',
@@ -269,8 +267,7 @@ export default {
 			num: '02',
 			name: 'Deep cleaning',
 			nameAccent: 'Deep',
-			long:
-				'Everything regular cleaning skips. Typically before season, after winter, or before moving in.',
+			long: 'Everything regular cleaning skips. Typically before season, after winter, or before moving in.',
 			bullets: [
 				'Oven, fridge interior, hob',
 				'Grout, silicone, bathroom tile',
@@ -288,8 +285,7 @@ export default {
 			num: '03',
 			name: 'Regular cleaning',
 			nameAccent: 'Regular',
-			long:
-				'We come on a fixed schedule, same day, same hours. We keep notes, we know where things go.',
+			long: 'We come on a fixed schedule, same day, same hours. We keep notes, we know where things go.',
 			bullets: [
 				'Fixed team, fixed slot',
 				'Weekly, fortnightly or monthly',
@@ -311,8 +307,7 @@ export default {
 			num: '04',
 			name: 'Office cleaning',
 			nameAccent: 'Office',
-			long:
-				'We work early mornings or late evenings, so your team never sees us at it.',
+			long: 'We work early mornings or late evenings, so your team never sees us at it.',
 			bullets: [
 				'Out-of-hours scheduling',
 				'Bins, surfaces, sanitised desks',
@@ -330,8 +325,7 @@ export default {
 			num: '05',
 			name: 'Yacht & boat cleaning',
 			nameAccent: 'Yacht',
-			long:
-				"Marine-safe products, real boat experience — we know the difference between teak and gelcoat.",
+			long: 'Marine-safe products, real boat experience — we know the difference between teak and gelcoat.',
 			bullets: [
 				'Saturday charter turnover',
 				'Interior: cabins, saloon, galley',
@@ -422,8 +416,7 @@ export default {
 		],
 		estimateLabel: 'Estimate',
 		cta: 'Send to WhatsApp',
-		yachtNote:
-			'For boats, send length and type — price depends on deck type and fittings.',
+		yachtNote: 'For boats, send length and type — price depends on deck type and fittings.',
 		msgPrefix: "Hi, I'd like a",
 		msgFor: 'clean for a ~',
 		msgEstimate: '. I saw an estimate of',
@@ -483,8 +476,7 @@ export default {
 		pricingFooterNote:
 			'All prices are indicative, depend on the actual condition of the property, and are subject to change.',
 		contactTitle: 'Contact Us',
-		contactDesc:
-			'Feel free to contact us for a quote via WhatsApp, phone, or the contact form.',
+		contactDesc: 'Feel free to contact us for a quote via WhatsApp, phone, or the contact form.',
 		serviceArea: 'Our base is located in Pula – Fažana',
 		byFounder: 'by Zvjezdana Puhanić'
 	},
@@ -496,24 +488,21 @@ export default {
 			subtitle: 'Regular maintenance',
 			duration: '2 – 4 – 6 – 8 hours',
 			price: '€60 – €250',
-			description:
-				'Maintaining high cleanliness standards per agreed protocol and schedule.'
+			description: 'Maintaining high cleanliness standards per agreed protocol and schedule.'
 		},
 		{
 			name: 'Interior Deep Regeneration',
 			subtitle: 'Couches, mattresses…',
 			duration: '4 – 8 hours',
 			price: '€110 – €300',
-			description:
-				'Complete interior and exterior treatment utilizing premium Kärcher technology.'
+			description: 'Complete interior and exterior treatment utilizing premium Kärcher technology.'
 		},
 		{
 			name: 'Before & After Rental',
 			subtitle: 'Property preparation',
 			duration: '2 – 3 hours',
 			price: '€80 – €180',
-			description:
-				'Property preparation before owner/guest arrival or after departure.'
+			description: 'Property preparation before owner/guest arrival or after departure.'
 		},
 		{
 			name: 'Move-in or Move-out',
@@ -528,32 +517,28 @@ export default {
 			subtitle: 'Specialized care',
 			duration: '2 – 4 hours',
 			price: '€45 – €110',
-			description:
-				'Specialized care for large glass walls and demanding glass surfaces.'
+			description: 'Specialized care for large glass walls and demanding glass surfaces.'
 		},
 		{
 			name: 'Exterior, Pools & Grounds',
 			subtitle: 'Terrace and pool area',
 			duration: '3 – 5 hours',
 			price: '€80 – €180',
-			description:
-				'Terrace and pool area preparation for maximum visual enjoyment and hygiene.'
+			description: 'Terrace and pool area preparation for maximum visual enjoyment and hygiene.'
 		},
 		{
 			name: 'Professional Textile Care',
 			subtitle: 'Washing and ironing',
 			duration: '2 – 4 hours',
 			price: '€45 – €100',
-			description:
-				'Precise washing and ironing with maximum attention to delicate fabrics.'
+			description: 'Precise washing and ironing with maximum attention to delicate fabrics.'
 		},
 		{
 			name: 'Post-Construction Shine',
 			subtitle: 'Post-construction cleaning',
 			duration: '8 – 12 hours',
 			price: '€220 – €600',
-			description:
-				'Detailed, systematic removal of post-construction dust and debris.'
+			description: 'Detailed, systematic removal of post-construction dust and debris.'
 		}
 	],
 
@@ -643,7 +628,8 @@ export default {
 		sendLocation: "Don't know the address? Send your location via WhatsApp",
 		routeCalculating: 'Calculating…',
 		routeError: 'Route could not be calculated. Please check the addresses.',
-		mapsUnavailable: 'Live quotes unavailable right now — send a request, we reply within 30 minutes.',
+		mapsUnavailable:
+			'Live quotes unavailable right now — send a request, we reply within 30 minutes.',
 		eClass: 'E-Class',
 		eClassRange: '1 – 3 passengers',
 		vClass: 'V-Class',
@@ -707,8 +693,7 @@ export default {
 			'Our vision is an aristocracy of transport that goes far beyond mere driving. We offer an experience built on respect, discretion, and quality — creating partnerships with people who share our values.',
 		visionService:
 			'We work with athletes, public figures, and business people who value premium service and professional relationships, delivered through reliable vehicles representing style and safety.',
-		visionVehicles:
-			'We ensure this with our trusted vehicles — synonymous with style and safety!',
+		visionVehicles: 'We ensure this with our trusted vehicles — synonymous with style and safety!',
 		eClassName: 'Mercedes-Benz E-Class',
 		eClassDesc:
 			'A symbol of elegance and comfort. Ideal for transfers of up to 3 passengers, where discretion and style matter most.',
@@ -755,7 +740,8 @@ export default {
 		termsNotice: 'Please make sure to read the rental terms and conditions!',
 		viewTerms: 'RENTAL TERMS & CONDITIONS',
 		rentMe: 'Rent me...',
-		waTemplate: 'Hello, I am interested in renting the {vehicle}. Could you send me more information?',
+		waTemplate:
+			'Hello, I am interested in renting the {vehicle}. Could you send me more information?',
 		inquiryTitle: 'Check availability and price',
 		inquiryFrom: 'From date',
 		inquiryTo: 'To date',
@@ -780,9 +766,12 @@ export default {
 		noResults: 'No vehicles in this category.',
 		pricingTitle: 'Rental prices:',
 		pricingVatNote: '(* All prices include VAT)',
-		pricingDisclaimer: 'After exceeding the included kilometers, each additional km is charged as shown in the table above.',
-		extendedStayNotice: 'For inquiries regarding rentals longer than {days} days, trips outside Croatia, or customized offers, please contact us directly.',
-		speedLimitNotice: 'This vehicle is limited to {limit} km/h. This allows us to keep every vehicle in optimal condition, ready for the next driver.',
+		pricingDisclaimer:
+			'After exceeding the included kilometers, each additional km is charged as shown in the table above.',
+		extendedStayNotice:
+			'For inquiries regarding rentals longer than {days} days, trips outside Croatia, or customized offers, please contact us directly.',
+		speedLimitNotice:
+			'This vehicle is limited to {limit} km/h. This allows us to keep every vehicle in optimal condition, ready for the next driver.',
 		colDays: 'Rental period:',
 		colPrice: 'Price €',
 		colKm: 'Km',
@@ -793,17 +782,22 @@ export default {
 		insuranceTitle: 'Insurance',
 		insuranceSubtitle: 'Insurance & deposit',
 		insurancePremium: 'Premium – 1 day / €10',
-		insuranceRequirement: 'To claim Premium insurance, a police report of the accident is required. This insurance does not cover damage inside the vehicle caused by passenger or driver negligence.',
-		insuranceCoverage: 'With our premium insurance you have no material liability. Protection against theft, collision, windshield and tire damage, and weather-related damage is included.',
-		insuranceDeposit: 'A deposit is mandatory for every vehicle. The amount ranges from €200 to €1,000.',
+		insuranceRequirement:
+			'To claim Premium insurance, a police report of the accident is required. This insurance does not cover damage inside the vehicle caused by passenger or driver negligence.',
+		insuranceCoverage:
+			'With our premium insurance you have no material liability. Protection against theft, collision, windshield and tire damage, and weather-related damage is included.',
+		insuranceDeposit:
+			'A deposit is mandatory for every vehicle. The amount ranges from €200 to €1,000.',
 		insuranceIncluded: 'Insurance is included in the rental price.',
 		pickupTitle: 'Vehicle pickup instructions',
 		pickupHours: 'Pickup and return during office hours as agreed in the contract',
-		pickupLocations: 'Pickup at our Darda office, at your address (Osijek), or at shopping center parking lots',
+		pickupLocations:
+			'Pickup at our Darda office, at your address (Osijek), or at shopping center parking lots',
 		pickupFuel: 'The vehicle is provided with a full tank — please refuel before returning',
 		pickupTerms: 'Please make sure to read the Rental Terms',
 		paymentTitle: 'Payment terms:',
-		paymentMethod: 'Payment is due upon vehicle handover, extra kilometers charged after rental completion',
+		paymentMethod:
+			'Payment is due upon vehicle handover, extra kilometers charged after rental completion',
 		paymentAccepted: 'We accept cards, cash, and bank transfers.',
 		farewell: 'Thank you for your understanding, Sprinter d.o.o. wishes you a safe journey.',
 		backToList: 'Back to vehicles',
@@ -829,8 +823,7 @@ export default {
 		rentalTerms: 'Rental Terms & Conditions',
 		addressLabel: 'ADDRESS:',
 		complaintTitle: 'Complaint Submission Notice',
-		complaint:
-			`Per Article 6, Section 3 of the Tourism Services Law (NN 130/17), written complaints may be submitted to ${contact.email}`
+		complaint: `Per Article 6, Section 3 of the Tourism Services Law (NN 130/17), written complaints may be submitted to ${contact.email}`
 	},
 
 	// Cookie-consent banner (GDPR / Consent Mode v2)

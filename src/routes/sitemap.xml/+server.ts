@@ -1,5 +1,6 @@
 import type { RequestHandler } from './$types';
-import { languages, slugs, type Lang } from '$lib/i18n';
+import { slugs, type Lang } from '$lib/i18n';
+import { languages } from '$lib/i18n/translations';
 import { vehicles } from '$lib/data/vehicles';
 
 const SITE_URL = 'https://sprinter.hr';

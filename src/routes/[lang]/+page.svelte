@@ -109,11 +109,7 @@
 	<section class="section section--tight">
 		<div class="wrap">
 			<figure class="home-feature">
-				<img
-					src="/images/cleaning/ciscenje-kauc.jpg"
-					alt={t.home.featureAlt}
-					loading="lazy"
-				/>
+				<img src="/images/cleaning/ciscenje-kauc.jpg" alt={t.home.featureAlt} loading="lazy" />
 			</figure>
 		</div>
 	</section>
@@ -138,7 +134,8 @@
 						<div class="service__num">{s.num}</div>
 						<h3 class="service__name display">
 							{#if idx >= 0}
-								{s.name.slice(0, idx)}<em>{s.name.slice(idx, idx + s.nameAccent.length)}</em>{s.name.slice(idx + s.nameAccent.length)}
+								{s.name.slice(0, idx)}<em>{s.name.slice(idx, idx + s.nameAccent.length)}</em
+								>{s.name.slice(idx + s.nameAccent.length)}
 							{:else}
 								{s.name}
 							{/if}
@@ -209,7 +206,10 @@
 					<p class="owner__quote">
 						"{t.owner.quote}<em>{t.owner.quoteAccent}</em>"
 					</p>
-					<p class="fg-muted" style="margin-top:28px; font-size:16px; line-height:1.55; max-width:52ch;">
+					<p
+						class="fg-muted"
+						style="margin-top:28px; font-size:16px; line-height:1.55; max-width:52ch;"
+					>
 						{t.owner.bio}
 					</p>
 					<div class="owner__sig">
@@ -234,10 +234,7 @@
 		<div class="wrap">
 			<div class="contact-island">
 				<div>
-					<div
-						class="eyebrow"
-						style="color:rgba(255,255,255,0.5); margin-bottom:18px;"
-					>
+					<div class="eyebrow" style="color:rgba(255,255,255,0.5); margin-bottom:18px;">
 						{t.home.contactEyebrow}
 					</div>
 					<h2>
@@ -252,7 +249,13 @@
 							target="_blank"
 							rel="noopener noreferrer"
 						>
-							<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="flex-shrink:0;">
+							<svg
+								width="14"
+								height="14"
+								viewBox="0 0 14 14"
+								aria-hidden="true"
+								style="flex-shrink:0;"
+							>
 								<circle cx="7" cy="7" r="6" fill="#25D366" />
 								<path
 									d="M4.6 5.2c.1-.4.4-.5.6-.5h.4c.1 0 .2.1.3.3l.4.9c.1.2 0 .3 0 .4l-.3.4c.4.7.9 1.2 1.6 1.6l.4-.3c.1-.1.2-.1.4 0l.9.4c.2.1.3.2.3.3v.4c0 .3-.2.5-.5.6-.4.1-.8.1-1.2 0a4.6 4.6 0 0 1-3-3c-.1-.4-.1-.8 0-1.1z"

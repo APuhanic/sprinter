@@ -42,7 +42,8 @@ export default {
 			'Spezialisiert auf Ferienvermietung, wo der Wechsel zwischen Gästen in Stunden gemessen wird. Dieselbe Sorgfalt fließt in alles andere, was wir reinigen.',
 		otherEyebrow: '02 · Und mehr',
 		otherTitle: 'Sprinter hört nicht beim Reinigen auf',
-		otherSub: 'Schwesterdienste, die oft mit Vermietung einhergehen — gleiche Hände, gleiche Nummer.',
+		otherSub:
+			'Schwesterdienste, die oft mit Vermietung einhergehen — gleiche Hände, gleiche Nummer.',
 		processEyebrow: '03 · So arbeiten wir',
 		processTitle: 'Keine zufälligen Crews',
 		processSub:
@@ -115,15 +116,15 @@ export default {
 			num: '02',
 			name: 'Grundreinigung',
 			nameAccent: 'Grund',
-			short:
-				'Saisonal oder einmalig, bis ins Detail — Küche, Bad, Fugen, Backofen, Fenster.'
+			short: 'Saisonal oder einmalig, bis ins Detail — Küche, Bad, Fugen, Backofen, Fenster.'
 		},
 		{
 			id: 'regular',
 			num: '03',
 			name: 'Regelmäßige Reinigung',
 			nameAccent: 'Regelmäßige',
-			short: 'Wöchentlich oder zweiwöchentlich für Wohnungen und Häuser — festes Team, fester Termin.'
+			short:
+				'Wöchentlich oder zweiwöchentlich für Wohnungen und Häuser — festes Team, fester Termin.'
 		},
 		{
 			id: 'office',
@@ -246,8 +247,7 @@ export default {
 			num: '01',
 			name: 'Apartment-Wechsel',
 			nameAccent: 'Wechsel',
-			long:
-				'Ferienvermietung lässt keine Improvisation zu. Wir kommen nach dem Auschecken, gehen vor dem Einchecken — Sie müssen sich keine Gedanken machen.',
+			long: 'Ferienvermietung lässt keine Improvisation zu. Wir kommen nach dem Auschecken, gehen vor dem Einchecken — Sie müssen sich keine Gedanken machen.',
 			bullets: [
 				'Standardprotokoll in 24 Schritten',
 				'Bett- und Handtuchwechsel (bringen wir mit)',
@@ -269,8 +269,7 @@ export default {
 			num: '02',
 			name: 'Grundreinigung',
 			nameAccent: 'Grund',
-			long:
-				'Alles, was die regelmäßige Reinigung auslässt. Typisch vor der Saison, nach dem Winter oder vor dem Einzug.',
+			long: 'Alles, was die regelmäßige Reinigung auslässt. Typisch vor der Saison, nach dem Winter oder vor dem Einzug.',
 			bullets: [
 				'Backofen, Kühlschrank innen, Kochfeld',
 				'Fugen, Silikon, Badezimmerfliesen',
@@ -288,8 +287,7 @@ export default {
 			num: '03',
 			name: 'Regelmäßige Reinigung',
 			nameAccent: 'Regelmäßige',
-			long:
-				'Wir kommen nach festem Plan, am gleichen Tag, zur gleichen Zeit. Wir machen Notizen, wir wissen, wo alles hingehört.',
+			long: 'Wir kommen nach festem Plan, am gleichen Tag, zur gleichen Zeit. Wir machen Notizen, wir wissen, wo alles hingehört.',
 			bullets: [
 				'Festes Team, fester Termin',
 				'Wöchentlich, zweiwöchentlich oder monatlich',
@@ -311,8 +309,7 @@ export default {
 			num: '04',
 			name: 'Büroreinigung',
 			nameAccent: 'Büro',
-			long:
-				'Wir arbeiten früh morgens oder spät abends — Ihr Team sieht uns nicht bei der Arbeit.',
+			long: 'Wir arbeiten früh morgens oder spät abends — Ihr Team sieht uns nicht bei der Arbeit.',
 			bullets: [
 				'Termine außerhalb der Arbeitszeit',
 				'Mülleimer, Oberflächen, desinfizierte Tische',
@@ -330,8 +327,7 @@ export default {
 			num: '05',
 			name: 'Yacht- & Bootsreinigung',
 			nameAccent: 'Yacht',
-			long:
-				'Marinetaugliche Mittel, echte Bootserfahrung — wir kennen den Unterschied zwischen Teak und Gelcoat.',
+			long: 'Marinetaugliche Mittel, echte Bootserfahrung — wir kennen den Unterschied zwischen Teak und Gelcoat.',
 			bullets: [
 				'Charter-Wechsel am Samstag',
 				'Innen: Kabinen, Salon, Pantry',
@@ -504,8 +500,7 @@ export default {
 			subtitle: 'Sofas, Matratzen…',
 			duration: '4 – 8 Stunden',
 			price: '€110 – €300',
-			description:
-				'Vollständige Innen- und Außenbehandlung mit Premium-Kärcher-Technologie.'
+			description: 'Vollständige Innen- und Außenbehandlung mit Premium-Kärcher-Technologie.'
 		},
 		{
 			name: 'Vor & nach der Vermietung',
@@ -528,8 +523,7 @@ export default {
 			subtitle: 'Spezialpflege',
 			duration: '2 – 4 Stunden',
 			price: '€45 – €110',
-			description:
-				'Spezialpflege für große Glaswände und anspruchsvolle Glasflächen.'
+			description: 'Spezialpflege für große Glaswände und anspruchsvolle Glasflächen.'
 		},
 		{
 			name: 'Außenbereich, Pools & Gelände',
@@ -544,16 +538,14 @@ export default {
 			subtitle: 'Waschen und Bügeln',
 			duration: '2 – 4 Stunden',
 			price: '€45 – €100',
-			description:
-				'Präzises Waschen und Bügeln mit höchster Sorgfalt für empfindliche Stoffe.'
+			description: 'Präzises Waschen und Bügeln mit höchster Sorgfalt für empfindliche Stoffe.'
 		},
 		{
 			name: 'Glanz nach dem Bau',
 			subtitle: 'Bauendreinigung',
 			duration: '8 – 12 Stunden',
 			price: '€220 – €600',
-			description:
-				'Detaillierte, systematische Entfernung von Baustaub und Rückständen.'
+			description: 'Detaillierte, systematische Entfernung von Baustaub und Rückständen.'
 		}
 	],
 
@@ -644,7 +636,8 @@ export default {
 		sendLocation: 'Adresse unbekannt? Senden Sie Ihren Standort per WhatsApp',
 		routeCalculating: 'Berechne…',
 		routeError: 'Route konnte nicht berechnet werden. Bitte Adressen prüfen.',
-		mapsUnavailable: 'Live-Berechnung derzeit nicht verfügbar — senden Sie eine Anfrage, Antwort innerhalb von 30 Minuten.',
+		mapsUnavailable:
+			'Live-Berechnung derzeit nicht verfügbar — senden Sie eine Anfrage, Antwort innerhalb von 30 Minuten.',
 		eClass: 'E-Klasse',
 		eClassRange: '1 – 3 Personen',
 		vClass: 'V-Klasse',
@@ -672,7 +665,8 @@ export default {
 		mapNavLabel: 'Navigation',
 		gpsAsking: 'Standort wird ermittelt…',
 		gpsDenied: 'Standortzugriff verweigert — Anfrage wird per WhatsApp gesendet.',
-		errorRoute: 'Bitte wählen Sie Abhol- und Zielort aus der Liste, damit wir den Preis berechnen können.',
+		errorRoute:
+			'Bitte wählen Sie Abhol- und Zielort aus der Liste, damit wir den Preis berechnen können.',
 		errorName: 'Bitte geben Sie Ihren Namen ein.',
 		errorDateTime: 'Bitte wählen Sie Datum und Uhrzeit.',
 		sendBooking: 'Über WhatsApp buchen',
@@ -697,7 +691,8 @@ export default {
 		mPax: 'Personen',
 		mName: 'Name',
 		mNote: 'Anmerkung',
-		locMsg: 'Willkommen! 👋\nBitte tippen Sie auf 📎 → 📍 Standort und senden Sie uns, wo Sie sind.',
+		locMsg:
+			'Willkommen! 👋\nBitte tippen Sie auf 📎 → 📍 Standort und senden Sie uns, wo Sie sind.',
 		mailSubject: 'Transfer-Buchung'
 	},
 
@@ -756,13 +751,15 @@ export default {
 		termsNotice: 'Bitte lesen Sie die Mietbedingungen sorgfältig durch!',
 		viewTerms: 'MIETBEDINGUNGEN',
 		rentMe: 'Jetzt mieten...',
-		waTemplate: 'Hallo, ich interessiere mich für die Miete des {vehicle}. Könnten Sie mir weitere Informationen senden?',
+		waTemplate:
+			'Hallo, ich interessiere mich für die Miete des {vehicle}. Könnten Sie mir weitere Informationen senden?',
 		inquiryTitle: 'Verfügbarkeit und Preis prüfen',
 		inquiryFrom: 'Von',
 		inquiryTo: 'Bis',
 		inquiryDays: 'Tage',
 		inquiryEstimate: 'Preisschätzung',
-		inquiryContactForLonger: 'Für Mietzeiträume über {days} Tage kontaktieren Sie uns bitte direkt.',
+		inquiryContactForLonger:
+			'Für Mietzeiträume über {days} Tage kontaktieren Sie uns bitte direkt.',
 		inquiryDateError: 'Rückgabedatum muss nach dem Abholdatum liegen.',
 		inquiryName: 'Ihr Name',
 		inquiryEmail: 'E-Mail',
@@ -781,9 +778,12 @@ export default {
 		noResults: 'Keine Fahrzeuge in dieser Kategorie.',
 		pricingTitle: 'Mietpreise:',
 		pricingVatNote: '(* Alle Preise inkl. MwSt.)',
-		pricingDisclaimer: 'Nach Überschreitung der inkludierten Kilometer wird jeder zusätzliche km gemäß der obigen Tabelle berechnet.',
-		extendedStayNotice: 'Für Anfragen zu Mietzeiträumen über {days} Tage, Reisen außerhalb Kroatiens oder individuelle Angebote kontaktieren Sie uns bitte direkt.',
-		speedLimitNotice: 'Dieses Fahrzeug ist auf {limit} km/h begrenzt. So halten wir jedes Fahrzeug in optimalem Zustand für den nächsten Fahrer.',
+		pricingDisclaimer:
+			'Nach Überschreitung der inkludierten Kilometer wird jeder zusätzliche km gemäß der obigen Tabelle berechnet.',
+		extendedStayNotice:
+			'Für Anfragen zu Mietzeiträumen über {days} Tage, Reisen außerhalb Kroatiens oder individuelle Angebote kontaktieren Sie uns bitte direkt.',
+		speedLimitNotice:
+			'Dieses Fahrzeug ist auf {limit} km/h begrenzt. So halten wir jedes Fahrzeug in optimalem Zustand für den nächsten Fahrer.',
 		colDays: 'Mietdauer:',
 		colPrice: 'Preis €',
 		colKm: 'Km',
@@ -794,17 +794,22 @@ export default {
 		insuranceTitle: 'Versicherungen',
 		insuranceSubtitle: 'Versicherung & Kaution',
 		insurancePremium: 'Premium – 1 Tag / 10 Euro',
-		insuranceRequirement: 'Um die Premium-Versicherung in Anspruch nehmen zu können, ist ein polizeilicher Unfallbericht erforderlich. Diese Versicherung deckt keine Schäden im Fahrzeuginneren ab, die durch Fahrlässigkeit von Passagieren oder Fahrern verursacht wurden.',
-		insuranceCoverage: 'Mit unserer Premium-Versicherung haben Sie keine materielle Haftung. Schutz vor Diebstahl, Kollision, Windschutzscheiben- und Reifenschäden sowie wetterbedingten Schäden ist enthalten.',
-		insuranceDeposit: 'Eine Kaution ist für jedes Fahrzeug obligatorisch. Der Betrag liegt zwischen 200 und 1.000 Euro.',
+		insuranceRequirement:
+			'Um die Premium-Versicherung in Anspruch nehmen zu können, ist ein polizeilicher Unfallbericht erforderlich. Diese Versicherung deckt keine Schäden im Fahrzeuginneren ab, die durch Fahrlässigkeit von Passagieren oder Fahrern verursacht wurden.',
+		insuranceCoverage:
+			'Mit unserer Premium-Versicherung haben Sie keine materielle Haftung. Schutz vor Diebstahl, Kollision, Windschutzscheiben- und Reifenschäden sowie wetterbedingten Schäden ist enthalten.',
+		insuranceDeposit:
+			'Eine Kaution ist für jedes Fahrzeug obligatorisch. Der Betrag liegt zwischen 200 und 1.000 Euro.',
 		insuranceIncluded: 'Die Versicherung ist im Mietpreis enthalten.',
 		pickupTitle: 'Hinweise zur Fahrzeugübernahme',
 		pickupHours: 'Übernahme und Rückgabe während der Bürozeiten gemäß Vertrag',
-		pickupLocations: 'Übernahme in unserer Filiale in Darda, an Ihrer Adresse (Osijek) oder auf Einkaufszentrum-Parkplätzen',
+		pickupLocations:
+			'Übernahme in unserer Filiale in Darda, an Ihrer Adresse (Osijek) oder auf Einkaufszentrum-Parkplätzen',
 		pickupFuel: 'Das Fahrzeug wird mit vollem Tank übergeben — bitte vor der Rückgabe volltanken',
 		pickupTerms: 'Bitte lesen Sie unbedingt die Mietbedingungen',
 		paymentTitle: 'Zahlungsbedingungen:',
-		paymentMethod: 'Zahlung erfolgt sofort bei Fahrzeugübergabe, zusätzliche Kilometer nach Mietende',
+		paymentMethod:
+			'Zahlung erfolgt sofort bei Fahrzeugübergabe, zusätzliche Kilometer nach Mietende',
 		paymentAccepted: 'Wir akzeptieren Karten, Bargeld und Banküberweisungen.',
 		farewell: 'Vielen Dank für Ihr Verständnis, Sprinter d.o.o. wünscht Ihnen eine gute Fahrt.',
 		backToList: 'Zurück zu Fahrzeugen',
@@ -830,8 +835,7 @@ export default {
 		rentalTerms: 'Mietbedingungen',
 		addressLabel: 'ADRESSE:',
 		complaintTitle: 'Hinweis zur Einreichung schriftlicher Beschwerden',
-		complaint:
-			`Gemäß Artikel 6, Absatz 3 des Gesetzes über Tourismusdienstleistungen (NN 130/17) können schriftliche Beschwerden an ${contact.email} gerichtet werden`
+		complaint: `Gemäß Artikel 6, Absatz 3 des Gesetzes über Tourismusdienstleistungen (NN 130/17) können schriftliche Beschwerden an ${contact.email} gerichtet werden`
 	},
 
 	// Cookie-consent banner (GDPR / Consent Mode v2)

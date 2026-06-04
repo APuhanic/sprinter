@@ -8,11 +8,7 @@ const buckets = new Map<string, Bucket>();
 
 export type RateLimitResult = { ok: true } | { ok: false; retryAfter: number };
 
-export function checkRateLimit(
-	key: string,
-	limit: number,
-	windowMs: number
-): RateLimitResult {
+export function checkRateLimit(key: string, limit: number, windowMs: number): RateLimitResult {
 	if (dev) return { ok: true };
 
 	const now = Date.now();

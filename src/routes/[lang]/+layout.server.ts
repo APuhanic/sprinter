@@ -1,5 +1,6 @@
 import { error } from '@sveltejs/kit';
-import { isValidLang, t, type Lang } from '$lib/i18n';
+import { isValidLang, type Lang } from '$lib/i18n';
+import { t } from '$lib/i18n/translations';
 import type { LayoutServerLoad } from './$types';
 
 // This runs on the server for every page under /[lang]/...
