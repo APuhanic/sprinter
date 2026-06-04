@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { LayoutData } from './$types';
 	import { page } from '$app/stores';
-	import { languages, slugs, type Lang } from '$lib/i18n';
+	import { slugs, LANGS, type Lang } from '$lib/i18n';
 	import { telHref, mailHref, waHref } from '$lib/contact';
 	import { localBusiness } from '$lib/jsonld';
 	import ConsentBanner from '$lib/components/ConsentBanner.svelte';
@@ -36,7 +36,7 @@
 	let canonicalPath = $derived($page.url.pathname);
 	let canonical = $derived(`${SITE_URL}${canonicalPath}`);
 	let hreflangs = $derived(
-		(Object.keys(languages) as Lang[]).map((l) => ({
+		LANGS.map((l) => ({
 			hreflang: l,
 			href: `${SITE_URL}${canonicalPath.replace(new RegExp(`^/${lang}(?=/|$)`), `/${l}`)}`
 		}))
@@ -101,7 +101,7 @@
 		</nav>
 
 		<div class="lang-toggle" role="tablist" aria-label="Language">
-			{#each Object.keys(languages) as l}
+			{#each LANGS as l}
 				{@const targetLang = l as Lang}
 				<a
 					href={switchLangUrl(targetLang)}
