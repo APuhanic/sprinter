@@ -20,30 +20,68 @@ function installMapsStub() {
 	(window as any).__stubRouteSecs = 1_500;
 
 	class FakeLatLng {
-		constructor(private _lat: number, private _lng: number) {}
-		lat() { return this._lat; }
-		lng() { return this._lng; }
+		constructor(
+			private _lat: number,
+			private _lng: number
+		) {}
+		lat() {
+			return this._lat;
+		}
+		lng() {
+			return this._lng;
+		}
 	}
 	class FakeAutocomplete {
 		_place: any = null;
 		_cb: (() => void) | null = null;
-		constructor(input: any) { input.__ac = this; }
-		addListener(ev: string, cb: () => void) { if (ev === 'place_changed') this._cb = cb; return { remove() {} }; }
-		getPlace() { return this._place; }
+		constructor(input: any) {
+			input.__ac = this;
+		}
+		addListener(ev: string, cb: () => void) {
+			if (ev === 'place_changed') this._cb = cb;
+			return { remove() {} };
+		}
+		getPlace() {
+			return this._place;
+		}
 	}
 	class FakeDirectionsService {
 		route(_req: any, cb: (res: any, status: string) => void) {
 			cb(
-				{ routes: [{ legs: [{ distance: { value: (window as any).__stubRouteMeters }, duration: { value: (window as any).__stubRouteSecs } }] }] },
+				{
+					routes: [
+						{
+							legs: [
+								{
+									distance: { value: (window as any).__stubRouteMeters },
+									duration: { value: (window as any).__stubRouteSecs }
+								}
+							]
+						}
+					]
+				},
 				'OK'
 			);
 		}
 	}
-	class FakeMap { constructor() {} }
-	class FakeDirectionsRenderer { constructor() {} setDirections() {} }
+	class FakeMap {
+		constructor() {}
+	}
+	class FakeDirectionsRenderer {
+		constructor() {}
+		setDirections() {}
+	}
 	class FakeGeocoder {
 		geocode(req: any, cb: (r: any, s: string) => void) {
-			cb([{ formatted_address: req?.address || 'Stub Address', geometry: { location: new FakeLatLng(44.87, 13.85) } }], 'OK');
+			cb(
+				[
+					{
+						formatted_address: req?.address || 'Stub Address',
+						geometry: { location: new FakeLatLng(44.87, 13.85) }
+					}
+				],
+				'OK'
+			);
 		}
 	}
 
@@ -64,7 +102,11 @@ function installMapsStub() {
 		input.value = name;
 		const ac = input.__ac;
 		if (!ac) throw new Error('Autocomplete not initialised on input yet');
-		ac._place = { name, formatted_address: name, geometry: { location: new FakeLatLng(44.8, 13.8) } };
+		ac._place = {
+			name,
+			formatted_address: name,
+			geometry: { location: new FakeLatLng(44.8, 13.8) }
+		};
 		ac._cb?.();
 	};
 }
@@ -204,13 +246,17 @@ test.describe('quote', () => {
 
 // ── Validation messages (the bug this suite was written for) ─────────────────
 test.describe('booking validation', () => {
-	test('REGRESSION: "now" + addresses typed but no route → route message, not date/time', async ({ page }) => {
+	test('REGRESSION: "now" + addresses typed but no route → route message, not date/time', async ({
+		page
+	}) => {
 		await chooseMode(page, 'now');
 		await fromInput(page).fill('Pula aerodrom');
 		await toInput(page).fill('Medulin');
 		await nameInput(page).fill('Ivan');
 		await reserveLink(page).click();
-		await expect(errorEl(page)).toHaveText('Odaberite polazište i odredište iz popisa da izračunamo cijenu.');
+		await expect(errorEl(page)).toHaveText(
+			'Odaberite polazište i odredište iz popisa da izračunamo cijenu.'
+		);
 		// must NOT mention date/time in "now" mode
 		await expect(errorEl(page)).not.toContainText('datum');
 	});
@@ -230,7 +276,9 @@ test.describe('booking validation', () => {
 		await expect(errorEl(page)).toHaveText('Molimo odaberite datum i vrijeme.');
 	});
 
-	test('"now" happy path: no error, WhatsApp text has VOŽNJA ODMAH + price + name', async ({ page }) => {
+	test('"now" happy path: no error, WhatsApp text has VOŽNJA ODMAH + price + name', async ({
+		page
+	}) => {
 		await chooseMode(page, 'now');
 		await pickRoute(page, 20);
 		await nameInput(page).fill('Ivan');
@@ -290,7 +338,9 @@ test.describe('edge cases', () => {
 		await expect(priceEl(page)).toHaveCount(0);
 		await nameInput(page).fill('Ivan');
 		await reserveLink(page).click();
-		await expect(errorEl(page)).toHaveText('Odaberite polazište i odredište iz popisa da izračunamo cijenu.');
+		await expect(errorEl(page)).toHaveText(
+			'Odaberite polazište i odredište iz popisa da izračunamo cijenu.'
+		);
 	});
 
 	test('round-trip now → later → now restores the auto date/time and submits', async ({ page }) => {
@@ -332,8 +382,14 @@ test.describe('edge cases', () => {
 
 	test('error copy is localized in EN and DE', async ({ page }) => {
 		const cases = [
-			{ lang: 'en', msg: 'Select pickup and drop-off from the list so we can calculate the price.' },
-			{ lang: 'de', msg: 'Bitte wählen Sie Abhol- und Zielort aus der Liste, damit wir den Preis berechnen können.' }
+			{
+				lang: 'en',
+				msg: 'Select pickup and drop-off from the list so we can calculate the price.'
+			},
+			{
+				lang: 'de',
+				msg: 'Bitte wählen Sie Abhol- und Zielort aus der Liste, damit wir den Preis berechnen können.'
+			}
 		];
 		for (const { lang, msg } of cases) {
 			await page.goto(`/${lang}/luksuzni-transferi`);
@@ -348,7 +404,9 @@ test.describe('edge cases', () => {
 const HOTEL = 'Monumenti Heritage Hotel, Ul. Vallelunga 89, Pula';
 
 test.describe('partner pickup prefill', () => {
-	test('/monumenti redirects (302) to the calculator with the partner slug', async ({ request }) => {
+	test('/monumenti redirects (302) to the calculator with the partner slug', async ({
+		request
+	}) => {
 		const res = await request.get('/monumenti', { maxRedirects: 0 });
 		expect(res.status()).toBe(302);
 		expect(res.headers()['location']).toBe('/hr/luksuzni-transferi?partner=monumenti');
@@ -365,7 +423,9 @@ test.describe('partner pickup prefill', () => {
 		await expect(fromInput(page)).toHaveValue(HOTEL);
 	});
 
-	test('arriving via a partner link auto-activates the calculator (no grey gate)', async ({ page }) => {
+	test('arriving via a partner link auto-activates the calculator (no grey gate)', async ({
+		page
+	}) => {
 		await page.goto('/hr/luksuzni-transferi?partner=monumenti');
 		await expect(fromInput(page)).toHaveValue(HOTEL);
 		await expect(page.locator('.tr-calc')).toHaveAttribute('aria-disabled', 'false');
@@ -385,7 +445,10 @@ test.describe('partner pickup prefill', () => {
 		// no chooseMode — the deep-link already activated "now"; just pick a destination
 		await setRouteKm(page, 12);
 		await page.evaluate(() => {
-			(window as any).__pickPlace(document.querySelector('input[placeholder*="Rovinj"]'), 'Pula Airport');
+			(window as any).__pickPlace(
+				document.querySelector('input[placeholder*="Rovinj"]'),
+				'Pula Airport'
+			);
 		});
 		await expect(priceEl(page)).toHaveText(`${calcFare(12, 'e')} €`);
 		// pickup carries into the WhatsApp text

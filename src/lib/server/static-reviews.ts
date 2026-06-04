@@ -64,8 +64,7 @@ const SOURCES: StaticReviewSource[] = [
 		authorName: 'Katarina Malkoč',
 		rating: 5,
 		publishTime: '2026-05-03T12:00:00Z',
-		originalText:
-			'Dogovor vrlo jednostavan, ljubazni i profesionalni djelatnici. Topla preporuka.',
+		originalText: 'Dogovor vrlo jednostavan, ljubazni i profesionalni djelatnici. Topla preporuka.',
 		body: {
 			hr: 'Dogovor vrlo jednostavan, ljubazni i profesionalni djelatnici. Topla preporuka.',
 			en: 'Very easy to arrange, kind and professional staff. Warm recommendation.',

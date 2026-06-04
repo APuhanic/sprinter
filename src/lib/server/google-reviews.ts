@@ -99,8 +99,7 @@ function normalise(p: RawPlace): GoogleReviewsData {
 			const original = r.originalText?.text;
 			const translatedLang = r.text!.languageCode ?? '';
 			const originalLang = r.originalText?.languageCode ?? '';
-			const isTranslated =
-				!!original && !!originalLang && originalLang !== translatedLang;
+			const isTranslated = !!original && !!originalLang && originalLang !== translatedLang;
 			return {
 				id: r.name ?? `${r.authorAttribution!.displayName}-${r.publishTime}`,
 				rating: r.rating!,

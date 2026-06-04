@@ -175,7 +175,13 @@
 						rel="noopener noreferrer"
 						style="margin-top:32px;"
 					>
-						<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="flex-shrink:0;">
+						<svg
+							width="14"
+							height="14"
+							viewBox="0 0 14 14"
+							aria-hidden="true"
+							style="flex-shrink:0;"
+						>
 							<circle cx="7" cy="7" r="6" fill="#25D366" />
 							<path
 								d="M4.6 5.2c.1-.4.4-.5.6-.5h.4c.1 0 .2.1.3.3l.4.9c.1.2 0 .3 0 .4l-.3.4c.4.7.9 1.2 1.6 1.6l.4-.3c.1-.1.2-.1.4 0l.9.4c.2.1.3.2.3.3v.4c0 .3-.2.5-.5.6-.4.1-.8.1-1.2 0a4.6 4.6 0 0 1-3-3c-.1-.4-.1-.8 0-1.1z"
@@ -195,7 +201,9 @@
 		<div class="wrap">
 			<div class="kontakt-map-head">
 				<div>
-					<div class="eyebrow">{lang === 'hr' ? 'Lokacija' : lang === 'de' ? 'Standort' : 'Location'}</div>
+					<div class="eyebrow">
+						{lang === 'hr' ? 'Lokacija' : lang === 'de' ? 'Standort' : 'Location'}
+					</div>
 					<h2 class="section-title" style="margin-top:8px;">{t.contact.findUs}</h2>
 				</div>
 				<a
@@ -283,7 +291,9 @@
 		font-family: var(--font-body);
 		font-size: 15px;
 		font-weight: 400;
-		transition: border-color 0.18s ease, background 0.18s ease;
+		transition:
+			border-color 0.18s ease,
+			background 0.18s ease;
 		-webkit-appearance: none;
 		appearance: none;
 	}

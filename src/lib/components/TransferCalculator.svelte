@@ -86,8 +86,14 @@
 		prefillPickup?: { label: string; lat: number; lng: number };
 	};
 
-	let { lang, strings: s, whatsAppNumber, phoneNumber, emailAddress, prefillPickup }: Props =
-		$props();
+	let {
+		lang,
+		strings: s,
+		whatsAppNumber,
+		phoneNumber,
+		emailAddress,
+		prefillPickup
+	}: Props = $props();
 
 	// ── Route / Maps state ────────────────────────────────────────────────
 	let fromInput = $state<HTMLInputElement | null>(null);
@@ -318,7 +324,11 @@
 					routeStatus = 'error';
 					return;
 				}
-				const leg = res.routes[0].legs[0];
+				const leg = res.routes?.[0]?.legs?.[0];
+				if (!leg) {
+					routeStatus = 'error';
+					return;
+				}
 				lastKm = (leg.distance?.value ?? 0) / 1000;
 				lastMin = Math.round((leg.duration?.value ?? 0) / 60);
 				routeStatus = 'ok';
@@ -759,22 +769,11 @@
 		<div class="tr-calc__two-col">
 			<label class="tr-calc__field">
 				<span class="tr-calc__label">{s.paxCount}</span>
-				<input
-					class="tr-calc__input"
-					type="number"
-					min="1"
-					max="7"
-					bind:value={paxCount}
-				/>
+				<input class="tr-calc__input" type="number" min="1" max="7" bind:value={paxCount} />
 			</label>
 			<label class="tr-calc__field">
 				<span class="tr-calc__label">{s.fullName}</span>
-				<input
-					class="tr-calc__input"
-					type="text"
-					bind:value={name}
-					placeholder={s.fullNamePh}
-				/>
+				<input class="tr-calc__input" type="text" bind:value={name} placeholder={s.fullNamePh} />
 			</label>
 		</div>
 
@@ -1038,7 +1037,9 @@
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
-		transition: border-color 0.18s ease, background 0.18s ease;
+		transition:
+			border-color 0.18s ease,
+			background 0.18s ease;
 	}
 	.tr-calc__veh-btn:hover {
 		border-color: var(--accent);
@@ -1118,7 +1119,9 @@
 		font-weight: 600;
 		color: #ffffff;
 		text-decoration: none;
-		transition: border-color 0.18s ease, color 0.18s ease;
+		transition:
+			border-color 0.18s ease,
+			color 0.18s ease;
 	}
 	.tr-calc__quick:hover {
 		border-color: var(--accent);
@@ -1205,7 +1208,9 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		transition: border-color 0.18s ease, background 0.18s ease;
+		transition:
+			border-color 0.18s ease,
+			background 0.18s ease;
 	}
 	.tr-mode__btn:hover {
 		border-color: var(--accent);

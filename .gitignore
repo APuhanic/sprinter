@@ -21,3 +21,9 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Local test/tool artifacts — Playwright/MCP logs can contain the public Maps key,
+# so never let `git add -A` stage them.
+.playwright-mcp/
+.tmp/
+test-results/

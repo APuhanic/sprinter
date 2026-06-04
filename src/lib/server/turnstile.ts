@@ -1,7 +1,9 @@
 // Cloudflare Turnstile server-side verification.
-// When TURNSTILE_SECRET_KEY is unset, verification is a no-op so dev
-// works without a Cloudflare account.
+// When TURNSTILE_SECRET_KEY is unset, verification is a no-op IN DEV ONLY so dev
+// works without a Cloudflare account. In production a missing secret fails closed
+// (rejects the submission) so spam protection can never silently disappear.
 import { env } from '$env/dynamic/private';
+import { dev } from '$app/environment';
 
 const SITEVERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
@@ -10,7 +12,8 @@ export async function verifyTurnstile(
 	remoteIp?: string
 ): Promise<boolean> {
 	const secret = env.TURNSTILE_SECRET_KEY;
-	if (!secret) return true;
+	// Fail closed in prod: a missing secret must not silently disable spam protection.
+	if (!secret) return dev;
 	if (!token) return false;
 
 	const body = new URLSearchParams({ secret, response: token });

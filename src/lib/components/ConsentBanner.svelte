@@ -122,7 +122,9 @@
 		font-weight: 600;
 		cursor: pointer;
 		border: 1px solid transparent;
-		transition: background 0.18s ease, border-color 0.18s ease;
+		transition:
+			background 0.18s ease,
+			border-color 0.18s ease;
 	}
 	.consent__btn--ghost {
 		background: transparent;

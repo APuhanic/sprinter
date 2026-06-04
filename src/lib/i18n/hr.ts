@@ -202,15 +202,13 @@ export default {
 		index: 'Indeks',
 		areasEyebrow: 'Pokrivamo',
 		areasTitle: 'Pula i šira Istra',
-		areasSub:
-			'Dolazimo s opremom. Za područja izvan Pule moguća dostava — javite se za potvrdu.',
+		areasSub: 'Dolazimo s opremom. Za područja izvan Pule moguća dostava — javite se za potvrdu.',
 		processEyebrow: 'Postupak',
 		processTitle: 'Bez ekipa s ulice',
 		processSub: 'Stalna ekipa, vlastita oprema, isti vlasnik na svakoj prvoj smjeni.',
 		testiEyebrow: 'Što kažu',
 		testiTitle: 'Recenzije stižu',
-		testiSub:
-			'Tek smo krenuli s čišćenjem — recenzije ćemo dodavati od ljeta. Strpljenje, stiže.',
+		testiSub: 'Tek smo krenuli s čišćenjem — recenzije ćemo dodavati od ljeta. Strpljenje, stiže.',
 		testiPlaceholder: 'Ovdje će ići recenzija stvarnog klijenta. Po jedna iz svake kategorije.',
 		testiClient: 'Ime klijenta',
 		testiRoles: ['Vlasnik apartmana', 'Obiteljska kuća', 'Ured'],
@@ -246,8 +244,7 @@ export default {
 			num: '01',
 			name: 'Apartmanski turnover',
 			nameAccent: 'turnover',
-			long:
-				'Najam apartmana ne dopušta improvizaciju. Mi ulazimo nakon odjave, odlazimo prije prijave, a vi ne morate brinuti.',
+			long: 'Najam apartmana ne dopušta improvizaciju. Mi ulazimo nakon odjave, odlazimo prije prijave, a vi ne morate brinuti.',
 			bullets: [
 				'Standardni protokol u 24 koraka',
 				'Promjena posteljine i ručnika (donosimo)',
@@ -269,8 +266,7 @@ export default {
 			num: '02',
 			name: 'Dubinsko čišćenje',
 			nameAccent: 'Dubinsko',
-			long:
-				'Sve ono što redovno čišćenje preskoči. Tipično prije sezone, nakon zime, ili prije ulaska u novi prostor.',
+			long: 'Sve ono što redovno čišćenje preskoči. Tipično prije sezone, nakon zime, ili prije ulaska u novi prostor.',
 			bullets: [
 				'Pećnica, hladnjak iznutra, ploča',
 				'Fuge, silikoni, kupaonska keramika',
@@ -288,8 +284,7 @@ export default {
 			num: '03',
 			name: 'Redovno čišćenje',
 			nameAccent: 'Redovno',
-			long:
-				'Dolazimo redovno, na isti dan i u isto vrijeme. Vodimo evidenciju, znamo gdje je što.',
+			long: 'Dolazimo redovno, na isti dan i u isto vrijeme. Vodimo evidenciju, znamo gdje je što.',
 			bullets: [
 				'Fiksna ekipa, fiksni termin',
 				'Tjedno, dvotjedno ili mjesečno',
@@ -311,8 +306,7 @@ export default {
 			num: '04',
 			name: 'Uredsko čišćenje',
 			nameAccent: 'Uredsko',
-			long:
-				'Radimo u ranim jutarnjim ili kasnim večernjim terminima, bez ometanja vašeg tima.',
+			long: 'Radimo u ranim jutarnjim ili kasnim večernjim terminima, bez ometanja vašeg tima.',
 			bullets: [
 				'Termini izvan radnog vremena',
 				'Praznjenje koševa, dezinfekcija površina',
@@ -330,8 +324,7 @@ export default {
 			num: '05',
 			name: 'Čišćenje jahti i brodova',
 			nameAccent: 'jahti',
-			long:
-				'Specijalizirana sredstva, posebno se bavimo plovilima, znamo razliku između teaka i gelcoata.',
+			long: 'Specijalizirana sredstva, posebno se bavimo plovilima, znamo razliku između teaka i gelcoata.',
 			bullets: [
 				'Charter turnover (subota)',
 				'Interijer: kabine, salon, kuhinja',
@@ -422,8 +415,7 @@ export default {
 		],
 		estimateLabel: 'Procjena',
 		cta: 'Pošalji upit na WhatsApp',
-		yachtNote:
-			'Za plovila javite duljinu i vrstu — cijena ovisi o tipu palube i opremi.',
+		yachtNote: 'Za plovila javite duljinu i vrstu — cijena ovisi o tipu palube i opremi.',
 		msgPrefix: 'Pozdrav, zanima me',
 		msgFor: 'čišćenje za prostor ~',
 		msgEstimate: '. Vidio sam procjenu',
@@ -496,8 +488,7 @@ export default {
 			subtitle: 'Redovno održavanje',
 			duration: '2 – 4 – 6 – 8 sati',
 			price: '60 € – 250 €',
-			description:
-				'Održavanje visokog standarda čistoće prema dogovorenom protokolu i terminima.'
+			description: 'Održavanje visokog standarda čistoće prema dogovorenom protokolu i terminima.'
 		},
 		{
 			name: 'Dubinska regeneracija interijera',
@@ -512,8 +503,7 @@ export default {
 			subtitle: 'Priprema objekta',
 			duration: '2 – 3 sata',
 			price: '80 € – 180 €',
-			description:
-				'Priprema objekta prije dolaska ili nakon odlaska vlasnika i gostiju.'
+			description: 'Priprema objekta prije dolaska ili nakon odlaska vlasnika i gostiju.'
 		},
 		{
 			name: 'Useljenje ili Iseljenje',
@@ -536,8 +526,7 @@ export default {
 			subtitle: 'Terasa i zona oko bazena',
 			duration: '3 – 5 sati',
 			price: '80 € – 180 €',
-			description:
-				'Priprema terasa i zona oko bazena za maksimalan vizualni užitak i higijenu.'
+			description: 'Priprema terasa i zona oko bazena za maksimalan vizualni užitak i higijenu.'
 		},
 		{
 			name: 'Profesionalna njega tekstila',
@@ -552,8 +541,7 @@ export default {
 			subtitle: 'Post-građevinsko čišćenje',
 			duration: '8 – 12 sati',
 			price: '220 € – 600 €',
-			description:
-				'Detaljno i sustavno uklanjanje post-građevinske prašine i ostataka radova.'
+			description: 'Detaljno i sustavno uklanjanje post-građevinske prašine i ostataka radova.'
 		}
 	],
 
@@ -571,8 +559,7 @@ export default {
 		whyFleetDesc:
 			'Od okretnog Renault Trafica do prostranog Mercedes Sprintera. Imamo pravi volumen za svaki Vaš teret.',
 		whyAreaTitle: 'Istra, Hrvatska i šire',
-		whyAreaDesc:
-			'Naša baza je Pula, ali Vašu robu dostavljamo točno tamo gdje je potrebna.',
+		whyAreaDesc: 'Naša baza je Pula, ali Vašu robu dostavljamo točno tamo gdje je potrebna.',
 		whyAssistTitle: 'Asistencija vozača',
 		whyAssistDesc:
 			'Ne ostavljamo Vas same s teretom. Naša usluga uključuje aktivnu pomoć pri utovaru i istovaru robe kod samog vozila.',
@@ -607,8 +594,7 @@ export default {
 		title: 'Privatni transferi / taxi',
 		titleAccent: 'transferi / taxi',
 		titleSuffix: ' — Pula · Istra · Europa',
-		leadOne:
-			'Sjednete. Vozač zatvori vrata. I više ne morate misliti ni na što drugo.',
+		leadOne: 'Sjednete. Vozač zatvori vrata. I više ne morate misliti ni na što drugo.',
 		companyText:
 			'Sprinter je obiteljska tvrtka iz Pule. Organiziramo privatne transfere i taxi vožnje u Puli, po Istri i Europi — pouzdano, točno na vrijeme, bez iznenađenja.',
 		termsTitle: 'Uvjeti i informacije',
@@ -781,9 +767,12 @@ export default {
 		noResults: 'Nema vozila u ovoj kategoriji.',
 		pricingTitle: 'Cijene najma:',
 		pricingVatNote: '(* Izražene cijene su sa PDV-om)',
-		pricingDisclaimer: 'Nakon isteka rezerviranih kilometara svaki dodatni km se naplaćuje prema tablici iznad.',
-		extendedStayNotice: 'Za sve upite koji se odnose na putovanja dulja od {days} dana, putovanja izvan granica Hrvatske, kao i za izradu personaliziranih ponuda, molimo Vas da nas direktno kontaktirate.',
-		speedLimitNotice: 'Brzina ovog vozila ograničena je na {limit} km/h. To nam omogućuje da održimo svako vozilo u optimalnom stanju, spremno za sljedećeg putnika.',
+		pricingDisclaimer:
+			'Nakon isteka rezerviranih kilometara svaki dodatni km se naplaćuje prema tablici iznad.',
+		extendedStayNotice:
+			'Za sve upite koji se odnose na putovanja dulja od {days} dana, putovanja izvan granica Hrvatske, kao i za izradu personaliziranih ponuda, molimo Vas da nas direktno kontaktirate.',
+		speedLimitNotice:
+			'Brzina ovog vozila ograničena je na {limit} km/h. To nam omogućuje da održimo svako vozilo u optimalnom stanju, spremno za sljedećeg putnika.',
 		colDays: 'Najam na:',
 		colPrice: 'Cijena €',
 		colKm: 'Km',
@@ -794,17 +783,22 @@ export default {
 		insuranceTitle: 'Osiguranja',
 		insuranceSubtitle: 'Osiguranje i depozit',
 		insurancePremium: 'Premium – 1 dan / 10 eura',
-		insuranceRequirement: 'Da biste mogli ostvariti Premium osiguranje, potreban je policijski zapisnik o nezgodi. Ovim osiguranjem nije pokrivena šteta nastala unutar vozila nepažnjom putnika ili vozača.',
-		insuranceCoverage: 'S našim premium osiguranjem nemate materijalne odgovornosti. Uključena je zaštita od krađe, sudara, oštećenja na vjetrobranskim staklima i gumama, te od vremenskih nepogoda.',
-		insuranceDeposit: 'Depozit je obavezan za svako vozilo. Iznos se kreće u rasponu od 200 do 1000 eura.',
+		insuranceRequirement:
+			'Da biste mogli ostvariti Premium osiguranje, potreban je policijski zapisnik o nezgodi. Ovim osiguranjem nije pokrivena šteta nastala unutar vozila nepažnjom putnika ili vozača.',
+		insuranceCoverage:
+			'S našim premium osiguranjem nemate materijalne odgovornosti. Uključena je zaštita od krađe, sudara, oštećenja na vjetrobranskim staklima i gumama, te od vremenskih nepogoda.',
+		insuranceDeposit:
+			'Depozit je obavezan za svako vozilo. Iznos se kreće u rasponu od 200 do 1000 eura.',
 		insuranceIncluded: 'Osiguranje je uključeno u cijenu najma.',
 		pickupTitle: 'Upute o preuzimanju vozila',
 		pickupHours: 'Preuzimanje i vraćanje vozila u radno vrijeme poslovnice dogovoreno ugovorom',
-		pickupLocations: 'Preuzimanje u poslovnici Dardi, na Vašoj adresi (Osijek), na parkinzima trgovačkih centara',
+		pickupLocations:
+			'Preuzimanje u poslovnici Dardi, na Vašoj adresi (Osijek), na parkinzima trgovačkih centara',
 		pickupFuel: 'Vozilo se dobija sa punim tankom – po vraćanju vozila nadopuniti tank',
 		pickupTerms: 'Molimo obavezno pročitajte Uvjete najma',
 		paymentTitle: 'Uvjeti i načini plaćanja:',
-		paymentMethod: 'Plaćanje se vrši odmah po predavanju vozila, dodatni kilometri po završetku najma',
+		paymentMethod:
+			'Plaćanje se vrši odmah po predavanju vozila, dodatni kilometri po završetku najma',
 		paymentAccepted: 'Primamo kartice, gotovinu i transakcijske uplate.',
 		farewell: 'Hvala na razumijevanju, sretan put želi vam Sprinter d.o.o.',
 		backToList: 'Povratak na vozila',

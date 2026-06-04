@@ -34,9 +34,9 @@ function sanitizeReplyTo(raw: string | undefined): string | undefined {
 	return trimmed;
 }
 
-export async function sendInquiry(payload: InquiryEmail): Promise<
-	{ ok: true; id?: string; loggedOnly?: boolean } | { ok: false; error: string }
-> {
+export async function sendInquiry(
+	payload: InquiryEmail
+): Promise<{ ok: true; id?: string; loggedOnly?: boolean } | { ok: false; error: string }> {
 	const to = getRecipients();
 	const client = getClient();
 
