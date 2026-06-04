@@ -82,10 +82,7 @@
 			else if (size <= 90) base = 60;
 			else base = 60 + Math.ceil((size - 90) / 15) * 10;
 			const mult = { oneoff: 1.15, weekly: 0.9, fortnight: 0.95, monthly: 1.0 }[freq];
-			return [
-				Math.round((base * mult) / 5) * 5,
-				Math.round((base * mult * 1.4) / 5) * 5
-			];
+			return [Math.round((base * mult) / 5) * 5, Math.round((base * mult * 1.4) / 5) * 5];
 		}
 		if (type === 'office') {
 			// Poslovni prostori: 0,75 – 2 €/m²; floor 45€ for tiny offices
@@ -99,7 +96,9 @@
 
 	let estimate = $derived(calcEstimate(calcType, calcSize, calcFreq));
 	let typeLabel = $derived(t.calc.types.find((x) => x.id === calcType)?.label ?? '');
-	let freqLabel = $derived(showFreq ? (t.calc.freqs.find((x) => x.id === calcFreq)?.label ?? '') : '');
+	let freqLabel = $derived(
+		showFreq ? (t.calc.freqs.find((x) => x.id === calcFreq)?.label ?? '') : ''
+	);
 
 	let calcWaUrl = $derived.by(() => {
 		const [low, high] = estimate;
@@ -235,11 +234,7 @@
 		<div class="wrap">
 			{#each t.cleaningServices as s (s.id)}
 				{@const parts = renderName(s.name, s.nameAccent)}
-				<div
-					class="svc-detail"
-					class:svc-detail--no-photo={!servicePhotos[s.id]}
-					id={s.id}
-				>
+				<div class="svc-detail" class:svc-detail--no-photo={!servicePhotos[s.id]} id={s.id}>
 					<div class="svc-detail__text">
 						<div class="svc-detail__num">{s.num} / 05</div>
 						<h2 class="svc-detail__title">
@@ -279,7 +274,13 @@
 								target="_blank"
 								rel="noopener noreferrer"
 							>
-								<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="flex-shrink:0;">
+								<svg
+									width="14"
+									height="14"
+									viewBox="0 0 14 14"
+									aria-hidden="true"
+									style="flex-shrink:0;"
+								>
 									<circle cx="7" cy="7" r="6" fill="#25D366" />
 									<path
 										d="M4.6 5.2c.1-.4.4-.5.6-.5h.4c.1 0 .2.1.3.3l.4.9c.1.2 0 .3 0 .4l-.3.4c.4.7.9 1.2 1.6 1.6l.4-.3c.1-.1.2-.1.4 0l.9.4c.2.1.3.2.3.3v.4c0 .3-.2.5-.5.6-.4.1-.8.1-1.2 0a4.6 4.6 0 0 1-3-3c-.1-.4-.1-.8 0-1.1z"
@@ -369,7 +370,8 @@
 				</div>
 				<div>
 					<h2 class="section-title">
-						{#if calcTitleParts.accent}{calcTitleParts.before}<em>{calcTitleParts.accent}</em>{calcTitleParts.after}{:else}{t.calc.title}{/if}
+						{#if calcTitleParts.accent}{calcTitleParts.before}<em>{calcTitleParts.accent}</em
+							>{calcTitleParts.after}{:else}{t.calc.title}{/if}
 					</h2>
 					<p class="section-sub" style="margin-top:24px;">{t.calc.sub}</p>
 				</div>
@@ -436,7 +438,9 @@
 						</div>
 					</div>
 					<p class="calc__breakdown">
-						<strong>{typeLabel}</strong>{#if showSize} · {calcSize} m²{/if}{#if showFreq} · {freqLabel}{/if}
+						<strong>{typeLabel}</strong>{#if showSize}
+							· {calcSize} m²{/if}{#if showFreq}
+							· {freqLabel}{/if}
 					</p>
 					<div class="calc__cta">
 						<a
@@ -464,7 +468,8 @@
 				</div>
 				<div>
 					<h2 class="section-title">
-						{#if faqTitleParts.accent}{faqTitleParts.before}<em>{faqTitleParts.accent}</em>{faqTitleParts.after}{:else}{t.cleaningPage.faqTitle}{/if}
+						{#if faqTitleParts.accent}{faqTitleParts.before}<em>{faqTitleParts.accent}</em
+							>{faqTitleParts.after}{:else}{t.cleaningPage.faqTitle}{/if}
 					</h2>
 					<p class="section-sub" style="margin-top:24px;">{t.cleaningPage.faqSub}</p>
 				</div>
@@ -512,7 +517,13 @@
 							target="_blank"
 							rel="noopener noreferrer"
 						>
-							<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="flex-shrink:0;">
+							<svg
+								width="14"
+								height="14"
+								viewBox="0 0 14 14"
+								aria-hidden="true"
+								style="flex-shrink:0;"
+							>
 								<circle cx="7" cy="7" r="6" fill="#25D366" />
 								<path
 									d="M4.6 5.2c.1-.4.4-.5.6-.5h.4c.1 0 .2.1.3.3l.4.9c.1.2 0 .3 0 .4l-.3.4c.4.7.9 1.2 1.6 1.6l.4-.3c.1-.1.2-.1.4 0l.9.4c.2.1.3.2.3.3v.4c0 .3-.2.5-.5.6-.4.1-.8.1-1.2 0a4.6 4.6 0 0 1-3-3c-.1-.4-.1-.8 0-1.1z"

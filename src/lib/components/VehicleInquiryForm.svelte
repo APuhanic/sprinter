@@ -124,7 +124,9 @@
 	{#if dateError}
 		<p class="text-sm text-red-600">{t.rental.inquiryDateError}</p>
 	{:else}
-		<div class="flex items-baseline justify-between bg-white border border-slate-200 rounded px-4 py-3">
+		<div
+			class="flex items-baseline justify-between bg-white border border-slate-200 rounded px-4 py-3"
+		>
 			<span class="text-sm text-slate-500">
 				{t.rental.inquiryDays}: <span class="font-semibold text-slate-800">{days}</span>
 			</span>
@@ -192,7 +194,8 @@
 			name="notes"
 			rows="3"
 			class="w-full px-3 py-2 border border-slate-300 rounded bg-white text-slate-800 text-sm focus:outline-none focus:border-brand-red focus:ring-1 focus:ring-brand-red resize-vertical"
-		>{form?.values?.notes ?? ''}</textarea>
+			>{form?.values?.notes ?? ''}</textarea
+		>
 	</div>
 
 	<Turnstile />

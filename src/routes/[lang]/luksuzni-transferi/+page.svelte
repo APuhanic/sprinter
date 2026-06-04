@@ -20,7 +20,9 @@
 	onMount(() => {
 		if (prefillPickup) {
 			requestAnimationFrame(() =>
-				document.getElementById('kalkulator')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+				document
+					.getElementById('kalkulator')
+					?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 			);
 		}
 	});
@@ -36,7 +38,10 @@
 <svelte:head>
 	<title>Sprinter - {t.transfersPage.title}{t.transfersPage.titleSuffix}</title>
 	<meta name="description" content={metaDescription} />
-	<meta property="og:title" content="Sprinter - {t.transfersPage.title}{t.transfersPage.titleSuffix}" />
+	<meta
+		property="og:title"
+		content="Sprinter - {t.transfersPage.title}{t.transfersPage.titleSuffix}"
+	/>
 	<meta property="og:description" content={metaDescription} />
 	<!-- og:image is set via +page.ts (page.data.ogImage) so the layout renders a
 	     single, correct og:image for this page. -->
@@ -156,7 +161,13 @@
 							target="_blank"
 							rel="noopener noreferrer"
 						>
-							<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="flex-shrink:0;">
+							<svg
+								width="14"
+								height="14"
+								viewBox="0 0 14 14"
+								aria-hidden="true"
+								style="flex-shrink:0;"
+							>
 								<circle cx="7" cy="7" r="6" fill="#25D366" />
 								<path
 									d="M4.6 5.2c.1-.4.4-.5.6-.5h.4c.1 0 .2.1.3.3l.4.9c.1.2 0 .3 0 .4l-.3.4c.4.7.9 1.2 1.6 1.6l.4-.3c.1-.1.2-.1.4 0l.9.4c.2.1.3.2.3.3v.4c0 .3-.2.5-.5.6-.4.1-.8.1-1.2 0a4.6 4.6 0 0 1-3-3c-.1-.4-.1-.8 0-1.1z"

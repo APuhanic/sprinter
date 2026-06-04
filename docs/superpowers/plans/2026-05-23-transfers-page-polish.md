@@ -18,15 +18,15 @@
 
 ## File Map
 
-| File | What changes |
-| --- | --- |
-| `src/lib/components/DateInput.svelte` | **Create.** Text-input + hidden native-date hybrid that displays `dd.mm.yyyy.` and `bind:value`s ISO `YYYY-MM-DD`. |
-| `src/lib/components/TransferCalculator.svelte` | **Modify.** Add segmented `tripType` choice (one-way / return) above Calculate button; replace old `returnEnabled` checkbox; swap both `<input type="date">` for `<DateInput>`; add return-after-outbound validation. |
-| `src/routes/[lang]/luksuzni-transferi/+page.svelte` | **Modify.** Insert trust-signal strip between hero and calculator section. |
-| `src/app.css` | **Modify.** (a) Promote `.tr-calc__btn` from outline to solid accent. (b) Add `.tr-trust` strip styles. (c) Add `.date-input` component styles. (d) Add `.tr-calc__trip-toggle` segmented control styles. |
-| `src/lib/i18n/hr.ts` `en.ts` `de.ts` | **Modify.** Add `transferCalc.tripOneWay`, `transferCalc.tripReturn`, `transferCalc.returnAfterOutboundError`, `transferCalc.dateFormatHint`, `transferCalc.dateOpenPicker`; add `transfersPage.trust*` (4 labels); soften `leadTwo` wording. Drop `transferCalc.addReturn`. |
-| `tests/smoke.spec.ts` | **Modify.** Replace the skipped transfers test with a real calculator + DateInput flow test. |
-| `tests/date-input.spec.ts` | **Create.** Component-behaviour tests (parse, format, picker open, min-validation, return-after-outbound). |
+| File                                                | What changes                                                                                                                                                                                                                                                                 |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/lib/components/DateInput.svelte`               | **Create.** Text-input + hidden native-date hybrid that displays `dd.mm.yyyy.` and `bind:value`s ISO `YYYY-MM-DD`.                                                                                                                                                           |
+| `src/lib/components/TransferCalculator.svelte`      | **Modify.** Add segmented `tripType` choice (one-way / return) above Calculate button; replace old `returnEnabled` checkbox; swap both `<input type="date">` for `<DateInput>`; add return-after-outbound validation.                                                        |
+| `src/routes/[lang]/luksuzni-transferi/+page.svelte` | **Modify.** Insert trust-signal strip between hero and calculator section.                                                                                                                                                                                                   |
+| `src/app.css`                                       | **Modify.** (a) Promote `.tr-calc__btn` from outline to solid accent. (b) Add `.tr-trust` strip styles. (c) Add `.date-input` component styles. (d) Add `.tr-calc__trip-toggle` segmented control styles.                                                                    |
+| `src/lib/i18n/hr.ts` `en.ts` `de.ts`                | **Modify.** Add `transferCalc.tripOneWay`, `transferCalc.tripReturn`, `transferCalc.returnAfterOutboundError`, `transferCalc.dateFormatHint`, `transferCalc.dateOpenPicker`; add `transfersPage.trust*` (4 labels); soften `leadTwo` wording. Drop `transferCalc.addReturn`. |
+| `tests/smoke.spec.ts`                               | **Modify.** Replace the skipped transfers test with a real calculator + DateInput flow test.                                                                                                                                                                                 |
+| `tests/date-input.spec.ts`                          | **Create.** Component-behaviour tests (parse, format, picker open, min-validation, return-after-outbound).                                                                                                                                                                   |
 
 ---
 
@@ -53,6 +53,7 @@ Leave it running for the rest of the plan; tasks below will open pages in a brow
 - [ ] **Step 4: Sanity-check baseline**
 
 Open `http://localhost:5173/hr/luksuzni-transferi` and confirm:
+
 - Hero with title "Privatni transferi / taxi" renders
 - "Kalkulator cijene" section is visible
 - Native `<input type="date">` shows OS placeholder when the booking section is open (set Origin = Aerodrom Pula, Destination = Rovinj, Putnici = 1–3, click "Izračunaj cijenu" to reveal it)
@@ -62,6 +63,7 @@ Open `http://localhost:5173/hr/luksuzni-transferi` and confirm:
 ## Task 1: DateInput Component
 
 **Files:**
+
 - Create: `src/lib/components/DateInput.svelte`
 - Create: `tests/date-input.spec.ts`
 
@@ -75,47 +77,41 @@ Create `tests/date-input.spec.ts` with the following content. The component is m
 import { test, expect } from '@playwright/test';
 
 test.describe('DateInput component (mounted in TransferCalculator)', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/hr/luksuzni-transferi');
-    await page.locator('select').first().selectOption('airport');
-    await page.locator('select').nth(1).selectOption({ index: 1 });
-    await page.getByRole('button', { name: /Izračunaj cijenu/ }).click();
-    await page.locator('#tr-booking').waitFor();
-  });
+	test.beforeEach(async ({ page }) => {
+		await page.goto('/hr/luksuzni-transferi');
+		await page.locator('select').first().selectOption('airport');
+		await page.locator('select').nth(1).selectOption({ index: 1 });
+		await page.getByRole('button', { name: /Izračunaj cijenu/ }).click();
+		await page.locator('#tr-booking').waitFor();
+	});
 
-  test('outbound date shows dd.mm.yyyy. placeholder', async ({ page }) => {
-    const input = page.locator('.date-input__text').first();
-    await expect(input).toHaveAttribute('placeholder', 'dd.mm.gggg.');
-  });
+	test('outbound date shows dd.mm.yyyy. placeholder', async ({ page }) => {
+		const input = page.locator('.date-input__text').first();
+		await expect(input).toHaveAttribute('placeholder', 'dd.mm.gggg.');
+	});
 
-  test('typing dd.mm.yyyy. converts to ISO internally', async ({ page }) => {
-    const input = page.locator('.date-input__text').first();
-    await input.fill('15.06.2026.');
-    // The hidden native input mirrors the ISO value
-    const isoValue = await page
-      .locator('.date-input__native')
-      .first()
-      .inputValue();
-    expect(isoValue).toBe('2026-06-15');
-  });
+	test('typing dd.mm.yyyy. converts to ISO internally', async ({ page }) => {
+		const input = page.locator('.date-input__text').first();
+		await input.fill('15.06.2026.');
+		// The hidden native input mirrors the ISO value
+		const isoValue = await page.locator('.date-input__native').first().inputValue();
+		expect(isoValue).toBe('2026-06-15');
+	});
 
-  test('typing invalid date marks the field invalid', async ({ page }) => {
-    const wrap = page.locator('.date-input').first();
-    const input = wrap.locator('.date-input__text');
-    await input.fill('99.99.9999.');
-    await expect(wrap).toHaveClass(/date-input--invalid/);
-  });
+	test('typing invalid date marks the field invalid', async ({ page }) => {
+		const wrap = page.locator('.date-input').first();
+		const input = wrap.locator('.date-input__text');
+		await input.fill('99.99.9999.');
+		await expect(wrap).toHaveClass(/date-input--invalid/);
+	});
 
-  test('clearing the input clears the bound ISO value', async ({ page }) => {
-    const input = page.locator('.date-input__text').first();
-    await input.fill('15.06.2026.');
-    await input.fill('');
-    const isoValue = await page
-      .locator('.date-input__native')
-      .first()
-      .inputValue();
-    expect(isoValue).toBe('');
-  });
+	test('clearing the input clears the bound ISO value', async ({ page }) => {
+		const input = page.locator('.date-input__text').first();
+		await input.fill('15.06.2026.');
+		await input.fill('');
+		const isoValue = await page.locator('.date-input__native').first().inputValue();
+		expect(isoValue).toBe('');
+	});
 });
 ```
 
@@ -169,11 +165,7 @@ Write `src/lib/components/DateInput.svelte`:
 		if (mm < 1 || mm > 12) return null;
 		if (dd < 1 || dd > 31) return null;
 		const dt = new Date(yyyy, mm - 1, dd);
-		if (
-			dt.getFullYear() !== yyyy ||
-			dt.getMonth() !== mm - 1 ||
-			dt.getDate() !== dd
-		) {
+		if (dt.getFullYear() !== yyyy || dt.getMonth() !== mm - 1 || dt.getDate() !== dd) {
 			return null;
 		}
 		return `${yyyy}-${String(mm).padStart(2, '0')}-${String(dd).padStart(2, '0')}`;
@@ -340,8 +332,8 @@ Then replace the outbound date input block (currently lines ~462–465):
 
 ```svelte
 <label class="tr-calc__field">
-    <span class="tr-calc__label">{s.date}</span>
-    <input class="tr-calc__input" type="date" bind:value={date} min={today} />
+	<span class="tr-calc__label">{s.date}</span>
+	<input class="tr-calc__input" type="date" bind:value={date} min={today} />
 </label>
 ```
 
@@ -349,8 +341,8 @@ with:
 
 ```svelte
 <label class="tr-calc__field">
-    <span class="tr-calc__label">{s.date}</span>
-    <DateInput bind:value={date} min={today} aria-label={s.date} />
+	<span class="tr-calc__label">{s.date}</span>
+	<DateInput bind:value={date} min={today} aria-label={s.date} />
 </label>
 ```
 
@@ -358,13 +350,8 @@ And replace the return date input block (currently lines ~502–510):
 
 ```svelte
 <label class="tr-calc__field" style="margin-bottom:0">
-    <span class="tr-calc__label">{s.returnDate}</span>
-    <input
-        class="tr-calc__input"
-        type="date"
-        bind:value={returnDate}
-        min={date || today}
-    />
+	<span class="tr-calc__label">{s.returnDate}</span>
+	<input class="tr-calc__input" type="date" bind:value={returnDate} min={date || today} />
 </label>
 ```
 
@@ -372,8 +359,8 @@ with:
 
 ```svelte
 <label class="tr-calc__field" style="margin-bottom:0">
-    <span class="tr-calc__label">{s.returnDate}</span>
-    <DateInput bind:value={returnDate} min={date || today} aria-label={s.returnDate} />
+	<span class="tr-calc__label">{s.returnDate}</span>
+	<DateInput bind:value={returnDate} min={date || today} aria-label={s.returnDate} />
 </label>
 ```
 
@@ -385,6 +372,7 @@ Expected: All 4 tests pass. If parsing tests fail, check that the `$effect` orde
 - [ ] **Step 6: Manual sanity check in browser**
 
 Open `http://localhost:5173/hr/luksuzni-transferi`, open the booking flow, and confirm both date fields:
+
 1. Show `dd.mm.gggg.` placeholder when empty.
 2. Open the native calendar when the calendar icon is clicked.
 3. After picking a date, the visible field shows `dd.mm.yyyy.` (e.g. `15.06.2026.`).
@@ -403,6 +391,7 @@ git commit -m "feat(transfers): add DateInput component with dd.mm.yyyy. display
 ## Task 2: Date Validation — Return After Outbound
 
 **Files:**
+
 - Modify: `src/lib/components/TransferCalculator.svelte`
 - Modify: `src/lib/i18n/hr.ts` (and `en.ts`, `de.ts`)
 - Modify: `tests/smoke.spec.ts` (un-skip + extend the transfers test)
@@ -458,8 +447,8 @@ In `sendWhatsApp()` (around line 257), immediately after the existing field chec
 ```ts
 errorReturnDate = false;
 if (returnEnabled && returnDate && date && returnDate < date) {
-    errorReturnDate = true;
-    return;
+	errorReturnDate = true;
+	return;
 }
 ```
 
@@ -473,12 +462,10 @@ Find the existing return-fields block:
 
 ```svelte
 <div class="tr-calc__return-fields">
-    <div class="tr-calc__two-col">
-        ...
-    </div>
-    {#if returnFare !== null}
-        <p class="tr-calc__return-note">...</p>
-    {/if}
+	<div class="tr-calc__two-col">...</div>
+	{#if returnFare !== null}
+		<p class="tr-calc__return-note">...</p>
+	{/if}
 </div>
 ```
 
@@ -486,7 +473,7 @@ Insert this between the `</div>` of `.tr-calc__two-col` and the `{#if returnFare
 
 ```svelte
 {#if errorReturnDate}
-    <p class="tr-calc__return-error">{s.returnAfterOutboundError}</p>
+	<p class="tr-calc__return-error">{s.returnAfterOutboundError}</p>
 {/if}
 ```
 
@@ -496,9 +483,9 @@ In `src/lib/components/TransferCalculator.svelte`, add a small `$effect` near th
 
 ```ts
 $effect(() => {
-    if (errorReturnDate && returnDate && date && returnDate >= date) {
-        errorReturnDate = false;
-    }
+	if (errorReturnDate && returnDate && date && returnDate >= date) {
+		errorReturnDate = false;
+	}
 });
 ```
 
@@ -520,9 +507,7 @@ Open `src/app.css`. Find `.tr-calc__return-note` (around line 1974). Add this ru
 Open `tests/smoke.spec.ts`. Replace the existing `test.skip('transfers inquiry form submits and redirects to /hvala', ...)` block at the bottom of the file with:
 
 ```ts
-test('transfers calculator computes Aerodrom → Rovinj E-klasa return total', async ({
-	page
-}) => {
+test('transfers calculator computes Aerodrom → Rovinj E-klasa return total', async ({ page }) => {
 	await page.goto('/hr/luksuzni-transferi');
 	await page.locator('select').first().selectOption('airport');
 	await page.locator('select').nth(1).selectOption('rovinj');
@@ -580,6 +565,7 @@ git commit -m "feat(transfers): block return date earlier than outbound"
 ## Task 3: Return-Trip Segmented Choice in Step One
 
 **Files:**
+
 - Modify: `src/lib/components/TransferCalculator.svelte`
 - Modify: `src/lib/i18n/hr.ts` (and `en.ts`, `de.ts`)
 - Modify: `src/app.css`
@@ -619,8 +605,10 @@ The old "Dodaj povratak" checkbox text is no longer used. Delete `addReturn` fro
 - [ ] **Step 3: Update the strings type**
 
 In `src/lib/components/TransferCalculator.svelte`, in `type CalcStrings`:
+
 - Remove `addReturn: string;`
 - Add:
+
   ```ts
   tripOneWay: string;
   tripReturn: string;
@@ -694,9 +682,7 @@ In `src/lib/components/TransferCalculator.svelte`, locate the existing `<div cla
 	</label>
 
 	{#if returnEnabled}
-		<div class="tr-calc__return-fields">
-			...return date + time...
-		</div>
+		<div class="tr-calc__return-fields">...return date + time...</div>
 	{/if}
 </div>
 ```
@@ -770,7 +756,9 @@ Open `src/app.css`. Find the `.tr-calc__return-note` rule (now around line 1974 
 	letter-spacing: 0.05em;
 	color: var(--fg);
 	border-radius: 2px;
-	transition: background 0.18s ease, color 0.18s ease;
+	transition:
+		background 0.18s ease,
+		color 0.18s ease;
 }
 .tr-calc__trip-opt input[type='radio'] {
 	position: absolute;
@@ -796,7 +784,10 @@ Open `src/app.css`. Find the `.tr-calc__return-note` rule (now around line 1974 
 	color: var(--accent);
 	border-radius: 999px;
 	background: color-mix(in srgb, var(--accent) 8%, var(--bg));
-	transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+	transition:
+		background 0.18s ease,
+		color 0.18s ease,
+		border-color 0.18s ease;
 }
 .tr-calc__return-header {
 	display: flex;
@@ -819,6 +810,7 @@ Expected: Both tests from Task 2 now pass. If `143` doesn't appear, double-check
 - [ ] **Step 9: Verify in browser**
 
 Open `http://localhost:5173/hr/luksuzni-transferi`. Confirm:
+
 - "Jednosmjerno" / "Povratno · −10%" appears above the Calculate button.
 - Picking "Povratno" before clicking Calculate, then computing, reveals the return-date + return-time fields directly in the booking flow without a separate checkbox.
 - The old "Dodaj povratak" checkbox is gone from the DOM (Cmd-F in DevTools for `Dodaj povratak` should hit 0 results in the rendered page).
@@ -836,6 +828,7 @@ git commit -m "feat(transfers): promote return-trip choice to step one"
 ## Task 4: Solid Primary CTA Button
 
 **Files:**
+
 - Modify: `src/app.css`
 
 Acceptance: "Izračunaj cijenu" renders with solid accent background + white text; passes WCAG AA contrast (4.5:1) against the new background; "Pošalji rezervaciju" already passes (solid green) — verify, no change required there.
@@ -883,7 +876,10 @@ with:
 	letter-spacing: 0.15em;
 	text-transform: uppercase;
 	cursor: pointer;
-	transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.05s ease;
+	transition:
+		background 0.18s ease,
+		box-shadow 0.18s ease,
+		transform 0.05s ease;
 	margin-top: 4px;
 	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
 }
@@ -922,6 +918,7 @@ git commit -m "feat(transfers): solid accent CTA for Izračunaj cijenu"
 ## Task 5: Trust-Signal Strip Above Calculator
 
 **Files:**
+
 - Modify: `src/routes/[lang]/luksuzni-transferi/+page.svelte`
 - Modify: `src/lib/i18n/hr.ts` (and `en.ts`, `de.ts`)
 - Modify: `src/app.css`
@@ -962,29 +959,66 @@ trustWhatsApp: 'WhatsApp-Bestätigung in 30 Min.',
 Open `src/routes/[lang]/luksuzni-transferi/+page.svelte`. Find the closing `</section>` of the hero (right after the `hero__cta` block, around line 78) and the opening of the calculator section (around line 81). Insert this new `<section>` between them:
 
 ```svelte
-		<!-- Trust signals -->
-		<section class="section section--tight tr-trust-section">
-			<div class="wrap">
-				<ul class="tr-trust" aria-label="Trust signals">
-					<li class="tr-trust__item">
-						<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 12h20" /><path d="M22 12l-4-4M22 12l-4 4" /><path d="M5 8v8" /></svg>
-						<span>{t.transfersPage.trustSignAirport}</span>
-					</li>
-					<li class="tr-trust__item">
-						<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="6" r="3" /><path d="M6 20v-3a4 4 0 014-4h4a4 4 0 014 4v3" /></svg>
-						<span>{t.transfersPage.trustChildSeat}</span>
-					</li>
-					<li class="tr-trust__item">
-						<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
-						<span>{t.transfersPage.trustWaiting}</span>
-					</li>
-					<li class="tr-trust__item">
-						<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 01-8.5 8.5 8.5 8.5 0 01-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 1121 11.5z" /></svg>
-						<span>{t.transfersPage.trustWhatsApp}</span>
-					</li>
-				</ul>
-			</div>
-		</section>
+<!-- Trust signals -->
+<section class="section section--tight tr-trust-section">
+	<div class="wrap">
+		<ul class="tr-trust" aria-label="Trust signals">
+			<li class="tr-trust__item">
+				<svg
+					width="22"
+					height="22"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.6"
+					aria-hidden="true"
+					><path d="M2 12h20" /><path d="M22 12l-4-4M22 12l-4 4" /><path d="M5 8v8" /></svg
+				>
+				<span>{t.transfersPage.trustSignAirport}</span>
+			</li>
+			<li class="tr-trust__item">
+				<svg
+					width="22"
+					height="22"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.6"
+					aria-hidden="true"
+					><circle cx="12" cy="6" r="3" /><path d="M6 20v-3a4 4 0 014-4h4a4 4 0 014 4v3" /></svg
+				>
+				<span>{t.transfersPage.trustChildSeat}</span>
+			</li>
+			<li class="tr-trust__item">
+				<svg
+					width="22"
+					height="22"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.6"
+					aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg
+				>
+				<span>{t.transfersPage.trustWaiting}</span>
+			</li>
+			<li class="tr-trust__item">
+				<svg
+					width="22"
+					height="22"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.6"
+					aria-hidden="true"
+					><path
+						d="M21 11.5a8.38 8.38 0 01-8.5 8.5 8.5 8.5 0 01-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 1121 11.5z"
+					/></svg
+				>
+				<span>{t.transfersPage.trustWhatsApp}</span>
+			</li>
+		</ul>
+	</div>
+</section>
 ```
 
 - [ ] **Step 3: Add strip CSS**
@@ -1031,6 +1065,7 @@ Open `src/app.css`. Add at the very end of the file (after `.tr-calc__form-note`
 - [ ] **Step 4: Verify in browser at both viewports**
 
 In DevTools:
+
 - 1440 × 900: 4 items in one row, all visible above the calculator at first page load (no scroll past hero needed).
 - 375 × 667: 2 × 2 grid below the hero, before the calculator.
 
@@ -1048,6 +1083,7 @@ git commit -m "feat(transfers): add trust-signal strip above calculator"
 ## Task 6: Lead-Paragraph Wording Polish
 
 **Files:**
+
 - Modify: `src/lib/i18n/hr.ts` (and `en.ts`, `de.ts`)
 
 Acceptance: the second and fourth paragraphs of `transfersPage.leadTwo` read naturally with inline anchor links, no orphan punctuation. (The HTML structure on `develop` already has the inline anchors — production was likely cached at an older revision. Confirm + lightly improve the HR wording where the sentence still reads stiff.)
@@ -1121,6 +1157,7 @@ Expected: 0 errors. If errors exist about missing `addReturn` references (e.g. o
 - [ ] **Step 3: Verify booking-form happy path manually**
 
 Open `http://localhost:5173/hr/luksuzni-transferi`:
+
 1. Origin → Aerodrom Pula, Destination → Rovinj, Putnici → 1–3.
 2. Click "Povratno · −10%" segmented control above the Calculate button.
 3. Click "Izračunaj cijenu".
@@ -1133,6 +1170,7 @@ Open `http://localhost:5173/hr/luksuzni-transferi`:
 
 Run: `npm run build && npm run preview -- --port 4173`
 Then open `http://localhost:4173/hr/luksuzni-transferi` in incognito, DevTools → Lighthouse (mobile preset). Confirm:
+
 - Performance ≥ baseline − 2 points (record baseline first by running Lighthouse on `develop` before merging if unsure).
 - Accessibility ≥ 95 (must not regress).
 - No new console warnings or errors.
@@ -1179,6 +1217,7 @@ Identify the background `npm run dev` process and stop it.
 ## Out of Scope (Brief's "Bonus" Section)
 
 Deliberately skipped from this plan, to be re-evaluated after the five-izmjena ship:
+
 - "Uštedjeli ste X €" line on summary (small psychological win, low cost — easy follow-up).
 - "★ 4,9 · stotine prevezenih gostiju · Pula od 2024." trust line above calculator — the brief itself flags "samo ako odgovara stvarnim brojkama", and we don't have a verified review count to drop in. Defer until verified numbers exist.
 
