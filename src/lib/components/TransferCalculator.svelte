@@ -279,9 +279,9 @@
 
 			const opts: google.maps.places.AutocompleteOptions = {
 				fields: ['geometry', 'name', 'formatted_address'],
-				// Keep suggestions to the realistic operating area so users don't
-				// see Canada / Canary Islands in the dropdown.
-				componentRestrictions: { country: ['hr', 'si', 'it', 'at', 'de'] }
+				// Keep suggestions to Croatia only so users don't
+				// see foreign addresses in the dropdown.
+				componentRestrictions: { country: 'hr' }
 			};
 
 			if (fromInput) {
