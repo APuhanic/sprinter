@@ -60,8 +60,8 @@
 		mNow: string;
 		mBooking: string;
 		mAt: string;
-		mConfirmNow: string;
-		mConfirmLater: string;
+		mCancelNow: string;
+		mCancelLater: string;
 		mFrom: string;
 		mTo: string;
 		mRoute: string;
@@ -480,8 +480,9 @@
 		if (note.trim()) L.push(`${E.note} ${s.mNote}: ${note.trim()}`);
 		L.push(WA_LINE);
 
-		// Confirmation request — moved to the bottom, just above navigation.
-		L.push(`_${mode === 'later' ? s.mConfirmLater : s.mConfirmNow}_`);
+		// Cancellation terms — the message goes to the driver, so there's nothing to
+		// "confirm"; this slot carries the cancellation policy (50% / 24h rules).
+		L.push(`_${mode === 'later' ? s.mCancelLater : s.mCancelNow}_`);
 		if (isLongHaul) L.push(`${E.warn} ${s.longHaulCaveat}`);
 		L.push(WA_LINE);
 

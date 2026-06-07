@@ -670,8 +670,9 @@ export default {
 		mNow: 'RIDE NOW',
 		mBooking: 'BOOKING',
 		mAt: 'at',
-		mConfirmNow: 'Please confirm arrival. Thank you!',
-		mConfirmLater: 'Please confirm availability. Thank you!',
+		mCancelNow: 'In case of cancellation, 50% of the price is charged.',
+		mCancelLater:
+			'Cancellation policy: free cancellation up to 24h before the scheduled time. Within 24h, 50% of the price is charged. If the ride is cancelled after the driver has departed to you, the full amount is charged.',
 		mFrom: 'FROM:',
 		mTo: 'TO:',
 		mRoute: 'Route overview',
