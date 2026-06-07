@@ -679,8 +679,9 @@ export default {
 		mNow: 'SOFORT-FAHRT',
 		mBooking: 'BUCHUNG',
 		mAt: 'um',
-		mConfirmNow: 'Bitte Ankunft bestätigen. Danke!',
-		mConfirmLater: 'Bitte Verfügbarkeit bestätigen. Danke!',
+		mCancelNow: 'Im Falle einer Stornierung werden 50% des Preises berechnet.',
+		mCancelLater:
+			'Stornierungsbedingungen: kostenlose Stornierung bis 24 Std. vor dem Termin. Innerhalb von 24 Std. werden 50% des Preises berechnet. Wird die Fahrt storniert, nachdem der Fahrer zu Ihnen losgefahren ist, wird der volle Betrag berechnet.',
 		mFrom: 'VON:',
 		mTo: 'NACH:',
 		mRoute: 'Routenübersicht',
