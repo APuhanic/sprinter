@@ -62,6 +62,7 @@
 		mAt: string;
 		mCancelNow: string;
 		mCancelLater: string;
+		mDeposit: string;
 		mFrom: string;
 		mTo: string;
 		mRoute: string;
@@ -483,6 +484,9 @@
 		// Cancellation terms — the message goes to the driver, so there's nothing to
 		// "confirm"; this slot carries the cancellation policy (50% / 24h rules).
 		L.push(`_${mode === 'later' ? s.mCancelLater : s.mCancelNow}_`);
+		// Scheduled bookings only: a 20% deposit may be requested to hold the slot.
+		// (An immediate ride has no future slot to secure, so "now" omits it.)
+		if (mode === 'later') L.push(`_${s.mDeposit}_`);
 		if (isLongHaul) L.push(`${E.warn} ${s.longHaulCaveat}`);
 		L.push(WA_LINE);
 

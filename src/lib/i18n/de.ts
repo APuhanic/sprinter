@@ -679,9 +679,10 @@ export default {
 		mNow: 'SOFORT-FAHRT',
 		mBooking: 'BUCHUNG',
 		mAt: 'um',
-		mCancelNow: 'Im Falle einer Stornierung werden 50% des Preises berechnet.',
+		mCancelNow: 'Die Stornierung einer bereits vereinbarten Fahrt wird mit 50% des Preises berechnet.',
 		mCancelLater:
 			'Stornierungsbedingungen: kostenlose Stornierung bis 24 Std. vor dem Termin. Innerhalb von 24 Std. werden 50% des Preises berechnet. Wird die Fahrt storniert, nachdem der Fahrer zu Ihnen losgefahren ist, wird der volle Betrag berechnet.',
+		mDeposit: 'Zur Bestätigung des Termins kann eine Anzahlung von 20% verlangt werden.',
 		mFrom: 'VON:',
 		mTo: 'NACH:',
 		mRoute: 'Routenübersicht',

@@ -671,9 +671,10 @@ export default {
 		mNow: 'VOŽNJA ODMAH',
 		mBooking: 'REZERVACIJA',
 		mAt: 'u',
-		mCancelNow: 'U slučaju otkaza narudžbe naplaćuje se 50% cijene.',
+		mCancelNow: 'Otkazivanje već dogovorene vožnje naplaćuje se 50% od cijene.',
 		mCancelLater:
 			'Uvjeti otkazivanja: rezervacija se može otkazati besplatno do 24h prije termina. Unutar 24h naplaćuje se 50% cijene. Ako je vožnja otkazana nakon što je vozač krenuo prema vama, naplaćuje se puni iznos.',
+		mDeposit: 'Za potvrdu termina može se zatražiti akontacija od 20%.',
 		mFrom: 'OD:',
 		mTo: 'DO:',
 		mRoute: 'Pregled rute',
