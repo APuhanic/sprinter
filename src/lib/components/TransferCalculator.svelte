@@ -63,6 +63,7 @@
 		mCancelNow: string;
 		mCancelLater: string;
 		mDeposit: string;
+		waNote: string;
 		mFrom: string;
 		mTo: string;
 		mRoute: string;
@@ -818,6 +819,10 @@
 			<span>{s.sendBooking}</span>
 		</a>
 
+		<!-- Reassurance that the WhatsApp send isn't the end of the flow: the
+		     dispatcher still confirms. Always visible (not gated on a click). -->
+		<p class="tr-calc__wa-note">{s.waNote}</p>
+
 		<div class="tr-calc__quick-row">
 			<a class="tr-calc__quick tr-calc__quick--gold" href={`tel:${phoneNumber}`}>
 				<svg
@@ -1135,6 +1140,19 @@
 	.tr-calc__quick--gold {
 		border-color: color-mix(in srgb, var(--accent) 70%, transparent);
 		color: #ffffff;
+	}
+
+	/* Confirmation reassurance under the WhatsApp button. White + italic so it
+	   stays legible on the dark panel and in direct sun, but discreet (slightly
+	   dimmed) so it doesn't compete with the button. */
+	.tr-calc__wa-note {
+		margin: 8px 0 0;
+		text-align: center;
+		font-size: 14px;
+		font-style: italic;
+		color: #ffffff;
+		opacity: 0.85;
+		line-height: 1.4;
 	}
 
 	.tr-calc__hours {
