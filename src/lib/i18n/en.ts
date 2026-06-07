@@ -684,6 +684,7 @@ export default {
 		mPax: 'Passengers',
 		mName: 'Name',
 		mNote: 'Note',
+		waNote: 'Please wait for our confirmation — we will reply as soon as possible.',
 		locMsg: 'Welcome! 👋\nPlease tap 📎 → 📍 Location and send us where you are.',
 		mailSubject: 'Transfer booking'
 	},

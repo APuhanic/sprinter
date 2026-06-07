@@ -685,6 +685,7 @@ export default {
 		mPax: 'Putnika',
 		mName: 'Ime',
 		mNote: 'Napomena',
+		waNote: 'Molimo sačekajte našu potvrdu — javljamo se u najkraćem roku.',
 		locMsg: 'Dobrodošli! 👋\nMolimo kliknite na 📎 → 📍 Lokacija i pošaljite nam gdje se nalazite.',
 		mailSubject: 'Rezervacija transfera'
 	},
