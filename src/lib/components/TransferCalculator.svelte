@@ -823,7 +823,7 @@
 		     dispatcher still confirms. Always visible (not gated on a click). -->
 		<p class="tr-calc__wa-note">{s.waNote}</p>
 
-		<div class="tr-calc__quick-row">
+		<div class="tr-calc__quick-row" class:tr-calc__quick-row--solo={mode === 'now'}>
 			<a class="tr-calc__quick tr-calc__quick--gold" href={`tel:${phoneNumber}`}>
 				<svg
 					width="14"
@@ -840,20 +840,25 @@
 				</svg>
 				<span>{s.call}</span>
 			</a>
-			<a class="tr-calc__quick" href={mailHref}>
-				<svg
-					width="14"
-					height="14"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					aria-hidden="true"
-				>
-					<path d="M4 4h16v16H4zM4 6l8 6 8-6" />
-				</svg>
-				<span>{s.email}</span>
-			</a>
+			<!-- Email is hidden for "now" rides: an immediate ride can't wait for an
+			     unread inbox, so only the instant channels (WhatsApp + Call) show.
+			     Scheduled bookings keep email — there's time before the slot. -->
+			{#if mode !== 'now'}
+				<a class="tr-calc__quick" href={mailHref}>
+					<svg
+						width="14"
+						height="14"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						aria-hidden="true"
+					>
+						<path d="M4 4h16v16H4zM4 6l8 6 8-6" />
+					</svg>
+					<span>{s.email}</span>
+				</a>
+			{/if}
 		</div>
 
 		<p class="tr-calc__hours">🕐 {s.hours}</p>
@@ -1116,6 +1121,11 @@
 		grid-template-columns: 1fr 1fr;
 		gap: 10px;
 		margin-top: 12px;
+	}
+	/* "Now" mode hides Email, leaving only Call — let it fill the full width so
+	   the row doesn't read as a broken half-empty grid. */
+	.tr-calc__quick-row--solo {
+		grid-template-columns: 1fr;
 	}
 	.tr-calc__quick {
 		display: flex;
