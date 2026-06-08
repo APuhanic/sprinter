@@ -44,6 +44,7 @@
 		formNote: string;
 		whatsapp: string;
 		call: string;
+		callUs: string;
 		email: string;
 		hours: string;
 		estimateNote: string;
@@ -170,10 +171,6 @@
 	let welcomeIdx = $state(0);
 	let welcomeFade = $state(true);
 	let welcomeWord = $derived(WELCOME_WORDS[welcomeIdx]);
-	// Shrink the font for longer words/phrases so they stay inside the fixed box.
-	let welcomeSize = $derived(
-		welcomeWord.length <= 8 ? 'lg' : welcomeWord.length <= 12 ? 'md' : 'sm'
-	);
 
 	function placeLabel(p: google.maps.places.PlaceResult | null, fallback: string): string {
 		const raw = p?.name || p?.formatted_address || fallback;
@@ -607,13 +604,18 @@
 	}
 </script>
 
+<a class="tr-call" href={`tel:${phoneNumber}`}>
+	<span class="tr-call__top">
+		<span class="tr-call__icon" aria-hidden="true">📞</span>
+		<span>{s.callUs}</span>
+	</span>
+	<span class="tr-call__num">+385 95 722 6918</span>
+</a>
+
 <div class="tr-welcome" aria-hidden="true">
 	<span
 		class="tr-welcome__word"
 		class:tr-welcome__word--hidden={!welcomeFade}
-		class:is-lg={welcomeSize === 'lg'}
-		class:is-md={welcomeSize === 'md'}
-		class:is-sm={welcomeSize === 'sm'}
 	>
 		{welcomeWord}
 	</span>
@@ -1172,6 +1174,61 @@
 		color: #f5f5f5;
 	}
 
+	/* ── Call button (large, pulsing, brand rust) ───────────────────── */
+	.tr-call {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 4px;
+		background: #a84c28;
+		color: #fff;
+		text-decoration: none;
+		border-radius: 14px;
+		padding: 20px;
+		margin: 0 0 18px;
+		box-shadow: 0 4px 14px rgba(168, 76, 40, 0.35);
+		animation: tr-call-pulse 1.8s ease-in-out infinite;
+		transition: transform 0.15s ease;
+	}
+	.tr-call:active {
+		transform: scale(0.97);
+	}
+	.tr-call__top {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		font-size: 20px;
+		font-weight: 700;
+	}
+	.tr-call__icon {
+		font-size: 24px;
+	}
+	.tr-call__num {
+		font-size: 24px;
+		font-weight: 700;
+		letter-spacing: 0.02em;
+	}
+	@keyframes tr-call-pulse {
+		0% {
+			transform: scale(1);
+			box-shadow: 0 4px 14px rgba(168, 76, 40, 0.35);
+		}
+		50% {
+			transform: scale(1.03);
+			box-shadow: 0 6px 22px rgba(168, 76, 40, 0.55);
+		}
+		100% {
+			transform: scale(1);
+			box-shadow: 0 4px 14px rgba(168, 76, 40, 0.35);
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.tr-call {
+			animation: none;
+		}
+	}
+
 	/* ── Welcome banner (animated multilingual greeting) ─────────────── */
 	.tr-welcome {
 		background: var(--accent);
@@ -1195,16 +1252,9 @@
 		padding: 0 8px;
 		/* Depth so the white serif holds up against the rust panel in sunlight. */
 		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
-	}
-	/* Font scales to word length so long phrases stay inside the fixed box. */
-	.tr-welcome__word.is-lg {
-		font-size: clamp(32px, 9vw, 44px);
-	}
-	.tr-welcome__word.is-md {
-		font-size: clamp(26px, 7vw, 36px);
-	}
-	.tr-welcome__word.is-sm {
-		font-size: clamp(22px, 5.6vw, 28px);
+		/* One consistent size for every word — sized so the longest phrase
+		   ("Reisen Sie mit uns") fits the box; no per-word jump on swap. */
+		font-size: clamp(24px, 6vw, 34px);
 	}
 	.tr-welcome__word--hidden {
 		opacity: 0;
