@@ -664,6 +664,7 @@ export default {
 		formNote: 'Available 07 – 24 · sprinter.hr · +385 95 722 6918',
 		whatsapp: 'WhatsApp',
 		call: 'Call',
+		callUs: 'Call us',
 		email: 'E-mail',
 		hours: 'Working hours: 07:00 – 24:00',
 		// WhatsApp message labels
