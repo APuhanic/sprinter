@@ -52,6 +52,7 @@
 		modeNowMain: string;
 		modeLaterMain: string;
 		modePrompt: string;
+		quickBookTitle: string;
 		nowToken: string;
 		mapNavLabel: string;
 		gpsAsking: string;
@@ -612,14 +613,7 @@
 	<span class="tr-call__num">+385 95 722 6918</span>
 </a>
 
-<div class="tr-welcome" aria-hidden="true">
-	<span
-		class="tr-welcome__word"
-		class:tr-welcome__word--hidden={!welcomeFade}
-	>
-		{welcomeWord}
-	</span>
-</div>
+<h2 class="tr-quickbook">{s.quickBookTitle}</h2>
 
 <div class="tr-mode" role="group" aria-label={s.bookingTitle}>
 	<button
@@ -640,16 +634,9 @@
 	</button>
 </div>
 
-{#if mode === null}
-	<p class="tr-mode__hint">↑ {s.modePrompt}</p>
-{/if}
+<p class="tr-mode__hint">{s.modePrompt}</p>
 
 <div class="tr-calc" class:tr-calc--locked={mode === null} aria-disabled={mode === null}>
-	<div class="tr-calc__title">
-		{s.title}
-		<span class="tr-calc__title-sub">({s.vatNote})</span>
-	</div>
-
 	{#if mapsError}
 		<div class="tr-calc__maps-warn">{s.mapsUnavailable}</div>
 	{/if}
@@ -865,6 +852,15 @@
 
 		<p class="tr-calc__hours">🕐 {s.hours}</p>
 	</div>
+</div>
+
+<div class="tr-welcome" aria-hidden="true">
+	<span
+		class="tr-welcome__word"
+		class:tr-welcome__word--hidden={!welcomeFade}
+	>
+		{welcomeWord}
+	</span>
 </div>
 
 <style>
@@ -1260,6 +1256,18 @@
 		opacity: 0;
 	}
 
+	/* ── Quick-book section title (above the mode picker) ────────────── */
+	.tr-quickbook {
+		font-family: var(--font-display, 'Cormorant Garamond', Georgia, serif);
+		font-weight: 700;
+		font-size: clamp(22px, 4.4vw, 30px);
+		line-height: 1.2;
+		text-align: center;
+		color: #2a211c;
+		margin: 0 0 16px;
+		text-wrap: balance;
+	}
+
 	/* ── Mode picker (now / later) ───────────────────────────────────── */
 	.tr-mode {
 		display: grid;
@@ -1267,9 +1275,8 @@
 		gap: 10px;
 		margin-bottom: 18px;
 	}
-	/* Gate prompt — shown only while no mode is chosen, so the dimmed calculator
-	   reads as "pick one first" rather than broken. On the light page bg, dark
-	   rust is the high-contrast choice (not white). */
+	/* Booking prompt above the calculator. On the light page bg, dark rust is
+	   the high-contrast choice (not white). */
 	.tr-mode__hint {
 		margin: -8px 0 18px;
 		text-align: center;
