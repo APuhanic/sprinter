@@ -230,6 +230,25 @@ test.describe('quote', () => {
 		await expect(priceEl(page)).toHaveText(`${calcFare(40, 'v')} €`);
 	});
 
+	test('selecting the Ford wagon lowers the price below E-class', async ({ page }) => {
+		await chooseMode(page, 'now');
+		await pickRoute(page, 40);
+		await expect(priceEl(page)).toHaveText(`${calcFare(40, 'e')} €`);
+		await page.getByRole('button', { name: /Ford karavan/ }).click();
+		await expect(priceEl(page)).toHaveText(`${calcFare(40, 'f')} €`);
+		expect(calcFare(40, 'f')!).toBeLessThan(calcFare(40, 'e')!);
+	});
+
+	test('Ford selection carries the vehicle into the WhatsApp text', async ({ page }) => {
+		await chooseMode(page, 'now');
+		await pickRoute(page, 20);
+		await page.getByRole('button', { name: /Ford karavan/ }).click();
+		await nameInput(page).fill('Ivan');
+		const text = await reserveText(page);
+		expect(text).toContain('Ford karavan');
+		expect(text).toContain(`${calcFare(20, 'f')} €`);
+	});
+
 	test('long trips (>100 km) are flagged as estimates (~)', async ({ page }) => {
 		await chooseMode(page, 'now');
 		await pickRoute(page, 120);

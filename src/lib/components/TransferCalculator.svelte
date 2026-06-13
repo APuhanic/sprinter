@@ -25,6 +25,10 @@
 		eClassRange: string;
 		vClass: string;
 		vClassRange: string;
+		fClass: string;
+		fClassRange: string;
+		fBadge: string;
+		fPet: string;
 		bookingTitle: string;
 		travelTimeLabel: string;
 		fullName: string;
@@ -44,6 +48,7 @@
 		formNote: string;
 		whatsapp: string;
 		call: string;
+		callUs: string;
 		email: string;
 		hours: string;
 		estimateNote: string;
@@ -51,6 +56,7 @@
 		modeNowMain: string;
 		modeLaterMain: string;
 		modePrompt: string;
+		quickBookTitle: string;
 		nowToken: string;
 		mapNavLabel: string;
 		gpsAsking: string;
@@ -60,14 +66,17 @@
 		mNow: string;
 		mBooking: string;
 		mAt: string;
-		mConfirmNow: string;
-		mConfirmLater: string;
+		mCancelNow: string;
+		mCancelLater: string;
+		mDeposit: string;
+		waNote: string;
 		mFrom: string;
 		mTo: string;
 		mRoute: string;
 		mDest: string;
 		mVehE: string;
 		mVehV: string;
+		mVehF: string;
 		mPrice: string;
 		mPax: string;
 		mName: string;
@@ -125,10 +134,14 @@
 	let bookErrorMsg = $state('');
 
 	let vehicleLabel = $derived(
-		vehicle === 'e' ? `${s.eClass} · ${s.eClassRange}` : `${s.vClass} · ${s.vClassRange}`
+		vehicle === 'e'
+			? `${s.eClass} · ${s.eClassRange}`
+			: vehicle === 'v'
+				? `${s.vClass} · ${s.vClassRange}`
+				: `${s.fClass} · ${s.fClassRange}`
 	);
 	// Concrete vehicle + plate for the WhatsApp dispatcher message.
-	let vehicleDesc = $derived(vehicle === 'e' ? s.mVehE : s.mVehV);
+	let vehicleDesc = $derived(vehicle === 'e' ? s.mVehE : vehicle === 'v' ? s.mVehV : s.mVehF);
 
 	let fare = $derived(routeStatus === 'ok' ? calcFare(lastKm, vehicle) : null);
 	let isEstimate = $derived(routeStatus === 'ok' && lastKm > 100);
@@ -168,10 +181,6 @@
 	let welcomeIdx = $state(0);
 	let welcomeFade = $state(true);
 	let welcomeWord = $derived(WELCOME_WORDS[welcomeIdx]);
-	// Shrink the font for longer words/phrases so they stay inside the fixed box.
-	let welcomeSize = $derived(
-		welcomeWord.length <= 8 ? 'lg' : welcomeWord.length <= 12 ? 'md' : 'sm'
-	);
 
 	function placeLabel(p: google.maps.places.PlaceResult | null, fallback: string): string {
 		const raw = p?.name || p?.formatted_address || fallback;
@@ -480,8 +489,12 @@
 		if (note.trim()) L.push(`${E.note} ${s.mNote}: ${note.trim()}`);
 		L.push(WA_LINE);
 
-		// Confirmation request — moved to the bottom, just above navigation.
-		L.push(`_${mode === 'later' ? s.mConfirmLater : s.mConfirmNow}_`);
+		// Cancellation terms — the message goes to the driver, so there's nothing to
+		// "confirm"; this slot carries the cancellation policy (50% / 24h rules).
+		L.push(`_${mode === 'later' ? s.mCancelLater : s.mCancelNow}_`);
+		// Scheduled bookings only: a 20% deposit may be requested to hold the slot.
+		// (An immediate ride has no future slot to secure, so "now" omits it.)
+		if (mode === 'later') L.push(`_${s.mDeposit}_`);
 		if (isLongHaul) L.push(`${E.warn} ${s.longHaulCaveat}`);
 		L.push(WA_LINE);
 
@@ -601,17 +614,15 @@
 	}
 </script>
 
-<div class="tr-welcome" aria-hidden="true">
-	<span
-		class="tr-welcome__word"
-		class:tr-welcome__word--hidden={!welcomeFade}
-		class:is-lg={welcomeSize === 'lg'}
-		class:is-md={welcomeSize === 'md'}
-		class:is-sm={welcomeSize === 'sm'}
-	>
-		{welcomeWord}
+<a class="tr-call" href={`tel:${phoneNumber}`}>
+	<span class="tr-call__top">
+		<span class="tr-call__icon" aria-hidden="true">📞</span>
+		<span>{s.callUs}</span>
 	</span>
-</div>
+	<span class="tr-call__num">+385 95 722 6918</span>
+</a>
+
+<h2 class="tr-quickbook">{s.quickBookTitle}</h2>
 
 <div class="tr-mode" role="group" aria-label={s.bookingTitle}>
 	<button
@@ -632,16 +643,9 @@
 	</button>
 </div>
 
-{#if mode === null}
-	<p class="tr-mode__hint">↑ {s.modePrompt}</p>
-{/if}
+<p class="tr-mode__hint">{s.modePrompt}</p>
 
 <div class="tr-calc" class:tr-calc--locked={mode === null} aria-disabled={mode === null}>
-	<div class="tr-calc__title">
-		{s.title}
-		<span class="tr-calc__title-sub">({s.vatNote})</span>
-	</div>
-
 	{#if mapsError}
 		<div class="tr-calc__maps-warn">{s.mapsUnavailable}</div>
 	{/if}
@@ -701,6 +705,33 @@
 			<span class="tr-calc__veh-sub">{s.vClassRange}</span>
 		</button>
 	</div>
+
+	<!-- Ford wagon — full-width "value" option below the E/V columns. Green thread
+	     (badge + paw + selected border) sets it apart as the budget, pet-friendly pick. -->
+	<button
+		type="button"
+		class="tr-calc__ford"
+		class:tr-calc__ford--on={vehicle === 'f'}
+		onclick={() => (vehicle = 'f')}
+	>
+		<span class="tr-calc__ford-badge">{s.fBadge}</span>
+		<span class="tr-calc__ford-top">
+			<span class="tr-calc__ford-name">{s.fClass}</span>
+			<span class="tr-calc__ford-pax">{s.fClassRange}</span>
+		</span>
+		<span class="tr-calc__ford-pet">
+			<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+				<ellipse cx="5.5" cy="11" rx="2.4" ry="3" />
+				<ellipse cx="10" cy="7.5" rx="2.4" ry="3.2" />
+				<ellipse cx="15" cy="7.5" rx="2.4" ry="3.2" />
+				<ellipse cx="19" cy="11.5" rx="2.2" ry="2.8" />
+				<path
+					d="M12.2 12.5c-2.8 0-5 2.3-5.5 4.8-.3 1.6.9 3 2.5 2.7 1.1-.2 2.1-.6 3-.6s1.9.4 3 .6c1.6.3 2.8-1.1 2.5-2.7-.5-2.5-2.7-4.8-5.5-4.8z"
+				/>
+			</svg>
+			<span>{s.fPet}</span>
+		</span>
+	</button>
 
 	<!-- Result panel -->
 	{#if routeStatus === 'loading'}
@@ -813,7 +844,11 @@
 			<span>{s.sendBooking}</span>
 		</a>
 
-		<div class="tr-calc__quick-row">
+		<!-- Reassurance that the WhatsApp send isn't the end of the flow: the
+		     dispatcher still confirms. Always visible (not gated on a click). -->
+		<p class="tr-calc__wa-note">{s.waNote}</p>
+
+		<div class="tr-calc__quick-row" class:tr-calc__quick-row--solo={mode === 'now'}>
 			<a class="tr-calc__quick tr-calc__quick--gold" href={`tel:${phoneNumber}`}>
 				<svg
 					width="14"
@@ -830,24 +865,38 @@
 				</svg>
 				<span>{s.call}</span>
 			</a>
-			<a class="tr-calc__quick" href={mailHref}>
-				<svg
-					width="14"
-					height="14"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					aria-hidden="true"
-				>
-					<path d="M4 4h16v16H4zM4 6l8 6 8-6" />
-				</svg>
-				<span>{s.email}</span>
-			</a>
+			<!-- Email is hidden for "now" rides: an immediate ride can't wait for an
+			     unread inbox, so only the instant channels (WhatsApp + Call) show.
+			     Scheduled bookings keep email — there's time before the slot. -->
+			{#if mode !== 'now'}
+				<a class="tr-calc__quick" href={mailHref}>
+					<svg
+						width="14"
+						height="14"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						aria-hidden="true"
+					>
+						<path d="M4 4h16v16H4zM4 6l8 6 8-6" />
+					</svg>
+					<span>{s.email}</span>
+				</a>
+			{/if}
 		</div>
 
 		<p class="tr-calc__hours">🕐 {s.hours}</p>
 	</div>
+</div>
+
+<div class="tr-welcome" aria-hidden="true">
+	<span
+		class="tr-welcome__word"
+		class:tr-welcome__word--hidden={!welcomeFade}
+	>
+		{welcomeWord}
+	</span>
 </div>
 
 <style>
@@ -921,6 +970,9 @@
 		--soft: #1b1f26;
 		--line: rgba(255, 255, 255, 0.1);
 		--line-strong: rgba(255, 255, 255, 0.2);
+		/* Value/eco accent for the Ford card — distinct from the brand rust so the
+		   budget, pet-friendly option reads as the "green" choice. */
+		--ford-green: #46b35e;
 		border-color: rgba(255, 255, 255, 0.08) !important;
 	}
 	/* Result panel uses bg+fg inverted in app.css; remap so it stays dark. */
@@ -1024,7 +1076,8 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: 10px;
-		margin-bottom: 18px;
+		/* Tighter gap to the Ford card below — E/V + Ford read as one cluster. */
+		margin-bottom: 10px;
 	}
 	.tr-calc__veh-btn {
 		background: var(--bg);
@@ -1061,6 +1114,79 @@
 		font-size: 12px;
 		font-weight: 500;
 		color: #ffffff;
+	}
+
+	/* ── Ford wagon (full-width value option) ─────────────────────────── */
+	.tr-calc__ford {
+		position: relative;
+		display: block;
+		width: 100%;
+		/* Extra top padding so the centred name clears the corner badge. */
+		padding: 30px 14px 14px;
+		margin-bottom: 18px;
+		background: var(--bg);
+		border: 1px solid var(--line);
+		border-radius: 2px;
+		text-align: center;
+		cursor: pointer;
+		color: var(--fg);
+		font-family: inherit;
+		overflow: hidden;
+		transition:
+			border-color 0.18s ease,
+			background 0.18s ease;
+	}
+	.tr-calc__ford:hover {
+		border-color: var(--ford-green);
+	}
+	/* Selected: green border + faint green fill — the green cue that marks Ford as
+	   the value pick (E/V use rust; only one vehicle is ever active at a time). */
+	.tr-calc__ford--on {
+		border-color: var(--ford-green);
+		background: color-mix(in srgb, var(--ford-green) 8%, var(--bg));
+	}
+	.tr-calc__ford-badge {
+		position: absolute;
+		top: 0;
+		right: 0;
+		background: var(--ford-green);
+		color: #07230f;
+		font-family: var(--font-mono);
+		font-size: 10px;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		padding: 4px 10px;
+		border-bottom-left-radius: 6px;
+	}
+	.tr-calc__ford-top {
+		display: flex;
+		align-items: baseline;
+		justify-content: center;
+		gap: 8px;
+		flex-wrap: wrap;
+	}
+	.tr-calc__ford-name {
+		font-size: 15px;
+		font-weight: 700;
+		color: #ffffff;
+	}
+	.tr-calc__ford-pax {
+		font-size: 12px;
+		font-weight: 500;
+		color: #ffffff;
+		opacity: 0.85;
+	}
+	.tr-calc__ford-pet {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 7px;
+		margin-top: 8px;
+		color: var(--ford-green);
+	}
+	.tr-calc__ford-pet span {
+		font-size: 13px;
+		font-weight: 600;
 	}
 
 	.tr-calc__maps-warn {
@@ -1107,6 +1233,11 @@
 		gap: 10px;
 		margin-top: 12px;
 	}
+	/* "Now" mode hides Email, leaving only Call — let it fill the full width so
+	   the row doesn't read as a broken half-empty grid. */
+	.tr-calc__quick-row--solo {
+		grid-template-columns: 1fr;
+	}
 	.tr-calc__quick {
 		display: flex;
 		align-items: center;
@@ -1132,11 +1263,79 @@
 		color: #ffffff;
 	}
 
+	/* Confirmation reassurance under the WhatsApp button. White + italic so it
+	   stays legible on the dark panel and in direct sun, but discreet (slightly
+	   dimmed) so it doesn't compete with the button. */
+	.tr-calc__wa-note {
+		margin: 8px 0 0;
+		text-align: center;
+		font-size: 14px;
+		font-style: italic;
+		color: #ffffff;
+		opacity: 0.85;
+		line-height: 1.4;
+	}
+
 	.tr-calc__hours {
 		margin-top: 14px;
 		text-align: center;
 		font-size: 13px;
 		color: #f5f5f5;
+	}
+
+	/* ── Call button (large, pulsing, brand rust) ───────────────────── */
+	.tr-call {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 4px;
+		background: #a84c28;
+		color: #fff;
+		text-decoration: none;
+		border-radius: 14px;
+		padding: 20px;
+		margin: 0 0 18px;
+		box-shadow: 0 4px 14px rgba(168, 76, 40, 0.35);
+		animation: tr-call-pulse 1.8s ease-in-out infinite;
+		transition: transform 0.15s ease;
+	}
+	.tr-call:active {
+		transform: scale(0.97);
+	}
+	.tr-call__top {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		font-size: 20px;
+		font-weight: 700;
+	}
+	.tr-call__icon {
+		font-size: 24px;
+	}
+	.tr-call__num {
+		font-size: 24px;
+		font-weight: 700;
+		letter-spacing: 0.02em;
+	}
+	@keyframes tr-call-pulse {
+		0% {
+			transform: scale(1);
+			box-shadow: 0 4px 14px rgba(168, 76, 40, 0.35);
+		}
+		50% {
+			transform: scale(1.03);
+			box-shadow: 0 6px 22px rgba(168, 76, 40, 0.55);
+		}
+		100% {
+			transform: scale(1);
+			box-shadow: 0 4px 14px rgba(168, 76, 40, 0.35);
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.tr-call {
+			animation: none;
+		}
 	}
 
 	/* ── Welcome banner (animated multilingual greeting) ─────────────── */
@@ -1162,19 +1361,24 @@
 		padding: 0 8px;
 		/* Depth so the white serif holds up against the rust panel in sunlight. */
 		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
-	}
-	/* Font scales to word length so long phrases stay inside the fixed box. */
-	.tr-welcome__word.is-lg {
-		font-size: clamp(32px, 9vw, 44px);
-	}
-	.tr-welcome__word.is-md {
-		font-size: clamp(26px, 7vw, 36px);
-	}
-	.tr-welcome__word.is-sm {
-		font-size: clamp(22px, 5.6vw, 28px);
+		/* One consistent size for every word — sized so the longest phrase
+		   ("Reisen Sie mit uns") fits the box; no per-word jump on swap. */
+		font-size: clamp(24px, 6vw, 34px);
 	}
 	.tr-welcome__word--hidden {
 		opacity: 0;
+	}
+
+	/* ── Quick-book section title (above the mode picker) ────────────── */
+	.tr-quickbook {
+		font-family: var(--font-display, 'Cormorant Garamond', Georgia, serif);
+		font-weight: 700;
+		font-size: clamp(22px, 4.4vw, 30px);
+		line-height: 1.2;
+		text-align: center;
+		color: #2a211c;
+		margin: 0 0 16px;
+		text-wrap: balance;
 	}
 
 	/* ── Mode picker (now / later) ───────────────────────────────────── */
@@ -1184,9 +1388,8 @@
 		gap: 10px;
 		margin-bottom: 18px;
 	}
-	/* Gate prompt — shown only while no mode is chosen, so the dimmed calculator
-	   reads as "pick one first" rather than broken. On the light page bg, dark
-	   rust is the high-contrast choice (not white). */
+	/* Booking prompt above the calculator. On the light page bg, dark rust is
+	   the high-contrast choice (not white). */
 	.tr-mode__hint {
 		margin: -8px 0 18px;
 		text-align: center;
