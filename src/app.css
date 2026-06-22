@@ -1706,7 +1706,8 @@ button {
 	border-radius: 2px;
 	color: #ffffff;
 	font-family: var(--font-body);
-	font-size: 15px;
+	/* 16px (not 15) so iOS Safari does not auto-zoom the page on input focus. */
+	font-size: 16px;
 	font-weight: 500;
 	transition:
 		border-color 0.18s ease,

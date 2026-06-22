@@ -662,6 +662,8 @@ export default {
 		mapNavLabel: 'Navigation',
 		gpsAsking: 'Locating you…',
 		gpsDenied: 'Location access denied — sending inquiry via WhatsApp.',
+		gpsMyLocation: 'My location',
+		pickFromList: 'Pick an address from the list that appears below the field.',
 		errorRoute: 'Select pickup and drop-off from the list so we can calculate the price.',
 		errorName: 'Please enter your name.',
 		errorDateTime: 'Please choose a date and time.',

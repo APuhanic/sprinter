@@ -663,6 +663,8 @@ export default {
 		mapNavLabel: 'Navigacija',
 		gpsAsking: 'Tražim vašu lokaciju…',
 		gpsDenied: 'Pristup lokaciji odbijen — šaljemo upit na WhatsApp.',
+		gpsMyLocation: 'Moja lokacija',
+		pickFromList: 'Odaberite adresu iz popisa koji se pojavi ispod polja.',
 		errorRoute: 'Odaberite polazište i odredište iz popisa da izračunamo cijenu.',
 		errorName: 'Molimo unesite svoje ime.',
 		errorDateTime: 'Molimo odaberite datum i vrijeme.',

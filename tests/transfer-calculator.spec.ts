@@ -192,7 +192,9 @@ test.describe('calcFare (pricing)', () => {
 // ── Gating + mode behaviour ──────────────────────────────────────────────────
 test.describe('booking-mode gate', () => {
 	test('calculator is locked until a mode is chosen', async ({ page }) => {
-		await expect(page.getByText('Odaberite opciju za izračun')).toBeVisible();
+		// Locked state is conveyed by aria-disabled + the --locked class. (The old
+		// "Odaberite opciju za izračun" prompt copy was retired in the top-section rework.)
+		await expect(page.locator('.tr-calc')).toHaveClass(/tr-calc--locked/);
 		await expect(page.locator('.tr-calc')).toHaveAttribute('aria-disabled', 'true');
 	});
 
@@ -416,6 +418,78 @@ test.describe('edge cases', () => {
 			await page.locator('.tr-calc__send').click(); // no route yet
 			await expect(page.locator('.tr-calc__error')).toHaveText(msg);
 		}
+	});
+});
+
+// ── Send-location GPS (regression for the prod Geocoding-disabled reality) ────
+test.describe('send-location GPS', () => {
+	test('falls back to raw GPS coords (no Geocoding) so a price still computes', async ({
+		page
+	}) => {
+		// Deterministically supply a GPS fix AND mirror production's disabled Geocoding
+		// API (reverse geocode denied) so the coords-fallback path is exercised.
+		await page.evaluate(() => {
+			Object.defineProperty(navigator, 'geolocation', {
+				configurable: true,
+				value: {
+					getCurrentPosition: (success: (p: unknown) => void) =>
+						success({ coords: { latitude: 44.8666, longitude: 13.8496 } })
+				}
+			});
+			(window as any).google.maps.Geocoder = class {
+				geocode(_req: unknown, cb: (r: unknown, s: string) => void) {
+					cb(null, 'REQUEST_DENIED');
+				}
+			};
+		});
+		await chooseMode(page, 'now');
+		await setRouteKm(page, 12);
+		await page.evaluate(() =>
+			(window as any).__pickPlace(
+				document.querySelector('input[placeholder*="Rovinj"]'),
+				'Pula, Hrvatska'
+			)
+		);
+		await page.locator('.tr-calc__send-loc').click();
+		// Friendly label in the field; real price computed from the coordinates.
+		await expect(fromInput(page)).toHaveValue('Moja lokacija');
+		await expect(priceEl(page)).toHaveText(`${calcFare(12, 'e')} €`);
+		// The dispatch message carries the exact coordinates (precise for the driver).
+		await nameInput(page).fill('Ivan');
+		expect(await reserveText(page)).toContain('44.86660, 13.84960');
+	});
+});
+
+// ── Autocomplete feedback (typed without picking a suggestion) ────────────────
+test.describe('autocomplete pick hint', () => {
+	// Fire place_changed with a {name}-only place (Google's behaviour on Enter/blur
+	// without selecting a row) — the common mobile dead end.
+	async function typeWithoutPicking(page: Page) {
+		await page.evaluate(() => {
+			const f = document.querySelector('input[placeholder*="Aerodrom"]') as HTMLInputElement & {
+				__ac?: { _place: unknown; _cb?: () => void };
+			};
+			f.value = 'Neka ulica 5';
+			f.__ac!._place = { name: 'Neka ulica 5' }; // no geometry → unusable
+			f.__ac!._cb?.();
+		});
+	}
+
+	test('place_changed with no geometry shows the pick-from-list hint, no price', async ({
+		page
+	}) => {
+		await chooseMode(page, 'now');
+		await typeWithoutPicking(page);
+		await expect(page.locator('.tr-calc__pick-hint')).toBeVisible();
+		await expect(priceEl(page)).toHaveCount(0);
+	});
+
+	test('picking a valid suggestion clears the hint', async ({ page }) => {
+		await chooseMode(page, 'now');
+		await typeWithoutPicking(page);
+		await expect(page.locator('.tr-calc__pick-hint')).toBeVisible();
+		await pickRoute(page, 20);
+		await expect(page.locator('.tr-calc__pick-hint')).toHaveCount(0);
 	});
 });
 
