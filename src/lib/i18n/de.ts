@@ -670,6 +670,8 @@ export default {
 		mapNavLabel: 'Navigation',
 		gpsAsking: 'Standort wird ermittelt…',
 		gpsDenied: 'Standortzugriff verweigert — Anfrage wird per WhatsApp gesendet.',
+		gpsMyLocation: 'Mein Standort',
+		pickFromList: 'Wählen Sie eine Adresse aus der angezeigten Liste.',
 		errorRoute:
 			'Bitte wählen Sie Abhol- und Zielort aus der Liste, damit wir den Preis berechnen können.',
 		errorName: 'Bitte geben Sie Ihren Namen ein.',

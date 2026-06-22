@@ -61,6 +61,8 @@
 		mapNavLabel: string;
 		gpsAsking: string;
 		gpsDenied: string;
+		gpsMyLocation: string;
+		pickFromList: string;
 		phone: string;
 		// WhatsApp message labels
 		mNow: string;
@@ -132,6 +134,9 @@
 	let note = $state('');
 	let errorBook = $state(false);
 	let bookErrorMsg = $state('');
+	// Shown when an address field has text but no chosen suggestion (typed without
+	// tapping a dropdown row) — the most common mobile dead-end.
+	let showPickHint = $state(false);
 
 	let vehicleLabel = $derived(
 		vehicle === 'e'
@@ -296,18 +301,34 @@
 			if (fromInput) {
 				const ac = new google.maps.places.Autocomplete(fromInput, opts);
 				const listener = ac.addListener('place_changed', () => {
-					fromPlace = ac.getPlace();
 					fromText = fromInput?.value ?? '';
-					maybeRunRoute();
+					const place = ac.getPlace();
+					if (place?.geometry?.location) {
+						fromPlace = place;
+						showPickHint = false;
+						maybeRunRoute();
+					} else {
+						// Enter/blur on a query with no matched suggestion → unusable place.
+						// Give immediate feedback instead of a silent no-op.
+						fromPlace = null;
+						showPickHint = true;
+					}
 				});
 				removeListeners.push(() => google.maps.event.removeListener(listener));
 			}
 			if (toInput) {
 				const ac = new google.maps.places.Autocomplete(toInput, opts);
 				const listener = ac.addListener('place_changed', () => {
-					toPlace = ac.getPlace();
 					toText = toInput?.value ?? '';
-					maybeRunRoute();
+					const place = ac.getPlace();
+					if (place?.geometry?.location) {
+						toPlace = place;
+						showPickHint = false;
+						maybeRunRoute();
+					} else {
+						toPlace = null;
+						showPickHint = true;
+					}
 				});
 				removeListeners.push(() => google.maps.event.removeListener(listener));
 			}
@@ -362,6 +383,17 @@
 				if (routeStatus !== 'idle') routeStatus = 'idle';
 			}
 		}
+	}
+
+	// Surface the "pick from the list" hint when a field has text but no chosen
+	// place. Delayed so a real selection's place_changed (which fires just after
+	// blur) clears the hint first — avoids a flicker when the user does tap a row.
+	function scheduleHintCheck() {
+		setTimeout(() => {
+			const fromBad = (fromText ?? '').trim() !== '' && !fromPlace?.geometry?.location;
+			const toBad = (toText ?? '').trim() !== '' && !toPlace?.geometry?.location;
+			showPickHint = fromBad || toBad;
+		}, 250);
 	}
 
 	// Prefill the pickup from a partner deep-link (e.g. /monumenti). Coords come
@@ -559,24 +591,34 @@
 		gpsBusy = true;
 		navigator.geolocation.getCurrentPosition(
 			async (pos) => {
+				const { latitude: lat, longitude: lng } = pos.coords;
 				try {
-					const addr = await reverseGeocode(pos.coords.latitude, pos.coords.longitude);
-					// Populate the pickup field directly so the user sees the price.
+					// Preferred: a human-readable street address. Only works if the key has
+					// the Geocoding API enabled (it currently does not, so this throws).
+					const addr = await reverseGeocode(lat, lng);
 					fromText = addr;
 					fromPlace = {
 						formatted_address: addr,
 						name: addr,
-						geometry: {
-							location: new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude)
-						}
+						geometry: { location: new google.maps.LatLng(lat, lng) }
 					} as google.maps.places.PlaceResult;
-					maybeRunRoute();
 				} catch (err) {
-					console.warn('[Sprinter] reverse geocode failed:', err);
-					sendLocationFallback();
+					// Geocoding unavailable → use the raw GPS coordinates directly so a price
+					// still computes (instead of dumping the user to a manual-WhatsApp message
+					// and discarding the location they just shared). The field shows a friendly
+					// label; the dispatch message + nav links carry the exact coordinates.
+					console.warn('[Sprinter] reverse geocode unavailable, using raw coordinates:', err);
+					fromText = s.gpsMyLocation;
+					fromPlace = {
+						name: s.gpsMyLocation,
+						formatted_address: `${lat.toFixed(5)}, ${lng.toFixed(5)}`,
+						geometry: { location: new google.maps.LatLng(lat, lng) }
+					} as google.maps.places.PlaceResult;
 				} finally {
 					gpsBusy = false;
 				}
+				showPickHint = false;
+				maybeRunRoute();
 			},
 			(err) => {
 				console.warn('[Sprinter] geolocation denied:', err);
@@ -658,6 +700,7 @@
 			bind:this={fromInput}
 			bind:value={fromText}
 			oninput={() => invalidateOnType('from')}
+			onblur={scheduleHintCheck}
 			class="tr-calc__input tr-calc__input--addr"
 			type="text"
 			autocomplete="off"
@@ -677,12 +720,17 @@
 			bind:this={toInput}
 			bind:value={toText}
 			oninput={() => invalidateOnType('to')}
+			onblur={scheduleHintCheck}
 			class="tr-calc__input tr-calc__input--addr"
 			type="text"
 			autocomplete="off"
 			placeholder={s.toPh}
 		/>
 	</label>
+
+	{#if showPickHint}
+		<p class="tr-calc__pick-hint" role="alert">{s.pickFromList}</p>
+	{/if}
 
 	<!-- Vehicle -->
 	<div class="tr-calc__veh">
@@ -891,10 +939,7 @@
 </div>
 
 <div class="tr-welcome" aria-hidden="true">
-	<span
-		class="tr-welcome__word"
-		class:tr-welcome__word--hidden={!welcomeFade}
-	>
+	<span class="tr-welcome__word" class:tr-welcome__word--hidden={!welcomeFade}>
 		{welcomeWord}
 	</span>
 </div>
@@ -1497,5 +1542,25 @@
 		pointer-events: none;
 		user-select: none;
 		transition: opacity 0.2s ease;
+	}
+
+	/* "Pick from the list" nudge — shown when an address field has text but no
+	   chosen suggestion (typed without tapping the dropdown). Mirrors maps-warn. */
+	.tr-calc__pick-hint {
+		margin: -6px 0 14px;
+		padding: 10px 14px;
+		background: color-mix(in srgb, var(--accent) 10%, var(--bg));
+		border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+		border-radius: 2px;
+		font-size: 13px;
+		font-weight: 600;
+		color: #ffffff;
+		line-height: 1.45;
+	}
+
+	/* Google Places dropdown must sit above the fixed cookie-consent bar (both
+	   default to z-index:1000), or low suggestions get hidden behind it on mobile. */
+	:global(.pac-container) {
+		z-index: 10000;
 	}
 </style>
