@@ -6,10 +6,12 @@
 	import { partnerPickups } from '$lib/redirects';
 	import { transferService } from '$lib/jsonld';
 	import TransferCalculator from '$lib/components/TransferCalculator.svelte';
+	import Reviews from '$lib/components/Reviews.svelte';
 
 	let { data }: { data: PageData } = $props();
 	let lang = $derived(data.lang);
 	let t = $derived(data.t);
+	let reviews = $derived(data.reviews);
 
 	// Partner deep-links (e.g. /monumenti → ?partner=monumenti) prefill the
 	// calculator's pickup so a hotel guest only has to choose a destination.
@@ -29,6 +31,37 @@
 
 	const serviceJsonLd = JSON.stringify(transferService());
 
+	// Reviews + AggregateRating attach to LocalBusiness via @id (same node as the
+	// one emitted in [lang]/+layout.svelte), NOT to Service — Google rejects
+	// review markup on Service entities. Mirrors the cleaning page.
+	let businessReviewsJsonLd = $derived.by(() => {
+		if (!reviews || reviews.reviews.length === 0) return null;
+		return JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'LocalBusiness',
+			'@id': 'https://sprinter.hr/#business',
+			aggregateRating: {
+				'@type': 'AggregateRating',
+				ratingValue: reviews.rating.toFixed(1),
+				reviewCount: reviews.userRatingCount,
+				bestRating: '5',
+				worstRating: '1'
+			},
+			review: reviews.reviews.map((r) => ({
+				'@type': 'Review',
+				reviewRating: {
+					'@type': 'Rating',
+					ratingValue: r.rating,
+					bestRating: '5',
+					worstRating: '1'
+				},
+				author: { '@type': 'Person', name: r.author.name },
+				datePublished: r.publishTime,
+				reviewBody: r.originalText ?? r.text
+			}))
+		});
+	});
+
 	const eClassImg = '/images/transfers/e-class-1.jpg';
 	const vClassImg = '/images/transfers/v-class-1.jpg';
 
@@ -46,6 +79,9 @@
 	<!-- og:image is set via +page.ts (page.data.ogImage) so the layout renders a
 	     single, correct og:image for this page. -->
 	{@html `<script type="application/ld+json">${serviceJsonLd}</` + `script>`}
+	{#if businessReviewsJsonLd}
+		{@html `<script type="application/ld+json">${businessReviewsJsonLd}</` + `script>`}
+	{/if}
 </svelte:head>
 
 <main class="page-fade">
@@ -140,6 +176,12 @@
 			</div>
 		</div>
 	</section>
+
+	<!-- Google reviews — auto-scrolling carousel. Silently absent when the API
+	     returns nothing and no static fallback is available. -->
+	{#if reviews && reviews.reviews.length > 0}
+		<Reviews data={reviews} {t} carousel />
+	{/if}
 
 	<!-- Contact island -->
 	<section class="section section--tight">
