@@ -1393,7 +1393,10 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		margin-bottom: 18px;
+		/* Match the calculator card (max-width 620, centered) and leave a gap
+		   above so the banner doesn't stick to the form panel. */
+		max-width: 620px;
+		margin: 18px auto 0;
 	}
 	.tr-welcome__word {
 		font-family: var(--font-display, 'Cormorant Garamond', Georgia, serif);
