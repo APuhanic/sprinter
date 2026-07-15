@@ -1413,6 +1413,17 @@
 	.tr-welcome__word--hidden {
 		opacity: 0;
 	}
+	/* On desktop the fluid padding/min-height leaves a tall, empty rust slab
+	   around a small word. Slim it into a proportionate greeting strip. */
+	@media (min-width: 768px) {
+		.tr-welcome {
+			padding: 14px 22px;
+			min-height: 0;
+		}
+		.tr-welcome__word {
+			font-size: 26px;
+		}
+	}
 
 	/* ── Quick-book section title (above the mode picker) ────────────── */
 	.tr-quickbook {
