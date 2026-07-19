@@ -646,6 +646,7 @@ export default {
 		fClassRange: '1 – 4 Personen',
 		fBadge: 'BESTER PREIS',
 		fPet: 'Haustierfreundlich — Haustiere willkommen',
+		fUnavailable: 'Zurzeit ausgebucht',
 		bookingTitle: 'Ihre Buchungsdaten',
 		travelTimeLabel: 'Fahrtzeit',
 		fullName: 'Name',

@@ -29,6 +29,7 @@
 		fClassRange: string;
 		fBadge: string;
 		fPet: string;
+		fUnavailable: string;
 		bookingTitle: string;
 		travelTimeLabel: string;
 		fullName: string;
@@ -125,6 +126,9 @@
 	let mapInstance: google.maps.Map | null = null;
 
 	// ── Vehicle + form ────────────────────────────────────────────────────
+	// Ford wagon is temporarily out of service (booked/unavailable). Flip back to
+	// true when it returns; the card stays on the page, just greyed out + unpickable.
+	const fordAvailable = false;
 	let vehicle = $state<Vehicle>('e');
 	let name = $state('');
 	let phone = $state('');
@@ -759,10 +763,17 @@
 	<button
 		type="button"
 		class="tr-calc__ford"
-		class:tr-calc__ford--on={vehicle === 'f'}
-		onclick={() => (vehicle = 'f')}
+		class:tr-calc__ford--on={fordAvailable && vehicle === 'f'}
+		class:tr-calc__ford--off={!fordAvailable}
+		disabled={!fordAvailable}
+		aria-disabled={!fordAvailable}
+		onclick={() => fordAvailable && (vehicle = 'f')}
 	>
-		<span class="tr-calc__ford-badge">{s.fBadge}</span>
+		{#if fordAvailable}
+			<span class="tr-calc__ford-badge">{s.fBadge}</span>
+		{:else}
+			<span class="tr-calc__ford-badge tr-calc__ford-badge--off">{s.fUnavailable}</span>
+		{/if}
 		<span class="tr-calc__ford-top">
 			<span class="tr-calc__ford-name">{s.fClass}</span>
 			<span class="tr-calc__ford-pax">{s.fClassRange}</span>
@@ -1202,6 +1213,24 @@
 		letter-spacing: 0.08em;
 		padding: 4px 10px;
 		border-bottom-left-radius: 6px;
+	}
+	/* Unavailable Ford: neutral grey "booked" badge instead of the green value one. */
+	.tr-calc__ford-badge--off {
+		background: #6b7280;
+		color: #f2f1ec;
+	}
+	/* Out of service: greyed out, not clickable, no hover/selected accent. Kept on
+	   the page so it reads as "temporarily booked", not removed. */
+	.tr-calc__ford--off {
+		opacity: 0.5;
+		cursor: not-allowed;
+		filter: grayscale(1);
+	}
+	.tr-calc__ford--off:hover {
+		border-color: var(--line);
+	}
+	.tr-calc__ford--off .tr-calc__ford-pet {
+		color: var(--muted);
 	}
 	.tr-calc__ford-top {
 		display: flex;
