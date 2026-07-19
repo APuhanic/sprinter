@@ -638,6 +638,7 @@ export default {
 		fClassRange: '1 – 4 passengers',
 		fBadge: 'BEST VALUE',
 		fPet: 'Pet friendly — pets welcome',
+		fUnavailable: 'Currently booked',
 		bookingTitle: 'Your booking details',
 		travelTimeLabel: 'Travel time',
 		fullName: 'Name',

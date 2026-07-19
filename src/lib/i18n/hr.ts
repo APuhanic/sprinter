@@ -639,6 +639,7 @@ export default {
 		fClassRange: '1 – 4 osobe',
 		fBadge: 'NAJBOLJA VRIJEDNOST',
 		fPet: 'Pet friendly — ljubimci dobrodošli',
+		fUnavailable: 'Trenutno zauzeto',
 		bookingTitle: 'Vaši podaci za rezervaciju',
 		travelTimeLabel: 'Vrijeme putovanja',
 		fullName: 'Ime',
