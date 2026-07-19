@@ -297,9 +297,10 @@
 
 			const opts: google.maps.places.AutocompleteOptions = {
 				fields: ['geometry', 'name', 'formatted_address'],
-				// Keep suggestions to Croatia only so users don't
-				// see foreign addresses in the dropdown.
-				componentRestrictions: { country: 'hr' }
+				// Croatia plus the two neighbours we run cross-border transfers to —
+				// Italy and Slovenia (Istria borders both). Other countries stay out
+				// of the dropdown.
+				componentRestrictions: { country: ['hr', 'it', 'si'] }
 			};
 
 			if (fromInput) {
