@@ -144,9 +144,11 @@
 	let paxCount = $state(1);
 	// Baggage is informational only — it never changes the fare, it just tells the
 	// driver what boot space to expect. Required so no booking arrives without it.
-	type Baggage = 'none' | 'small' | 'big';
-	let baggage = $state<Baggage | null>(null);
-	let bagCount = $state(1);
+	// Guests often mix sizes, so small and big carry their own counts and can both
+	// be active; "no baggage" is the one exclusive option.
+	let noBaggage = $state(false);
+	let smallBags = $state(0);
+	let bigBags = $state(0);
 	let date = $state('');
 	let time = $state('');
 	let note = $state('');
@@ -166,19 +168,34 @@
 	// Concrete vehicle + plate for the WhatsApp dispatcher message.
 	let vehicleDesc = $derived(vehicle === 'e' ? s.mVehE : vehicle === 'v' ? s.mVehV : s.mVehF);
 
-	// Clears the error too, so "select baggage" doesn't linger after they just did.
-	function selectBaggage(next: Baggage) {
-		baggage = next;
+	// Tapping a card toggles it: on → one of that size, off → none. Picking a
+	// suitcase clears "no baggage" and vice versa. Clearing the error here too, so
+	// "select baggage" doesn't linger after they just did.
+	function toggleNoBaggage() {
+		noBaggage = !noBaggage;
+		if (noBaggage) {
+			smallBags = 0;
+			bigBags = 0;
+		}
 		errorBook = false;
 	}
 
-	let baggageDesc = $derived(
-		baggage === 'none'
-			? s.bagNone
-			: baggage === null
-				? ''
-				: `${bagCount}× ${baggage === 'small' ? s.bagSmall : s.bagBig}`
-	);
+	function toggleBag(size: 'small' | 'big') {
+		if (size === 'small') smallBags = smallBags > 0 ? 0 : 1;
+		else bigBags = bigBags > 0 ? 0 : 1;
+		if (smallBags > 0 || bigBags > 0) noBaggage = false;
+		errorBook = false;
+	}
+
+	let baggageChosen = $derived(noBaggage || smallBags > 0 || bigBags > 0);
+
+	let baggageDesc = $derived.by(() => {
+		if (noBaggage) return s.bagNone;
+		const parts: string[] = [];
+		if (smallBags > 0) parts.push(`${smallBags}× ${s.bagSmall}`);
+		if (bigBags > 0) parts.push(`${bigBags}× ${s.bagBig}`);
+		return parts.join(', ');
+	});
 
 	let fare = $derived(routeStatus === 'ok' ? calcFare(lastKm, vehicle) : null);
 	let isEstimate = $derived(routeStatus === 'ok' && lastKm > 100);
@@ -691,7 +708,7 @@
 		}
 		// Last, because the baggage cards sit below date/time in the form — complain
 		// about the topmost empty field first.
-		if (baggage === null) {
+		if (!baggageChosen) {
 			bookErrorMsg = s.errorBaggage;
 			errorBook = true;
 			ev.preventDefault();
@@ -914,9 +931,9 @@
 				<button
 					type="button"
 					class="tr-calc__bag"
-					class:tr-calc__bag--on={baggage === 'none'}
-					aria-pressed={baggage === 'none'}
-					onclick={() => selectBaggage('none')}
+					class:tr-calc__bag--on={noBaggage}
+					aria-pressed={noBaggage}
+					onclick={toggleNoBaggage}
 				>
 					<svg
 						class="tr-calc__bag-icon"
@@ -939,9 +956,9 @@
 				<button
 					type="button"
 					class="tr-calc__bag"
-					class:tr-calc__bag--on={baggage === 'small'}
-					aria-pressed={baggage === 'small'}
-					onclick={() => selectBaggage('small')}
+					class:tr-calc__bag--on={smallBags > 0}
+					aria-pressed={smallBags > 0}
+					onclick={() => toggleBag('small')}
 				>
 					<svg
 						class="tr-calc__bag-icon"
@@ -965,9 +982,9 @@
 				<button
 					type="button"
 					class="tr-calc__bag"
-					class:tr-calc__bag--on={baggage === 'big'}
-					aria-pressed={baggage === 'big'}
-					onclick={() => selectBaggage('big')}
+					class:tr-calc__bag--on={bigBags > 0}
+					aria-pressed={bigBags > 0}
+					onclick={() => toggleBag('big')}
 				>
 					<svg
 						class="tr-calc__bag-icon"
@@ -991,15 +1008,34 @@
 			</div>
 		</div>
 
-		{#if baggage === 'small' || baggage === 'big'}
-			<label class="tr-calc__field">
+		<!-- One count per chosen size — guests routinely mix a cabin case with a
+		     checked one, so both can be active at once. -->
+		{#if smallBags > 0 || bigBags > 0}
+			<div class="tr-calc__field">
 				<span class="tr-calc__label">{s.bagCount}</span>
-				<select class="tr-calc__input" bind:value={bagCount}>
-					{#each [1, 2, 3, 4, 5, 6, 7] as n (n)}
-						<option value={n}>{n}</option>
-					{/each}
-				</select>
-			</label>
+				<div class="tr-calc__bag-counts">
+					{#if smallBags > 0}
+						<label class="tr-calc__bag-count">
+							<span class="tr-calc__bag-count-label">{s.bagSmall}</span>
+							<select class="tr-calc__input" bind:value={smallBags}>
+								{#each [1, 2, 3, 4, 5, 6, 7] as n (n)}
+									<option value={n}>{n}</option>
+								{/each}
+							</select>
+						</label>
+					{/if}
+					{#if bigBags > 0}
+						<label class="tr-calc__bag-count">
+							<span class="tr-calc__bag-count-label">{s.bagBig}</span>
+							<select class="tr-calc__input" bind:value={bigBags}>
+								{#each [1, 2, 3, 4, 5, 6, 7] as n (n)}
+									<option value={n}>{n}</option>
+								{/each}
+							</select>
+						</label>
+					{/if}
+				</div>
+			</div>
 		{/if}
 
 		<label class="tr-calc__field">
@@ -1440,6 +1476,22 @@
 		font-weight: 700;
 		color: #ffffff;
 		line-height: 1.25;
+	}
+	.tr-calc__bag-counts {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+		gap: 10px;
+	}
+	.tr-calc__bag-count {
+		display: block;
+	}
+	.tr-calc__bag-count-label {
+		display: block;
+		margin-bottom: 4px;
+		font-size: 12px;
+		font-weight: 600;
+		color: #ffffff;
+		opacity: 0.85;
 	}
 	.tr-calc__bag-dim {
 		font-size: 10px;
