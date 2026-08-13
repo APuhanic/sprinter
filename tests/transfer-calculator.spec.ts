@@ -381,14 +381,52 @@ test.describe('baggage', () => {
 		}
 	});
 
-	test('the suitcase count appears only once a suitcase is chosen', async ({ page }) => {
+	test('a count appears for each chosen size, and only for chosen sizes', async ({ page }) => {
 		await chooseMode(page, 'now');
-		const countSelect = page.getByRole('combobox', { name: 'Broj kofera' });
-		await expect(countSelect).toHaveCount(0);
+		const smallCount = page.getByRole('combobox', { name: 'Mali kofer' });
+		const bigCount = page.getByRole('combobox', { name: 'Veliki kofer' });
+		await expect(smallCount).toHaveCount(0);
+		await expect(bigCount).toHaveCount(0);
 		await bagCard(page, 'none').click();
-		await expect(countSelect).toHaveCount(0);
+		await expect(smallCount).toHaveCount(0);
 		await bagCard(page, 'big').click();
-		await expect(countSelect).toBeVisible();
+		await expect(bigCount).toBeVisible();
+		await expect(smallCount).toHaveCount(0);
+		await bagCard(page, 'small').click();
+		await expect(smallCount).toBeVisible();
+		await expect(bigCount).toBeVisible();
+	});
+
+	test('sizes can be mixed, each with its own count', async ({ page }) => {
+		await chooseMode(page, 'now');
+		await pickRoute(page, 20);
+		await nameInput(page).fill('Ivan');
+		await bagCard(page, 'small').click();
+		await bagCard(page, 'big').click();
+		await page.getByRole('combobox', { name: 'Mali kofer' }).selectOption('2');
+		await page.getByRole('combobox', { name: 'Veliki kofer' }).selectOption('3');
+		expect(await reserveText(page)).toContain('Prtljaga: 2× Mali kofer, 3× Veliki kofer');
+	});
+
+	test('"no baggage" and a suitcase are mutually exclusive', async ({ page }) => {
+		await chooseMode(page, 'now');
+		await bagCard(page, 'big').click();
+		await bagCard(page, 'none').click();
+		await expect(bagCard(page, 'big')).toHaveAttribute('aria-pressed', 'false');
+		await expect(page.getByRole('combobox', { name: 'Veliki kofer' })).toHaveCount(0);
+		await bagCard(page, 'small').click();
+		await expect(bagCard(page, 'none')).toHaveAttribute('aria-pressed', 'false');
+	});
+
+	test('tapping a chosen size again clears it', async ({ page }) => {
+		await chooseMode(page, 'now');
+		await pickRoute(page, 20);
+		await nameInput(page).fill('Ivan');
+		await bagCard(page, 'small').click();
+		await bagCard(page, 'small').click();
+		await expect(page.getByRole('combobox', { name: 'Mali kofer' })).toHaveCount(0);
+		await reserveLink(page).click();
+		await expect(errorEl(page)).toHaveText('Molimo odaberite prtljagu.');
 	});
 
 	test('"no baggage" reaches the driver as a plain line, with no count', async ({ page }) => {
@@ -406,7 +444,7 @@ test.describe('baggage', () => {
 		await pickRoute(page, 20);
 		await nameInput(page).fill('Ivan');
 		await bagCard(page, 'big').click();
-		await page.getByRole('combobox', { name: 'Broj kofera' }).selectOption('3');
+		await page.getByRole('combobox', { name: 'Veliki kofer' }).selectOption('3');
 		expect(await reserveText(page)).toContain('Prtljaga: 3× Veliki kofer');
 	});
 
