@@ -35,6 +35,13 @@
 		fullName: string;
 		fullNamePh: string;
 		paxCount: string;
+		bagLabel: string;
+		bagNone: string;
+		bagSmall: string;
+		bagBig: string;
+		bagSmallDim: string;
+		bagBigDim: string;
+		bagCount: string;
 		date: string;
 		datePlaceholder: string;
 		time: string;
@@ -45,6 +52,7 @@
 		errorRoute: string;
 		errorName: string;
 		errorDateTime: string;
+		errorBaggage: string;
 		sendBooking: string;
 		formNote: string;
 		whatsapp: string;
@@ -82,6 +90,7 @@
 		mVehF: string;
 		mPrice: string;
 		mPax: string;
+		mBag: string;
 		mName: string;
 		mNote: string;
 		locMsg: string;
@@ -133,6 +142,11 @@
 	let name = $state('');
 	let phone = $state('');
 	let paxCount = $state(1);
+	// Baggage is informational only — it never changes the fare, it just tells the
+	// driver what boot space to expect. Required so no booking arrives without it.
+	type Baggage = 'none' | 'small' | 'big';
+	let baggage = $state<Baggage | null>(null);
+	let bagCount = $state(1);
 	let date = $state('');
 	let time = $state('');
 	let note = $state('');
@@ -151,6 +165,20 @@
 	);
 	// Concrete vehicle + plate for the WhatsApp dispatcher message.
 	let vehicleDesc = $derived(vehicle === 'e' ? s.mVehE : vehicle === 'v' ? s.mVehV : s.mVehF);
+
+	// Clears the error too, so "select baggage" doesn't linger after they just did.
+	function selectBaggage(next: Baggage) {
+		baggage = next;
+		errorBook = false;
+	}
+
+	let baggageDesc = $derived(
+		baggage === 'none'
+			? s.bagNone
+			: baggage === null
+				? ''
+				: `${bagCount}× ${baggage === 'small' ? s.bagSmall : s.bagBig}`
+	);
 
 	let fare = $derived(routeStatus === 'ok' ? calcFare(lastKm, vehicle) : null);
 	let isEstimate = $derived(routeStatus === 'ok' && lastKm > 100);
@@ -487,6 +515,7 @@
 		name: '\u{1F464}', // 👤
 		phone: '\u{1F4DE}', // 📞
 		note: '\u{270F}\u{FE0F}', // ✏️
+		bag: '\u{1F9F3}', // 🧳
 		warn: '\u{26A0}\u{FE0F}', // ⚠️
 		route: '\u{1F5FA}\u{FE0F}' // 🗺️
 	};
@@ -521,6 +550,7 @@
 		// Vehicle + details
 		L.push(`${E.veh} ${vehicleDesc}`);
 		L.push(`${E.pax} ${s.mPax}: ${paxCount}`);
+		if (baggageDesc) L.push(`${E.bag} ${s.mBag}: ${baggageDesc}`);
 		if (name.trim()) L.push(`${E.name} ${s.mName}: ${name.trim()}`);
 		if (phone.trim()) L.push(`${E.phone} ${phone.trim()}`);
 		if (note.trim()) L.push(`${E.note} ${s.mNote}: ${note.trim()}`);
@@ -648,6 +678,12 @@
 		}
 		if (!name.trim()) {
 			bookErrorMsg = s.errorName;
+			errorBook = true;
+			ev.preventDefault();
+			return;
+		}
+		if (baggage === null) {
+			bookErrorMsg = s.errorBaggage;
 			errorBook = true;
 			ev.preventDefault();
 			return;
@@ -867,6 +903,102 @@
 				<input class="tr-calc__input" type="text" bind:value={name} placeholder={s.fullNamePh} />
 			</label>
 		</div>
+
+		<!-- Baggage — required, price-neutral. Dimensions are on the cards so the
+		     guest can size their own case without asking. -->
+		<div class="tr-calc__field">
+			<span class="tr-calc__label">{s.bagLabel}</span>
+			<div class="tr-calc__bags" role="group" aria-label={s.bagLabel}>
+				<button
+					type="button"
+					class="tr-calc__bag"
+					class:tr-calc__bag--on={baggage === 'none'}
+					aria-pressed={baggage === 'none'}
+					onclick={() => selectBaggage('none')}
+				>
+					<svg
+						class="tr-calc__bag-icon"
+						width="26"
+						height="26"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.7"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<rect x="4" y="8" width="16" height="11" rx="2" />
+						<path d="M9 8V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+						<path d="M3.5 20.5 20.5 3.5" />
+					</svg>
+					<span class="tr-calc__bag-name">{s.bagNone}</span>
+				</button>
+				<button
+					type="button"
+					class="tr-calc__bag"
+					class:tr-calc__bag--on={baggage === 'small'}
+					aria-pressed={baggage === 'small'}
+					onclick={() => selectBaggage('small')}
+				>
+					<svg
+						class="tr-calc__bag-icon"
+						width="26"
+						height="26"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.7"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<rect x="5" y="9" width="14" height="10" rx="2" />
+						<path d="M9.5 9V7a1.5 1.5 0 0 1 1.5-1.5h2A1.5 1.5 0 0 1 14.5 7v2" />
+						<path d="M12 12v4" />
+					</svg>
+					<span class="tr-calc__bag-name">{s.bagSmall}</span>
+					<span class="tr-calc__bag-dim">{s.bagSmallDim}</span>
+				</button>
+				<button
+					type="button"
+					class="tr-calc__bag"
+					class:tr-calc__bag--on={baggage === 'big'}
+					aria-pressed={baggage === 'big'}
+					onclick={() => selectBaggage('big')}
+				>
+					<svg
+						class="tr-calc__bag-icon"
+						width="26"
+						height="26"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.7"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<rect x="4" y="6" width="16" height="14" rx="2" />
+						<path d="M9 6V4.5A1.5 1.5 0 0 1 10.5 3h3A1.5 1.5 0 0 1 15 4.5V6" />
+						<path d="M9 9.5v7M15 9.5v7" />
+					</svg>
+					<span class="tr-calc__bag-name">{s.bagBig}</span>
+					<span class="tr-calc__bag-dim">{s.bagBigDim}</span>
+				</button>
+			</div>
+		</div>
+
+		{#if baggage === 'small' || baggage === 'big'}
+			<label class="tr-calc__field">
+				<span class="tr-calc__label">{s.bagCount}</span>
+				<select class="tr-calc__input" bind:value={bagCount}>
+					{#each [1, 2, 3, 4, 5, 6, 7] as n (n)}
+						<option value={n}>{n}</option>
+					{/each}
+				</select>
+			</label>
+		{/if}
 
 		<label class="tr-calc__field">
 			<span class="tr-calc__label">{s.phone}</span>
@@ -1262,6 +1394,58 @@
 	.tr-calc__ford-pet span {
 		font-size: 13px;
 		font-weight: 600;
+	}
+
+	/* ── Baggage picker (same card language as the vehicle buttons) ────── */
+	.tr-calc__bags {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 8px;
+	}
+	.tr-calc__bag {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 4px;
+		padding: 12px 6px;
+		background: var(--bg);
+		border: 1px solid var(--line);
+		border-radius: 2px;
+		color: var(--fg);
+		font-family: inherit;
+		text-align: center;
+		cursor: pointer;
+		transition:
+			border-color 0.18s ease,
+			background 0.18s ease;
+	}
+	.tr-calc__bag:hover {
+		border-color: var(--accent);
+	}
+	.tr-calc__bag--on {
+		border-color: var(--accent);
+		background: color-mix(in srgb, var(--accent) 6%, var(--bg));
+	}
+	.tr-calc__bag-icon {
+		color: #ffffff;
+		opacity: 0.7;
+	}
+	.tr-calc__bag--on .tr-calc__bag-icon {
+		opacity: 1;
+	}
+	.tr-calc__bag-name {
+		font-size: 13px;
+		font-weight: 700;
+		color: #ffffff;
+		line-height: 1.25;
+	}
+	.tr-calc__bag-dim {
+		font-size: 10px;
+		font-weight: 500;
+		color: #ffffff;
+		opacity: 0.75;
+		font-family: var(--font-mono);
+		line-height: 1.3;
 	}
 
 	.tr-calc__maps-warn {
