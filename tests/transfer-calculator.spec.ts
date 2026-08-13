@@ -118,6 +118,8 @@ const nameInput = (p: Page) => p.getByRole('textbox', { name: 'Ime' });
 const priceEl = (p: Page) => p.locator('.tr-calc__result-price');
 const errorEl = (p: Page) => p.locator('.tr-calc__error');
 const reserveLink = (p: Page) => p.getByRole('link', { name: 'Rezerviraj na WhatsApp' });
+const bagCard = (p: Page, which: 'none' | 'small' | 'big') =>
+	p.locator('.tr-calc__bag').nth({ none: 0, small: 1, big: 2 }[which]);
 
 async function chooseMode(p: Page, mode: 'now' | 'later') {
 	await p.getByRole('button', { name: mode === 'now' ? 'Vožnja odmah' : 'Za kasnije' }).click();
@@ -345,6 +347,94 @@ test.describe('booking validation', () => {
 		await chooseMode(page, 'later');
 		await reserveLink(page).click();
 		await expect(errorEl(page)).toHaveText('Molimo odaberite datum i vrijeme.');
+	});
+});
+
+// ── Baggage (required, price-neutral, carried to the driver) ─────────────────
+test.describe('baggage', () => {
+	test('booking is blocked until a baggage option is chosen', async ({ page }) => {
+		await chooseMode(page, 'now');
+		await pickRoute(page, 20);
+		await nameInput(page).fill('Ivan');
+		await reserveLink(page).click();
+		await expect(errorEl(page)).toHaveText('Molimo odaberite prtljagu.');
+	});
+
+	test('choosing baggage clears the error', async ({ page }) => {
+		await chooseMode(page, 'now');
+		await pickRoute(page, 20);
+		await nameInput(page).fill('Ivan');
+		await reserveLink(page).click();
+		await expect(errorEl(page)).toBeVisible();
+		await bagCard(page, 'none').click();
+		await expect(errorEl(page)).toHaveCount(0);
+	});
+
+	test('baggage never changes the fare', async ({ page }) => {
+		await chooseMode(page, 'now');
+		await pickRoute(page, 40);
+		const before = `${calcFare(40, 'e')} €`;
+		await expect(priceEl(page)).toHaveText(before);
+		for (const which of ['none', 'small', 'big'] as const) {
+			await bagCard(page, which).click();
+			await expect(priceEl(page)).toHaveText(before);
+		}
+	});
+
+	test('the suitcase count appears only once a suitcase is chosen', async ({ page }) => {
+		await chooseMode(page, 'now');
+		const countSelect = page.getByRole('combobox', { name: 'Broj kofera' });
+		await expect(countSelect).toHaveCount(0);
+		await bagCard(page, 'none').click();
+		await expect(countSelect).toHaveCount(0);
+		await bagCard(page, 'big').click();
+		await expect(countSelect).toBeVisible();
+	});
+
+	test('"no baggage" reaches the driver as a plain line, with no count', async ({ page }) => {
+		await chooseMode(page, 'now');
+		await pickRoute(page, 20);
+		await nameInput(page).fill('Ivan');
+		await bagCard(page, 'none').click();
+		const text = await reserveText(page);
+		expect(text).toContain('Prtljaga: Bez prtljage');
+		expect(text).not.toContain('×');
+	});
+
+	test('a suitcase choice reaches the driver with its count', async ({ page }) => {
+		await chooseMode(page, 'now');
+		await pickRoute(page, 20);
+		await nameInput(page).fill('Ivan');
+		await bagCard(page, 'big').click();
+		await page.getByRole('combobox', { name: 'Broj kofera' }).selectOption('3');
+		expect(await reserveText(page)).toContain('Prtljaga: 3× Veliki kofer');
+	});
+
+	test('cards show the standard suitcase dimensions', async ({ page }) => {
+		await chooseMode(page, 'now');
+		await expect(bagCard(page, 'small')).toContainText('55 × 40 × 20 cm');
+		await expect(bagCard(page, 'big')).toContainText('75 × 50 × 30 cm');
+	});
+
+	test('the baggage error is localized in EN and DE', async ({ page }) => {
+		const cases = [
+			{ lang: 'en', msg: 'Please select your baggage.' },
+			{ lang: 'de', msg: 'Bitte wählen Sie Ihr Gepäck.' }
+		];
+		for (const { lang, msg } of cases) {
+			await page.goto(`/${lang}/luksuzni-transferi`);
+			await page.locator('.tr-mode__btn').first().click(); // "now" in any language
+			// Address placeholders are translated, so pick the fields by position.
+			await setRouteKm(page, 20);
+			await page.evaluate(() => {
+				const [f, t] = document.querySelectorAll('.tr-calc__input--addr');
+				(window as any).__pickPlace(f, 'Pula, Hrvatska');
+				(window as any).__pickPlace(t, 'Medulin, Hrvatska');
+			});
+			await page.locator('.tr-calc__booking input[type="text"]').first().fill('Ivan');
+			await page.locator('.tr-calc__send').click();
+			await expect(errorEl(page)).toHaveText(msg);
+		}
 	});
 });
 

@@ -682,15 +682,17 @@
 			ev.preventDefault();
 			return;
 		}
-		if (baggage === null) {
-			bookErrorMsg = s.errorBaggage;
+		// Date/time are auto-filled in "now" mode; only "later" can miss them.
+		if (mode === 'later' && (!date || !time)) {
+			bookErrorMsg = s.errorDateTime;
 			errorBook = true;
 			ev.preventDefault();
 			return;
 		}
-		// Date/time are auto-filled in "now" mode; only "later" can miss them.
-		if (mode === 'later' && (!date || !time)) {
-			bookErrorMsg = s.errorDateTime;
+		// Last, because the baggage cards sit below date/time in the form — complain
+		// about the topmost empty field first.
+		if (baggage === null) {
+			bookErrorMsg = s.errorBaggage;
 			errorBook = true;
 			ev.preventDefault();
 		}
