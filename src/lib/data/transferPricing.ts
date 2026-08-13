@@ -4,14 +4,14 @@ export type Vehicle = 'e' | 'v' | 'f';
 
 const E_START = 4.0;
 const V_START = 5.0;
-// Ford wagon — the value option: lower start + lower per-km, landing at ~80%
+// Ford wagon — the value option: lower start + lower per-km, landing at ~92%
 // of the E-class fare across the whole range.
-const F_START = 3.0;
+const F_START = 3.45;
 
 // Flat per-km rate applied to the entire distance for trips beyond 100 km.
 const E_FAR = 1.71;
 const V_FAR = 2.23;
-const F_FAR = 1.4;
+const F_FAR = 1.61;
 
 // [upper bound of segment in km, €/km within that segment]
 const E_SEG: ReadonlyArray<readonly [number, number]> = [
@@ -51,21 +51,21 @@ const V_SEG: ReadonlyArray<readonly [number, number]> = [
 ];
 
 const F_SEG: ReadonlyArray<readonly [number, number]> = [
-	[5, 2.0],
-	[10, 1.85],
-	[15, 1.7],
-	[20, 1.55],
-	[25, 1.45],
-	[30, 1.4],
-	[35, 1.35],
-	[40, 1.3],
-	[45, 1.28],
-	[50, 1.25],
-	[60, 1.2],
-	[70, 1.18],
-	[80, 1.15],
-	[95, 1.12],
-	[100, 1.1]
+	[5, 2.3],
+	[10, 2.13],
+	[15, 1.96],
+	[20, 1.78],
+	[25, 1.67],
+	[30, 1.61],
+	[35, 1.55],
+	[40, 1.5],
+	[45, 1.47],
+	[50, 1.44],
+	[60, 1.38],
+	[70, 1.36],
+	[80, 1.32],
+	[95, 1.29],
+	[100, 1.27]
 ];
 
 const START: Record<Vehicle, number> = { e: E_START, v: V_START, f: F_START };
