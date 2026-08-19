@@ -137,7 +137,7 @@
 	// ── Vehicle + form ────────────────────────────────────────────────────
 	// Ford wagon is temporarily out of service (booked/unavailable). Flip back to
 	// true when it returns; the card stays on the page, just greyed out + unpickable.
-	const fordAvailable = true;
+	const fordAvailable = false;
 	let vehicle = $state<Vehicle>('e');
 	let name = $state('');
 	let phone = $state('');
