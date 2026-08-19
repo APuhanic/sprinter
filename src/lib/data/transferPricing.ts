@@ -68,6 +68,11 @@ const F_SEG: ReadonlyArray<readonly [number, number]> = [
 	[100, 1.27]
 ];
 
+// Promotional discount taken off every fare the calculator produces — the
+// cascading per-km tariff and the flat >100 km rate alike. Set a share to 0 to
+// end that vehicle's promo.
+const DISCOUNT: Record<Vehicle, number> = { e: 0.15, v: 0.2, f: 0 };
+
 const START: Record<Vehicle, number> = { e: E_START, v: V_START, f: F_START };
 const FAR: Record<Vehicle, number> = { e: E_FAR, v: V_FAR, f: F_FAR };
 const SEG: Record<Vehicle, ReadonlyArray<readonly [number, number]>> = {
@@ -79,8 +84,12 @@ const SEG: Record<Vehicle, ReadonlyArray<readonly [number, number]>> = {
 export function calcFare(km: number, vehicle: Vehicle): number | null {
 	if (km <= 0) return null;
 
+	// Discount the gross fare, then round once — so the shown price is always the
+	// discounted one, whichever branch produced it.
+	const net = (gross: number) => Math.round(gross * (1 - DISCOUNT[vehicle]));
+
 	if (km > 100) {
-		return Math.round(km * FAR[vehicle]);
+		return net(km * FAR[vehicle]);
 	}
 
 	let total = START[vehicle];
@@ -90,5 +99,5 @@ export function calcFare(km: number, vehicle: Vehicle): number | null {
 		total += (Math.min(km, to) - prev) * rate;
 		prev = to;
 	}
-	return Math.round(total);
+	return net(total);
 }

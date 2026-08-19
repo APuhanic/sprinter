@@ -7,17 +7,18 @@ describe('calcFare', () => {
 		expect(calcFare(-5, 'v')).toBeNull();
 	});
 
-	// Cascading per-km segment tariff for trips up to 100 km.
+	// Cascading per-km segment tariff for trips up to 100 km. Every expectation
+	// below is post-promo: −15 % on the E-class, −20 % on the V-class.
 	it('prices short economy trips via cascading segments', () => {
-		expect(calcFare(5, 'e')).toBe(17);
-		expect(calcFare(10, 'e')).toBe(28);
-		expect(calcFare(50, 'e')).toBe(98);
-		expect(calcFare(100, 'e')).toBe(169);
+		expect(calcFare(5, 'e')).toBe(14); // 16.75 gross
+		expect(calcFare(10, 'e')).toBe(24); // 28 gross
+		expect(calcFare(50, 'e')).toBe(84); // 98.25 gross
+		expect(calcFare(100, 'e')).toBe(143); // 168.75 gross
 	});
 
 	it('prices short van trips via cascading segments', () => {
-		expect(calcFare(10, 'v')).toBe(38);
-		expect(calcFare(100, 'v')).toBe(221);
+		expect(calcFare(10, 'v')).toBe(30); // 38 gross
+		expect(calcFare(100, 'v')).toBe(177); // 221.25 gross
 	});
 
 	// The 100 km flat-rate cliff (audit T-5): the instant distance exceeds
@@ -26,20 +27,21 @@ describe('calcFare', () => {
 	// This test documents the current (intentional?) +2 jump; if the cliff is
 	// ever judged a bug, change these expectations alongside the fix.
 	it('jumps at the 100 km flat-rate cliff (economy)', () => {
-		expect(calcFare(100, 'e')).toBe(169); // last segment-priced value
-		expect(calcFare(100.01, 'e')).toBe(171); // +2 for a fraction of a km
-		expect(calcFare(100.5, 'e')).toBe(172);
-		expect(calcFare(101, 'e')).toBe(173);
-		expect(calcFare(150, 'e')).toBe(257);
+		expect(calcFare(100, 'e')).toBe(143); // last segment-priced value
+		expect(calcFare(100.01, 'e')).toBe(145); // +2 for a fraction of a km
+		expect(calcFare(100.5, 'e')).toBe(146);
+		expect(calcFare(101, 'e')).toBe(147);
+		expect(calcFare(150, 'e')).toBe(218);
 	});
 
 	it('jumps at the 100 km flat-rate cliff (van)', () => {
-		expect(calcFare(100, 'v')).toBe(221);
-		expect(calcFare(100.01, 'v')).toBe(223);
-		expect(calcFare(101, 'v')).toBe(225);
+		expect(calcFare(100, 'v')).toBe(177);
+		expect(calcFare(100.01, 'v')).toBe(178);
+		expect(calcFare(101, 'v')).toBe(180);
 	});
 
-	// Ford wagon — the value tier (~92% of the E-class fare after the 15% raise).
+	// Ford wagon — off-fleet and excluded from the promo, so its stored tariff is
+	// unchanged. Kept under test so the numbers survive until the wagon returns.
 	it('prices the Ford wagon via its cascading segments', () => {
 		expect(calcFare(5, 'f')).toBe(15);
 		expect(calcFare(10, 'f')).toBe(26);
@@ -60,9 +62,30 @@ describe('calcFare', () => {
 		expect(calcFare(265, 'f')).toBe(427); // 265 · 1.61
 	});
 
-	it('keeps the Ford cheaper than the E-class at every distance', () => {
-		for (const km of [3, 10, 25, 50, 90, 100, 120, 200]) {
-			expect(calcFare(km, 'f')!).toBeLessThan(calcFare(km, 'e')!);
+	// The Ford used to undercut the E-class at every distance. It no longer does:
+	// the E-class carries a 15 % promo and the Ford, being off-fleet, carries none.
+	// Re-tier the wagon (or give it a promo share) before putting it back on sale.
+	it('leaves the Ford above the discounted E-class while it is off-fleet', () => {
+		for (const km of [10, 25, 50, 100, 200]) {
+			expect(calcFare(km, 'f')!).toBeGreaterThan(calcFare(km, 'e')!);
+		}
+	});
+
+	it('discounts the E-class by 15 % and the V-class by 20 %', () => {
+		// [km, vehicle, pre-promo fare] sampled across both pricing branches.
+		const gross = [
+			[10, 'e', 28],
+			[100, 'e', 169],
+			[150, 'e', 257],
+			[10, 'v', 38],
+			[100, 'v', 221],
+			[101, 'v', 225]
+		] as const;
+		const share = { e: 0.15, v: 0.2 } as const;
+		for (const [km, v, before] of gross) {
+			// ±1 € of slack: the promo rounds once on the raw total, while the
+			// reference above is the already-rounded gross fare.
+			expect(Math.abs(calcFare(km, v)! - before * (1 - share[v]))).toBeLessThanOrEqual(1);
 		}
 	});
 });

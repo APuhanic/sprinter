@@ -159,9 +159,9 @@ test.describe('calcFare (pricing)', () => {
 		expect(calcFare(0, 'v')).toBeNull();
 	});
 
-	test('E-class cascading tiers: 10 km = 28 €', () => {
-		// 4 start + 5·2.5 + 5·2.3 = 4 + 12.5 + 11.5 = 28
-		expect(calcFare(10, 'e')).toBe(28);
+	test('E-class cascading tiers: 10 km = 24 € after the 15 % promo', () => {
+		// 4 start + 5·2.5 + 5·2.3 = 28 gross; ·0.85 = 23.8 → 24
+		expect(calcFare(10, 'e')).toBe(24);
 	});
 
 	test('V-class is always pricier than E-class for the same distance', () => {
@@ -180,14 +180,33 @@ test.describe('calcFare (pricing)', () => {
 	});
 
 	test('past 100 km switches to the flat far-rate', () => {
-		// 101 km · 1.71 = 172.71 → 173 (E), 101 · 2.23 = 225.23 → 225 (V)
-		expect(calcFare(101, 'e')).toBe(173);
-		expect(calcFare(101, 'v')).toBe(225);
+		// 101 · 1.71 = 172.71, ·0.85 → 147 (E); 101 · 2.23 = 225.23, ·0.8 → 180 (V)
+		expect(calcFare(101, 'e')).toBe(147);
+		expect(calcFare(101, 'v')).toBe(180);
 	});
 
 	test('100 km boundary still uses the segment tariff (not the flat rate)', () => {
-		// flat would be round(100·1.71)=171; segment total is lower
-		expect(calcFare(100, 'e')).toBeLessThan(171);
+		// discounted flat would be round(100·1.71·0.85)=145; segment total is lower
+		expect(calcFare(100, 'e')).toBeLessThan(145);
+	});
+
+	test('promo takes 15 % off the E-class and 20 % off the V-class', () => {
+		// Gross tariff values before the promo, sampled across both branches.
+		const gross = [
+			[10, 'e', 28],
+			[50, 'e', 98],
+			[100, 'e', 169],
+			[150, 'e', 257],
+			[10, 'v', 38],
+			[100, 'v', 221],
+			[101, 'v', 225]
+		] as const;
+		const share = { e: 0.15, v: 0.2 } as const;
+		for (const [km, v, before] of gross) {
+			// ±1 € of slack: the promo rounds once on the raw total, the gross
+			// reference above was already rounded.
+			expect(Math.abs(calcFare(km, v)! - before * (1 - share[v]))).toBeLessThanOrEqual(1);
+		}
 	});
 });
 
@@ -234,23 +253,20 @@ test.describe('quote', () => {
 		await expect(priceEl(page)).toHaveText(`${calcFare(40, 'v')} €`);
 	});
 
-	test('selecting the Ford wagon lowers the price below E-class', async ({ page }) => {
+	// The Ford wagon is off-fleet: its card stays on the page but is disabled and
+	// badged "Trenutno zauzeto". Flip `fordAvailable` in TransferCalculator.svelte
+	// when it returns, and restore the price/WhatsApp tests from git history.
+	test('the Ford wagon card is disabled and cannot change the price', async ({ page }) => {
 		await chooseMode(page, 'now');
 		await pickRoute(page, 40);
 		await expect(priceEl(page)).toHaveText(`${calcFare(40, 'e')} €`);
-		await page.getByRole('button', { name: /Ford karavan/ }).click();
-		await expect(priceEl(page)).toHaveText(`${calcFare(40, 'f')} €`);
-		expect(calcFare(40, 'f')!).toBeLessThan(calcFare(40, 'e')!);
-	});
 
-	test('Ford selection carries the vehicle into the WhatsApp text', async ({ page }) => {
-		await chooseMode(page, 'now');
-		await pickRoute(page, 20);
-		await page.getByRole('button', { name: /Ford karavan/ }).click();
-		await nameInput(page).fill('Ivan');
-		const text = await reserveText(page);
-		expect(text).toContain('Ford karavan');
-		expect(text).toContain(`${calcFare(20, 'f')} €`);
+		const ford = page.getByRole('button', { name: /Ford karavan/ });
+		await expect(ford).toBeDisabled();
+		await expect(page.getByText('Trenutno zauzeto')).toBeVisible();
+
+		await ford.click({ force: true });
+		await expect(priceEl(page)).toHaveText(`${calcFare(40, 'e')} €`);
 	});
 
 	test('long trips (>100 km) are flagged as estimates (~)', async ({ page }) => {
