@@ -699,3 +699,75 @@ test.describe('partner pickup prefill', () => {
 		await expect(fromInput(page)).toHaveValue('');
 	});
 });
+
+// ── E-mail deep link ─────────────────────────────────────────────────────────
+// A real booking arrived at the office mangled ("Li%5%Enjan … 29 %2?%C"): the
+// sender's mail client shipped the mailto: body in a legacy 7-bit charset and
+// shredded every non-ASCII byte. The e-mail copy must therefore stay ASCII.
+test.describe('e-mail deep link', () => {
+	const mailLink = (p: Page) => p.locator('a.tr-calc__quick[href^="mailto:"]');
+
+	/** Decoded mailto: href — the assembled e-mail subject + body. */
+	async function mailText(p: Page): Promise<string> {
+		const href = await mailLink(p).getAttribute('href');
+		return decodeURIComponent(href ?? '');
+	}
+
+	/** "later" booking (e-mail only shows for scheduled rides) to a ž/đ address. */
+	async function scheduledBooking(p: Page) {
+		// wait for hydration before clicking: on a cold dev server the mode button
+		// is painted before its handler is wired, and the click would be swallowed.
+		await p.waitForFunction(
+			() => !!(document.querySelector(String.raw`input[placeholder*="Rovinj"]`) as any)?.__ac
+		);
+		await chooseMode(p, 'later');
+		await setRouteKm(p, 20);
+		await p.evaluate(() => {
+			(window as any).__pickPlace(
+				document.querySelector('input[placeholder*="Aerodrom"]'),
+				'Ližnjan, Valtursko polje 210, Hrvatska'
+			);
+			(window as any).__pickPlace(
+				document.querySelector('input[placeholder*="Rovinj"]'),
+				'Đakovo, Hrvatska'
+			);
+		});
+		// the time select stays disabled until a date is set (calendar-only input)
+		const d = new Date();
+		d.setDate(d.getDate() + 3);
+		await p.evaluate((iso) => {
+			const el = document.querySelector(String.raw`.tr-calc__date`) as HTMLInputElement & {
+				_flatpickr?: { setDate: (d: Date, fire: boolean) => void };
+			};
+			el._flatpickr?.setDate(new Date(iso), true);
+		}, d.toISOString().split('T')[0]);
+		await p.locator('select.tr-calc__input').selectOption('12:00');
+		await nameInput(p).fill('Ivan');
+	}
+
+	test('the mailto body is pure ASCII — no emoji, no €, no diacritics', async ({ page }) => {
+		await scheduledBooking(page);
+		const text = await mailText(page);
+		expect(text).toMatch(/^[\n\x20-\x7E]*$/);
+		expect(text).toContain('Liznjan');
+		expect(text).toContain('Dakovo');
+		expect(text).toContain(`${calcFare(20, 'e')} EUR`);
+		expect(text).toContain('Ime: Ivan');
+	});
+
+	test('the mailto body drops the WhatsApp */_ markup', async ({ page }) => {
+		await scheduledBooking(page);
+		const body = (await mailText(page)).split('&body=')[1] ?? '';
+		expect(body).toContain('REZERVACIJA');
+		expect(body).not.toContain('*');
+		expect(body).not.toContain('_');
+	});
+
+	test('the WhatsApp text keeps its emoji and € (ASCII fold is e-mail only)', async ({ page }) => {
+		await scheduledBooking(page);
+		const text = await reserveText(page);
+		expect(text).toContain('€');
+		expect(text).toContain('Ližnjan');
+		expect(text).toContain('*REZERVACIJA');
+	});
+});
