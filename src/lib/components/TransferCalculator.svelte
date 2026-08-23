@@ -537,59 +537,83 @@
 		route: '\u{1F5FA}\u{FE0F}' // 🗺️
 	};
 
-	function buildBookingMessage(): string {
+	// Some mail clients (AOL, older Outlook among them) still send a mailto: body
+	// in a legacy 7-bit charset, which shreds every non-ASCII byte — one real
+	// booking landed as "Li%5%Enjan … 29 %2?%C". The e-mail copy is therefore
+	// plain ASCII: no emoji, no WhatsApp markup, € spelled out, diacritics folded.
+	function toAscii(t: string): string {
+		return t
+			.replace(/€/g, 'EUR')
+			.replace(/→/g, '->')
+			.replace(/[–—]/g, '-')
+			.replace(/·/g, '-')
+			.replace(/đ/g, 'd')
+			.replace(/Đ/g, 'D')
+			.normalize('NFD')
+			.replace(/[\u0300-\u036f]/g, '')
+			.replace(/[^\n\x20-\x7E]/g, '');
+	}
+
+	// `plain` builds the e-mail variant: same content, ASCII only (see toAscii).
+	function buildBookingMessage(plain = false): string {
 		const L: string[] = [];
+		const bold = (t: string) => (plain ? t : `*${t}*`);
+		const ital = (t: string) => (plain ? t : `_${t}_`);
+		const ic = (e: string) => (plain ? '' : `${e} `);
+		const rule = plain ? '---------------' : WA_LINE;
 
 		// Status — "now" omits the date; "later" carries the scheduled date/time.
 		if (mode === 'later') {
-			L.push(`${E.booking} *${s.mBooking} — ${fmtBookingDateTime()}*`);
+			L.push(`${ic(E.booking)}${bold(`${s.mBooking} — ${fmtBookingDateTime()}`)}`);
 		} else {
-			L.push(`${E.now} *${s.mNow}*`);
+			L.push(`${ic(E.now)}${bold(s.mNow)}`);
 		}
 		L.push('');
 
 		// Price (bold, right under the status)
 		if (fare !== null) {
 			const priceText = isEstimate ? `~${fare} €` : `${fare} €`;
-			L.push(`${E.price} *${s.mPrice.toUpperCase()}: ${priceText}*`);
+			L.push(`${ic(E.price)}${bold(`${s.mPrice.toUpperCase()}: ${priceText}`)}`);
 			L.push('');
 		}
 
 		// Route — from / to on separate lines, full addresses.
-		L.push(WA_LINE);
-		L.push(`${E.from} *${s.mFrom}*`);
+		L.push(rule);
+		L.push(`${ic(E.from)}${bold(s.mFrom)}`);
 		L.push(fromFullText());
 		L.push('');
-		L.push(`${E.to} *${s.mTo}*`);
+		L.push(`${ic(E.to)}${bold(s.mTo)}`);
 		L.push(toFullText());
-		L.push(WA_LINE);
+		L.push(rule);
 
-		// Vehicle + details
-		L.push(`${E.veh} ${vehicleDesc}`);
-		L.push(`${E.pax} ${s.mPax}: ${paxCount}`);
-		if (baggageDesc) L.push(`${E.bag} ${s.mBag}: ${baggageDesc}`);
-		if (name.trim()) L.push(`${E.name} ${s.mName}: ${name.trim()}`);
-		if (phone.trim()) L.push(`${E.phone} ${phone.trim()}`);
-		if (note.trim()) L.push(`${E.note} ${s.mNote}: ${note.trim()}`);
-		L.push(WA_LINE);
+		// Vehicle + details. Stripped of its icon the phone number would be a bare
+		// line, so the e-mail copy labels it — "Tel" reads the same in hr/en/de.
+		L.push(`${ic(E.veh)}${vehicleDesc}`);
+		L.push(`${ic(E.pax)}${s.mPax}: ${paxCount}`);
+		if (baggageDesc) L.push(`${ic(E.bag)}${s.mBag}: ${baggageDesc}`);
+		if (name.trim()) L.push(`${ic(E.name)}${s.mName}: ${name.trim()}`);
+		if (phone.trim()) L.push(`${ic(E.phone)}${plain ? 'Tel: ' : ''}${phone.trim()}`);
+		if (note.trim()) L.push(`${ic(E.note)}${s.mNote}: ${note.trim()}`);
+		L.push(rule);
 
 		// Cancellation terms — the message goes to the driver, so there's nothing to
 		// "confirm"; this slot carries the cancellation policy (50% / 24h rules).
-		L.push(`_${mode === 'later' ? s.mCancelLater : s.mCancelNow}_`);
+		L.push(ital(mode === 'later' ? s.mCancelLater : s.mCancelNow));
 		// Scheduled bookings only: a 20% deposit may be requested to hold the slot.
 		// (An immediate ride has no future slot to secure, so "now" omits it.)
-		if (mode === 'later') L.push(`_${s.mDeposit}_`);
-		if (isLongHaul) L.push(`${E.warn} ${s.longHaulCaveat}`);
-		L.push(WA_LINE);
+		if (mode === 'later') L.push(ital(s.mDeposit));
+		if (isLongHaul) L.push(`${ic(E.warn)}${s.longHaulCaveat}`);
+		L.push(rule);
 
 		// Navigation, all grouped at the bottom: full route overview (dir) +
 		// single-pin From/To search links.
 		L.push(`${s.mapNavLabel}:`);
-		L.push(`${E.route} ${s.mRoute}: ${buildDirLink()}`);
+		L.push(`${ic(E.route)}${s.mRoute}: ${buildDirLink()}`);
 		L.push(`From: ${buildNavLink(fromFullText())}`);
 		L.push(`To: ${buildNavLink(toFullText())}`);
 
-		return L.join('\n');
+		const msg = L.join('\n');
+		return plain ? toAscii(msg) : msg;
 	}
 
 	let waHref = $derived.by(() => {
@@ -603,9 +627,9 @@
 		if (routeStatus !== 'ok' || fare === null) {
 			return `mailto:${emailAddress}`;
 		}
-		const subject = `${s.mailSubject}: ${fromName} → ${toName}`;
+		const subject = toAscii(`${s.mailSubject}: ${fromName} → ${toName}`);
 		return `mailto:${emailAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-			buildBookingMessage()
+			buildBookingMessage(true)
 		)}`;
 	});
 
