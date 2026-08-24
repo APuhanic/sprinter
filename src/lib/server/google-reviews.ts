@@ -7,6 +7,10 @@ const ENDPOINT = 'https://places.googleapis.com/v1/places';
 
 // 24h. Reviews change slowly and the API has per-month quota.
 const TTL_MS = 24 * 60 * 60 * 1000;
+// Failures get a much shorter TTL. Caching a miss for the full 24h meant an
+// outage on Google's side (expired billing) kept the static fallback on the
+// page for a whole day after the API had already recovered.
+const FAIL_TTL_MS = 5 * 60 * 1000;
 
 export interface GoogleReview {
 	id: string;
@@ -41,7 +45,7 @@ export async function getGoogleReviews(
 
 	const cacheKey = `${placeId}:${lang}`;
 	const cached = cache.get(cacheKey);
-	if (cached && Date.now() - cached.at < TTL_MS) return cached.data;
+	if (cached && Date.now() - cached.at < (cached.data ? TTL_MS : FAIL_TTL_MS)) return cached.data;
 
 	try {
 		const url = `${ENDPOINT}/${encodeURIComponent(placeId)}?languageCode=${lang}`;
