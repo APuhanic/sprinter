@@ -69,11 +69,14 @@
 </script>
 
 <svelte:head>
-	<title>Sprinter - {t.transfersPage.title}{t.transfersPage.titleSuffix}</title>
+	<title>
+		Sprinter - {t.transfersPage.title}{t.transfersPage.titleSuffix}
+		{t.transfersPage.titleSuffixRegional ? ` ${t.transfersPage.titleSuffixRegional}` : ''}
+	</title>
 	<meta name="description" content={metaDescription} />
 	<meta
 		property="og:title"
-		content="Sprinter - {t.transfersPage.title}{t.transfersPage.titleSuffix}"
+		content="Sprinter - {t.transfersPage.title}{t.transfersPage.titleSuffix}{t.transfersPage.titleSuffixRegional ? ` ${t.transfersPage.titleSuffixRegional}` : ''}"
 	/>
 	<meta property="og:description" content={metaDescription} />
 	<!-- og:image is set via +page.ts (page.data.ogImage) so the layout renders a
@@ -92,6 +95,11 @@
 			<h1 class="display tr-hero__title">
 				{t.transfersPage.title}
 				<em class="tr-hero__title-suffix">{t.transfersPage.titleSuffix.replace(/^ /, '')}</em>
+				{#if t.transfersPage.titleSuffixRegional}
+					<em class="tr-hero__title-suffix tr-hero__title-suffix--regional">
+						{t.transfersPage.titleSuffixRegional}
+					</em>
+				{/if}
 			</h1>
 			<p class="lede" style="margin-top:32px; max-width:48ch;">
 				{t.transfersPage.leadOne}
@@ -117,6 +125,37 @@
 	<section class="section section--tight">
 		<div class="wrap">
 			<p class="tr-company-text">{t.transfersPage.companyText}</p>
+		</div>
+	</section>
+
+	<section class="section section--tight">
+		<div class="wrap">
+			<details style="border:1px solid rgba(255,255,255,0.14); border-radius:18px; background:rgba(17,24,39,0.38); padding:0 18px;">
+				<summary style="cursor:pointer; list-style:none; font-weight:600; padding:18px 0; color:#f5f5f5;">
+					Napomene uz cjenik
+				</summary>
+				<div style="padding:0 0 18px; color:rgba(255,255,255,0.82); display:grid; gap:18px;">
+					<h3 style="margin:0; font-size:1.05rem; color:#fff;">Naša usluga</h3>
+					<p style="margin:0; line-height:1.7;">Sprinter je specijaliziran za transfere na većim udaljenostima — aerodromske transfere, transfere između gradova i regija te transfere u inozemstvo. Relacije kraće od 10 km ne izvodimo. Transferi od zračne luke do centra grada spadaju u naš standardni opseg usluga.</p>
+					<h3 style="margin:0; font-size:1.05rem; color:#fff;">Noćni transferi</h3>
+					<p style="margin:0; line-height:1.7;">Noćni transferi — vožnje koje uključuju sate između 22:00 i 06:00, bilo samom vožnjom ili pripremom za nju — ne obračunavaju se putem online kalkulatora, već isključivo putem izravnog dogovora.</p>
+					<p style="margin:0; line-height:1.7;">Ovo uključuje i slučajeve kada je preuzimanje gosta zakazano ujutro, ali vozaču je za dolazak na vrijeme potrebno krenuti tijekom noći. Primjer: preuzimanje u 06:00 koje zahtijeva polazak vozača već u 02:00 tretira se kao noćni transfer.</p>
+					<p style="margin:0; line-height:1.7;">Za sve noćne transfere molimo kontaktirajte nas izravno radi točne ponude.</p>
+					<h3 style="margin:0; font-size:1.05rem; color:#fff;">Polazna točka vozila</h3>
+					<p style="margin:0; line-height:1.7;">Kalkulator izračunava udaljenost isključivo za traženu rutu, od mjesta preuzimanja do odredišta. Ne uključuje udaljenost koju naše vozilo mora prijeći kako bi došlo do mjesta preuzimanja iz naše poslovnice.</p>
+					<p style="margin:0; line-height:1.7;">Poslovnica Pula — za vožnje u Istri, polazna točka vozila je Pula. Dodatni trošak se ne obračunava ako je Pula jedna od točaka rute (npr. Zračna luka Pula → Rovinj). Obračunava se samo kada ruta ne uključuje Pulu — primjer: za vožnju Rovinj → Poreč, uz cijenu rute dodaje se i trošak dolaska vozila od Pule do Rovinja.</p>
+					<p style="margin:0; line-height:1.7;">Poslovnica Osijek — za vožnje u Slavoniji i Baranji, polazna točka vozila je Osijek. Dodatni trošak se ne obračunava ako je Osijek jedna od točaka rute (npr. Osijek → Zračna luka Osijek). Obračunava se samo kada ruta ne uključuje Osijek — primjer: za vožnju Bizovac → Zračna luka Osijek, uz cijenu rute dodaje se i trošak dolaska vozila od Osijeka do Bizovca.</p>
+					<h3 style="margin:0; font-size:1.05rem; color:#fff;">Kada cijena može odstupati od kalkulatora</h3>
+					<p style="margin:0; line-height:1.7;">Cijena prikazana u kalkulatoru je okvirna i predstavlja početnu procjenu. Svaki izračun potvrđujemo s naše strane, ovisno o smjeru i specifičnostima vožnje. Konačna cijena može se razlikovati u sljedećim slučajevima:</p>
+					<ul style="margin:0; padding-left:1.25rem; line-height:1.7;">
+						<li>troškovi noćenja vozača, kod višednevnih ili povratnih vožnji na velike udaljenosti</li>
+						<li>cestarine i vinjete, posebno kod vožnji u inozemstvo</li>
+						<li>dodatne rute ili usputna zaustavljanja uz već dogovorenu vožnju</li>
+					</ul>
+					<h3 style="margin:0; font-size:1.05rem; color:#fff;">Kada ispravljamo cijenu</h3>
+					<p style="margin:0; line-height:1.7;">Kalkulator je početno sredstvo za okvirnu procjenu cijene. Zbog velikog broja mogućih okolnosti — rute, udaljenosti od poslovnice, doba dana, sezone i specifičnih zahtjeva — nije moguće da kalkulator u potpunosti pokrije svaki mogući slučaj. Molimo za razumijevanje ukoliko se pokaže potreba za ispravkom cijene i nakon što je potvrda rezervacije već poslana.</p>
+				</div>
+			</details>
 		</div>
 	</section>
 
@@ -267,6 +306,9 @@
 		margin-top: 6px;
 		letter-spacing: -0.005em;
 		white-space: normal;
+	}
+	.tr-hero__title-suffix--regional {
+		margin-top: 0;
 	}
 
 	.tr-company-text {

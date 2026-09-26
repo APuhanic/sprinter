@@ -17,7 +17,7 @@ export default {
 	// Header banner / utility strip
 	banner: {
 		notice: 'Trenutno primamo nove klijente',
-		address: 'Capelleri ul. 5, 52100 Pula',
+		address: 'Capelleri 5, 52100 Pula · Kralja Dmitra Zvonimira 1, 31326 Darda',
 		phone: contact.phone,
 		hours: 'Pon – Ned · 07—24h'
 	},
@@ -30,8 +30,8 @@ export default {
 		titleB: 'razglednice',
 		sub: 'Profesionalno čišćenje u Puli i Istri — od apartmana i obiteljskih kuća, do ureda i jahti. Pažljivo, bez improvizacije.',
 		meta: [
-			{ label: 'Sjedište', text: 'Capelleri ul. 5, 52100 Pula' },
-			{ label: 'Pokrivenost', text: 'Pula + Istra' },
+			{ label: 'Sjedište', text: 'Capelleri 5, 52100 Pula · Kralja Dmitra Zvonimira 1, 31326 Darda' },
+			{ label: 'Pokrivenost', text: 'Pula + Istra + Slavonija i Baranja' },
 			{ label: 'Odgovor', text: 'Najavite dolazak — javljamo se isti dan' },
 			{ label: 'Plaćanje', text: 'Gotovina · Transakcijski račun' }
 		],
@@ -62,7 +62,7 @@ export default {
 		hoursValue: '07 — 24h',
 		featureAlt: 'Profesionalno čišćenje interijera u Istri',
 		// Transfers hero (top of homepage)
-		transfersEyebrow: 'Privatni transferi / taxi · Pula · Istra · Europa',
+		transfersEyebrow: 'Privatni transferi / taxi · Pula · Istra · Osijek · Slavonija i Baranja · Europa',
 		transfersTitleA: 'Vozimo vas',
 		transfersTitleB: 'pouzdano',
 		transfersSub:
@@ -593,10 +593,11 @@ export default {
 		eyebrow: 'Usluga · 03',
 		title: 'Privatni transferi / taxi',
 		titleAccent: 'transferi / taxi',
-		titleSuffix: ' — Pula · Istra · Europa',
+		titleSuffix: ' Pula · Istra',
+		titleSuffixRegional: 'Osijek · Slavonija i Baranja · Europa',
 		leadOne: 'Sjednete. Vozač zatvori vrata. I više ne morate misliti ni na što drugo.',
 		companyText:
-			'Sprinter je obiteljska tvrtka iz Pule. Organiziramo privatne transfere i taxi vožnje u Puli, po Istri i Europi — pouzdano, točno na vrijeme, bez iznenađenja.',
+			'Sprinter je obiteljska tvrtka s poslovnicama u Puli i Dardi kraj Osijeka. Organiziramo privatne transfere i taxi vožnje u Puli, po Istri, Slavoniji i Baranji te diljem Europe — pouzdano, točno na vrijeme, bez iznenađenja.',
 		termsTitle: 'Uvjeti i informacije',
 		terms: [
 			'Doček s natpisom imena — na zahtjev.',
@@ -673,7 +674,7 @@ export default {
 		gpsDenied: 'Pristup lokaciji odbijen — šaljemo upit na WhatsApp.',
 		gpsMyLocation: 'Moja lokacija',
 		pickFromList: 'Odaberite adresu iz popisa koji se pojavi ispod polja.',
-		errorRoute: 'Odaberite polazište i odredište iz popisa da izračunamo cijenu.',
+		errorRoute: 'Nažalost, ne izvodimo vožnje na ovoj udaljenosti (ispod 10 km). Za kratke lokalne relacije preporučujemo lokalnu taxi službu.',
 		errorName: 'Molimo unesite svoje ime.',
 		errorDateTime: 'Molimo odaberite datum i vrijeme.',
 		errorBaggage: 'Molimo odaberite prtljagu.',

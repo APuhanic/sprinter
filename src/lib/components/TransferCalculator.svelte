@@ -130,8 +130,8 @@
 	type RouteStatus = 'idle' | 'loading' | 'ok' | 'error';
 	let routeStatus = $state<RouteStatus>('idle');
 	let mapsError = $state(false);
-	let directionsService: google.maps.DirectionsService | null = null;
-	let directionsRenderer: google.maps.DirectionsRenderer | null = null;
+	let routeClass: typeof google.maps.routes.Route | null = null;
+	let routePolylines: google.maps.Polyline[] = [];
 	let mapInstance: google.maps.Map | null = null;
 
 	// ── Vehicle + form ────────────────────────────────────────────────────
@@ -317,7 +317,12 @@
 
 		try {
 			await loadGoogleMaps(lang);
-			directionsService = new google.maps.DirectionsService();
+			const [, { Route }] = await Promise.all([
+				google.maps.importLibrary('places') as Promise<google.maps.PlacesLibrary>,
+				google.maps.importLibrary('routes') as Promise<google.maps.RoutesLibrary>
+			]);
+			const PlaceAutocompleteElement = google.maps.places.PlaceAutocompleteElement;
+			routeClass = Route;
 
 			if (mapElement) {
 				mapInstance = new google.maps.Map(mapElement, {
@@ -328,59 +333,63 @@
 					gestureHandling: 'cooperative',
 					clickableIcons: false
 				});
-				directionsRenderer = new google.maps.DirectionsRenderer({
-					map: mapInstance,
-					suppressMarkers: false,
-					preserveViewport: false,
-					polylineOptions: {
-						strokeColor: '#c2603a',
-						strokeWeight: 5,
-						strokeOpacity: 0.9
-					}
-				});
 			}
-
-			const opts: google.maps.places.AutocompleteOptions = {
-				fields: ['geometry', 'name', 'formatted_address'],
-				// Croatia plus the two neighbours we run cross-border transfers to —
-				// Italy and Slovenia (Istria borders both). Other countries stay out
-				// of the dropdown.
-				componentRestrictions: { country: ['hr', 'it', 'si'] }
-			};
 
 			if (fromInput) {
-				const ac = new google.maps.places.Autocomplete(fromInput, opts);
-				const listener = ac.addListener('place_changed', () => {
-					fromText = fromInput?.value ?? '';
-					const place = ac.getPlace();
-					if (place?.geometry?.location) {
-						fromPlace = place;
-						showPickHint = false;
-						maybeRunRoute();
-					} else {
-						// Enter/blur on a query with no matched suggestion → unusable place.
-						// Give immediate feedback instead of a silent no-op.
-						fromPlace = null;
-						showPickHint = true;
-					}
+				const input = fromInput;
+				const ac = new PlaceAutocompleteElement({ includedRegionCodes: ['hr', 'it', 'si'] });
+				ac.setAttribute('aria-label', s.fromLabel);
+				ac.addEventListener('gmp-select', async (event: Event) => {
+					const prediction =
+						(event as Event & { placePrediction?: google.maps.places.PlacePrediction }).placePrediction ??
+						(event as CustomEvent<{ placePrediction: google.maps.places.PlacePrediction }>).detail
+							?.placePrediction;
+					if (!prediction) return;
+					const place = prediction.toPlace();
+					await place.fetchFields({ fields: ['displayName', 'formattedAddress', 'location'] });
+					fromText = place.formattedAddress ?? place.displayName ?? '';
+					input.value = fromText;
+					fromPlace = {
+						name: place.displayName,
+						formatted_address: place.formattedAddress,
+						geometry: { location: place.location }
+					} as google.maps.places.PlaceResult;
+					showPickHint = false;
+					maybeRunRoute();
 				});
-				removeListeners.push(() => google.maps.event.removeListener(listener));
+				input.style.opacity = '0';
+				input.style.position = 'absolute';
+				input.style.pointerEvents = 'none';
+				input.parentElement?.appendChild(ac);
+				removeListeners.push(() => ac.remove());
 			}
 			if (toInput) {
-				const ac = new google.maps.places.Autocomplete(toInput, opts);
-				const listener = ac.addListener('place_changed', () => {
-					toText = toInput?.value ?? '';
-					const place = ac.getPlace();
-					if (place?.geometry?.location) {
-						toPlace = place;
-						showPickHint = false;
-						maybeRunRoute();
-					} else {
-						toPlace = null;
-						showPickHint = true;
-					}
+				const input = toInput;
+				const ac = new PlaceAutocompleteElement({ includedRegionCodes: ['hr', 'it', 'si'] });
+				ac.setAttribute('aria-label', s.toLabel);
+				ac.addEventListener('gmp-select', async (event: Event) => {
+					const prediction =
+						(event as Event & { placePrediction?: google.maps.places.PlacePrediction }).placePrediction ??
+						(event as CustomEvent<{ placePrediction: google.maps.places.PlacePrediction }>).detail
+							?.placePrediction;
+					if (!prediction) return;
+					const place = prediction.toPlace();
+					await place.fetchFields({ fields: ['displayName', 'formattedAddress', 'location'] });
+					toText = place.formattedAddress ?? place.displayName ?? '';
+					input.value = toText;
+					toPlace = {
+						name: place.displayName,
+						formatted_address: place.formattedAddress,
+						geometry: { location: place.location }
+					} as google.maps.places.PlaceResult;
+					showPickHint = false;
+					maybeRunRoute();
 				});
-				removeListeners.push(() => google.maps.event.removeListener(listener));
+				input.style.opacity = '0';
+				input.style.position = 'absolute';
+				input.style.pointerEvents = 'none';
+				input.parentElement?.appendChild(ac);
+				removeListeners.push(() => ac.remove());
 			}
 		} catch (err) {
 			console.warn('[Sprinter] Google Maps unavailable:', err);
@@ -389,32 +398,39 @@
 	}
 
 	function maybeRunRoute() {
-		if (!fromPlace?.geometry?.location || !toPlace?.geometry?.location || !directionsService) {
+		if (!fromPlace?.geometry?.location || !toPlace?.geometry?.location || !routeClass) {
 			return;
 		}
 		routeStatus = 'loading';
-		directionsService.route(
-			{
+		void routeClass
+			.computeRoutes({
 				origin: fromPlace.geometry.location,
 				destination: toPlace.geometry.location,
-				travelMode: google.maps.TravelMode.DRIVING
-			},
-			(res, status) => {
-				if (status !== 'OK' || !res) {
+				travelMode: 'DRIVING',
+				fields: ['routes.distanceMeters', 'routes.durationMillis', 'routes.path']
+			})
+			.then(({ routes }) => {
+				const route = routes?.[0];
+				if (!route) {
 					routeStatus = 'error';
 					return;
 				}
-				const leg = res.routes?.[0]?.legs?.[0];
-				if (!leg) {
-					routeStatus = 'error';
-					return;
-				}
-				lastKm = (leg.distance?.value ?? 0) / 1000;
-				lastMin = Math.round((leg.duration?.value ?? 0) / 60);
+				lastKm = (route.distanceMeters ?? 0) / 1000;
+				lastMin = Math.round(Number(route.durationMillis ?? 0) / 60000);
+				routePolylines.forEach((polyline) => polyline.setMap(null));
+				routePolylines = route.createPolylines({
+					polylineOptions: {
+						strokeColor: '#c2603a',
+						strokeWeight: 5,
+						strokeOpacity: 0.9
+					}
+				});
+				routePolylines.forEach((polyline) => polyline.setMap(mapInstance));
 				routeStatus = 'ok';
-				directionsRenderer?.setDirections(res);
-			}
-		);
+			})
+			.catch(() => {
+				routeStatus = 'error';
+			});
 	}
 
 	function invalidateOnType(which: 'from' | 'to') {
@@ -879,6 +895,10 @@
 		</div>
 	{:else if routeStatus === 'error'}
 		<p class="tr-calc__error">{s.routeError}</p>
+	{:else if routeStatus === 'ok' && fare === null}
+		<div class="tr-calc__result tr-calc__result--soft">
+			<p class="tr-calc__error">{s.errorRoute}</p>
+		</div>
 	{:else if routeStatus === 'ok' && fare !== null}
 		<div class="tr-calc__result">
 			<div class="tr-calc__result-route">{fromName} → {toName}</div>

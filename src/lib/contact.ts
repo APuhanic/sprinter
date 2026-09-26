@@ -4,10 +4,10 @@ export const contact = {
 	whatsappNumber: '385957226918',
 
 	email: 'sprinter@sprinter.hr',
-	address: 'Capelleri ul. 5, 52100 Pula',
-	addressStreet: 'Capelleri ul. 5',
-	addressPostal: '52100',
-	addressCity: 'Pula',
+	address: 'Capelleri 5, 52100 Pula · Kralja Dmitra Zvonimira 1, 31326 Darda',
+	addressStreet: 'Capelleri 5, Kralja Dmitra Zvonimira 1',
+	addressPostal: '52100 · 31326',
+	addressCity: 'Pula · Darda',
 	addressCountry: 'HR'
 };
 
