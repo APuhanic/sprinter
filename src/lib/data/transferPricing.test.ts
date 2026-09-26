@@ -2,17 +2,15 @@ import { describe, it, expect } from 'vitest';
 import { calcFare } from './transferPricing';
 
 describe('calcFare', () => {
-	it('returns null for non-positive or under-10km distances', () => {
+	it('returns null for non-positive distance', () => {
 		expect(calcFare(0, 'e')).toBeNull();
 		expect(calcFare(-5, 'v')).toBeNull();
-		expect(calcFare(9.9, 'e')).toBeNull();
-		expect(calcFare(9.9, 'v')).toBeNull();
 	});
 
 	// Cascading per-km segment tariff for trips up to 100 km. Every expectation
 	// below is post-promo: −15 % on the E-class, −20 % on the V-class.
 	it('prices short economy trips via cascading segments', () => {
-		expect(calcFare(5, 'e')).toBeNull();
+		expect(calcFare(5, 'e')).toBe(14); // 16.75 gross
 		expect(calcFare(10, 'e')).toBe(24); // 28 gross
 		expect(calcFare(50, 'e')).toBe(84); // 98.25 gross
 		expect(calcFare(100, 'e')).toBe(143); // 168.75 gross
@@ -45,7 +43,7 @@ describe('calcFare', () => {
 	// Ford wagon — off-fleet and excluded from the promo, so its stored tariff is
 	// unchanged. Kept under test so the numbers survive until the wagon returns.
 	it('prices the Ford wagon via its cascading segments', () => {
-		expect(calcFare(5, 'f')).toBeNull();
+		expect(calcFare(5, 'f')).toBe(15);
 		expect(calcFare(10, 'f')).toBe(26);
 		expect(calcFare(15, 'f')).toBe(35);
 		expect(calcFare(20, 'f')).toBe(44);

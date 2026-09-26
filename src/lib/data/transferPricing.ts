@@ -82,7 +82,7 @@ const SEG: Record<Vehicle, ReadonlyArray<readonly [number, number]>> = {
 };
 
 export function calcFare(km: number, vehicle: Vehicle): number | null {
-	if (km <= 0 || km < 10) return null;
+	if (km <= 0) return null;
 
 	// Discount the gross fare, then round once — so the shown price is always the
 	// discounted one, whichever branch produced it.

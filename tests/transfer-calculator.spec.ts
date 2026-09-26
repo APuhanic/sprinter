@@ -31,48 +31,45 @@ function installMapsStub() {
 			return this._lng;
 		}
 	}
+	class FakeAutocomplete {
+		_place: any = null;
+		_cb: (() => void) | null = null;
+		constructor(input: any) {
+			input.__ac = this;
+		}
+		addListener(ev: string, cb: () => void) {
+			if (ev === 'place_changed') this._cb = cb;
+			return { remove() {} };
+		}
+		getPlace() {
+			return this._place;
+		}
+	}
+	class FakeDirectionsService {
+		route(_req: any, cb: (res: any, status: string) => void) {
+			cb(
+				{
+					routes: [
+						{
+							legs: [
+								{
+									distance: { value: (window as any).__stubRouteMeters },
+									duration: { value: (window as any).__stubRouteSecs }
+								}
+							]
+						}
+					]
+				},
+				'OK'
+			);
+		}
+	}
 	class FakeMap {
 		constructor() {}
 	}
-	class FakePlaceAutocompleteElement extends HTMLElement {
-		_listener: ((event: Event) => void) | null = null;
-		addEventListener(type: string, listener: EventListenerOrEventListenerObject | null) {
-			if (type === 'gmp-select' && typeof listener === 'function') this._listener = listener;
-		}
-		select(place: any) {
-			const event = new CustomEvent('gmp-select', {
-				detail: { placePrediction: { toPlace: () => place } }
-			}) as CustomEvent & { placePrediction?: { toPlace: () => any } };
-			event.placePrediction = { toPlace: () => place };
-			this._listener?.(event);
-		}
-	}
-	customElements.define('gmp-place-autocomplete', FakePlaceAutocompleteElement);
-	class FakePlace {
-		displayName: string;
-		formattedAddress: string;
-		location: FakeLatLng;
-		constructor(name: string) {
-			this.displayName = name;
-			this.formattedAddress = name;
-			this.location = new FakeLatLng(44.8, 13.8);
-		}
-		fetchFields() {
-			return Promise.resolve();
-		}
-	}
-	class FakeRoute {
-		static computeRoutes() {
-			return Promise.resolve({
-				routes: [
-					{
-						distanceMeters: (window as any).__stubRouteMeters,
-						durationMillis: (window as any).__stubRouteSecs * 1000,
-						createPolylines: () => []
-					}
-				]
-			});
-		}
+	class FakeDirectionsRenderer {
+		constructor() {}
+		setDirections() {}
 	}
 	class FakeGeocoder {
 		geocode(req: any, cb: (r: any, s: string) => void) {
@@ -90,22 +87,27 @@ function installMapsStub() {
 
 	(window as any).google = {
 		maps: {
+			DirectionsService: FakeDirectionsService,
 			Map: FakeMap,
+			DirectionsRenderer: FakeDirectionsRenderer,
 			Geocoder: FakeGeocoder,
 			LatLng: FakeLatLng,
-			places: { PlaceAutocompleteElement: FakePlaceAutocompleteElement },
-			importLibrary: async (name: string) =>
-				name === 'places'
-					? { PlaceAutocompleteElement: FakePlaceAutocompleteElement }
-					: { Route: FakeRoute }
+			TravelMode: { DRIVING: 'DRIVING' },
+			places: { Autocomplete: FakeAutocomplete },
+			event: { removeListener() {} }
 		}
 	};
 
 	(window as any).__pickPlace = (input: any, name: string) => {
 		input.value = name;
-		const ac = input.parentElement?.lastElementChild as FakePlaceAutocompleteElement | null;
+		const ac = input.__ac;
 		if (!ac) throw new Error('Autocomplete not initialised on input yet');
-		ac.select(new FakePlace(name));
+		ac._place = {
+			name,
+			formatted_address: name,
+			geometry: { location: new FakeLatLng(44.8, 13.8) }
+		};
+		ac._cb?.();
 	};
 }
 
@@ -147,9 +149,6 @@ async function reserveText(p: Page): Promise<string> {
 test.beforeEach(async ({ page }) => {
 	await page.addInitScript(installMapsStub);
 	await page.goto('/hr/luksuzni-transferi');
-	await page.waitForFunction(
-		() => !!document.querySelector('input[placeholder*="Aerodrom"]')?.parentElement?.lastElementChild
-	);
 });
 
 // ── Pricing: pure unit tests (no DOM) ────────────────────────────────────────
@@ -166,13 +165,13 @@ test.describe('calcFare (pricing)', () => {
 	});
 
 	test('V-class is always pricier than E-class for the same distance', () => {
-		for (const km of [10, 25, 50, 90, 100, 200]) {
+		for (const km of [3, 10, 25, 50, 90, 100, 200]) {
 			expect(calcFare(km, 'v')!).toBeGreaterThan(calcFare(km, 'e')!);
 		}
 	});
 
 	test('fare increases monotonically with distance', () => {
-		const sampled = [10, 20, 40, 60, 80, 95, 100, 120, 200];
+		const sampled = [1, 5, 10, 20, 40, 60, 80, 95, 100, 120, 200];
 		for (const v of ['e', 'v'] as const) {
 			for (let i = 1; i < sampled.length; i++) {
 				expect(calcFare(sampled[i], v)!).toBeGreaterThan(calcFare(sampled[i - 1], v)!);
@@ -295,7 +294,7 @@ test.describe('booking validation', () => {
 		await nameInput(page).fill('Ivan');
 		await reserveLink(page).click();
 		await expect(errorEl(page)).toHaveText(
-			/Odaberite polazište i odredište iz popisa da izračunamo cijenu\.|ispod 10 km/
+			'Odaberite polazište i odredište iz popisa da izračunamo cijenu.'
 		);
 		// must NOT mention date/time in "now" mode
 		await expect(errorEl(page)).not.toContainText('datum');
@@ -505,7 +504,7 @@ test.describe('edge cases', () => {
 		await nameInput(page).fill('Ivan');
 		await reserveLink(page).click();
 		await expect(errorEl(page)).toHaveText(
-			/Odaberite polazište i odredište iz popisa da izračunamo cijenu\.|ispod 10 km/
+			'Odaberite polazište i odredište iz popisa da izračunamo cijenu.'
 		);
 	});
 
@@ -611,10 +610,12 @@ test.describe('autocomplete pick hint', () => {
 	// without selecting a row) — the common mobile dead end.
 	async function typeWithoutPicking(page: Page) {
 		await page.evaluate(() => {
-			const f = document.querySelector('input[placeholder*="Aerodrom"]') as HTMLInputElement;
+			const f = document.querySelector('input[placeholder*="Aerodrom"]') as HTMLInputElement & {
+				__ac?: { _place: unknown; _cb?: () => void };
+			};
 			f.value = 'Neka ulica 5';
-			f.dispatchEvent(new Event('input', { bubbles: true }));
-			f.dispatchEvent(new Event('blur', { bubbles: true }));
+			f.__ac!._place = { name: 'Neka ulica 5' }; // no geometry → unusable
+			f.__ac!._cb?.();
 		});
 	}
 
@@ -717,7 +718,7 @@ test.describe('e-mail deep link', () => {
 		// wait for hydration before clicking: on a cold dev server the mode button
 		// is painted before its handler is wired, and the click would be swallowed.
 		await p.waitForFunction(
-			() => !!document.querySelector(String.raw`input[placeholder*="Rovinj"]`)?.parentElement?.lastElementChild
+			() => !!(document.querySelector(String.raw`input[placeholder*="Rovinj"]`) as any)?.__ac
 		);
 		await chooseMode(p, 'later');
 		await setRouteKm(p, 20);

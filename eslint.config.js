@@ -12,7 +12,7 @@ export default ts.config(
 	...svelte.configs.prettier,
 	{
 		languageOptions: {
-			globals: { ...globals.browser, ...globals.node, google: 'readonly' }
+			globals: { ...globals.browser, ...globals.node }
 		},
 		rules: {
 			'@typescript-eslint/no-unused-vars': [
