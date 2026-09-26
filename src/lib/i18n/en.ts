@@ -590,7 +590,8 @@ export default {
 		eyebrow: 'Service · 03',
 		title: 'Private transfers / taxi',
 		titleAccent: 'transfers / taxi',
-		titleSuffix: ' — Pula · Istria · Europe',
+		titleSuffix: ' Pula · Istria · Europe',
+		titleSuffixRegional: '',
 		leadOne:
 			'You sit down. The driver closes the door. And you no longer need to think about anything else.',
 		companyText:

@@ -15,9 +15,9 @@
 </script>
 
 <svelte:head>
-	<title>Sprinter - {t.nav.transfers}, Pula · Istra · Europa</title>
+	<title>Sprinter - {t.nav.transfers}, Pula · Istra · Osijek · Slavonija i Baranja · Europa</title>
 	<meta name="description" content={t.home.transfersSub} />
-	<meta property="og:title" content="Sprinter - {t.nav.transfers}, Pula · Istra · Europa" />
+	<meta property="og:title" content="Sprinter - {t.nav.transfers}, Pula · Istra · Osijek · Slavonija i Baranja · Europa" />
 	<meta property="og:description" content={t.home.transfersSub} />
 </svelte:head>
 
